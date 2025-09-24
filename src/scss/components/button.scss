@@ -1,0 +1,5 @@
+@use "../templates/button.scss";
+
+.roseal-btn {
+    @extend %roseal-btn;
+}

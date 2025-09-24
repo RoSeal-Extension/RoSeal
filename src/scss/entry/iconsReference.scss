@@ -1,0 +1,18 @@
+.icons-content {
+    margin: 0 auto;
+    width: fit-content;
+    max-width: 1000px;
+    .section-content {
+        width: fit-content;
+    }
+    .icons-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .icon-container {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

@@ -1,0 +1,29 @@
+.roseal-accordion .card {
+    &:has(.show) .card-header .accordion-arrow,
+    &:has(.collapsing[style*="height"]) .card-header .accordion-arrow {
+        transform: rotate(180deg);
+    }
+
+    .card-header {
+        button {
+            border: none;
+            padding: 3px;
+            width: 20%;
+
+            .dark-theme & {
+                background-color: #393b3d;
+            }
+
+            .light-theme & {
+                background-color: #fff;
+            }
+        }
+
+        .accordion-arrow {
+            transition: transform 0.2s ease;
+            float: right;
+            margin-left: 3px;
+            margin-top: 3px;
+        }
+    }
+}

@@ -1,0 +1,34 @@
+.friend-invite-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .user-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .user-names {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .display-name,
+            .username {
+                line-height: normal;
+
+                &.display-name-with-verified-badge {
+                    display: flex;
+                    align-items: center;
+                    gap: 3px;
+                }
+            }
+        }
+    }
+
+    .link-status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

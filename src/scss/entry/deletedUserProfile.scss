@@ -1,0 +1,101 @@
+.deleted-user-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+
+    .deleted-user-info {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+
+        @media (max-width: 767px) {
+            width: 100%;
+        }
+
+        .block-title {
+            font-size: 24px !important;
+        }
+
+        .deleted-user-preview {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+
+            .deleted-preview-image {
+                flex-shrink: 0;
+                height: 175px;
+                width: 175px;
+                border-radius: 8px;
+                position: relative;
+
+                .toggle-thumbnail-type-btn {
+                    position: absolute;
+                    top: unset;
+                    bottom: 2px;
+                    right: 2px;
+                    font-size: 14px;
+                    height: fit-content;
+                    width: fit-content;
+                    display: none;
+                }
+
+                img {
+                    filter: blur(100px);
+                    border-radius: 10%;
+                }
+
+                &.hover-effect {
+                    img {
+                        filter: none;
+                        transition: 1s;
+                    }
+
+                    .hide-preview-image-btn {
+                        opacity: 0;
+                        transition: 1s;
+                    }
+
+                    .toggle-thumbnail-type-btn {
+                        display: block;
+                    }
+                }
+
+                .hide-preview-image-btn {
+                    top: -100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    height: 100%;
+                    width: 100%;
+                    position: relative;
+                }
+            }
+
+            .preview-names {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                max-width: 40%;
+                min-height: 90%;
+                gap: 0.4em;
+
+                .user-name {
+                    color: var(--RS_TEXT-SECONDARY-COLOR);
+                }
+            }
+        }
+
+        .action-btns {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+
+            button {
+                width: fit-content;
+            }
+        }
+    }
+}

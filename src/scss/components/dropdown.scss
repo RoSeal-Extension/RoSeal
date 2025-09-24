@@ -1,0 +1,45 @@
+.rbx-select-group-borderless {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    //color: inherit !important;
+    .icon-down-16x16 {
+        top: auto !important;
+        right: 0 !important;
+    }
+    &.disabled {
+        &,
+        * {
+            background: transparent !important;
+        }
+    }
+    .rbx-select-borderless {
+        font-size: inherit;
+        width: 100%;
+        //color: inherit !important;
+        padding: 0 15px 0 0 !important;
+        height: fit-content !important;
+        border: none !important;
+        min-width: fit-content !important;
+    }
+}
+
+.roseal-bootstrap-dropdown {
+    .icon-down-16x16 {
+        position: static !important;
+    }
+
+    &.dropdown-fit-content {
+        &,
+        .dropdown-menu {
+            width: fit-content !important;
+        }
+    }
+}
+
+.roseal-dropdown {
+    optgroup {
+        background-color: var(--RS_BACKGROUND-1-COLOR);
+        color: var(--RS_TEXT-SECONDARY-COLOR);
+    }
+}

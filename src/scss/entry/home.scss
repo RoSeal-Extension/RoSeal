@@ -1,0 +1,321 @@
+@use "../components/homeUserHeader.scss";
+
+#HomeContainer {
+    > .section {
+        display: flex;
+        align-items: center;
+    }
+}
+
+#customize-home-layout-btn {
+    float: right;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: fit-content;
+    margin-bottom: 10px;
+    // fix stupid ropro's stupidity
+    position: relative;
+    z-index: 999;
+
+    [data-rosealfe-customizehomesortslayout-hidebutton] & {
+        display: none;
+    }
+
+    & + #home-page-upsell-card-container {
+        clear: both;
+    }
+}
+
+.customize-home-layout-modal {
+    .configuration-btns {
+        margin-top: 10px;
+        width: fit-content;
+        margin-left: auto;
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+
+        .default-toggle {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+        }
+        .reset-to-default-btn {
+            cursor: pointer;
+        }
+    }
+    .drop-placeholder {
+        width: 100%;
+        position: relative;
+        margin: {
+            // 1/2 of flex gap (4/2) from .dnd-sorts-layout + 1/2 of height (2/2) for top and bottom of inner .drop-placeholder-item
+            bottom: -3px;
+            top: -3px;
+        }
+
+        .drop-placeholder-item {
+            height: 2px;
+
+            .dark-theme & {
+                background: lightblue;
+            }
+
+            .light-theme & {
+                background: blue;
+            }
+        }
+    }
+
+    .dnd-sorts-layout {
+        padding: {
+            top: 3px;
+            bottom: 3px;
+        }
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .dnd-list {
+            margin-left: 1em;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sort-item {
+            display: flex;
+            align-items: center;
+            height: 25px;
+            cursor: pointer;
+
+            &.is-dragging {
+                opacity: 0.3;
+            }
+            &.is-hidden {
+                .sort-text {
+                    opacity: 0.5;
+                }
+            }
+
+            .delete-playlist-item-btn {
+                display: flex;
+                align-items: center;
+                margin-right: 0.2em;
+            }
+
+            .expand-playlist-btn,
+            .delete-playlist-item-btn {
+                &,
+                .roseal-icon {
+                    width: 24px;
+                    height: 24px;
+                    color: var(--RS_ICON-COLOR);
+                }
+            }
+
+            .sort-item-text {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}
+
+.customize-sort-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+
+    .playlist-section-container {
+        .playlist-btns-container {
+            display: flex;
+            padding-top: 6px;
+            justify-content: center;
+            gap: 10px;
+        }
+    }
+
+    .container-header {
+        margin: 0 {
+            bottom: 2px;
+        }
+        h2 {
+            padding: 0;
+        }
+    }
+
+    .style-section,
+    .content-section {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        .dropdown {
+            width: max-content !important;
+        }
+    }
+}
+
+[data-rosealfe-homefriendsrows] {
+    .react-friends-carousel-container {
+        height: fit-content !important;
+        min-height: 187px !important;
+
+        @media (max-width: 991px) {
+            min-height: 177px !important;
+        }
+
+        .friends-carousel-list-container,
+        .friends-carousel-list-container-not-full {
+            display: flex !important;
+            height: fit-content;
+            justify-content: flex-start !important;
+            gap: var(--gap);
+            flex-wrap: wrap;
+
+            > div {
+                width: 110px;
+            }
+        }
+    }
+}
+
+[data-rosealfe-hideaddfriendsbutton] {
+    .friends-carousel-list-container > .friends-carousel-tile:has(#friend-tile-button) {
+        display: none;
+    }
+}
+
+[data-rosealfe-cssfixes] {
+    .friends-carousel-tile .friend-tile-game-card {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+.roseal-friend-tile-dropdown {
+    width: 240px;
+    max-width: 240px;
+
+    &.in-game {
+        width: 315px;
+        max-width: 315px;
+    }
+}
+
+.roseal-friends-carousel-container {
+    .friend-request-badge {
+        background-color: var(--RS_ALERT-COLOR);
+        color: var(--RS_ALERT-TEXT-COLOR);
+        padding: 0 6px;
+        border-radius: 99px;
+        height: 20px;
+        min-width: 20px;
+        font-size: 0.75rem;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 0;
+        right: 0;
+    }
+    .friend-carousel-tile-connection-type {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        justify-content: center;
+        max-width: 90px;
+
+        .connection-type-name-container {
+            font-size: 12px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            color: var(--connection-type-color);
+            .dark-theme & {
+                color: hsl(from var(--connection-type-color) h s calc(l * 2));
+            }
+        }
+
+        .connection-type-icon-container {
+            font-size: 24px;
+            line-height: 100%;
+
+            .roseal-custom-emoji {
+                margin: 0 !important;
+            }
+
+            &,
+            .roseal-icon {
+                width: 1em;
+                height: 1em;
+            }
+
+            .roseal-icon {
+                color: var(--connection-type-color);
+
+                .dark-theme & {
+                    color: hsl(from var(--connection-type-color) h s calc(l * 2));
+                }
+            }
+        }
+    }
+    .people-list-header {
+        display: flex;
+        align-items: center;
+
+        .connection-type-filter-dropdown {
+            display: inline-block;
+            max-width: fit-content;
+            margin-left: 1em;
+        }
+
+        .see-all-link-icon {
+            margin-left: auto;
+        }
+    }
+    .in-game-friend-card {
+        cursor: pointer;
+    }
+
+    .verified-badge {
+        display: flex;
+        width: 16px;
+        height: 16px;
+    }
+
+    .friends-carousel-tile .friend-tile-game-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .roseal-icon {
+            width: 70px;
+            height: 70px;
+            color: var(--RS_TEXT-SECONDARY-COLOR);
+        }
+    }
+
+    .friends-carousel-tile-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .friends-carousel-tile-username {
+        font-size: 0.6em;
+        display: flex;
+        flex-direction: column;
+
+        .friends-carousel-user-name {
+            max-width: 92px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: var(--RS_TEXT-SECONDARY-COLOR);
+        }
+    }
+}

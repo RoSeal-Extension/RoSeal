@@ -1,0 +1,190 @@
+.roseal-join-modal {
+    .modal-sm {
+        width: fit-content;
+    }
+    &.is-instructions {
+        .modal-body {
+            padding: 24px;
+        }
+    }
+
+    .text-underline {
+        text-decoration: underline;
+    }
+
+    .install-instructions-container {
+        .thanks-container {
+            padding-bottom: 40px;
+            .thanks-header {
+                font-weight: 800;
+                font-style: normal;
+                font-size: 24px;
+                line-height: 135%;
+            }
+
+            .thanks-text {
+                width: 589px;
+            }
+        }
+
+        .split-container {
+            width: 100%;
+            display: flex;
+            gap: 56px;
+            align-self: stretch;
+            flex-direction: row;
+
+            .split-text {
+                padding-bottom: 24px;
+                font-size: 14px;
+            }
+
+            .qr-code-container {
+                display: flex;
+                width: 268px;
+                height: 190px;
+                padding: 20px;
+                -webkit-box-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                align-items: center;
+                background: rgba(208, 217, 251, 0.04);
+
+                .qr-code {
+                    height: 75%;
+                    width: auto;
+                }
+            }
+
+            .split-list {
+                list-style-type: decimal;
+                list-style-position: inside;
+                padding-left: 20px;
+                display: inline-grid;
+                gap: 20px;
+                font-size: 14px;
+
+                .split-list-item {
+                    list-style-type: decimal;
+                    list-style-position: outside;
+                }
+            }
+
+            .split-item {
+                flex: 1 1 0;
+                display: flex;
+                flex-direction: column;
+
+                &:first-child {
+                    border-right: 1px solid var(--RS_LINE-COLOR);
+                    padding-right: 24px;
+                }
+
+                .split-header {
+                    font-weight: 800;
+                    font-size: 16px;
+                    line-height: 120%;
+                    padding-bottom: 8px;
+                }
+            }
+        }
+    }
+
+    .startup-info-container {
+        display: flex;
+        gap: 10px;
+    }
+
+    .server-info-container {
+        display: flex;
+        flex-direction: column;
+        padding-right: 20px;
+        border-right: 1px solid var(--RS_LINE-COLOR);
+
+        .game-card-container {
+            width: 180px;
+            margin: 0 0;
+
+            .game-card-name {
+                min-height: 1px;
+            }
+
+            .game-card-thumb-container {
+                width: 180px;
+                height: 180px;
+            }
+        }
+
+        .server-info {
+            .server-info-header {
+                font-weight: 800;
+            }
+
+            .server-info-stats {
+                display: flex;
+                flex-direction: column;
+                gap: 0.3em;
+
+                .stat-item {
+                    display: flex;
+                    gap: 0.2em;
+                    align-items: center;
+
+                    &.private-server-owner:not(:last-child) {
+                        margin-bottom: 0.5em;
+                    }
+
+                    .stat-icon {
+                        &,
+                        .roseal-icon {
+                            width: 28px;
+                            height: 28px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .startup-container {
+        max-width: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-top: 10px;
+
+        .text-container {
+            display: flex;
+            text-align: center;
+            align-items: center;
+            flex-direction: column;
+
+            .app-icon-bluebg {
+                width: 72px;
+                height: 72px;
+            }
+
+            .startup-text {
+                font-size: 20px;
+                font-weight: 800;
+                line-height: 120%;
+                padding: 24px;
+            }
+        }
+
+        .startup-progress-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40px;
+            text-align: center;
+            font-weight: 700;
+
+            .roseal-icon {
+                width: 20px;
+                height: 20px;
+                animation: rotation 1s linear infinite normal;
+            }
+        }
+    }
+}

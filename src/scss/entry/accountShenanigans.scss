@@ -1,0 +1,24 @@
+.account-shenanigans {
+    h1,
+    h4 {
+        font-family: "Builder Extended";
+    }
+
+    .section-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        .section {
+            .section-content {
+                background-color: var(--RS_BACKGROUND-3-COLOR);
+                font-family: "Builder Mono";
+                padding: 1em;
+
+                &::before,
+                &::after {
+                    content: "" !important;
+                }
+            }
+        }
+    }
+}

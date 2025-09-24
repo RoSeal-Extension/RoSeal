@@ -1,0 +1,17 @@
+.item-pricing-container {
+    max-width: 1000px;
+    margin: 0 auto;
+
+    .text {
+        white-space: pre-wrap;
+    }
+    .dynamic-floor-text {
+        margin-left: 3px;
+    }
+    .item-types-tables {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+    }
+}

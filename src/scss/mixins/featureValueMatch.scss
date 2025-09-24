@@ -1,0 +1,29 @@
+@use "sass:string";
+@use "sass:selector";
+@use "../functions/replaceText.scss" as replace-text;
+
+@mixin feature-value-match($feature-id, $attribute-selector: "", $append-selector: "") {
+    $feature-id-formatted: string.to-lower-case(replace-text.replace-text($feature-id, ".", "-"));
+
+    $selector-1: if(
+        $attribute-selector != "",
+        "[data-rosealfe-#{$feature-id-formatted + $attribute-selector}]",
+        "[data-rosealfe-#{$feature-id-formatted}]"
+    );
+    $selector-2: if($append-selector != "", $selector-1 + $append-selector, $selector-1);
+
+    // Check if we're in a nested context
+    $parent: &;
+
+    @if $parent == null {
+        // We're at the top level, just output the attribute selector
+        #{$selector-2} {
+            @content;
+        }
+    } @else {
+        // We're in a nested context, append to the current selector
+        @at-root #{$selector-2} {
+            @content;
+        }
+    }
+}

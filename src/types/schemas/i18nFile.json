@@ -1,0 +1,66 @@
+{
+	"$ref": "#/definitions/I18nFile",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"definitions": {
+		"Env": {
+			"enum": ["main", "inject", "popup", "background", "roseal"],
+			"type": "string"
+		},
+		"I18nDetail": {
+			"additionalProperties": {
+				"anyOf": [
+					{
+						"$ref": "#/definitions/I18nDetail"
+					},
+					{
+						"type": "string"
+					}
+				]
+			},
+			"properties": {
+				"$context": {
+					"type": "string"
+				},
+				"$message": {
+					"type": "string"
+				},
+				"$types": {
+					"items": {
+						"$ref": "#/definitions/I18nEnv"
+					},
+					"type": "array"
+				}
+			},
+			"type": "object"
+		},
+		"I18nEnv": {
+			"anyOf": [
+				{
+					"$ref": "#/definitions/Env"
+				},
+				{
+					"const": "manifest",
+					"type": "string"
+				}
+			]
+		},
+		"I18nFile": {
+			"additionalProperties": {
+				"anyOf": [
+					{
+						"$ref": "#/definitions/I18nDetail"
+					},
+					{
+						"type": "string"
+					}
+				]
+			},
+			"properties": {
+				"$schema": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		}
+	}
+}

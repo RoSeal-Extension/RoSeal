@@ -1,0 +1,97 @@
+:root {
+    // text-alert, text-success, text-warning
+    --RS_SUCCESS-COLOR: #335fff;
+    --RS_SUCCESS-TEXT-COLOR: #fff;
+    --RS_ALERT-COLOR: #df281f;
+    --RS_ALERT-TEXT-COLOR: #fff;
+    --RS_YELLOW-COLOR: #f6b702;
+    --RS_WARNING-COLOR: #f57630;
+    --RS_LIGHT-ORANGE-COLOR: #ffb76e;
+
+    --RS_NAV-ICON-DROP-SHADOW-COLOR: #000;
+
+    --RS_EVENT-SUBTITLE-BACKGROUND-COLOR: hsla(0, 0%, 100%, 0.9);
+    --RS_EVENT-SUBTITLE-TEXT-COLOR: #202227;
+
+    --RS_AVATAR-BUTTON-BACKGROUND-COLOR: #fff;
+    --RS_AVATAR_BUTTON-BORDER-COLOR: #b8b8b8;
+    --RS_AVATAR-BUTTON-TEXT-COLOR: #191919;
+
+    &:has(.dark-theme),
+    &.dark-theme,
+    &[color-scheme="dark"],
+    &:has(meta[name="theme-color"][content="#111216"]) {
+        --RS_ICON-COLOR: #fff;
+        --RS_ICON-UNHOVER-COLOR: #bdbebe;
+        --RS_TAB-COLOR: #272930;
+        --RS_NAV-ICON-COLOR: #afb0b0;
+        --RS_NAV-ICON-HOVER-COLOR: #fff;
+        --RS_TEXT-COLOR: #fff;
+        --RS_TEXT-SECONDARY-COLOR: #bdbebe;
+        --RS_INFO-COLOR: #fff;
+        --RS_LOADING-COLOR: #656668;
+
+        --RS_PRIMARY-BACKGROUND-COLOR: #fff;
+        --RS_PRIMARY-TEXT-COLOR: #272930;
+        --RS_PRIMARY-INVERT-BACKGROUND-COLOR: #272930;
+        --RS_PRIMARY-INVERT-TEXT-COLOR: #fff;
+
+        --RS_SECONDARY-BACKGROUND-COLOR: #272930;
+        --RS_SECONDARY-2-BACKGROUND-COLOR: #393b3d;
+        --RS_SECONDARY-TEXT-COLOR: #d5d7dd;
+
+        // Main background
+        --RS_BACKGROUND-1-COLOR: #121215;
+        // Header background
+        --RS_BACKGROUND-2-COLOR: #191a1f;
+        // chat header, modal header
+        --RS_BACKGROUND-3-COLOR: #272930;
+        // secondary menu
+        --RS_BACKGROUND-4-COLOR: #212121;
+
+        --RS_LINE-COLOR: #494d5a;
+
+        --RS_MAP-REGION-FILL-COLOR: #3b4a54;
+        --RS_MAP-REGION-OUTLINE-COLOR: #212b33;
+        --RS_MAP-SPHERE-FILL-COLOR: #212b33;
+    }
+
+    &:has(.light-theme),
+    &.light-theme,
+    &[color-scheme="light"],
+    &:has(meta[name="theme-color"][content="#F9F9F9"]) {
+        --RS_ICON-COLOR: #393b3d;
+        --RS_ICON-UNHOVER-COLOR: #7b7c7d;
+        --RS_TAB-COLOR: #f7f7f8;
+        --RS_NAV-ICON-COLOR: #626566;
+        --RS_NAV-ICON-HOVER-COLOR: #2b2d2f;
+        --RS_TEXT-COLOR: #393b3d;
+        --RS_TEXT-SECONDARY-COLOR: #7b7c7d;
+        --RS_INFO-COLOR: #393b3d;
+        --RS_LOADING-COLOR: #bdbebe;
+
+        --RS_PRIMARY-BACKGROUND-COLOR: #272930;
+        --RS_PRIMARY-TEXT-COLOR: #fff;
+        --RS_PRIMARY-INVERT-BACKGROUND-COLOR: #fff;
+        --RS_PRIMARY-INVERT-TEXT-COLOR: #272930;
+
+        --RS_SECONDARY-BACKGROUND-COLOR: #e4e4e9;
+        --RS_SECONDARY-2-BACKGROUND-COLOR: #e4e4e9;
+        --RS_SECONDARY-TEXT-COLOR: #494d5a;
+
+        // Main background
+        --RS_BACKGROUND-1-COLOR: #fff;
+        // Header background
+        --RS_BACKGROUND-2-COLOR: #f7f7f8;
+        // chat header, modal header
+        --RS_BACKGROUND-3-COLOR: #f7f7f8;
+        // secondary menu
+        --RS_BACKGROUND-4-COLOR: #e3e3e3;
+
+        --RS_LINE-COLOR: #bcbec8;
+
+        --RS_MAP-REGION-FILL-COLOR: #e6e8ea;
+        --RS_MAP-REGION-OUTLINE-COLOR: #d1d6db;
+        --RS_MAP-SPHERE-FILL-COLOR: #d1d6db;
+    }
+}

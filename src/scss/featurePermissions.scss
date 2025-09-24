@@ -1,0 +1,21 @@
+@mixin include {
+    .feature-permissions {
+        .feature-permission {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            .feature-permission-text {
+                display: flex;
+                align-items: center;
+                gap: 2px;
+            }
+        }
+    }
+
+    .feature-permission-tooltip-content.is-iframe {
+        .tooltip-inner {
+            white-space: pre;
+            max-width: fit-content !important;
+        }
+    }
+}

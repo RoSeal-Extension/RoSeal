@@ -1,0 +1,12 @@
+.roseal-thumbnail-3d-container.shimmer {
+    height: 100%;
+    display: block;
+    width: 100%;
+}
+
+.roseal-thumbnail-2d-container {
+    transition: opacity 0.2s;
+    &.is-prev-thumbnail {
+        opacity: 0.3;
+    }
+}

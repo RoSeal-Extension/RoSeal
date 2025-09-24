@@ -1,0 +1,23 @@
+.roseal-range {
+    &::-webkit-slider-runnable-track {
+        .light-theme & {
+            background-image: -webkit-gradient(
+                linear,
+                left top,
+                right top,
+                color-stop(var(--value), #393b3d),
+                color-stop(var(--value), #c7cbce)
+            ) !important;
+        }
+
+        .dark-theme & {
+            background-image: -webkit-gradient(
+                linear,
+                left top,
+                right top,
+                color-stop(var(--value), #fff),
+                color-stop(var(--value), #111214)
+            ) !important;
+        }
+    }
+}

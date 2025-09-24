@@ -1,0 +1,20 @@
+{
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "explicit",
+		"source.fixAll": "explicit"
+	},
+	"editor.defaultFormatter": "biomejs.biome",
+	"[scss]": {
+		"editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter"
+	},
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/bower_components": true,
+		"**/*.code-search": true,
+		"**/dist": true,
+		"**/builds-dist": true,
+		"**/secret": true,
+		"**/*.gen.*": true
+	}
+}

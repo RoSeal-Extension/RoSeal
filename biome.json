@@ -1,0 +1,43 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"suspicious": {
+				"noConfusingVoidType": "off"
+			},
+			"recommended": true,
+			"style": {
+				"noNonNullAssertion": "off",
+				"noParameterAssign": "error",
+				"useAsConstAssertion": "error",
+				"useDefaultParameterLast": "error",
+				"useEnumInitializers": "error",
+				"useSelfClosingElements": "error",
+				"useSingleVarDeclarator": "error",
+				"noUnusedTemplateLiteral": "error",
+				"useNumberNamespace": "error",
+				"noInferrableTypes": "error",
+				"noUselessElse": "error"
+			},
+			"a11y": {
+				"noLabelWithoutControl": "off",
+				"useKeyWithClickEvents": "off",
+				"useSemanticElements": "off",
+				"noStaticElementInteractions": "off"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "off"
+			},
+			"performance": {
+				"noDelete": "off"
+			}
+		},
+		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"]
+	},
+	"formatter": {
+		"indentWidth": 4,
+		"lineWidth": 100,
+		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"]
+	}
+}

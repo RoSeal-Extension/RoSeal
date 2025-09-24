@@ -1,0 +1,50 @@
+@keyframes mreow {
+    10% {
+        font-size: 100px;
+        transform: rotate(30deg);
+        color: violet;
+    }
+
+    25% {
+        transform: rotate(15deg);
+        color: blue;
+    }
+
+    45% {
+        font-size: 110px;
+        transform: rotate(30deg);
+        color: yellow;
+    }
+
+    65% {
+        font-size: 100px;
+        transform: rotate(15deg);
+        color: red;
+    }
+
+    70% {
+        font-size: 90px;
+        transform: rotate(25deg);
+    }
+}
+
+.seals-page {
+    .secret-mreow-section-container {
+        &.has-mreow {
+            margin-bottom: 10000px;
+        }
+
+        .secret-mreow-section {
+            position: absolute;
+
+            .mreow {
+                position: relative;
+                animation: mreow 1.5s ease-out;
+            }
+        }
+    }
+
+    .other-section {
+        margin-top: 20000px;
+    }
+}

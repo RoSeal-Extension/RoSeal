@@ -1,0 +1,55 @@
+[data-rosealfe-imageresolutionoverride] {
+    .game-card-link .thumbnail-2d-container {
+        max-height: 150px;
+        max-width: 150px;
+    }
+}
+
+[data-rosealfe-cssfixes] {
+    .event-hosted-by-container {
+        border-top-color: var(--RS_LINE-COLOR) !important;
+    }
+}
+
+.experience-event-field {
+    margin-top: 2px;
+    display: flex;
+    justify-content: space-between;
+
+    .mobile &:last-child {
+        padding-bottom: 10%;
+    }
+}
+
+.btn-view-thumbnail-asset-container {
+    right: 3px;
+    bottom: 3px;
+}
+
+.btn-control-container {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    position: absolute;
+    z-index: 5;
+
+    div:has(> &):hover & {
+        opacity: 1;
+    }
+
+    .btn-control {
+        display: block;
+        border-radius: 8px;
+        border: none;
+        padding: 4px;
+
+        .dark-theme & {
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .light-theme & {
+            color: #000;
+            background-color: hsla(0, 0%, 100%, 0.9);
+        }
+    }
+}

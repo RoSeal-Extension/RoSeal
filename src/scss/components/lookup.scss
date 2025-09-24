@@ -1,0 +1,38 @@
+.item-lookup {
+    .input-group-btn {
+        display: block !important;
+    }
+}
+
+.user-lookup {
+    .search-results-dropdown-menu {
+        position: absolute !important;
+
+        .search-result-format {
+            display: inline-flex;
+            align-items: center;
+            width: 100%;
+
+            .search-result-icon {
+                flex-shrink: 0;
+                width: 32px;
+                height: 32px;
+
+                .thumbnail-2d-container[class*="icon-"] {
+                    position: relative;
+                    float: left;
+                    right: 0;
+                    top: 0;
+                }
+            }
+
+            .search-result-name {
+                margin-left: 12px;
+            }
+        }
+    }
+
+    .user-lookup-field {
+        border-radius: 8px !important;
+    }
+}

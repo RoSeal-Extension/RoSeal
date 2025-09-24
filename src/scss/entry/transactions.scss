@@ -1,0 +1,23 @@
+.custom-transaction-type-dropdown {
+    display: inline-block;
+    width: auto;
+    margin-left: 12px;
+    min-width: 200px;
+
+    @media (max-width: 543px) {
+        float: none;
+        width: 100%;
+        display: block;
+        margin-top: 12px;
+        margin-left: 0;
+    }
+}
+
+.roseal-devex-transaction-amount .devex-currency-amount {
+    margin-left: 6px;
+    color: var(--RS_TEXT-SECONDARY-COLOR);
+}
+
+.robux-history-chart-section {
+    margin-top: 3em;
+}

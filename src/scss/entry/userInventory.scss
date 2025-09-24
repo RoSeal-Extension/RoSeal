@@ -1,0 +1,110 @@
+.item-obtained-date,
+.item-favorited-date {
+    line-height: normal;
+    display: inline-block;
+
+    &.show-on-hover {
+        position: absolute;
+        bottom: 0;
+        padding-left: 5px;
+        background: var(--RS_BACKGROUND-2-COLOR);
+        width: 100%;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        transform: translateY(50%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease-in-out !important;
+        z-index: 99999;
+
+        .item-card-thumb-container:hover & {
+            opacity: 1 !important;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .btr-preview-container-parent:hover & {
+            transform: translateY(100%);
+        }
+    }
+}
+
+.roseal-sort-options {
+    .delete-count-container {
+        width: 100%;
+        float: left;
+        display: flex;
+        gap: 6px;
+        margin-top: 6px;
+        height: 32px;
+
+        &.first-line {
+            width: auto;
+            float: right;
+            margin-top: -4px;
+            flex-direction: row-reverse;
+
+            .count-items-container {
+                flex-direction: row-reverse;
+            }
+        }
+
+        .loading-btn {
+            margin: 0 0.05em 0 0.1em !important;
+            vertical-align: -0.1em !important;
+        }
+
+        .count-items-container {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+        }
+
+        .delete-items-btn,
+        .count-items-btn {
+            height: 32px;
+        }
+    }
+
+    .sort-direction-dropdown {
+        margin-left: 12px;
+        float: left;
+        margin-top: -4px;
+
+        .select-option {
+            height: 32px;
+        }
+    }
+}
+
+.multi-delete-item-btn {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    z-index: 999999;
+    display: flex;
+    flex-direction: row-reverse;
+
+    .roseal-icon {
+        background: var(--RS_BACKGROUND-3-COLOR);
+        border-radius: 2px;
+        height: 40px;
+        width: 40px;
+        color: var(--RS_ICON-UNHOVER-COLOR);
+        opacity: 0.4;
+    }
+
+    &:hover {
+        opacity: 1;
+        .roseal-icon {
+            color: var(--RS_ICON-COLOR);
+        }
+    }
+
+    .roseal-icon.selected-icon {
+        opacity: 1;
+        color: var(--RS_SUCCESS-COLOR);
+    }
+}

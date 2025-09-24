@@ -1,0 +1,439 @@
+@use "../components/itemLists.scss";
+
+#hidden-asset-banner {
+    background: none;
+    display: flex;
+    align-items: center;
+    max-width: 970px;
+    margin: 0 auto;
+    padding: 0 12px;
+
+    @media (max-width: 991px) {
+        padding: 0;
+    }
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        .return-to-marketplace-btn {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+    }
+    @media (min-width: 768px) {
+        .return-to-marketplace-btn {
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+    }
+
+    .icon-container {
+        height: 100px;
+        width: 100px;
+        margin: 15px {
+            left: 0;
+        }
+        > span {
+            display: block;
+        }
+    }
+
+    .text-container {
+        height: 75px;
+        display: flex;
+        flex-direction: column;
+        .rolimons-link {
+            margin-top: auto;
+        }
+    }
+}
+
+#item-bundles {
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 970px;
+    margin: 0 auto;
+    padding: 0 12px;
+
+    @media (max-width: 991px) {
+        padding: 0;
+    }
+
+    &.stack-o-bundles {
+        margin-bottom: 5px;
+        flex-direction: column;
+    }
+
+    .bundle-text {
+        display: flex;
+        white-space: pre;
+        align-items: center;
+    }
+
+    .view-bundle-btn {
+        margin-left: auto;
+    }
+
+    .bundle-thumbnail {
+        height: 120px;
+        width: 120px;
+        line-height: 120px;
+        background: none;
+    }
+
+    .bundle-stack {
+        display: flex;
+        list-style-type: none;
+
+        .bundle-stack-item {
+            height: 100px;
+            width: 100px;
+            line-height: 100px;
+
+            &:not(:first-child) {
+                margin-left: -50px;
+            }
+
+            @for $i from 1 through 10 {
+                &:nth-child(#{$i}) {
+                    z-index: calc(11 - $i);
+                }
+            }
+
+            .bundle-stack-thumbnail {
+                background: none;
+            }
+        }
+    }
+}
+
+[data-rosealfe-cssfixes] {
+    .bundle-items ul {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    #item-details-description {
+        white-space: pre-wrap;
+    }
+
+    .top-section {
+        margin-bottom: 46px;
+    }
+}
+
+#refresh-details-button {
+    position: absolute;
+    z-index: 99;
+    @media (max-width: 768px) {
+        top: 0;
+        right: 0;
+        position: relative;
+        margin-top: 4px;
+    }
+
+    @media (min-width: 767px) {
+        margin-top: -30px;
+        margin-left: -30px;
+    }
+}
+
+#search-by-creator-btn {
+    margin-left: 3px;
+    display: flex;
+}
+
+#asset-owners {
+    padding: 8px;
+
+    .container-header {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+
+        h2 {
+            padding: 0;
+        }
+    }
+}
+
+#item-dependencies {
+    padding: 8px;
+
+    .version-name-text {
+        display: flex;
+        gap: 3px;
+    }
+    .version-input {
+        display: inline;
+        width: 100px;
+    }
+
+    .container-header {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+
+        h2 {
+            padding: 0;
+        }
+    }
+
+    .container-list {
+        display: flex;
+        flex-wrap: wrap;
+
+        .dependency-item-card {
+            height: fit-content;
+            width: fit-content;
+            float: none;
+
+            .thumbnail-2d-container {
+                height: 100%;
+                width: 100%;
+            }
+
+            .item-card-name {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-wrap: nowrap;
+            }
+
+            .item-card-creator {
+                .text-link {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+#roseal-sale-timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#hidden-avatar-asset-container {
+    #item-details-description {
+        width: 100%;
+    }
+}
+
+.dropdown-menu:has(#delete-item) {
+    #roseal-delete-item-li {
+        display: none;
+    }
+}
+
+.dynamic-floor-info-text {
+    .roseal-icon {
+        width: 16px;
+        height: 16px;
+        color: var(--RS_ICON-COLOR);
+    }
+}
+
+[data-rosealfe-imageresolutionoverride] {
+    .thumbnail-2d-container {
+        height: 100%;
+        aspect-ratio: 1 / 1;
+    }
+}
+.roseal-item-owned {
+    cursor: pointer;
+    .menu-open-btn {
+        margin-left: 0.4em;
+    }
+}
+
+.avatar-item-owned-popover {
+    .instance-list {
+        gap: 0.4em;
+        display: flex;
+        flex-direction: column;
+        max-height: 200px;
+        overflow: auto;
+        padding: 0.6em;
+
+        .instance-item {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+
+            .instance-number {
+                flex-grow: 1;
+            }
+        }
+    }
+}
+
+#offsale-since-date {
+    .roseal-robux-view {
+        vertical-align: bottom;
+    }
+}
+
+#roseal-sale-universes-text.has-experiences {
+    cursor: pointer;
+}
+
+#roseal-sale-universes {
+    display: flex;
+    row-gap: 10px;
+    column-gap: 8px;
+    flex-wrap: wrap;
+
+    @media (min-width: 768px) {
+        margin: 0 0 1em 1em;
+    }
+
+    .game-card-container {
+        margin: 0;
+        width: fit-content;
+        .game-card-thumb-container {
+            padding: 0;
+
+            width: 100px;
+            height: 100px;
+
+            @media (max-width: 543px) {
+                width: 90px;
+                height: 90px;
+            }
+        }
+    }
+}
+
+.dropdown-menu:has(#add-to-profile),
+.dropdown-menu:has(#remove-from-profile) {
+    #toggle-profile-li {
+        display: none;
+    }
+}
+
+.avatar-item-tabs {
+    display: flex;
+    margin-top: 1em;
+
+    $MAX-ITEMS-PER-ROW: 3;
+    $TAB-FLEX-BASIS: calc(100% / $MAX-ITEMS-PER-ROW);
+
+    .rbx-tab {
+        flex: 1 0 $TAB-FLEX-BASIS;
+    }
+}
+
+.asset-owners-container {
+    margin-top: 0.5em;
+
+    .vlist {
+        margin-top: 2.5em;
+    }
+
+    .sort-order-btn {
+        float: right;
+        width: 40px;
+        height: 40px;
+        .roseal-icon {
+            color: var(--RS_ICON-COLOR);
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    .list-item {
+        display: flex;
+        align-items: center;
+
+        .avatar-headshot-md {
+            overflow: hidden;
+        }
+
+        .resale-info {
+            margin-top: 0 !important;
+        }
+    }
+}
+
+.item-connections-social-count {
+    position: absolute;
+    right: 0;
+    margin-top: 20px;
+    width: fit-content;
+    border-radius: 999px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    gap: 4px;
+
+    background-color: var(--RS_SECONDARY-BACKGROUND-COLOR);
+    color: var(--RS_SECONDARY-TEXT-COLOR);
+
+    top: 420px;
+
+    @media (max-width: 970px) {
+        top: 300px;
+    }
+
+    .count-text {
+        font-size: 12px;
+        font-weight: 700;
+    }
+}
+
+.connections-owned-modal {
+    .connection-list {
+        max-height: 600px;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+
+        .connection-item {
+            display: flex;
+            gap: 0.5em;
+            align-items: center;
+
+            .connection-thumbnail {
+                width: 60px;
+                height: 60px;
+                flex-shrink: 0;
+            }
+
+            .connection-username {
+                color: var(--RS_TEXT-SECONDARY-COLOR);
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+#resellers,
+.asset-owners-container {
+    .rolimons-asset-link {
+        display: inline-flex;
+        gap: 2px;
+
+        .roseal-icon {
+            width: 1em;
+            height: 1em;
+        }
+    }
+}
+
+#resellers {
+    .owned-since-date {
+        position: absolute;
+    }
+
+    .reseller-offer-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        float: right;
+        margin-top: 12px;
+        margin-right: 6px;
+    }
+}

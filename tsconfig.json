@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"jsxImportSource": "preact",
+		"skipLibCheck": true,
+		"baseUrl": "./",
+		"paths": {
+			"react": ["./node_modules/preact/compat/"],
+			"react-dom": ["./node_modules/preact/compat/"],
+			"@types/react": ["./node_modules/preact/compat/"]
+		},
+		"esModuleInterop": true,
+		"lib": ["dom", "dom.iterable", "es2024"],
+		"allowImportingTsExtensions": true,
+		"noEmit": true,
+		"moduleResolution": "Bundler",
+		"types": [
+			"preact",
+			"@types/chrome",
+			"@types/bun",
+			"./src/types/env.d.ts",
+			"./src/types/import.d.ts"
+		],
+		"module": "ESNext",
+		"target": "ESNext",
+		"strict": true
+	}
+}

@@ -1,0 +1,63 @@
+.darker-popover {
+    .dark-theme & {
+        background-color: #111214 !important;
+        color: #bdbebe !important;
+    }
+
+    .light-theme & {
+        background-color: #c7cbce !important;
+        color: #606162 !important;
+    }
+
+    &.top {
+        > .arrow:after,
+        > .arrow {
+            .light-theme & {
+                border-top-color: #c7cbce !important;
+            }
+
+            .dark-theme & {
+                border-top-color: #111214 !important;
+            }
+        }
+    }
+
+    &.bottom {
+        > .arrow:after,
+        > .arrow {
+            .light-theme & {
+                border-bottom-color: #c7cbce !important;
+            }
+
+            .dark-theme & {
+                border-bottom-color: #111214 !important;
+            }
+        }
+    }
+
+    &.left {
+        > .arrow:after,
+        > .arrow {
+            .light-theme & {
+                border-left-color: #c7cbce !important;
+            }
+
+            .dark-theme & {
+                border-left-color: #111214 !important;
+            }
+        }
+    }
+
+    &.right {
+        > .arrow:after,
+        > .arrow {
+            .light-theme & {
+                border-right-color: #c7cbce !important;
+            }
+
+            .dark-theme & {
+                border-right-color: #111214 !important;
+            }
+        }
+    }
+}

@@ -1,0 +1,1002 @@
+{
+	"$ref": "#/definitions/Manifest",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"definitions": {
+		"BrowserSpecificSettings": {
+			"additionalProperties": false,
+			"properties": {
+				"strict_max_version": {
+					"type": "string"
+				},
+				"strict_min_version": {
+					"type": "string"
+				},
+				"id": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"Manifest": {
+			"$ref": "#/definitions/global.OmitExtend%3Cchrome.runtime.ManifestV3%2Cstructure-856520122-219-540-856520122-179-542-856520122-155-543-856520122-0-4415%3E"
+		},
+		"chrome.declarativeContent.PageStateMatcherProperties": {
+			"additionalProperties": false,
+			"properties": {
+				"css": {
+					"description": "Optional. Matches if all of the CSS selectors in the array match displayed elements in a frame with the same origin as the page's main frame. All selectors in this array must be compound selectors to speed up matching. Note that listing hundreds of CSS selectors or CSS selectors that match hundreds of times per page can still slow down web sites.",
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"isBookmarked": {
+					"description": "Optional.",
+					"type": "boolean"
+				},
+				"pageUrl": {
+					"$ref": "#/definitions/chrome.declarativeContent.PageStateUrlDetails",
+					"description": "Optional. Filters URLs for various criteria. See event filtering. All criteria are case sensitive."
+				}
+			},
+			"type": "object"
+		},
+		"chrome.declarativeContent.PageStateUrlDetails": {
+			"additionalProperties": false,
+			"properties": {
+				"hostContains": {
+					"description": "Optional. Matches if the host name of the URL contains a specified string. To test whether a host name component has a prefix 'foo', use hostContains: '.foo'. This matches 'www.foobar.com' and 'foo.com', because an implicit dot is added at the beginning of the host name. Similarly, hostContains can be used to match against component suffix ('foo.') and to exactly match against components ('.foo.'). Suffix- and exact-matching for the last components need to be done separately using hostSuffix, because no implicit dot is added at the end of the host name.",
+					"type": "string"
+				},
+				"hostEquals": {
+					"description": "Optional. Matches if the host name of the URL is equal to a specified string.",
+					"type": "string"
+				},
+				"hostPrefix": {
+					"description": "Optional. Matches if the host name of the URL starts with a specified string.",
+					"type": "string"
+				},
+				"hostSuffix": {
+					"description": "Optional. Matches if the host name of the URL ends with a specified string.",
+					"type": "string"
+				},
+				"originAndPathMatches": {
+					"description": "Optional. Matches if the URL without query segment and fragment identifier matches a specified regular expression. Port numbers are stripped from the URL if they match the default port number. The regular expressions use the RE2 syntax.",
+					"type": "string"
+				},
+				"pathContains": {
+					"description": "Optional. Matches if the path segment of the URL contains a specified string.",
+					"type": "string"
+				},
+				"pathEquals": {
+					"description": "Optional. Matches if the path segment of the URL is equal to a specified string.",
+					"type": "string"
+				},
+				"pathPrefix": {
+					"description": "Optional. Matches if the path segment of the URL starts with a specified string.",
+					"type": "string"
+				},
+				"pathSuffix": {
+					"description": "Optional. Matches if the path segment of the URL ends with a specified string.",
+					"type": "string"
+				},
+				"ports": {
+					"description": "Optional. Matches if the port of the URL is contained in any of the specified port lists. For example [80, 443, [1000, 1200]] matches all requests on port 80, 443 and in the range 1000-1200.",
+					"items": {
+						"anyOf": [
+							{
+								"type": "number"
+							},
+							{
+								"items": {
+									"type": "number"
+								},
+								"type": "array"
+							}
+						]
+					},
+					"type": "array"
+				},
+				"queryContains": {
+					"description": "Optional. Matches if the query segment of the URL contains a specified string.",
+					"type": "string"
+				},
+				"queryEquals": {
+					"description": "Optional. Matches if the query segment of the URL is equal to a specified string.",
+					"type": "string"
+				},
+				"queryPrefix": {
+					"description": "Optional. Matches if the query segment of the URL starts with a specified string.",
+					"type": "string"
+				},
+				"querySuffix": {
+					"description": "Optional. Matches if the query segment of the URL ends with a specified string.",
+					"type": "string"
+				},
+				"schemes": {
+					"description": "Optional. Matches if the scheme of the URL is equal to any of the schemes specified in the array.",
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"urlContains": {
+					"description": "Optional. Matches if the URL (without fragment identifier) contains a specified string. Port numbers are stripped from the URL if they match the default port number.",
+					"type": "string"
+				},
+				"urlEquals": {
+					"description": "Optional. Matches if the URL (without fragment identifier) is equal to a specified string. Port numbers are stripped from the URL if they match the default port number.",
+					"type": "string"
+				},
+				"urlMatches": {
+					"description": "Optional. Matches if the URL (without fragment identifier) matches a specified regular expression. Port numbers are stripped from the URL if they match the default port number. The regular expressions use the RE2 syntax.",
+					"type": "string"
+				},
+				"urlPrefix": {
+					"description": "Optional. Matches if the URL (without fragment identifier) starts with a specified string. Port numbers are stripped from the URL if they match the default port number.",
+					"type": "string"
+				},
+				"urlSuffix": {
+					"description": "Optional. Matches if the URL (without fragment identifier) ends with a specified string. Port numbers are stripped from the URL if they match the default port number.",
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"chrome.runtime.ManifestAction": {
+			"additionalProperties": false,
+			"properties": {
+				"default_icon": {
+					"$ref": "#/definitions/chrome.runtime.ManifestIcons"
+				},
+				"default_popup": {
+					"type": "string"
+				},
+				"default_title": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"chrome.runtime.ManifestIcons": {
+			"additionalProperties": {
+				"type": "string"
+			},
+			"type": "object"
+		},
+		"chrome.runtime.ManifestPermissions": {
+			"enum": [
+				"activeTab",
+				"alarms",
+				"audio",
+				"background",
+				"bookmarks",
+				"browsingData",
+				"certificateProvider",
+				"clipboardRead",
+				"clipboardWrite",
+				"contentSettings",
+				"contextMenus",
+				"cookies",
+				"debugger",
+				"declarativeContent",
+				"declarativeNetRequest",
+				"declarativeNetRequestFeedback",
+				"declarativeNetRequestWithHostAccess",
+				"declarativeWebRequest",
+				"desktopCapture",
+				"documentScan",
+				"downloads",
+				"downloads.shelf",
+				"downloads.ui",
+				"enterprise.deviceAttributes",
+				"enterprise.hardwarePlatform",
+				"enterprise.networkingAttributes",
+				"enterprise.platformKeys",
+				"experimental",
+				"favicon",
+				"fileBrowserHandler",
+				"fileSystemProvider",
+				"fontSettings",
+				"gcm",
+				"geolocation",
+				"history",
+				"identity",
+				"identity.email",
+				"idle",
+				"loginState",
+				"management",
+				"nativeMessaging",
+				"notifications",
+				"offscreen",
+				"pageCapture",
+				"platformKeys",
+				"power",
+				"printerProvider",
+				"printing",
+				"printingMetrics",
+				"privacy",
+				"processes",
+				"proxy",
+				"scripting",
+				"search",
+				"sessions",
+				"sidePanel",
+				"signedInDevices",
+				"storage",
+				"system.cpu",
+				"system.display",
+				"system.memory",
+				"system.storage",
+				"systemLog",
+				"tabCapture",
+				"tabGroups",
+				"tabs",
+				"topSites",
+				"tts",
+				"ttsEngine",
+				"unlimitedStorage",
+				"userScripts",
+				"vpnProvider",
+				"wallpaper",
+				"webNavigation",
+				"webRequest",
+				"webRequestBlocking",
+				"webRequestAuthProvider"
+			],
+			"type": "string"
+		},
+		"chrome.runtime.SearchProvider": {
+			"additionalProperties": false,
+			"properties": {
+				"alternate_urls": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"encoding": {
+					"type": "string"
+				},
+				"favicon_url": {
+					"type": "string"
+				},
+				"image_url": {
+					"type": "string"
+				},
+				"image_url_post_params": {
+					"type": "string"
+				},
+				"instant_url": {
+					"type": "string"
+				},
+				"instant_url_post_params": {
+					"type": "string"
+				},
+				"is_default": {
+					"type": "boolean"
+				},
+				"keyword": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"prepopulated_id": {
+					"type": "number"
+				},
+				"search_url": {
+					"type": "string"
+				},
+				"search_url_post_params": {
+					"type": "string"
+				},
+				"suggest_url": {
+					"type": "string"
+				},
+				"suggest_url_post_params": {
+					"type": "string"
+				}
+			},
+			"required": ["search_url"],
+			"type": "object"
+		},
+		"global.OmitExtend<chrome.runtime.ManifestV3,structure-856520122-219-540-856520122-179-542-856520122-155-543-856520122-0-4415>": {
+			"additionalProperties": false,
+			"properties": {
+				"$schema": {
+					"type": "string"
+				},
+				"action": {
+					"$ref": "#/definitions/chrome.runtime.ManifestAction"
+				},
+				"author": {
+					"type": "string"
+				},
+				"background": {
+					"additionalProperties": false,
+					"properties": {
+						"service_worker": {
+							"type": "string"
+						},
+						"type": {
+							"const": "module",
+							"type": "string"
+						}
+					},
+					"required": ["service_worker"],
+					"type": "object"
+				},
+				"background_page": {
+					"type": "string"
+				},
+				"beta": {
+					"type": "boolean"
+				},
+				"browser_specific_settings": {
+					"additionalProperties": false,
+					"properties": {
+						"chrome": {
+							"$ref": "#/definitions/BrowserSpecificSettings"
+						},
+						"firefox": {
+							"additionalProperties": false,
+							"properties": {
+								"android": {
+									"$ref": "#/definitions/BrowserSpecificSettings"
+								},
+								"id": {
+									"type": "string"
+								},
+								"strict_max_version": {
+									"type": "string"
+								},
+								"strict_min_version": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"safari": {
+							"$ref": "#/definitions/BrowserSpecificSettings"
+						}
+					},
+					"type": "object"
+				},
+				"chrome_settings_overrides": {
+					"additionalProperties": false,
+					"properties": {
+						"homepage": {
+							"type": "string"
+						},
+						"search_provider": {
+							"$ref": "#/definitions/chrome.runtime.SearchProvider"
+						},
+						"startup_pages": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"chrome_ui_overrides": {
+					"additionalProperties": false,
+					"properties": {
+						"bookmarks_ui": {
+							"additionalProperties": false,
+							"properties": {
+								"remove_bookmark_shortcut": {
+									"type": "boolean"
+								},
+								"remove_button": {
+									"type": "boolean"
+								}
+							},
+							"type": "object"
+						}
+					},
+					"type": "object"
+				},
+				"chrome_url_overrides": {
+					"additionalProperties": false,
+					"properties": {
+						"bookmarks": {
+							"type": "string"
+						},
+						"history": {
+							"type": "string"
+						},
+						"newtab": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"commands": {
+					"additionalProperties": {
+						"additionalProperties": false,
+						"properties": {
+							"description": {
+								"type": "string"
+							},
+							"global": {
+								"type": "boolean"
+							},
+							"suggested_key": {
+								"additionalProperties": false,
+								"properties": {
+									"chromeos": {
+										"type": "string"
+									},
+									"default": {
+										"type": "string"
+									},
+									"linux": {
+										"type": "string"
+									},
+									"mac": {
+										"type": "string"
+									},
+									"windows": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							}
+						},
+						"type": "object"
+					},
+					"type": "object"
+				},
+				"content_capabilities": {
+					"additionalProperties": false,
+					"properties": {
+						"matches": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"permissions": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"content_scripts": {
+					"items": {
+						"additionalProperties": false,
+						"properties": {
+							"all_frames": {
+								"type": "boolean"
+							},
+							"css": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"exclude_globs": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"exclude_matches": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"include_globs": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"js": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"match_about_blank": {
+								"type": "boolean"
+							},
+							"matches": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"run_at": {
+								"type": "string"
+							},
+							"world": {
+								"enum": ["ISOLATED", "MAIN"],
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"content_security_policy": {
+					"additionalProperties": false,
+					"properties": {
+						"extension_pages": {
+							"type": "string"
+						},
+						"sandbox": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"converted_from_user_script": {
+					"type": "boolean"
+				},
+				"current_locale": {
+					"type": "string"
+				},
+				"declarative_net_request": {},
+				"default_locale": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"devtools_page": {
+					"type": "string"
+				},
+				"event_rules": {
+					"items": {
+						"additionalProperties": false,
+						"properties": {
+							"actions": {
+								"items": {
+									"additionalProperties": false,
+									"properties": {
+										"type": {
+											"type": "string"
+										}
+									},
+									"required": ["type"],
+									"type": "object"
+								},
+								"type": "array"
+							},
+							"conditions": {
+								"items": {
+									"$ref": "#/definitions/chrome.declarativeContent.PageStateMatcherProperties"
+								},
+								"type": "array"
+							},
+							"event": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"export": {
+					"additionalProperties": false,
+					"properties": {
+						"whitelist": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"externally_connectable": {
+					"additionalProperties": false,
+					"properties": {
+						"accepts_tls_channel_id": {
+							"type": "boolean"
+						},
+						"ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"matches": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"file_browser_handlers": {
+					"items": {
+						"additionalProperties": false,
+						"properties": {
+							"default_title": {
+								"type": "string"
+							},
+							"file_filters": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"id": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"file_system_provider_capabilities": {
+					"additionalProperties": false,
+					"properties": {
+						"configurable": {
+							"type": "boolean"
+						},
+						"multiple_mounts": {
+							"type": "boolean"
+						},
+						"source": {
+							"type": "string"
+						},
+						"watchable": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"homepage_url": {
+					"type": "string"
+				},
+				"host_permissions": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"icons": {
+					"$ref": "#/definitions/chrome.runtime.ManifestIcons"
+				},
+				"import": {
+					"items": {
+						"additionalProperties": false,
+						"properties": {
+							"id": {
+								"type": "string"
+							},
+							"minimum_version": {
+								"type": "string"
+							}
+						},
+						"required": ["id"],
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"incognito": {
+					"type": "string"
+				},
+				"input_components": {
+					"items": {
+						"additionalProperties": false,
+						"properties": {
+							"description": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							},
+							"indicator": {
+								"type": "string"
+							},
+							"language": {
+								"anyOf": [
+									{
+										"items": {
+											"type": "string"
+										},
+										"type": "array"
+									},
+									{
+										"type": "string"
+									}
+								]
+							},
+							"layouts": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"name": {
+								"type": "string"
+							},
+							"type": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"key": {
+					"type": "string"
+				},
+				"manifest_version": {
+					"const": 3,
+					"type": "number"
+				},
+				"minimum_chrome_version": {
+					"type": "string"
+				},
+				"nacl_modules": {
+					"items": {
+						"additionalProperties": false,
+						"properties": {
+							"mime_type": {
+								"type": "string"
+							},
+							"path": {
+								"type": "string"
+							}
+						},
+						"required": ["path", "mime_type"],
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"name": {
+					"type": "string"
+				},
+				"oauth2": {
+					"additionalProperties": false,
+					"properties": {
+						"client_id": {
+							"type": "string"
+						},
+						"scopes": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"required": ["client_id"],
+					"type": "object"
+				},
+				"offline_enabled": {
+					"type": "boolean"
+				},
+				"omnibox": {
+					"additionalProperties": false,
+					"properties": {
+						"keyword": {
+							"type": "string"
+						}
+					},
+					"required": ["keyword"],
+					"type": "object"
+				},
+				"optional_host_permissions": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"optional_permissions": {
+					"items": {
+						"$ref": "#/definitions/chrome.runtime.ManifestPermissions"
+					},
+					"type": "array"
+				},
+				"options_page": {
+					"type": "string"
+				},
+				"options_ui": {
+					"additionalProperties": false,
+					"properties": {
+						"chrome_style": {
+							"type": "boolean"
+						},
+						"open_in_tab": {
+							"type": "boolean"
+						},
+						"page": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"permissions": {
+					"items": {
+						"$ref": "#/definitions/chrome.runtime.ManifestPermissions"
+					},
+					"type": "array"
+				},
+				"platforms": {
+					"items": {
+						"additionalProperties": false,
+						"properties": {
+							"nacl_arch": {
+								"type": "string"
+							},
+							"sub_package_path": {
+								"type": "string"
+							}
+						},
+						"required": ["sub_package_path"],
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"plugins": {
+					"items": {
+						"additionalProperties": false,
+						"properties": {
+							"path": {
+								"type": "string"
+							}
+						},
+						"required": ["path"],
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"requirements": {
+					"additionalProperties": false,
+					"properties": {
+						"3D": {
+							"additionalProperties": false,
+							"properties": {
+								"features": {
+									"items": {
+										"type": "string"
+									},
+									"type": "array"
+								}
+							},
+							"type": "object"
+						},
+						"plugins": {
+							"additionalProperties": false,
+							"properties": {
+								"npapi": {
+									"type": "boolean"
+								}
+							},
+							"type": "object"
+						}
+					},
+					"type": "object"
+				},
+				"sandbox": {
+					"additionalProperties": false,
+					"properties": {
+						"content_security_policy": {
+							"type": "string"
+						},
+						"pages": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"required": ["pages"],
+					"type": "object"
+				},
+				"short_name": {
+					"type": "string"
+				},
+				"spellcheck": {
+					"additionalProperties": false,
+					"properties": {
+						"dictionary_format": {
+							"type": "string"
+						},
+						"dictionary_language": {
+							"type": "string"
+						},
+						"dictionary_locale": {
+							"type": "string"
+						},
+						"dictionary_path": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"storage": {
+					"additionalProperties": false,
+					"properties": {
+						"managed_schema": {
+							"type": "string"
+						}
+					},
+					"required": ["managed_schema"],
+					"type": "object"
+				},
+				"store_version": {
+					"type": "string"
+				},
+				"tts_engine": {
+					"additionalProperties": false,
+					"properties": {
+						"voices": {
+							"items": {
+								"additionalProperties": false,
+								"properties": {
+									"event_types": {
+										"items": {
+											"type": "string"
+										},
+										"type": "array"
+									},
+									"gender": {
+										"type": "string"
+									},
+									"lang": {
+										"type": "string"
+									},
+									"voice_name": {
+										"type": "string"
+									}
+								},
+								"required": ["voice_name"],
+								"type": "object"
+							},
+							"type": "array"
+						}
+					},
+					"required": ["voices"],
+					"type": "object"
+				},
+				"update_url": {
+					"type": "string"
+				},
+				"version": {
+					"type": "string"
+				},
+				"version_name": {
+					"type": "string"
+				},
+				"web_accessible_resources": {
+					"items": {
+						"additionalProperties": false,
+						"properties": {
+							"matches": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"resources": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						"required": ["resources", "matches"],
+						"type": "object"
+					},
+					"type": "array"
+				}
+			},
+			"required": ["author", "manifest_version", "name", "store_version", "version"],
+			"type": "object"
+		}
+	}
+}

@@ -1,0 +1,65 @@
+.roseal-modal-backdrop {
+    &.show {
+        opacity: 0.7 !important;
+        filter: alpha(opacity=70) !important;
+    }
+}
+
+.roseal-modal-container {
+    overflow-y: auto;
+    .modal-dialog {
+        transition: none !important;
+        -webkit-transform: translateZ(0) !important;
+        transform: translateZ(0) !important;
+    }
+
+    &.fade.show {
+        opacity: 1 !important;
+    }
+
+    .text-center {
+        .modal-title,
+        .text:not(.no-flex) {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+        }
+    }
+
+    .modal-content {
+        border-radius: 12px !important;
+    }
+
+    .roseal-modal {
+        .modal-header:not(.has-title) {
+            border: none;
+            position: absolute;
+            right: 0;
+
+            .close {
+                z-index: 1;
+                position: absolute;
+                right: 15px;
+            }
+        }
+
+        .modal-body {
+            white-space: break-spaces;
+        }
+        .modal-buttons-with-footer {
+            margin-bottom: 8px;
+        }
+        .full-width-modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+
+            > button {
+                flex: 1 1 0px;
+                text-wrap: wrap;
+                word-break: break-word;
+            }
+        }
+    }
+}

@@ -1,0 +1,288 @@
+.roseal-group-stats {
+    > div {
+        line-height: 1em !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .hide-pending-groups {
+        .pending-join-requests {
+            display: none;
+        }
+    }
+
+    .hide-joined-groups {
+        .group-react-groups-list:not(.pending-join-requests) {
+            display: none;
+        }
+    }
+
+    .pending-join-requests .container-header {
+        display: none;
+    }
+}
+
+.groups-list-new {
+    .leave-group-btn {
+        margin-left: auto;
+    }
+}
+
+.group-created-date {
+    .mention-container {
+        vertical-align: unset;
+        .text-link {
+            margin: 0;
+        }
+        .verified-badge-container {
+            width: 12px;
+            height: 12px;
+        }
+    }
+}
+
+.groups-type-switch {
+    margin-bottom: 15px;
+
+    .nav-tabs {
+        background-color: transparent !important;
+    }
+
+    .rbx-tab .rbx-tab-heading {
+        background: transparent;
+        padding-bottom: 13px;
+
+        .text-lead {
+            font: var(--typography-label-medium-font) !important;
+        }
+    }
+
+    @media (max-width: 767px) {
+        display: none;
+    }
+
+    & .rbx-tab {
+        width: 50%;
+    }
+}
+
+.pending-join-requests {
+    .group-cards {
+        max-height: 700px;
+    }
+
+    @media (max-width: 767px) {
+        .menu-dropdown-container {
+            display: block !important;
+        }
+    }
+}
+
+.group-card-name .icon-lock {
+    float: left !important;
+}
+
+[data-rosealfe-searchgroupstore] {
+    group-store .container-header {
+        align-items: center !important;
+
+        .keyword-search-input {
+            margin-left: auto;
+            margin-right: 5px;
+
+            .input-field {
+                border-radius: 8px !important;
+            }
+        }
+    }
+}
+
+.folder-customization-modal {
+    margin-bottom: 5px;
+    width: 100%;
+
+    .roseal-color-group {
+        display: block;
+
+        .roseal-color-input {
+            width: 100%;
+            border-radius: 8px !important;
+
+            &::-webkit-color-swatch {
+                border-radius: 8px !important;
+            }
+            &::-webkit-color-swatch-wrapper {
+                border-radius: 8px !important;
+            }
+            &::-moz-color-swatch {
+                border-radius: 8px !important;
+            }
+        }
+    }
+}
+
+.dnd-groups-list-container {
+    .folder-icon-container {
+        .thumbnail-2d-container {
+            background: none;
+        }
+        .folder-icon {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .folder-groups-btns {
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        display: flex;
+        gap: 5px;
+
+        .btn-generic-edit-xs {
+            padding: 5px;
+
+            .icon-edit {
+                zoom: 80%;
+            }
+        }
+    }
+
+    .dnd-groups-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        padding: {
+            top: 6px;
+            bottom: 6px;
+        }
+
+        .dnd-item {
+            &:has(> .is-hidden) {
+                height: 0;
+                visibility: hidden;
+                margin-top: -3px;
+                margin-bottom: -3px;
+                &,
+                & * {
+                    min-width: 0 !important;
+                    width: 0 !important;
+                    height: 0 !important;
+                    min-height: 0 !important;
+                    padding: 0 !important;
+                    margin-left: 0 !important;
+                }
+            }
+        }
+
+        .list-item {
+            cursor: pointer;
+
+            &.is-dragging {
+                opacity: 0.3;
+            }
+
+            &.is-drop-target {
+                opacity: 0.7;
+            }
+        }
+
+        .drop-placeholder {
+            width: 100%;
+            margin: {
+                // 1/2 of flex gap (6/2) + 1/2 of height (2/2) for top and bottom
+                bottom: -4px;
+                top: -4px;
+            }
+
+            .drop-placeholder-item {
+                height: 2px;
+                .dark-theme & {
+                    background: lightblue;
+                }
+
+                .light-theme & {
+                    background: blue;
+                }
+            }
+        }
+
+        .folder-groups-container {
+            padding-left: 4px;
+            background-color: var(--RS_BACKGROUND-4-COLOR);
+
+            .drop-placeholder {
+                margin: {
+                    // 1/2 of height (2/2) for top and bottom
+                    bottom: -1px;
+                    top: -1px;
+                    left: 3px;
+                }
+            }
+
+            li:has(> .is-hidden) {
+                margin: 0;
+            }
+        }
+    }
+}
+
+[data-rosealfe-imageresolutionoverride] {
+    .thumbnail-2d-container:not(.group-event-thumbnail-container) {
+        height: 100%;
+        aspect-ratio: 1 / 1;
+    }
+}
+
+[data-rosealfe-hideemptygroupevents] {
+    /*
+    $MAX-ITEMS-PER-ROW: 5;
+    $TAB-FLEX-BASIS: calc(100% / $MAX-ITEMS-PER-ROW);
+        .group-details #horizontal-tabs {
+        display: flex;
+        flex-wrap: wrap;
+
+        .rbx-tab {
+            flex: 1 0 $TAB-FLEX-BASIS;
+        }
+    }
+    */
+
+    .group-details #horizontal-tabs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%/6), 1fr));
+
+        &::before,
+        &::after {
+            display: none;
+        }
+
+        .rbx-tab {
+            width: auto !important;
+        }
+    }
+}
+
+.roseal-community-insight {
+    white-space: pre-wrap;
+}
+
+[data-rosealfe-viewusergroupjoinrequests] {
+    .groups-list-sidebar {
+        height: calc(100vh - 80px) !important;
+    }
+}
+
+group-wall:not(:has([group-comments])) #group-wall-paginator {
+    display: none;
+}
+
+.user-trade-link {
+    margin-left: 4px;
+
+    &::before {
+        margin-right: 4px;
+        content: "|";
+    }
+}

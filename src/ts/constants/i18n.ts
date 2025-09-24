@@ -1,0 +1,2 @@
+export const PREFERRED_LOCALES_STORAGE_KEY = "locales";
+export const CUSTOM_I18N_OVERRIDE_LOCALSESSIONSTORAGE_KEY = "customI18nOverride";

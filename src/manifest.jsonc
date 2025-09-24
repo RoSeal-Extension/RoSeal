@@ -1,0 +1,102 @@
+{
+	"$schema": "../src/types/schemas/manifest.json",
+	// Manifest metadata
+	"manifest_version": 3,
+	"short_name": "RoSeal",
+	"name": "__MSG_manifest_name__",
+	"description": "__MSG_manifest_description__",
+	"beta": false,
+	"author": "roseal.live",
+	// Public version shown to users
+	"version": "2.1.10",
+	// The store version
+	"store_version": "2.1.10.0",
+	"version_name": "__manifest_version__ (Gaia)",
+
+	"browser_specific_settings": {
+		"chrome": {
+			"strict_min_version": "111",
+			"key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs9m51LbenKsMKSsQg96V6La8xg+kJqgmmcFgWL2M4yhwDR5ggeLd13KfIzI5+jbtVG0XBsyqb6KVL4p663NCV19Wp36xiF1v3hk/ycaKKHhZuygeEh6qFgZhLxtRoadfUooj/q02gtS4gP7+fA6VarM6qc8roWIYaFu1x/3GaTr7usYGwjzBm0iZL223jfhYT79IXahgv2c/x5l/T0/DjXMw02n3LAlD46MTssLf29tqoDY0mg2SMY8zvViw6BDEBikbcN01YoMXpzf1F6QTpHaJjb6ebBYZiaQl1B24inAIMeNehduTqiqYWALVaw7bZbouzk8mA11Ghco95ru0CQIDAQAB"
+		},
+		"firefox": {
+			"strict_min_version": "128.0",
+			"id": "@roseal-beta.roseal",
+			"update_url": "https://{ROSEAL_DOMAIN('data')}/v2/beta/firefox/updates.json",
+			"android": {
+				"strict_min_version": "128.0"
+			}
+		}
+	},
+
+	"icons": {
+		"64": "img/icon/64.png",
+		"128": "img/icon/128.png",
+		"256": "img/icon/256.png",
+		"512": "img/icon/512.png"
+	},
+
+	"default_locale": "en",
+
+	"declarative_net_request": {
+		"rule_resources": [
+			{
+				"id": "roseal_ruleset_1",
+				"enabled": true,
+				"path": "dnr_rules.json"
+			}
+		]
+	},
+	"permissions": ["storage", "declarativeNetRequestWithHostAccess", "webRequest", "alarms"],
+	"optional_permissions": ["cookies", "notifications"],
+
+	"host_permissions": ["*://{ROBLOX_DOMAIN('*')}/*", "*://{ROSEAL_DOMAIN('*')}/*"],
+	"optional_host_permissions": ["*://{ROLIMONS_DOMAIN('*')}/*"],
+
+	"content_scripts": [
+		{
+			"matches": ["{ROSEAL_WWW_URL}/*"],
+			"js": ["js/roseal.js"],
+			"all_frames": true,
+			"run_at": "document_start"
+		},
+		{
+			"matches": ["https://{ROBLOX_DOMAIN('www')}/*", "https://{ROBLOX_DOMAIN('create')}/*"],
+			"js": ["js/main.js"],
+			"all_frames": true,
+			"run_at": "document_start"
+		},
+		{
+			"matches": ["https://{ROBLOX_DOMAIN('www')}/*", "https://{ROBLOX_DOMAIN('create')}/*"],
+			"js": ["js/inject.js"],
+			"world": "MAIN",
+			"all_frames": true,
+			"run_at": "document_start"
+		}
+	],
+
+	"options_ui": {
+		"page": "popup.html?options"
+	},
+
+	"action": {
+		"default_title": "__MSG_manifest_action_title__"
+	},
+
+	"incognito": "split",
+	"background": {
+		"service_worker": "js/background.js"
+	},
+	"web_accessible_resources": [
+		{
+			"resources": [
+				"css/*",
+				"fonts/*",
+				"js/inject.js.map",
+				"js/main.js.map",
+				"img/*",
+				"popup.html"
+			],
+			"matches": ["*://{ROBLOX_DOMAIN('*')}/*"]
+		}
+	]
+}

@@ -1,0 +1,57 @@
+.content {
+    max-width: 1154px;
+}
+
+.hidden-avatar-bundle-container {
+    max-width: 1154px;
+    display: flex;
+    justify-content: center;
+
+    .hidden-avatar-bundle-info {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+
+        @media (max-width: 767px) {
+            width: 100%;
+        }
+
+        .hidden-avatar-bundle-preview {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+
+            .preview-thumbnail {
+                flex-shrink: 0;
+                height: 120px;
+                width: 120px;
+            }
+
+            .preview-names {
+                display: flex;
+                flex-direction: column;
+                max-width: 40%;
+
+                .item-name,
+                .blocked-creator-name {
+                    line-height: normal;
+                }
+            }
+        }
+
+        .hidden-title {
+            font-size: 24px !important;
+        }
+
+        .action-btns {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+
+            button {
+                width: fit-content;
+            }
+        }
+    }
+}

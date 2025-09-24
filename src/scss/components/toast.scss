@@ -1,0 +1,43 @@
+@use "../../../node_modules/react-toastify/dist/ReactToastify.css";
+
+.roseal-toast {
+    .roseal-error-icon {
+        color: var(--RS_ALERT-COLOR);
+    }
+
+    .roseal-warning-icon {
+        color: var(--RS_WARNING-COLOR);
+    }
+
+    .roseal-success-icon {
+        color: var(--RS_SUCCESS-COLOR);
+    }
+
+    .close-toast-btn {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        cursor: pointer;
+
+        &,
+        .roseal-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .roseal-icon {
+            color: var(--RS_ICON-COLOR);
+        }
+    }
+}
+
+:root {
+    --toastify-text-color-light: var(--RS_TEXT-COLOR);
+    --toastify-color-progress-light: var(--RS_ICON-COLOR);
+    --toastify-color-light: var(--RS_BACKGROUND-2-COLOR);
+    --toastify-color-progress-info: var(--RS_INFO-COLOR);
+    --toastify-color-progress-success: var(--RS_SUCCESS-COLOR);
+    --toastify-color-progress-error: var(--RS_ALERT-COLOR);
+    --toastify-color-progress-warning: var(--RS_WARNING-COLOR);
+    --toastify-font-family: "Builder Sans", "Helvetica Neue", "Helvetica", "Arial", "Lucida Grande", "sans-serif";
+}

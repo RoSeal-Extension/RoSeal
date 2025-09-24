@@ -1,0 +1,13 @@
+# build output
+dist/
+builds-dist/
+
+# dependencies
+node_modules/
+
+# macOS-specific files
+.DS_Store
+
+# secret files to hide from git
+**/*_secret*
+secret/

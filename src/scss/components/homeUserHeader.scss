@@ -1,0 +1,221 @@
+#roseal-home-header {
+    min-height: var(--AVATAR-THUMB-SIZE);
+    margin-bottom: 12px;
+
+    [data-rosealfe-homeuserheader-thumbnailsize="extraLarge"] & {
+        --AVATAR-THUMB-SIZE: 175px;
+        --AVATAR-SMALL-THUMB-SIZE: 125px;
+    }
+
+    [data-rosealfe-homeuserheader-thumbnailsize="large"] & {
+        --AVATAR-THUMB-SIZE: 150px;
+        --AVATAR-SMALL-THUMB-SIZE: 120px;
+    }
+
+    [data-rosealfe-homeuserheader-thumbnailsize="medium"] & {
+        --AVATAR-THUMB-SIZE: 130px;
+        --AVATAR-SMALL-THUMB-SIZE: 100px;
+    }
+
+    [data-rosealfe-homeuserheader-thumbnailsize="small"] & {
+        --AVATAR-THUMB-SIZE: 100px;
+        --AVATAR-SMALL-THUMB-SIZE: 80px;
+    }
+
+    @media (max-width: 991px) {
+        min-height: var(--AVATAR-SMALL-THUMB-SIZE);
+    }
+
+    @media (max-width: 767px) {
+        min-height: 60px;
+    }
+
+    .home-header {
+        display: flex;
+
+        &:before,
+        &:after {
+            content: " ";
+            display: table;
+        }
+
+        &:after {
+            clear: both;
+        }
+
+        .avatar,
+        .home-header-content {
+            float: left;
+        }
+
+        .avatar {
+            margin-right: 24px;
+
+            &:not(.avatar-headshot) .thumbnail-2d-container {
+                border-radius: 10%;
+            }
+        }
+
+        .thumbnail-2d-container,
+        .avatar {
+            height: var(--AVATAR-THUMB-SIZE);
+            width: var(--AVATAR-THUMB-SIZE);
+
+            @media (max-width: 991px) {
+                height: var(--AVATAR-SMALL-THUMB-SIZE);
+                width: var(--AVATAR-SMALL-THUMB-SIZE);
+            }
+        }
+
+        @media (max-width: 767px) {
+            padding: 0 0 0 15px;
+
+            .avatar {
+                display: none;
+            }
+        }
+    }
+
+    .home-header-content {
+        width: 75%;
+        width: calc(100% - 180px - 36px);
+        position: relative;
+
+        h1 {
+            margin: 36px 0 12px;
+
+            .icon-premium-medium {
+                display: inline-block;
+                margin-bottom: 5px;
+            }
+
+            .icon-premium-small {
+                display: none;
+            }
+        }
+
+        @media (max-width: 991px) {
+            padding: 0 15px;
+            width: calc(100% - var(--AVATAR-SMALL-THUMB-SIZE) - 36px);
+
+            h1 {
+                margin: 12px 0 6px;
+
+                .icon-premium-medium {
+                    display: inline-block;
+                    margin-bottom: 5px;
+                }
+
+                .icon-premium-small {
+                    display: none;
+                }
+            }
+        }
+
+        @media (max-width: 767px) {
+            width: 100%;
+
+            &:before,
+            &:after {
+                content: " ";
+                display: table;
+            }
+
+            &:after {
+                clear: both;
+            }
+
+            h1,
+            span[class^="icon"] {
+                margin: 12px 0;
+            }
+
+            h1 {
+                max-width: calc(100% - 52px - 12px);
+
+                .icon-premium-medium {
+                    display: none;
+                }
+
+                .icon-premium-small {
+                    display: inline-block;
+                }
+            }
+        }
+
+        @media (max-width: 543px) {
+            width: 100%;
+
+            h1,
+            span[class^="icon"] {
+                margin: 8px 0;
+            }
+        }
+    }
+
+    .user-avatar-container {
+        @media (max-width: 767px) {
+            display: none;
+        }
+    }
+
+    .user-info-container {
+        display: flex;
+
+        .user-icon-container {
+            margin: 0 12px 0 2px;
+
+            .small-icon {
+                display: none;
+            }
+
+            @media (max-width: 767px) {
+                .medium-icon {
+                    display: none;
+                }
+
+                .small-icon {
+                    display: inline-block;
+                }
+            }
+        }
+
+        .user-icon-container {
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .verified-badge-container {
+            margin-bottom: 5px;
+        }
+
+        .verified-badge-container,
+        .icon-premium-small,
+        .icon-premium-medium {
+            margin-left: 4px;
+        }
+    }
+
+    .home-userinfo-upsell-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        // fix weird ropro stuff
+        + div:not([class]) {
+            margin: auto 0 10px auto !important;
+        }
+
+        @media (max-width: 767px) {
+            .easter-egg-text {
+                display: none;
+            }
+        }
+
+        .user-name-container {
+            margin-top: -7px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+    }
+}

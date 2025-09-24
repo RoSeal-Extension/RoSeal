@@ -1,0 +1,41 @@
+.roseal-color-group {
+    display: inline;
+
+    input {
+        vertical-align: middle;
+    }
+
+    .roseal-color-input {
+        cursor: pointer;
+        padding: 0;
+        height: 32px;
+
+        &::-moz-color-swatch {
+            border: none;
+        }
+
+        &::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border-radius: 0;
+        }
+
+        &::-webkit-color-swatch {
+            border: none;
+        }
+
+        &.circular-input {
+            width: 32px;
+            border-radius: 100% !important;
+
+            &::-webkit-color-swatch {
+                border-radius: 100% !important;
+            }
+            &::-webkit-color-swatch-wrapper {
+                border-radius: 100% !important;
+            }
+            &::-moz-color-swatch {
+                border-radius: 100% !important;
+            }
+        }
+    }
+}

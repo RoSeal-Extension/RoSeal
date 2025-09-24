@@ -1,0 +1,29 @@
+.roseal-alert {
+    height: fit-content !important;
+    z-index: 99999 !important;
+    &:not(.on) {
+        top: -10% !important;
+    }
+
+    .alert-content {
+        height: fit-content;
+    }
+
+    &:not(.system-feedback) {
+        .icon-close-white {
+            float: right;
+            margin-right: 15px;
+        }
+
+        &.alert-info,
+        &.alert-loading {
+            .icon-close-white {
+                filter: invert(1);
+            }
+        }
+    }
+
+    .alert-link {
+        text-decoration: underline;
+    }
+}
