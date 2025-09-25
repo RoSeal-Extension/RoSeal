@@ -288,10 +288,10 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 	}, []);
 
 	useEffect(() => {
-		if (data.activatePreferredServer) {
+		if (data.activatePreferredServer.value) {
 			setHasSeenTab(true);
 		}
-	}, [data.activatePreferredServer]);
+	}, [data.activatePreferredServer.value]);
 
 	useEffect(() => {
 		setPromptLocationPermission(false);
