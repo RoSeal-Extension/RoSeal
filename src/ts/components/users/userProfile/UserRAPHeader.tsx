@@ -18,9 +18,15 @@ export default function UserRAPHeader({ userId }: UserRAPHeaderProps) {
 		userId,
 	});
 	const [showCollectiblesModal, setShowCollectiblesModal] = useState(false);
-	const [alllCollectibles] = usePromise(() => listAllUserCollectibleItems(userId), [userId]);
+	const [alllCollectibles, allCollectiblesFetched] = usePromise(
+		() => listAllUserCollectibleItems(userId),
+		[userId],
+	);
 	const [userRAP] = usePromise(() => {
-		if (!alllCollectibles) return;
+		if (!alllCollectibles) {
+			if (allCollectiblesFetched) return 0;
+			return;
+		}
 
 		let rap = 0;
 		for (const item of alllCollectibles) {
@@ -28,11 +34,11 @@ export default function UserRAPHeader({ userId }: UserRAPHeaderProps) {
 		}
 
 		return rap;
-	}, [alllCollectibles]);
+	}, [alllCollectibles, allCollectiblesFetched]);
 
 	const countDisplay =
 		userRAP !== undefined && userRAP !== null ? abbreviateNumber(userRAP) : "...";
-	const fullCount = userRAP ? asLocaleString(userRAP) : "...";
+	const fullCount = userRAP !== undefined && userRAP !== null ? asLocaleString(userRAP) : "...";
 
 	return (
 		<>

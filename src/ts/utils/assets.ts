@@ -230,7 +230,14 @@ export async function listAllUserCollectibleItems(userId: number) {
 
 						await sleep(1_000);
 					} catch (err) {
-						if (err instanceof RESTError && err.httpCode === 429) await sleep(1_000);
+						if (err instanceof RESTError) {
+							if (err.httpCode === 429) {
+								await sleep(1_000);
+							} else {
+								// fail
+								break;
+							}
+						}
 					}
 				}
 			})(),
