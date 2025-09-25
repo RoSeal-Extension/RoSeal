@@ -8,7 +8,7 @@ Example user agent: `Mozilla/5.0 (2822MB; 720x1411; 320x319; 411x806; Samsung SM
 
 - Distributions
     * Valid dist types are: `CJVDist` | `GlobalDist` | `VNGDist`
-    * Valid dists are are `AppleAppStore` | `OculusQuest3Store` | `GooglePlayStore` | `AmazonAppStore` | `TencentAppStore` | `RobloxDirectDownload`
+    * Valid dists are are `AppleAppStore` | `OculusQuest3Store` | `GooglePlayStore` | `AmazonAppStore` | `TencentAppStore` | `SamsungGalaxyStore` | `RobloxDirectDownload`
     * To indicate dist, append `(DistType; Dist)` at the end of the user agent.
 
 - Examples
