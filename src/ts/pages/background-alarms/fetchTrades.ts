@@ -10,16 +10,14 @@ import { invokeMessage } from "src/ts/helpers/communication/background";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import { backgroundLocalesLoaded } from "src/ts/helpers/i18n/locales";
-import { thumbnailProcessor } from "src/ts/helpers/processors/thumbnailProcessor";
-import { httpClient } from "src/ts/helpers/requests/main";
 import { getCurrentAuthenticatedUser } from "src/ts/helpers/requests/services/account";
 import {
+	getTradeById,
 	listTrades,
 	type TradeStatusFilter,
-	getTradeById,
 } from "src/ts/helpers/requests/services/trades";
 import { storage } from "src/ts/helpers/storage";
-import { arrayBufferToDataURL } from "src/ts/utils/base64";
+import { getRoSealNotificationIcon } from "src/ts/utils/background/notifications";
 import type { BackgroundAlarmListener } from "src/types/dataTypes";
 
 const TRADE_STATUS_FILTERS = [
@@ -66,29 +64,6 @@ export async function fetchTradesAndUpdateData() {
 									getTradeById({
 										tradeId: item.id,
 									}).then(async (trade) => {
-										const thumbnail = await thumbnailProcessor.request({
-											type: "AvatarHeadShot",
-											targetId: item.user.id,
-											size: "420x420",
-										});
-										let dataUrl: string | undefined;
-
-										if (thumbnail.imageUrl) {
-											try {
-												const body = (
-													await httpClient.httpRequest<ArrayBuffer>({
-														url: thumbnail.imageUrl,
-														expect: "arrayBuffer",
-													})
-												).body;
-
-												dataUrl = await arrayBufferToDataURL(
-													body,
-													"image/webp",
-												);
-											} catch {}
-										}
-
 										const myOffer = trade.participantAOffer;
 										const theirOffer = trade.participantBOffer;
 
@@ -107,9 +82,11 @@ export async function fetchTradesAndUpdateData() {
 											`${TRADING_NOTIFICATIONS_NOTIFICATION_PREFIX}${tradeStatusType}:${item.id}`,
 											{
 												type: "list",
-												iconUrl:
-													dataUrl ??
-													browser.runtime.getURL("img/icon/128.png"),
+												iconUrl: await getRoSealNotificationIcon({
+													type: "AvatarHeadShot",
+													targetId: item.user.id,
+													size: "420x420",
+												}),
 												title: getMessage(
 													`notifications.trades.title.${item.status}`,
 												),

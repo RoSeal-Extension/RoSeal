@@ -7,12 +7,10 @@ import {
 import { invokeMessage } from "src/ts/helpers/communication/background";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { backgroundLocalesLoaded } from "src/ts/helpers/i18n/locales";
-import { thumbnailProcessor } from "src/ts/helpers/processors/thumbnailProcessor";
-import { httpClient } from "src/ts/helpers/requests/main";
 import { getCurrentAuthenticatedUser } from "src/ts/helpers/requests/services/account";
 import { getGroupById, listUserGroupsRoles } from "src/ts/helpers/requests/services/groups";
 import { storage } from "src/ts/helpers/storage";
-import { arrayBufferToDataURL } from "src/ts/utils/base64";
+import { getRoSealNotificationIcon } from "src/ts/utils/background/notifications";
 import type { BackgroundAlarmListener } from "src/types/dataTypes";
 
 export async function fetchCommunityShoutsAndUpdateData() {
@@ -46,29 +44,13 @@ export async function fetchCommunityShoutsAndUpdateData() {
 							if (time > oldTime) {
 								communityShoutDates[group.group.id] = time;
 
-								const thumbnail = await thumbnailProcessor.request({
-									type: "GroupIcon",
-									targetId: group.group.id,
-									size: "150x150",
-								});
-
-								let dataUrl: string | undefined;
-								if (thumbnail.imageUrl) {
-									try {
-										const body = (
-											await httpClient.httpRequest<ArrayBuffer>({
-												url: thumbnail.imageUrl,
-												expect: "arrayBuffer",
-											})
-										).body;
-
-										dataUrl = await arrayBufferToDataURL(body, "image/webp");
-									} catch {}
-								}
-
 								const notification = {
 									type: "basic" as const,
-									iconUrl: dataUrl ?? browser.runtime.getURL("img/icon/128.png"),
+									iconUrl: await getRoSealNotificationIcon({
+										type: "GroupIcon",
+										targetId: group.group.id,
+										size: "150x150",
+									}),
 									title: data.name,
 									message: data.shout?.body ?? "?",
 									contextMessage: getMessage(

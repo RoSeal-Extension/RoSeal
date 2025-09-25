@@ -11,7 +11,7 @@ import {
 } from "../../helpers/requests/services/avatar.ts";
 import { onStorageValueUpdate, storage } from "../../helpers/storage.ts";
 import { randomFloat } from "../../utils/random.ts";
-import { keepAliveServiceWorker } from "./other.ts";
+import { keepAliveServiceWorker } from "./misc.ts";
 
 let previousEnabled = false;
 let previousUserId: number | undefined;

@@ -77,8 +77,9 @@ import {
 	listRobloxAccounts,
 	updateRobloxAccounts,
 } from "../utils/background/cookies";
-import { keepAliveServiceWorker } from "../utils/background/other";
+import { keepAliveServiceWorker } from "../utils/background/misc";
 import { getRobloxUrl } from "../utils/baseUrls" with { type: "macro" };
+import { deepLinksParser } from "../utils/deepLinks";
 import {
 	getGroupProfileLink,
 	getHomePageUrl,
@@ -96,7 +97,6 @@ import {
 	USER_PROFILE_REGEX,
 } from "../utils/regex";
 import { getPath } from "../utils/url";
-import { deepLinksParser } from "../utils/deepLinks";
 
 // Listeners and stuff
 if ("setAccessLevel" in browser.storage.session && import.meta.env.TARGET_BASE !== "firefox")

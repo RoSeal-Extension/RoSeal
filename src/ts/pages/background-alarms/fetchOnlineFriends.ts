@@ -17,12 +17,10 @@ import { multigetFeaturesValues } from "src/ts/helpers/features/helpers";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { backgroundLocalesLoaded } from "src/ts/helpers/i18n/locales";
 import { profileProcessor } from "src/ts/helpers/processors/profileProcessor";
-import { thumbnailProcessor } from "src/ts/helpers/processors/thumbnailProcessor";
-import { httpClient } from "src/ts/helpers/requests/main";
 import { getCurrentAuthenticatedUser } from "src/ts/helpers/requests/services/account";
 import { listUserOnlineFriends, type UserPresence } from "src/ts/helpers/requests/services/users";
 import { storage } from "src/ts/helpers/storage";
-import { arrayBufferToDataURL } from "src/ts/utils/base64";
+import { getRoSealNotificationIcon } from "src/ts/utils/background/notifications";
 import type { BackgroundAlarmListener } from "src/types/dataTypes";
 
 export async function handleFriendsPresenceNotifications(
@@ -92,33 +90,22 @@ export async function handleFriendsPresenceNotifications(
 		)
 			continue;
 
-		const thumbnail = await thumbnailProcessor.request({
-			type: "AvatarHeadShot",
-			targetId: item.userId,
-			size: "420x420",
-		});
-		let dataUrl: string | undefined;
-		if (thumbnail.imageUrl) {
-			try {
-				const body = (
-					await httpClient.httpRequest<ArrayBuffer>({
-						url: thumbnail.imageUrl,
-						expect: "arrayBuffer",
-					})
-				).body;
-
-				dataUrl = await arrayBufferToDataURL(body, "image/webp");
-			} catch {}
-		}
-		const profileData = await profileProcessor.request({
-			userId: item.userId,
-		});
+		const [profileData, iconUrl] = await Promise.all([
+			profileProcessor.request({
+				userId: item.userId,
+			}),
+			getRoSealNotificationIcon({
+				type: "AvatarHeadShot",
+				targetId: item.userId,
+				size: "420x420",
+			}),
+		]);
 
 		notifications.push([
 			`${FRIENDS_PRESENCE_NOTIFICATIONS_NOTIFICATION_PREFIX}${item.userId}`,
 			{
 				type: "basic",
-				iconUrl: dataUrl ?? browser.runtime.getURL("img/icon/128.png"),
+				iconUrl,
 				title: profileData.names.combinedName,
 				message: getMessage(
 					`notifications.connnectionActivity.message.${newPresence.type}`,
