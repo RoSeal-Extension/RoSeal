@@ -3,7 +3,7 @@ import {
 	COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
 	COMMUNITY_SHOUT_NOTIFICATIONS_NOTIFICATION_PREFIX,
 	COMMUNITY_SHOUT_NOTIFICATIONS_STORAGE_KEY,
-} from "src/ts/constants/misc";
+} from "src/ts/constants/communities";
 import { invokeMessage } from "src/ts/helpers/communication/background";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { backgroundLocalesLoaded } from "src/ts/helpers/i18n/locales";

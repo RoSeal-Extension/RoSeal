@@ -4,7 +4,6 @@ import type {
 	BundledItemType,
 	MarketplaceItemType,
 } from "../helpers/requests/services/marketplace";
-import type { TradeStatus } from "../helpers/requests/services/trades";
 
 export const VOICE_CHAT_SUSPENSION_STORAGE_KEY = "voiceChatSuspension";
 
@@ -202,31 +201,6 @@ export const ROBLOX_RELEASE_YEAR = 2006;
 export const STARTUP_NOTIFICATIONS_FEATURE_ID = "startUpNotifications";
 export const STARTUP_NOTIFICATION_HAS_OPENED_ROBLOX_SESSION_STORAGE_KEY = "hasStartupNotification";
 export const STARTUP_NOTIFICATION_NOTIFICATION_PREFIX = "startup:";
-
-export const COMMUNITY_SHOUT_NOTIFICATIONS_ALARM_NAME = "communityShoutsCheck";
-export const COMMUNITY_SHOUT_NOTIFICATIONS_FEATURE_ID = "communityShoutNotifications";
-export const COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID =
-	"communityShoutNotifications.backgroundChecks";
-export const COMMUNITY_SHOUT_NOTIFICATIONS_STORAGE_KEY = "recentCommmunityShouts";
-export const COMMUNITY_SHOUT_NOTIFICATIONS_NOTIFICATION_PREFIX = "communityShout:";
-export const COMMUNITY_SHOUT_NOTIFICATIONS_FETCHED_SESSION_CACHE_STORAGE_KEY =
-	"cache.communityShoutsChecked";
-
-export const TRADING_NOTIFICATIONS_ALARM_NAME = "tradesCheck";
-export const TRADING_NOTIFICATIONS_FEATURE_ID = "tradeNotifications";
-export const TRADING_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID =
-	"tradeNotifications.backgroundChecks";
-export const TRADING_NOTIFICATIONS_STORAGE_KEY = "recentTrades";
-export const TRADING_NOTIFICATIONS_NOTIFICATION_PREFIX = "tradeUpdate:";
-export const TRADING_NOTIFICATIONS_FETCHED_SESSION_CACHE_STORAGE_KEY = "cache.tradesCheck";
-export type TradingNotificationsStorageValue = {
-	usersLastChecked: Record<string, number>;
-	trades: Record<string, TradeStatus>;
-};
-export const TRADING_NOTIFICATIONS_STORAGE_DEFAULT_VALUE = {
-	usersLastChecked: {},
-	trades: {},
-} as TradingNotificationsStorageValue;
 
 export const ROBUX_HISTORY_STORAGE_KEY = "robuxHistory";
 export type RobuxHistoryStorageValue = Record<

@@ -1,31 +1,21 @@
 import {
+	TRADE_STATUS_FILTERS,
 	TRADING_NOTIFICATIONS_ALARM_NAME,
 	TRADING_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
 	TRADING_NOTIFICATIONS_NOTIFICATION_PREFIX,
 	TRADING_NOTIFICATIONS_STORAGE_DEFAULT_VALUE,
 	TRADING_NOTIFICATIONS_STORAGE_KEY,
 	type TradingNotificationsStorageValue,
-} from "src/ts/constants/misc";
+} from "src/ts/constants/trades";
 import { invokeMessage } from "src/ts/helpers/communication/background";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import { backgroundLocalesLoaded } from "src/ts/helpers/i18n/locales";
 import { getCurrentAuthenticatedUser } from "src/ts/helpers/requests/services/account";
-import {
-	getTradeById,
-	listTrades,
-	type TradeStatusFilter,
-} from "src/ts/helpers/requests/services/trades";
+import { getTradeById, listTrades } from "src/ts/helpers/requests/services/trades";
 import { storage } from "src/ts/helpers/storage";
 import { getRoSealNotificationIcon } from "src/ts/utils/background/notifications";
 import type { BackgroundAlarmListener } from "src/types/dataTypes";
-
-const TRADE_STATUS_FILTERS = [
-	"Inbound",
-	"Outbound",
-	"Inactive",
-	"Completed",
-] satisfies TradeStatusFilter[];
 
 export async function fetchTradesAndUpdateData() {
 	try {
