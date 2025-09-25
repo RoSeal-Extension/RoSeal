@@ -43,7 +43,9 @@ export default function UserRAPHeader({ userId }: UserRAPHeaderProps) {
 				})}
 				value={countDisplay}
 				className="roseal-rap-value"
-				onClick={alllCollectibles ? () => setShowCollectiblesModal(true) : undefined}
+				onClick={
+					alllCollectibles?.length ? () => setShowCollectiblesModal(true) : undefined
+				}
 			/>
 			<SimpleModal
 				show={showCollectiblesModal}
