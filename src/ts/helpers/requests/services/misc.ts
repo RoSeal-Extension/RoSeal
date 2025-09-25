@@ -387,6 +387,10 @@ export type CollectionsProfileComponent = {
 	assets: ProfileComponentItem[];
 };
 
+export type CreationsModelsProfileComponent = {
+	assets: ProfileComponentItem[];
+};
+
 export type GetProfileComponentsDataResponse = {
 	profileType: ProfileComponentsProfileType;
 	profileId: string;
@@ -420,7 +424,7 @@ export type GetProfileComponentsDataResponse = {
 		PlayerBadges?: unknown;
 		Collections?: CollectionsProfileComponent;
 		Statistics?: RobloxStatisticsProfileComponent;
-		CreationsModels?: unknown;
+		CreationsModels?: CreationsModelsProfileComponent;
 		Clothing?: unknown;
 		ProfileBackground?: ProfileBackgroundProfileComponent;
 	};
