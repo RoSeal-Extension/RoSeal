@@ -16,10 +16,10 @@ function determineCanShow() {
 
 	if (!active) return [false, false] as [boolean, boolean];
 
-	return [active.id !== "bodyColors" && active.id !== "scale", active.id === "costumes"] as [
-		boolean,
-		boolean,
-	];
+	return [
+		active.id !== "bodyColors" && active.id !== "scale",
+		active.id === "costumes" || active.id === "clothing",
+	] as [boolean, boolean];
 }
 
 export default function AvatarEditorSearchBar({ keyword }: AvatarEditorSearchBarProps) {
