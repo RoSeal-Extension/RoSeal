@@ -16,10 +16,9 @@ export default function ChangeVoiceOptInButton() {
 
 	const isBanned = settings?.isBanned;
 	const disabled =
-		!isBanned &&
-		(settings?.isUserOptIn === undefined ||
-			settings?.isOptInDisabled === true ||
-			(settings?.canVerifyAgeForVoice === true && settings?.isVerifiedForVoice === false));
+		!isBanned ||
+		settings?.isUserOptIn === undefined ||
+		(settings?.isOptInDisabled === true && settings.isUserOptIn !== true);
 	const isUserOptIn = !disabled && settings?.isUserOptIn;
 
 	return (
