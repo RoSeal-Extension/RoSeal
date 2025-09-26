@@ -4,13 +4,15 @@ import {
 	COMMUNITY_SHOUT_NOTIFICATIONS_NOTIFICATION_PREFIX,
 	COMMUNITY_SHOUT_NOTIFICATIONS_STORAGE_KEY,
 } from "src/ts/constants/communities";
-import { invokeMessage } from "src/ts/helpers/communication/background";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { backgroundLocalesLoaded } from "src/ts/helpers/i18n/locales";
 import { getCurrentAuthenticatedUser } from "src/ts/helpers/requests/services/account";
 import { getGroupById, listUserGroupsRoles } from "src/ts/helpers/requests/services/groups";
 import { storage } from "src/ts/helpers/storage";
-import { getRoSealNotificationIcon } from "src/ts/utils/background/notifications";
+import {
+	getRoSealNotificationIcon,
+	showRoSealNotification,
+} from "src/ts/utils/background/notifications";
 import type { BackgroundAlarmListener } from "src/types/dataTypes";
 
 export async function fetchCommunityShoutsAndUpdateData() {
@@ -44,30 +46,23 @@ export async function fetchCommunityShoutsAndUpdateData() {
 							if (time > oldTime) {
 								communityShoutDates[group.group.id] = time;
 
-								const notification = {
-									type: "basic" as const,
-									iconUrl: await getRoSealNotificationIcon({
-										type: "GroupIcon",
-										targetId: group.group.id,
-										size: "150x150",
-									}),
-									title: data.name,
-									message: data.shout?.body ?? "?",
-									contextMessage: getMessage(
-										"notifications.communityShout.context",
-									),
-									eventTime: Date.now() + 1_000 * 10,
-								};
-
-								const id = `${COMMUNITY_SHOUT_NOTIFICATIONS_NOTIFICATION_PREFIX}${group.group.id}`;
-								if (import.meta.env.ENV === "background") {
-									await browser.notifications?.create(id, notification);
-								} else {
-									await invokeMessage("createNotification", {
-										notification,
-										id,
-									});
-								}
+								await showRoSealNotification(
+									`${COMMUNITY_SHOUT_NOTIFICATIONS_NOTIFICATION_PREFIX}${group.group.id}`,
+									{
+										type: "basic" as const,
+										iconUrl: await getRoSealNotificationIcon({
+											type: "GroupIcon",
+											targetId: group.group.id,
+											size: "150x150",
+										}),
+										title: data.name,
+										message: data.shout?.body ?? "?",
+										contextMessage: getMessage(
+											"notifications.communityShout.context",
+										),
+										eventTime: Date.now() + 1_000 * 10,
+									},
+								);
 							}
 						} else {
 							communityShoutDates[group.group.id] =

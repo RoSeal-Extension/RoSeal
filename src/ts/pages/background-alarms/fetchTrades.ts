@@ -7,14 +7,16 @@ import {
 	TRADING_NOTIFICATIONS_STORAGE_KEY,
 	type TradingNotificationsStorageValue,
 } from "src/ts/constants/trades";
-import { invokeMessage } from "src/ts/helpers/communication/background";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import { backgroundLocalesLoaded } from "src/ts/helpers/i18n/locales";
 import { getCurrentAuthenticatedUser } from "src/ts/helpers/requests/services/account";
 import { getTradeById, listTrades } from "src/ts/helpers/requests/services/trades";
 import { storage } from "src/ts/helpers/storage";
-import { getRoSealNotificationIcon } from "src/ts/utils/background/notifications";
+import {
+	getRoSealNotificationIcon,
+	showRoSealNotification,
+} from "src/ts/utils/background/notifications";
 import type { BackgroundAlarmListener } from "src/types/dataTypes";
 
 export async function fetchTradesAndUpdateData() {
@@ -25,7 +27,6 @@ export async function fetchTradesAndUpdateData() {
 			TRADING_NOTIFICATIONS_STORAGE_KEY
 		] ?? TRADING_NOTIFICATIONS_STORAGE_DEFAULT_VALUE) as TradingNotificationsStorageValue;
 
-		const notifications: [string, chrome.notifications.NotificationCreateOptions][] = [];
 		const authenticatedUserPromise = getCurrentAuthenticatedUser();
 
 		await Promise.all(
@@ -68,7 +69,7 @@ export async function fetchTradesAndUpdateData() {
 											theirOfferRAP += item.recentAveragePrice;
 										}
 
-										notifications.push([
+										await showRoSealNotification(
 											`${TRADING_NOTIFICATIONS_NOTIFICATION_PREFIX}${tradeStatusType}:${item.id}`,
 											{
 												type: "list",
@@ -129,7 +130,7 @@ export async function fetchTradesAndUpdateData() {
 												),
 												isClickable: true,
 											},
-										]);
+										);
 									}),
 								);
 							}
@@ -140,17 +141,6 @@ export async function fetchTradesAndUpdateData() {
 				}),
 			),
 		);
-
-		for (const notification of notifications) {
-			if (import.meta.env.ENV === "background") {
-				await browser.notifications.create(notification[0], notification[1]);
-			} else {
-				await invokeMessage("createNotification", {
-					id: notification[0],
-					notification: notification[1],
-				});
-			}
-		}
 
 		storageValue.usersLastChecked[(await authenticatedUserPromise).id] = Math.floor(
 			Date.now() / 1_000,

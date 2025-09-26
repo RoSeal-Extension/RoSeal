@@ -17,7 +17,6 @@ import {
 	USER_ONLINE_FRIENDS_FETCH_ALARM_NAME,
 } from "src/ts/constants/friends";
 import { presenceTypes } from "src/ts/constants/presence";
-import { invokeMessage } from "src/ts/helpers/communication/background";
 import { multigetFeaturesValues } from "src/ts/helpers/features/helpers";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { backgroundLocalesLoaded } from "src/ts/helpers/i18n/locales";
@@ -29,7 +28,10 @@ import {
 	setExtensionSessionStorage,
 	storage,
 } from "src/ts/helpers/storage";
-import { getRoSealNotificationIcon } from "src/ts/utils/background/notifications";
+import {
+	getRoSealNotificationIcon,
+	showRoSealNotification,
+} from "src/ts/utils/background/notifications";
 import type { BackgroundAlarmListener } from "src/types/dataTypes";
 
 export async function handleFriendsPresenceNotifications(
@@ -60,7 +62,6 @@ export async function handleFriendsPresenceNotifications(
 			FRIENDS_PRESENCE_NOTIFICATIONS_SESSION_CACHE_STORAGE_KEY,
 		)) ??
 		FRIENDS_PRESENCE_NOTIFICATIONS_SESSION_CACHE_STORAGE_DEFAULT_VALUE;
-	const notifications: [string, chrome.notifications.NotificationCreateOptions][] = [];
 
 	await backgroundLocalesLoaded;
 	for (const item of data) {
@@ -126,7 +127,7 @@ export async function handleFriendsPresenceNotifications(
 			}),
 		]);
 
-		notifications.push([
+		await showRoSealNotification(
 			`${FRIENDS_PRESENCE_NOTIFICATIONS_NOTIFICATION_PREFIX}${item.userId}`,
 			{
 				type: "basic",
@@ -153,23 +154,12 @@ export async function handleFriendsPresenceNotifications(
 						: [],
 				eventTime: Date.now() + 1_000 * 10,
 			},
-		]);
+		);
 	}
 
 	await setExtensionSessionStorage({
 		[FRIENDS_PRESENCE_NOTIFICATIONS_SESSION_CACHE_STORAGE_KEY]: curr,
 	});
-
-	for (const notification of notifications) {
-		if (import.meta.env.ENV === "background") {
-			await browser.notifications.create(notification[0], notification[1]);
-		} else {
-			await invokeMessage("createNotification", {
-				id: notification[0],
-				notification: notification[1],
-			});
-		}
-	}
 }
 
 export async function fetchOnlineFriendsAndUpdateData() {
