@@ -10,9 +10,9 @@ export const FRIENDS_LAST_SEEN_STORAGE_KEY = "friendsLastSeen";
 export const FRIENDS_LAST_SEEN_FEATURE_ID = "friendsLastSeen";
 export const FRIENDS_LAST_SEEN_BACKGROUND_CHECKS_FEATURE_ID = "friendsLastSeen.backgroundChecks";
 
-export const FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_KEY = "connectionActivity";
-export type FriendsPresenceNotificationsStorageValue = {
-	userIds: number[];
+export const FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_KEY = "connectionActivity";
+export const FRIENDS_PRESENCE_NOTIFICATIONS_SESSION_CACHE_STORAGE_KEY = "cache.connectionActivity";
+export type FriendsPresenceNotificationsSessionCacheStorageValue = {
 	users: Record<
 		string,
 		{
@@ -21,10 +21,15 @@ export type FriendsPresenceNotificationsStorageValue = {
 		}
 	>;
 };
-export const FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_DEFAULT_VALUE = {
-	userIds: [],
-	users: {},
+export type FriendsPresenceNotificationsDataStorageValue = {
+	userIds: number[];
 };
+export const FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_DEFAULT_VALUE = {
+	userIds: [],
+} as FriendsPresenceNotificationsDataStorageValue;
+export const FRIENDS_PRESENCE_NOTIFICATIONS_SESSION_CACHE_STORAGE_DEFAULT_VALUE = {
+	users: {},
+} as FriendsPresenceNotificationsSessionCacheStorageValue;
 export const FRIENDS_PRESENCE_NOTIFICATIONS_NOTIFICATION_PREFIX = "friendActivity:";
 export const FRIENDS_PRESENCE_NOTIFICATIONS_FEATURE_ID = "connectionActivityNotifications";
 export const FRIENDS_PRESENCE_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID =

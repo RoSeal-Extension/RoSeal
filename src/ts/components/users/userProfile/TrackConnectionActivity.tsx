@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from "preact/hooks";
 import useStorage from "../../hooks/useStorage";
 import {
-	FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_DEFAULT_VALUE,
-	FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_KEY,
-	type FriendsPresenceNotificationsStorageValue,
+	FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_DEFAULT_VALUE,
+	FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_KEY,
+	type FriendsPresenceNotificationsDataStorageValue,
 } from "src/ts/constants/friends";
 
 export type TrackConnectionActivityButtonProps = {
@@ -13,9 +13,9 @@ export type TrackConnectionActivityButtonProps = {
 export default function TrackConnectionActivityButton({
 	userId,
 }: TrackConnectionActivityButtonProps) {
-	const [storage, setStorage] = useStorage<FriendsPresenceNotificationsStorageValue>(
-		FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_KEY,
-		FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_DEFAULT_VALUE,
+	const [storage, setStorage] = useStorage<FriendsPresenceNotificationsDataStorageValue>(
+		FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_KEY,
+		FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_DEFAULT_VALUE,
 	);
 
 	const isToggled = useMemo(() => storage.userIds.includes(userId), [storage.userIds, userId]);

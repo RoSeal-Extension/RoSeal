@@ -31,12 +31,9 @@ import {
 	FRIENDS_LAST_SEEN_STORAGE_KEY,
 	FRIENDS_PRESENCE_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_FEATURE_ID,
-	FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_DEFAULT_VALUE,
-	FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_KEY,
 	FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_INEXPERIENCE_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_INSTUDIO_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_ONLINE_FEATURE_ID,
-	type FriendsPresenceNotificationsStorageValue,
 	USER_ONLINE_FRIENDS_FETCHED_SESSION_CACHE_STORAGE_KEY,
 } from "src/ts/constants/friends";
 import {
@@ -346,18 +343,11 @@ export default {
 							})
 						: undefined;
 					const detailed = features[FRIENDS_PRESENCE_NOTIFICATIONS_FEATURE_ID]
-						? onRobloxPresenceUpdateDetails(async (data) => {
-								const storageValue: FriendsPresenceNotificationsStorageValue =
-									(
-										await storage.get(
-											FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_KEY,
-										)
-									)?.[FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_KEY] ??
-									FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_DEFAULT_VALUE;
-
-								await handleFriendsPresenceNotifications(
+						? onRobloxPresenceUpdateDetails((data) => {
+								handleFriendsPresenceNotifications(
 									data,
-									storageValue,
+									undefined,
+									undefined,
 									features[
 										FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_INEXPERIENCE_FEATURE_ID
 									],

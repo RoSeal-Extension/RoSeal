@@ -1,14 +1,19 @@
 import {
+	FRIENDS_LAST_SEEN_BACKGROUND_CHECKS_FEATURE_ID,
 	FRIENDS_LAST_SEEN_FEATURE_ID,
 	FRIENDS_LAST_SEEN_STORAGE_KEY,
+	FRIENDS_PRESENCE_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
+	FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_DEFAULT_VALUE,
+	FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_KEY,
 	FRIENDS_PRESENCE_NOTIFICATIONS_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_NOTIFICATION_PREFIX,
-	FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_DEFAULT_VALUE,
-	FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_KEY,
+	FRIENDS_PRESENCE_NOTIFICATIONS_SESSION_CACHE_STORAGE_DEFAULT_VALUE,
+	FRIENDS_PRESENCE_NOTIFICATIONS_SESSION_CACHE_STORAGE_KEY,
 	FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_INEXPERIENCE_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_INSTUDIO_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_ONLINE_FEATURE_ID,
-	type FriendsPresenceNotificationsStorageValue,
+	type FriendsPresenceNotificationsDataStorageValue,
+	type FriendsPresenceNotificationsSessionCacheStorageValue,
 	USER_ONLINE_FRIENDS_FETCH_ALARM_NAME,
 } from "src/ts/constants/friends";
 import { presenceTypes } from "src/ts/constants/presence";
@@ -19,27 +24,51 @@ import { backgroundLocalesLoaded } from "src/ts/helpers/i18n/locales";
 import { profileProcessor } from "src/ts/helpers/processors/profileProcessor";
 import { getCurrentAuthenticatedUser } from "src/ts/helpers/requests/services/account";
 import { listUserOnlineFriends, type UserPresence } from "src/ts/helpers/requests/services/users";
-import { storage } from "src/ts/helpers/storage";
+import {
+	getExtensionSessionStorage,
+	setExtensionSessionStorage,
+	storage,
+} from "src/ts/helpers/storage";
 import { getRoSealNotificationIcon } from "src/ts/utils/background/notifications";
 import type { BackgroundAlarmListener } from "src/types/dataTypes";
 
 export async function handleFriendsPresenceNotifications(
 	data: UserPresence[],
-	storageValue: FriendsPresenceNotificationsStorageValue,
+	_trackingData?: FriendsPresenceNotificationsDataStorageValue,
+	_curr?: FriendsPresenceNotificationsSessionCacheStorageValue,
 	inExperienceEnabled?: boolean,
 	inStudioEnabled?: boolean,
 	onlineEnabled?: boolean,
 ) {
+	const trackingData =
+		_trackingData ??
+		(await storage.get(FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_KEY))?.[
+			FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_KEY
+		] ??
+		FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_DEFAULT_VALUE;
+	if ("users" in trackingData) {
+		storage.set({
+			[FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_KEY]: {
+				...trackingData,
+				users: undefined,
+			},
+		});
+	}
+	const curr =
+		_curr ??
+		(await getExtensionSessionStorage<FriendsPresenceNotificationsSessionCacheStorageValue>(
+			FRIENDS_PRESENCE_NOTIFICATIONS_SESSION_CACHE_STORAGE_KEY,
+		)) ??
+		FRIENDS_PRESENCE_NOTIFICATIONS_SESSION_CACHE_STORAGE_DEFAULT_VALUE;
 	const notifications: [string, chrome.notifications.NotificationCreateOptions][] = [];
-	let hasRecordedLastOnlineBefore = false;
 
 	await backgroundLocalesLoaded;
 	for (const item of data) {
-		if (!storageValue.userIds.includes(item.userId)) {
+		if (!trackingData.userIds.includes(item.userId)) {
 			continue;
 		}
 
-		const oldItem = storageValue.users[item.userId];
+		const oldItem = curr.users[item.userId];
 
 		let newPresence: (typeof presenceTypes)[number] | undefined;
 		let oldPresence: (typeof presenceTypes)[number] | undefined;
@@ -57,11 +86,7 @@ export async function handleFriendsPresenceNotifications(
 			}
 		}
 
-		if (oldItem) {
-			hasRecordedLastOnlineBefore = true;
-		}
-
-		storageValue.users[item.userId] = {
+		curr.users[item.userId] = {
 			type: item.userPresenceType,
 			experienceId: item.universeId ?? undefined,
 		};
@@ -131,11 +156,9 @@ export async function handleFriendsPresenceNotifications(
 		]);
 	}
 
-	await storage.set({
-		[FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_KEY]: storageValue,
+	await setExtensionSessionStorage({
+		[FRIENDS_PRESENCE_NOTIFICATIONS_SESSION_CACHE_STORAGE_KEY]: curr,
 	});
-
-	if (!hasRecordedLastOnlineBefore) return;
 
 	for (const notification of notifications) {
 		if (import.meta.env.ENV === "background") {
@@ -185,11 +208,6 @@ export async function fetchOnlineFriendsAndUpdateData() {
 		}
 
 		if (features[FRIENDS_PRESENCE_NOTIFICATIONS_FEATURE_ID]) {
-			const currentValue =
-				(await storage.get(FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_KEY))?.[
-					FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_KEY
-				] ?? FRIENDS_PRESENCE_NOTIFICATIONS_STORAGE_DEFAULT_VALUE;
-
 			await handleFriendsPresenceNotifications(
 				onlineFriends.data.map((item) => ({
 					userPresenceType: presenceTypes.find(
@@ -202,7 +220,8 @@ export async function fetchOnlineFriendsAndUpdateData() {
 					userId: item.id,
 					lastLocation: item.userPresence.lastLocation,
 				})),
-				currentValue,
+				undefined,
+				undefined,
 				features[FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_INEXPERIENCE_FEATURE_ID],
 				features[FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_INSTUDIO_FEATURE_ID],
 				features[FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_ONLINE_FEATURE_ID],
@@ -215,6 +234,9 @@ export async function fetchOnlineFriendsAndUpdateData() {
 
 export default {
 	action: USER_ONLINE_FRIENDS_FETCH_ALARM_NAME,
-	featureIds: [FRIENDS_LAST_SEEN_FEATURE_ID],
+	featureIds: [
+		FRIENDS_LAST_SEEN_BACKGROUND_CHECKS_FEATURE_ID,
+		FRIENDS_PRESENCE_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
+	],
 	fn: fetchOnlineFriendsAndUpdateData,
 } satisfies BackgroundAlarmListener;
