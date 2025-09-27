@@ -217,9 +217,9 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 			clearTimeout(timeout);
 		};
 	}, [
-		joinData,
-		joinDataFetched,
-		data.value?.type === "matchmade" && !shouldGetMatchmadeServer && data.value,
+		data.value?.type === "matchmade" && shouldGetMatchmadeServer && joinData,
+		data.value?.type === "matchmade" && shouldGetMatchmadeServer && joinDataFetched,
+		data.value,
 	]);
 
 	useEffect(
