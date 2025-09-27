@@ -7,7 +7,7 @@ import MdOutlineVisibilityOff from "@material-symbols/svg-400/outlined/visibilit
 import type { Signal } from "@preact/signals";
 import classNames from "classnames";
 import type { FunctionComponent, JSX } from "preact";
-import { useMemo } from "preact/hooks";
+import { useCallback, useMemo, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	type DefaultPrivacy,
@@ -16,6 +16,7 @@ import {
 	updateUserSettings,
 } from "src/ts/helpers/requests/services/account";
 import Popover from "../core/Popover";
+import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
 
 export type ChangeJoinPrivacyButtonProps = {
 	settings: Signal<UserSettingsOptions | undefined>;
@@ -67,6 +68,8 @@ const PRIVACY_LEVELS = [
 ] as PrivacyLevel[];
 
 export default function ChangeJoinPrivacyButton({ settings }: ChangeJoinPrivacyButtonProps) {
+	const [loading, setLoading] = useState(false);
+
 	const settingValue = settings.value?.whoCanJoinMeInExperiences?.currentValue;
 	const onlineStatusSettingValue =
 		settings.value?.whoCanSeeMyOnlineStatus?.currentValue ?? "AllUsers";
@@ -87,6 +90,31 @@ export default function ChangeJoinPrivacyButton({ settings }: ChangeJoinPrivacyB
 
 		return applicableLevels.at(-1)!;
 	}, [settingValue, applicableLevels]);
+
+	const onClick = useCallback(
+		(type: JoinPrivacy) => {
+			if (!settings.value || disabled || loading) return;
+
+			setLoading(true);
+			updateUserSettings({
+				whoCanJoinMeInExperiences: type,
+			})
+				.then(() => {
+					settings.value = {
+						...settings.value!,
+						whoCanJoinMeInExperiences: {
+							...settings.value!.whoCanJoinMeInExperiences,
+							currentValue: type,
+						},
+					};
+				})
+				.catch(() =>
+					warning(getMessage("navigation.joinPrivacySwitcher.systemFeedback.error")),
+				)
+				.finally(() => setLoading(false));
+		},
+		[settings.value, disabled, loading],
+	);
 
 	return (
 		<Popover
@@ -114,7 +142,11 @@ export default function ChangeJoinPrivacyButton({ settings }: ChangeJoinPrivacyB
 					<h3>{getMessage("navigation.joinPrivacySwitcher.title")}</h3>
 					<p>{getMessage("navigation.joinPrivacySwitcher.description")}</p>
 				</div>
-				<ul className="nav-privacy-option-list">
+				<ul
+					className={classNames("nav-privacy-option-list", {
+						"roseal-disabled": loading,
+					})}
+				>
 					{applicableLevels.map((level) => (
 						<li key={level.type} className="privacy-option">
 							<button
@@ -122,21 +154,7 @@ export default function ChangeJoinPrivacyButton({ settings }: ChangeJoinPrivacyB
 									selected: settingValue === level.type,
 								})}
 								type="button"
-								onClick={() => {
-									if (!settings.value) return;
-
-									updateUserSettings({
-										whoCanJoinMeInExperiences: level.type,
-									}).then(() => {
-										settings.value = {
-											...settings.value!,
-											whoCanJoinMeInExperiences: {
-												...settings.value!.whoCanJoinMeInExperiences,
-												currentValue: level.type,
-											},
-										};
-									});
-								}}
+								onClick={() => onClick(level.type)}
 							>
 								<span className="nav-privacy-popover-icon">
 									<level.icon className="roseal-icon" />

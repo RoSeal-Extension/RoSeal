@@ -58,7 +58,7 @@ export default function UserRAPHeader({ userId }: UserRAPHeaderProps) {
 				size="lg"
 				title={getMessage("user.header.social.rap.modal.title", {
 					displayName: profileData?.names.combinedName ?? "",
-					count: fullCount,
+					count: asLocaleString(alllCollectibles?.length ?? 0),
 					countNum: alllCollectibles?.length ?? 0,
 					sealEmoji: SEAL_EMOJI_COMPONENT,
 				})}

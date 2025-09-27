@@ -15,6 +15,7 @@ import AllowedItemsTab from "./tabs/AllowedItems.tsx";
 import BlockedItemsTab from "./tabs/BlockedItems.tsx";
 import ManagementTab from "./tabs/Management.tsx";
 import RobloxExperimentsTab from "./tabs/RobloxExperiments.tsx";
+import SettingsAlerts from "./other/SettingsAlerts.tsx";
 
 function getInitialTabs(
 	isBlockingItemsEnabled: Signal<boolean | undefined>,
@@ -164,6 +165,7 @@ export default function RoSealSettings({
 					})}
 				</h1>
 				<div id="settings-container">
+					<SettingsAlerts />
 					{mobileNav}
 					<div className="settings-left-navigation">
 						{desktopNav}

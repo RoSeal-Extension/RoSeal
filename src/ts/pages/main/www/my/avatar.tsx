@@ -1,8 +1,8 @@
 import { effect, signal } from "@preact/signals";
 import { useEffect, useState } from "preact/hooks";
 import AdvancedCustomizationButton from "src/ts/components/avatar/AdvancedCustomizationButton";
-import AvatarEditorSearchBar from "src/ts/components/avatar/AvatarEditorSearchBar";
 import EditItemListsButton from "src/ts/components/avatar/EditItemListsButton";
+import AvatarEditorSearchBar from "src/ts/components/avatar/filters/AvatarEditorSearchBar";
 import CreateCharacterModal from "src/ts/components/avatar/modals/CreateCharacterModal";
 import EditItemListsModal from "src/ts/components/avatar/modals/EditItemListsModal";
 import UpdateCharacterModal from "src/ts/components/avatar/modals/UpdateCharacterModal";

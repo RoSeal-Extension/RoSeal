@@ -1791,6 +1791,15 @@
 	},
 	"settings": {
 		"$context": "RoSeal Settings pages",
+		"storageUnavailable": {
+			"$context": "Storage unavailable thing",
+			"title": {
+				"$message": "Critical: Storage unavailable"
+			},
+			"message": {
+				"$message": "A fatal error caused by your browser has disabled RoSeal's storage functionality. We are not sure why this happens and we recommend you to reinstall RoSeal if reloading the page does not work."
+			}
+		},
 		"management": {
 			"$context": "Management",
 			"support": {
@@ -11500,6 +11509,13 @@
 					"$context": "",
 					"$message": "No one"
 				}
+			},
+			"systemFeedback": {
+				"$context": "System feedback",
+				"error": {
+					"$context": "Error message",
+					"$message": "An error occurred while setting your online status privacy."
+				}
 			}
 		},
 		"voiceChatOptInSwitcher": {
@@ -11519,6 +11535,13 @@
 			"bannedIndefinitely": {
 				"$context": "When banned permanently",
 				"$message": "Voice Chat use suspended indefinitely"
+			},
+			"systemFeedback": {
+				"$context": "System feedback",
+				"error": {
+					"$context": "Error message",
+					"$message": "An error occurred while setting your Voice Chat opt-in status."
+				}
 			}
 		},
 		"avatarChatOptInSwitcher": {
@@ -11530,6 +11553,13 @@
 			"disabled": {
 				"$context": "When disabled",
 				"$message": "You are currently opted-out of Camera Input in-experience"
+			},
+			"systemFeedback": {
+				"$context": "System feedback",
+				"error": {
+					"$context": "Error message",
+					"$message": "An error occurred while setting your Camera Input opt-in status."
+				}
 			}
 		},
 		"joinPrivacySwitcher": {
@@ -11562,6 +11592,13 @@
 				"NoOne": {
 					"$context": "",
 					"$message": "No one"
+				}
+			},
+			"systemFeedback": {
+				"$context": "System feedback",
+				"error": {
+					"$context": "Error message",
+					"$message": "An error occurred while setting your join privacy."
 				}
 			}
 		}

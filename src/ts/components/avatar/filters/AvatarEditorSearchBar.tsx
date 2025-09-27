@@ -1,9 +1,9 @@
 import type { Signal } from "@preact/signals";
-import TextInput from "../core/TextInput";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import classNames from "classnames";
 import { useEffect, useState } from "preact/hooks";
 import { watchAttributes, watchOnce } from "src/ts/helpers/elements";
-import classNames from "classnames";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import TextInput from "../../core/TextInput";
 
 export type AvatarEditorSearchBarProps = {
 	keyword: Signal<string>;

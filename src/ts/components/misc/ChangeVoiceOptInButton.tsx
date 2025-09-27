@@ -10,16 +10,38 @@ import classNames from "classnames";
 import Tooltip from "../core/Tooltip";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getRegularTime } from "src/ts/helpers/i18n/intlFormats";
+import { useCallback, useState } from "preact/hooks";
+import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
 
 export default function ChangeVoiceOptInButton() {
+	const [loading, setLoading] = useState(false);
 	const [settings, , , , setSettings] = usePromise(getUserVoiceSettings, []);
 
 	const isBanned = settings?.isBanned;
 	const disabled =
-		!isBanned ||
-		settings?.isUserOptIn === undefined ||
-		(settings?.isOptInDisabled === true && settings.isUserOptIn !== true);
+		!isBanned &&
+		(settings?.isUserOptIn === undefined ||
+			(settings?.isOptInDisabled === true && settings.isUserOptIn !== true));
 	const isUserOptIn = !disabled && settings?.isUserOptIn;
+
+	const onToggle = useCallback(() => {
+		if (disabled || isBanned || loading) return;
+
+		setLoading(true);
+		setUserVoiceOptInStatus({
+			isUserOptIn: !isUserOptIn,
+		})
+			.then(() =>
+				setSettings({
+					...settings,
+					isUserOptIn: !isUserOptIn,
+				}),
+			)
+			.catch(() =>
+				warning(getMessage("navigation.voiceChatOptInSwitcher.systemFeedback.error")),
+			)
+			.finally(() => setLoading(false));
+	}, [disabled, isBanned, loading]);
 
 	return (
 		<Tooltip
@@ -27,28 +49,13 @@ export default function ChangeVoiceOptInButton() {
 			as="li"
 			containerId="voice-opt-in-switcher"
 			containerClassName={classNames("navbar-icon-item", {
-				"roseal-disabled": disabled,
+				"roseal-disabled": disabled || loading,
 				"is-banned": settings?.isBanned,
 			})}
 			includeContainerClassName={false}
 			className="voice-opt-in-switcher-tooltip"
 			button={
-				<button
-					type="button"
-					className="btn-generic-navigation"
-					onClick={() => {
-						if (disabled || isBanned) return;
-
-						setUserVoiceOptInStatus({
-							isUserOptIn: !isUserOptIn,
-						}).then(() => {
-							setSettings({
-								...settings,
-								isUserOptIn: !isUserOptIn,
-							});
-						});
-					}}
-				>
+				<button type="button" className="btn-generic-navigation" onClick={onToggle}>
 					<span id="nav-voice-opt-in-icon" className="rbx-menu-item">
 						{isUserOptIn ? (
 							<MdOutlineMic className="roseal-icon" />
