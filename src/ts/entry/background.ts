@@ -348,6 +348,7 @@ async function handleAuthenticatedUserChange(_data?: AuthenticatedUserWithCreate
 }
 
 async function handleCookiesChange() {
+	let abortController: AbortController | undefined;
 	browser.cookies.onChanged.addListener((cookie) => {
 		if (
 			ROBLOX_COOKIES.find((cookie) => cookie.required)?.name === cookie.cookie.name &&
@@ -365,23 +366,35 @@ async function handleCookiesChange() {
 			);
 
 			featureValueIs(ACCOUNTS_FEATURE_ID, true, async () => {
-				const discoverAccounts = await getFeatureValue(ACCOUNTS_DISCOVERY_FEATURE_ID);
-				const updateTabs = await getFeatureValue(ACCOUNTS_UPDATE_TABS_FEATURE_ID);
+				abortController?.abort();
+				abortController = new AbortController();
+
+				const features = await multigetFeaturesValues([
+					ACCOUNTS_DISCOVERY_FEATURE_ID,
+					ACCOUNTS_UPDATE_TABS_FEATURE_ID,
+				]);
+				const discoverAccounts = features[ACCOUNTS_DISCOVERY_FEATURE_ID];
+				const updateTabs = features[ACCOUNTS_UPDATE_TABS_FEATURE_ID];
 
 				if (!discoverAccounts && !updateTabs) {
+					abortController = undefined;
 					return;
 				}
 
-				const cookies = await getCurrentCookies().catch(() => []);
-				const accounts = await listRobloxAccounts();
+				const [cookies, accounts] = await Promise.all([
+					getCurrentCookies(),
+					listRobloxAccounts(),
+				]);
 
 				const idCookie = ROBLOX_COOKIES.find((cookie) => cookie.required)!;
 				const cookie = cookies.find((cookie) => cookie.name === idCookie.name);
 
+				if (abortController.signal.aborted) return;
 				if (!cookie) {
 					if (updateTabs) {
 						handleAuthenticatedUserChange(null);
 					}
+					abortController = undefined;
 					return;
 				}
 
@@ -391,6 +404,7 @@ async function handleCookiesChange() {
 							if (updateTabs) {
 								handleAuthenticatedUserChange();
 							}
+							abortController = undefined;
 							return;
 						}
 					}
@@ -405,10 +419,13 @@ async function handleCookiesChange() {
 
 					try {
 						const data = await invokeMessage(tab.id, "getAuthenticatedUser", undefined);
+
+						if (abortController?.signal.aborted) return;
 						if (data.reason === "NotAuthenticated") {
 							if (updateTabs) {
 								handleAuthenticatedUserChange(null);
 							}
+							abortController = undefined;
 							return;
 						}
 
@@ -433,10 +450,13 @@ async function handleCookiesChange() {
 									userId: data.data.id,
 								});
 							}
+							abortController = undefined;
 							return updateRobloxAccounts(accounts);
 						}
 					} catch {}
 				}
+
+				abortController = undefined;
 			});
 		}
 	});
