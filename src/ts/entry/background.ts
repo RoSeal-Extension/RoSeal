@@ -101,6 +101,7 @@ import {
 	USER_PROFILE_REGEX,
 } from "../utils/regex";
 import { getPath } from "../utils/url";
+import { getUserById } from "../helpers/requests/services/users";
 
 // Listeners and stuff
 if ("setAccessLevel" in browser.storage.session && import.meta.env.TARGET_BASE !== "firefox")
@@ -369,12 +370,16 @@ async function handleCookiesChange() {
 				abortController?.abort();
 				abortController = new AbortController();
 
+				const currController = abortController;
+
 				const features = await multigetFeaturesValues([
 					ACCOUNTS_DISCOVERY_FEATURE_ID,
 					ACCOUNTS_UPDATE_TABS_FEATURE_ID,
 				]);
 				const discoverAccounts = features[ACCOUNTS_DISCOVERY_FEATURE_ID];
 				const updateTabs = features[ACCOUNTS_UPDATE_TABS_FEATURE_ID];
+
+				if (currController.signal.aborted) return;
 
 				if (!discoverAccounts && !updateTabs) {
 					abortController = undefined;
@@ -389,8 +394,8 @@ async function handleCookiesChange() {
 				const idCookie = ROBLOX_COOKIES.find((cookie) => cookie.required)!;
 				const cookie = cookies.find((cookie) => cookie.name === idCookie.name);
 
-				if (abortController.signal.aborted) return;
-				if (!cookie) {
+				if (currController.signal.aborted) return;
+				if (!cookie?.value) {
 					if (updateTabs) {
 						handleAuthenticatedUserChange(null);
 					}
@@ -410,6 +415,8 @@ async function handleCookiesChange() {
 					}
 				}
 
+				let authedUser: AuthenticatedUserWithCreatedAndBadge | undefined;
+
 				for (const tab of await browser.tabs.query({
 					url: `https://${getRobloxUrl("*", "/*")}`,
 				})) {
@@ -420,7 +427,7 @@ async function handleCookiesChange() {
 					try {
 						const data = await invokeMessage(tab.id, "getAuthenticatedUser", undefined);
 
-						if (abortController?.signal.aborted) return;
+						if (currController?.signal.aborted) return;
 						if (data.reason === "NotAuthenticated") {
 							if (updateTabs) {
 								handleAuthenticatedUserChange(null);
@@ -429,34 +436,62 @@ async function handleCookiesChange() {
 							return;
 						}
 
-						let hasExistingAccount = false;
-						for (const account of accounts) {
-							if (account.userId === data.data.id) {
-								if (discoverAccounts) {
-									hasExistingAccount = true;
-									account.cookies = cookies;
-								}
-
-								break;
-							}
-						}
-
-						if (updateTabs) handleAuthenticatedUserChange(data.data);
-
-						if (discoverAccounts) {
-							if (!hasExistingAccount && accounts.length < ROBLOX_ACCOUNT_LIMIT) {
-								accounts.push({
-									cookies,
-									userId: data.data.id,
-								});
-							}
-							abortController = undefined;
-							return updateRobloxAccounts(accounts);
-						}
+						authedUser = data.data;
 					} catch {}
 				}
 
+				if (!authedUser) {
+					try {
+						const data = await getCurrentAuthenticatedUser();
+						const userData = await getUserById({
+							userId: data.id,
+						});
+
+						authedUser = {
+							...data,
+							hasVerifiedBadge: userData.hasVerifiedBadge,
+							created: userData.created,
+						};
+					} catch {
+						abortController = undefined;
+						return;
+					}
+				}
+
+				if (currController?.signal.aborted) return;
+
+				if (!authedUser) {
+					if (updateTabs) {
+						handleAuthenticatedUserChange(null);
+					}
+
+					abortController = undefined;
+					return;
+				}
+
+				let hasExistingAccount = false;
+				for (const account of accounts) {
+					if (account.userId === authedUser.id) {
+						if (discoverAccounts) {
+							hasExistingAccount = true;
+							account.cookies = cookies;
+						}
+						break;
+					}
+				}
+
 				abortController = undefined;
+				if (updateTabs) handleAuthenticatedUserChange(authedUser);
+
+				if (discoverAccounts) {
+					if (!hasExistingAccount && accounts.length < ROBLOX_ACCOUNT_LIMIT) {
+						accounts.push({
+							cookies,
+							userId: authedUser.id,
+						});
+					}
+					return updateRobloxAccounts(accounts);
+				}
 			});
 		}
 	});
