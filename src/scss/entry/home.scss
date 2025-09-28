@@ -204,6 +204,14 @@
         width: 315px;
         max-width: 315px;
     }
+
+    &:not(:has(a)) li:first-child button:hover {
+        border-radius: 5px 5px 0px 0px;
+    }
+
+    li:last-child button:hover {
+        border-radius: 0px 0px 5px 5px;
+    }
 }
 
 .roseal-friends-carousel-container {
