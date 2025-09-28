@@ -4,12 +4,17 @@ import classNames from "classnames";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import Button from "../../core/Button";
 import Tooltip from "../../core/Tooltip";
+import { useCallback } from "preact/hooks";
 
 export type JoinPreferredRegionButton = {
 	active: Signal<boolean>;
 };
 
 export default function JoinPreferredRegionButton({ active }: JoinPreferredRegionButton) {
+	const toggleActive = useCallback(() => {
+		active.value = !active.value;
+	}, [active.value]);
+
 	return (
 		<Tooltip
 			className="join-preferred-region-container"
@@ -20,9 +25,7 @@ export default function JoinPreferredRegionButton({ active }: JoinPreferredRegio
 						searching: active.value,
 					})}
 					type="growth"
-					onClick={() => {
-						active.value = true;
-					}}
+					onClick={toggleActive}
 				>
 					<MdOutlineMapSearchFilled className="roseal-icon" />
 				</Button>
