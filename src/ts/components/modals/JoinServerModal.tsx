@@ -1,5 +1,8 @@
 import MdOutlineHistory from "@material-symbols/svg-400/outlined/history-fill.svg";
 import MdOutlineProgressActivity from "@material-symbols/svg-400/outlined/progress_activity-fill.svg";
+import MdOutlineTVRemote from "@material-symbols/svg-400/outlined/tv_remote-fill.svg";
+import MdOutlineComputer from "@material-symbols/svg-400/outlined/computer-fill.svg";
+import MdOutlineCloud from "@material-symbols/svg-400/outlined/cloud-fill.svg";
 import { type Signal, useSignal } from "@preact/signals";
 import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
@@ -412,10 +415,17 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 							</div>
 
 							<div className="server-info">
-								<h3 className="server-info-header">
-									{getMessage(`joinModal.serverInfo.title.${joinedServerType}`)}
-								</h3>
 								<ul className="server-info-stats">
+									<li className="stat-item">
+										<span className="stat-icon">
+											<MdOutlineCloud className="roseal-icon" />
+										</span>
+										<span className="stat-text">
+											{getMessage(
+												`joinModal.serverInfo.title.${joinedServerType}`,
+											)}
+										</span>
+									</li>
 									{privateServerOwner && (
 										<li className="stat-item private-server-owner">
 											<span className="stat-text">
@@ -464,24 +474,35 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 											DEFAULT_RELEASE_CHANNEL_NAME &&
 										shouldShowRCCServerInfo && (
 											<li className="stat-item">
-												<span className="stat-text text-emphasis">
-													{getMessage(
-														"joinModal.serverInfo.rccChannel.text",
-													)}
+												<span className="stat-icon">
+													<MdOutlineTVRemote className="roseal-icon" />
 												</span>
 												<span className="stat-text">
-													{joinData.data.rcc.channelName}
+													{getMessage(
+														"joinModal.serverInfo.rccChannel.text",
+														{
+															channelName:
+																joinData.data.rcc.channelName,
+														},
+													)}
 												</span>
 											</li>
 										)}
 									{joinData.data?.rcc.version && shouldShowRCCServerInfo && (
 										<li className="stat-item">
-											<span className="stat-text text-emphasis">
-												{getMessage("joinModal.serverInfo.rccVersion.text")}
-											</span>
-											<span className="stat-text">
-												{joinData.data.rcc.version}
-											</span>
+											<li className="stat-item">
+												<span className="stat-icon">
+													<MdOutlineComputer className="roseal-icon" />
+												</span>
+												<span className="stat-text">
+													{getMessage(
+														"joinModal.serverInfo.rccVersion.text",
+														{
+															version: joinData.data.rcc.version,
+														},
+													)}
+												</span>
+											</li>
 										</li>
 									)}
 								</ul>

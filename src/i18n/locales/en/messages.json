@@ -1740,13 +1740,13 @@
 			"rccChannel": {
 				"$context": "RCC channel stat",
 				"text": {
-					"$message": "RCC Channel"
+					"$message": "RCC Channel: {channelName}"
 				}
 			},
 			"rccVersion": {
 				"$context": "RCC version stat",
 				"text": {
-					"$message": "RCC Version"
+					"$message": "RCC Version: {version}"
 				}
 			}
 		},

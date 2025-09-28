@@ -370,14 +370,15 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 								id="rbx-private-servers"
 								innerId="rbx-private-running-games"
 							/>
-							{privateServerLinksEnabled && (
-								<PrivateServerLinkList
-									universeId={data.universeId}
-									placeId={data.placeId}
-									placeName={data.universeName}
-									startLinkCode={data.privateServerLinkCode}
-								/>
-							)}
+							{privateServerLinksEnabled &&
+								(data.canCreatePrivateServer || data.canPreCreatePrivateServer) && (
+									<PrivateServerLinkList
+										universeId={data.universeId}
+										placeId={data.placeId}
+										placeName={data.universeName}
+										startLinkCode={data.privateServerLinkCode}
+									/>
+								)}
 							<ServerList type="friends" id="rbx-friends-running-games" />
 							<ServerList type="public" id="rbx-public-running-games" />
 						</>

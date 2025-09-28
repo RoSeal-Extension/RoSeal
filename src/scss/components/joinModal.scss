@@ -116,19 +116,19 @@
         }
 
         .server-info {
-            .server-info-header {
-                font-weight: 800;
-            }
+            margin-top: 0.6em;
 
             .server-info-stats {
                 display: flex;
                 flex-direction: column;
-                gap: 0.3em;
+                gap: 0.2em;
 
                 .stat-item {
                     display: flex;
-                    gap: 0.2em;
+                    gap: 0.3em;
                     align-items: center;
+                    font-weight: 700;
+                    font-size: 14px;
 
                     &.private-server-owner:not(:last-child) {
                         margin-bottom: 0.5em;
@@ -137,8 +137,9 @@
                     .stat-icon {
                         &,
                         .roseal-icon {
-                            width: 28px;
-                            height: 28px;
+                            color: var(--RS_ICON-COLOR);
+                            width: 26px;
+                            height: 26px;
                         }
                     }
                 }
