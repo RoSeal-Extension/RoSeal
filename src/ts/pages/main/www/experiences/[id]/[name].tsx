@@ -652,7 +652,7 @@ export default {
 			getDeviceMeta().then((deviceMeta) =>
 				getPlaceJoinData({
 					placeId: rootPlaceId,
-					overrideDeviceType: deviceMeta?.deviceType ?? "Desktop",
+					overridePlatformType: deviceMeta?.platformType ?? "Desktop",
 					gameJoinAttemptId: crypto.randomUUID(),
 					joinOrigin: "RoSealFetchInfo",
 					requireSuccessful: false,

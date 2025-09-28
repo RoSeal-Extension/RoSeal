@@ -327,13 +327,13 @@ export default {
 
 		featureValueIs("userJoinCheck", true, () =>
 			getDeviceMeta().then((deviceMeta) => {
-				const overrideDeviceType = deviceMeta?.deviceType ?? "Desktop";
+				const overridePlatformType = deviceMeta?.platformType ?? "Desktop";
 
 				onRobloxPresenceUpdateDetails((data) => {
 					for (const item of data) {
 						clearFollowUserJoinData({
 							userIdToFollow: item.userId,
-							overrideDeviceType,
+							overridePlatformType,
 						});
 					}
 				});
@@ -360,7 +360,7 @@ export default {
 
 						determineCanJoinUser({
 							userIdToFollow: profileUserId,
-							overrideDeviceType,
+							overridePlatformType,
 						})
 							.then((data) => {
 								if (data.disabled) {

@@ -13,7 +13,7 @@ import {
 	getUserAgentOverrides,
 	type I18nFile,
 	type Manifest,
-	ROSEAL_OVERRIDE_DEVICE_TYPE_HEADER_NAME,
+	ROSEAL_OVERRIDE_PLATFORM_TYPE_HEADER_NAME,
 	ROSEAL_TRACKING_HEADER_NAME,
 	SCSS_ENTRYPOINT,
 	type Target,
@@ -237,7 +237,7 @@ export function writeDNRRules({
 							],
 						},
 						condition: {
-							urlFilter: `||${ROBLOX_DOMAIN.replace(/{service}\.?/, "")}/*${ROSEAL_OVERRIDE_DEVICE_TYPE_HEADER_NAME}=${item.deviceType}`,
+							urlFilter: `||${ROBLOX_DOMAIN.replace(/{service}\.?/, "")}/*${ROSEAL_OVERRIDE_PLATFORM_TYPE_HEADER_NAME}=${item.platformType}`,
 							resourceTypes: ["xmlhttprequest"],
 						},
 					})),

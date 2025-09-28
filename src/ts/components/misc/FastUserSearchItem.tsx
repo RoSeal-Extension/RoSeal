@@ -1,5 +1,7 @@
 import { useMemo } from "preact/hooks";
 import { presenceTypes } from "src/ts/constants/presence";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getUserFriendStatus } from "src/ts/helpers/requests/services/users";
 import { getDeviceMeta } from "src/ts/utils/context";
 import { sendFollowPlayerIntoGame } from "src/ts/utils/gameLauncher";
 import { determineCanJoinUser } from "src/ts/utils/joinData";
@@ -16,8 +18,6 @@ import usePresence from "../hooks/usePresence";
 import usePromise from "../hooks/usePromise";
 import VerifiedBadge from "../icons/VerifiedBadge";
 import type { FastUserSearchDetail } from "./FastUserSearch";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { getUserFriendStatus } from "src/ts/helpers/requests/services/users";
 
 export default function FastUserSearchItem({
 	id,
@@ -29,12 +29,8 @@ export default function FastUserSearchItem({
 	isYou,
 }: FastUserSearchDetail) {
 	const presence = usePresence(id);
-	const profileLink = id
-		? getUserProfileLink(id)
-		: getUserProfileByUsernameLink(username);
-	const presencePlaceLink = presence?.placeId
-		? getExperienceLink(presence.placeId)
-		: undefined;
+	const profileLink = id ? getUserProfileLink(id) : getUserProfileByUsernameLink(username);
+	const presencePlaceLink = presence?.placeId ? getExperienceLink(presence.placeId) : undefined;
 
 	const [isFriends] = usePromise(() => {
 		if (!id || _isFriends !== undefined) return _isFriends;
@@ -54,11 +50,11 @@ export default function FastUserSearchItem({
 		}
 
 		const deviceMeta = await getDeviceMeta();
-		const overrideDeviceType = deviceMeta?.deviceType ?? "Desktop";
+		const overridePlatformType = deviceMeta?.platformType ?? "Desktop";
 
 		return determineCanJoinUser({
 			userIdToFollow: id,
-			overrideDeviceType,
+			overridePlatformType,
 		});
 	}, [presence?.placeId]);
 
@@ -118,9 +114,7 @@ export default function FastUserSearchItem({
 								</span>
 							)}
 						</div>
-						{statusText && (
-							<span className="status-text small text">{statusText}</span>
-						)}
+						{statusText && <span className="status-text small text">{statusText}</span>}
 					</div>
 				</div>
 				{joinStatus && (

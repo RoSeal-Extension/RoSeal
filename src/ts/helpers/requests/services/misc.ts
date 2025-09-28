@@ -1,7 +1,7 @@
+import type { GeographiesProps } from "react-simple-maps";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { getAvatarAssetLink } from "src/ts/utils/links";
 import { httpClient } from "../main";
-import type { GeographiesProps } from "react-simple-maps";
 import type { MarketplaceItemType } from "./marketplace";
 import type { OmniLayoutData, OmniTreatmentType, OmniUniverseLayoutData } from "./universes";
 
@@ -670,7 +670,7 @@ export async function getSearchLandingPage(request: GetSearchLandingPageRequest)
 			url: getRobloxUrl("apis", "/search-api/search-landing-page"),
 			search: request,
 			errorHandling: "BEDEV2",
-			overrideDeviceType: "Desktop",
+			overridePlatformType: "Desktop",
 			includeCredentials: true,
 		})
 	).body;

@@ -26,6 +26,11 @@ import { ACCOUNTS_FEATURE_ID } from "src/ts/constants/accountsManager";
 import { ACCOUNT_TRACKING_PREVENTION_FEATURE_ID } from "src/ts/constants/accountTrackingPrevention";
 import { AGREEMENTS_STORAGE_KEY, DISMISSED_ALERTS_STORAGE_KEY } from "src/ts/constants/alerts";
 import {
+	COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
+	COMMUNITY_SHOUT_NOTIFICATIONS_FEATURE_ID,
+	COMMUNITY_SHOUT_NOTIFICATIONS_FETCHED_SESSION_CACHE_STORAGE_KEY,
+} from "src/ts/constants/communities";
+import {
 	FRIENDS_LAST_SEEN_BACKGROUND_CHECKS_FEATURE_ID,
 	FRIENDS_LAST_SEEN_FEATURE_ID,
 	FRIENDS_LAST_SEEN_STORAGE_KEY,
@@ -51,17 +56,12 @@ import {
 	SYNC_THEME_ENABLED_LOCALSTORAGE_KEY,
 	VOICE_CHAT_SUSPENSION_STORAGE_KEY,
 } from "src/ts/constants/misc";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import {
 	TRADING_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
 	TRADING_NOTIFICATIONS_FEATURE_ID,
 	TRADING_NOTIFICATIONS_FETCHED_SESSION_CACHE_STORAGE_KEY,
 } from "src/ts/constants/trades";
-import {
-	COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
-	COMMUNITY_SHOUT_NOTIFICATIONS_FEATURE_ID,
-	COMMUNITY_SHOUT_NOTIFICATIONS_FETCHED_SESSION_CACHE_STORAGE_KEY,
-} from "src/ts/constants/communities";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import { invokeMessage } from "src/ts/helpers/communication/background";
 import {
 	addMessageListener,
@@ -76,6 +76,7 @@ import {
 	watchOnce,
 	watchTextContent,
 } from "src/ts/helpers/elements";
+import { onFeatureValueUpdate } from "src/ts/helpers/features/features";
 import {
 	featureValueIs,
 	getFeatureValue,
@@ -169,7 +170,6 @@ import {
 	fetchOnlineFriendsAndUpdateData,
 	handleFriendsPresenceNotifications,
 } from "../../background-alarms/fetchOnlineFriends";
-import { onFeatureValueUpdate } from "src/ts/helpers/features/features";
 import { fetchTradesAndUpdateData } from "../../background-alarms/fetchTrades";
 
 export type StoredUniverseCache = [
@@ -1394,12 +1394,12 @@ export default {
 
 		featureValueIs("userJoinCheck", true, () =>
 			getDeviceMeta().then((deviceMeta) => {
-				const overrideDeviceType = deviceMeta?.deviceType ?? "Desktop";
+				const overridePlatformType = deviceMeta?.platformType ?? "Desktop";
 
 				setInvokeListener("determineCanJoinUser", (data) => {
 					return determineCanJoinUser({
 						userIdToFollow: data.userIdToFollow,
-						overrideDeviceType,
+						overridePlatformType,
 					});
 				});
 
@@ -1407,7 +1407,7 @@ export default {
 					for (const item of data) {
 						clearFollowUserJoinData({
 							userIdToFollow: item.userId,
-							overrideDeviceType,
+							overridePlatformType,
 						});
 					}
 				});
@@ -1450,7 +1450,7 @@ export default {
 						btn.classList.add("roseal-disabled");
 						determineCanJoinUser({
 							userIdToFollow: id,
-							overrideDeviceType,
+							overridePlatformType,
 						})
 							.then((data) => {
 								if (data.message) {

@@ -1,4 +1,4 @@
-import type { DeviceType } from "scripts/build/constants";
+import type { PlatformType } from "scripts/build/constants";
 import { DEFAULT_RELEASE_CHANNEL_NAME } from "../constants/misc";
 import { getOrSetCache, removeCache } from "../helpers/cache";
 import { getMessage } from "../helpers/i18n/getMessage";
@@ -226,19 +226,19 @@ export function getPlaceJoinData({
 	requireSuccessful?: boolean;
 }): Promise<MinimalServerJoinData | undefined> {
 	return getOrSetCache({
-		key: ["places", props.placeId, "joinData", props.overrideDeviceType],
+		key: ["places", props.placeId, "joinData", props.overridePlatformType],
 		fn: () => tryGetServerJoinData(getMatchmadeServerData, props, maxAttempts),
 		requireSuccessful,
 	});
 }
 
 export function clearFollowUserJoinData(props: FollowUserIntoExperienceRequest) {
-	return removeCache(["users", props.userIdToFollow, "joinData", props.overrideDeviceType]);
+	return removeCache(["users", props.userIdToFollow, "joinData", props.overridePlatformType]);
 }
 
 export function getFollowUserJoinData(props: FollowUserIntoExperienceRequest) {
 	return getOrSetCache({
-		key: ["users", props.userIdToFollow, "joinData", props.overrideDeviceType],
+		key: ["users", props.userIdToFollow, "joinData", props.overridePlatformType],
 		fn: () => tryGetServerJoinData(getUserServerData, props, 1),
 	});
 }
@@ -398,31 +398,31 @@ export async function determineCanJoinUser(
 }
 
 export function getUniversePlayableDevices(universeId: number) {
-	return getOrSetCache<DeviceType[]>({
+	return getOrSetCache<PlatformType[]>({
 		key: ["universes", universeId, "playableDevices"],
 		fn: () =>
 			getOpenCloudUniverse({
 				universeId,
 			})
 				.then((data) => {
-					const deviceTypes: DeviceType[] = [];
+					const PlatformTypes: PlatformType[] = [];
 					if (data.desktopEnabled) {
-						deviceTypes.push("Desktop");
+						PlatformTypes.push("Desktop");
 					}
 					if (data.mobileEnabled) {
-						deviceTypes.push("Phone");
+						PlatformTypes.push("Phone");
 					}
 					if (data.tabletEnabled) {
-						deviceTypes.push("Tablet");
+						PlatformTypes.push("Tablet");
 					}
 					if (data.consoleEnabled) {
-						deviceTypes.push("Console");
+						PlatformTypes.push("Console");
 					}
 					if (data.vrEnabled) {
-						deviceTypes.push("VR");
+						PlatformTypes.push("VR");
 					}
 
-					return deviceTypes;
+					return PlatformTypes;
 				})
 				.catch(() => []),
 	});

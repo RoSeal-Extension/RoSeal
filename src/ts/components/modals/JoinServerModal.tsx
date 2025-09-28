@@ -1,8 +1,11 @@
-import MdOutlineProgressActivity from "@material-symbols/svg-400/outlined/progress_activity-fill.svg";
 import MdOutlineHistory from "@material-symbols/svg-400/outlined/history-fill.svg";
+import MdOutlineProgressActivity from "@material-symbols/svg-400/outlined/progress_activity-fill.svg";
 import { type Signal, useSignal } from "@preact/signals";
 import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
+import { DEFAULT_RELEASE_CHANNEL_NAME } from "src/ts/constants/misc";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import { onNotificationType } from "src/ts/helpers/notifications";
 import { profileProcessor } from "src/ts/helpers/processors/profileProcessor";
 import {
@@ -21,18 +24,15 @@ import {
 } from "src/ts/utils/gameLauncher";
 import { getFollowUserJoinData, tryGetServerJoinData } from "src/ts/utils/joinData";
 import { getDownloadClientLink, getExperienceLink } from "src/ts/utils/links";
+import { sleep } from "src/ts/utils/misc";
 import Button from "../core/Button";
+import CountryFlag from "../core/CountryFlag";
 import AgentMentionContainer from "../core/items/AgentMentionContainer";
 import SimpleModal from "../core/modal/SimpleModal";
 import Thumbnail from "../core/Thumbnail";
+import { getLocalizedRegionName } from "../experience/servers/utils";
 import useFeatureValue from "../hooks/useFeatureValue";
 import usePromise from "../hooks/usePromise";
-import CountryFlag from "../core/CountryFlag";
-import { getLocalizedRegionName } from "../experience/servers/utils";
-import { sleep } from "src/ts/utils/misc";
-import { DEFAULT_RELEASE_CHANNEL_NAME } from "src/ts/constants/misc";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 
 export type JoinServerModalProps = {
 	data: Signal<CurrentServerJoinMetadata | undefined | null>;
@@ -75,7 +75,7 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 					userIdToFollow: data.value.userId,
 					gameJoinAttemptId: crypto.randomUUID(),
 					joinOrigin: "RoSealFetchInfo",
-					overrideDeviceType: deviceMeta?.deviceType,
+					overridePlatformType: deviceMeta?.platformType,
 				});
 			}
 			case "privateServer": {
@@ -85,7 +85,7 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 					accessCode: data.value.accessCode,
 					gameJoinAttemptId: crypto.randomUUID(),
 					joinOrigin: "RoSealFetchInfo",
-					overrideDeviceType: deviceMeta.deviceType,
+					overridePlatformType: deviceMeta.platformType,
 				});
 			}
 			case "specific": {
@@ -94,7 +94,7 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 					gameId: data.value.gameId,
 					gameJoinAttemptId: crypto.randomUUID(),
 					joinOrigin: "RoSealFetchInfo",
-					overrideDeviceType: deviceMeta.deviceType,
+					overridePlatformType: deviceMeta.platformType,
 				});
 			}
 			case "matchmade": {
@@ -103,11 +103,11 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 						placeId: data.value.placeId,
 						gameJoinAttemptId: crypto.randomUUID(),
 						joinOrigin: "RoSealFetchInfo",
-						overrideDeviceType: deviceMeta.deviceType,
+						overridePlatformType: deviceMeta.platformType,
 					});
 			}
 		}
-	}, [data.value, deviceMeta?.deviceType, shouldGetMatchmadeServer]);
+	}, [data.value, deviceMeta?.platformType, shouldGetMatchmadeServer]);
 	const [dataCenter] = usePromise(async () => {
 		const dataCenterId = joinData?.data?.datacenter.id;
 		if (!dataCenterId) return;

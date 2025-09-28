@@ -1,4 +1,4 @@
-import type { DeviceType } from "scripts/build/constants.ts";
+import type { PlatformType } from "scripts/build/constants.ts";
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { httpClient } from "../main.ts";
 
@@ -17,7 +17,7 @@ export type GetPrivateServerDataRequest = {
 	linkCode?: string;
 	gameJoinAttemptId?: string;
 	joinOrigin?: GameJoinAttemptOrigin;
-	overrideDeviceType?: DeviceType;
+	overridePlatformType?: PlatformType;
 };
 
 export type JoinReservedServerRequest = {
@@ -25,14 +25,14 @@ export type JoinReservedServerRequest = {
 	accessCode: string;
 	gameJoinAttemptId?: string;
 	joinOrigin?: GameJoinAttemptOrigin;
-	overrideDeviceType?: DeviceType;
+	overridePlatformType?: PlatformType;
 };
 
 export type FollowUserIntoExperienceRequest = {
 	userIdToFollow: number;
 	gameJoinAttemptId?: string;
 	joinOrigin?: GameJoinAttemptOrigin;
-	overrideDeviceType?: DeviceType;
+	overridePlatformType?: PlatformType;
 };
 
 export type ServerConnection = {
@@ -133,7 +133,7 @@ export type GetMatchmadeServerDataReqeust = {
 	channelName?: string;
 	gameJoinAttemptId?: string;
 	joinOrigin?: GameJoinAttemptOrigin;
-	overrideDeviceType?: DeviceType;
+	overridePlatformType?: PlatformType;
 };
 
 export type GetServerInstanceDataRequest = {
@@ -141,18 +141,18 @@ export type GetServerInstanceDataRequest = {
 	gameId: string;
 	gameJoinAttemptId?: string;
 	joinOrigin?: GameJoinAttemptOrigin;
-	overrideDeviceType?: DeviceType;
+	overridePlatformType?: PlatformType;
 };
 
 export async function getUserServerData({
-	overrideDeviceType = "Desktop",
+	overridePlatformType = "Desktop",
 	...request
 }: FollowUserIntoExperienceRequest): Promise<GetServerDataResponse> {
 	return (
 		await httpClient.httpRequest<GetServerDataResponse>({
 			method: "POST",
 			url: getRobloxUrl("gamejoin", "/v1/play-with-user"),
-			overrideDeviceType,
+			overridePlatformType,
 			body: {
 				type: "json",
 				value: request,
@@ -164,14 +164,14 @@ export async function getUserServerData({
 }
 
 export async function getReservedServerData({
-	overrideDeviceType = "Desktop",
+	overridePlatformType = "Desktop",
 	...request
 }: JoinReservedServerRequest): Promise<GetServerDataResponse> {
 	return (
 		await httpClient.httpRequest<GetServerDataResponse>({
 			method: "POST",
 			url: getRobloxUrl("gamejoin", "/v1/join-reserved-game"),
-			overrideDeviceType,
+			overridePlatformType,
 			body: {
 				type: "json",
 				value: request,
@@ -183,14 +183,14 @@ export async function getReservedServerData({
 }
 
 export async function getPrivateServerData({
-	overrideDeviceType = "Desktop",
+	overridePlatformType = "Desktop",
 	...request
 }: GetPrivateServerDataRequest): Promise<GetServerDataResponse> {
 	return (
 		await httpClient.httpRequest<GetServerDataResponse>({
 			method: "POST",
 			url: getRobloxUrl("gamejoin", "/v1/join-private-game"),
-			overrideDeviceType,
+			overridePlatformType,
 			body: {
 				type: "json",
 				value: request,
@@ -202,14 +202,14 @@ export async function getPrivateServerData({
 }
 
 export async function getMatchmadeServerData({
-	overrideDeviceType = "Desktop",
+	overridePlatformType = "Desktop",
 	...request
 }: GetMatchmadeServerDataReqeust): Promise<GetServerDataResponse> {
 	return (
 		await httpClient.httpRequest<GetServerDataResponse>({
 			method: "POST",
 			url: getRobloxUrl("gamejoin", "/v1/join-game"),
-			overrideDeviceType,
+			overridePlatformType,
 			body: {
 				type: "json",
 				value: request,
@@ -221,14 +221,14 @@ export async function getMatchmadeServerData({
 }
 
 export async function getServerInstanceData({
-	overrideDeviceType = "Desktop",
+	overridePlatformType = "Desktop",
 	...request
 }: GetServerInstanceDataRequest): Promise<GetServerDataResponse> {
 	return (
 		await httpClient.httpRequest<GetServerDataResponse>({
 			method: "POST",
 			url: getRobloxUrl("gamejoin", "/v1/join-game-instance"),
-			overrideDeviceType,
+			overridePlatformType,
 			body: {
 				type: "json",
 				value: request,

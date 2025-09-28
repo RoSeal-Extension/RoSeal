@@ -103,7 +103,7 @@ export default function PrivateServerLink({
 					placeId,
 					accessCode: data.accessCode!,
 					linkCode,
-					overrideDeviceType: deviceMeta?.deviceType,
+					overridePlatformType: deviceMeta?.platformType,
 					gameJoinAttemptId: crypto.randomUUID(),
 					joinOrigin: "RoSealFetchInfo",
 				}).then((data) => {

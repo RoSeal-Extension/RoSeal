@@ -1,4 +1,4 @@
-import type { DeviceType } from "scripts/build/constants";
+import type { DeviceType, PlatformType } from "scripts/build/constants";
 import { watchOnce } from "../helpers/elements";
 
 export const isIframe = window.self !== window.top;
@@ -34,6 +34,7 @@ export type DeviceMeta = {
 	appType: AppType;
 	viewType: string;
 	deviceType: DeviceType;
+	platformType: PlatformType;
 	isAmazonApp: boolean;
 	isAndroidApp: boolean;
 	isAndroidDevice: boolean;
@@ -51,6 +52,8 @@ export type DeviceMeta = {
 	isUWPApp: boolean;
 	isWin32App: boolean;
 	isXboxApp: boolean;
+	isSamsungGalaxyStoreApp: boolean;
+	isPCGDKApp: boolean;
 };
 
 export type AppType =
@@ -66,6 +69,7 @@ export type AppType =
 const LOCALE_META_SELECTOR = 'meta[name="locale-data"]';
 const DEVICE_META_SELECTOR = 'meta[name="device-meta"]';
 
+// dependent on key order
 const viewTypeMap = {
 	isStudio: "studiobrowser",
 	isAmazonApp: "amazonapp",
@@ -101,7 +105,31 @@ export function getDeviceMetaSync(el?: HTMLMetaElement): DeviceMeta | undefined 
 		el?.dataset ?? document.querySelector<HTMLMetaElement>(DEVICE_META_SELECTOR)?.dataset;
 	if (!dataset) return;
 
+	const data = {
+		appType: (dataset.appType as AppType) ?? "unknown",
+		isAmazonApp: dataset.isAmazonApp === "true",
+		isAndroidApp: dataset.isAndroidApp === "true",
+		isAndroidDevice: dataset.isAndroidDevice === "true",
+		isChromeOS: dataset.isChromeOs === "true",
+		isConsole: dataset.isConsole === "true",
+		isDesktop: dataset.isDesktop === "true",
+		isGameClientBrowser: dataset.isGameClientBrowser === "true",
+		isInApp: dataset.isInApp === "true",
+		isIOSApp: dataset.isIosApp === "true",
+		isIOSDevice: dataset.isIosDevice === "true",
+		isPhone: dataset.isPhone === "true",
+		isStudio: dataset.isStudio === "true",
+		isTablet: dataset.isTablet === "true",
+		isUniversalApp: dataset.isUniversalApp === "true",
+		isUWPApp: dataset.isUwpApp === "true",
+		isWin32App: dataset.isWin32App === "true",
+		isXboxApp: dataset.isXboxApp === "true",
+		isSamsungGalaxyStoreApp: dataset.isSamsungGalaxyStoreApp === "true",
+		isPCGDKApp: dataset.isPcgdkApp === "true",
+	};
+
 	let deviceType: DeviceType;
+
 	switch (dataset.deviceType) {
 		case "phone": {
 			deviceType = "Phone";
@@ -122,28 +150,6 @@ export function getDeviceMetaSync(el?: HTMLMetaElement): DeviceMeta | undefined 
 		}
 	}
 
-	const data = {
-		appType: (dataset.appType as AppType) ?? "unknown",
-		deviceType,
-		isAmazonApp: dataset.isAmazonApp === "true",
-		isAndroidApp: dataset.isAndroidApp === "true",
-		isAndroidDevice: dataset.isAndroidDevice === "true",
-		isChromeOS: dataset.isChromeOs === "true",
-		isConsole: dataset.isConsole === "true",
-		isDesktop: dataset.isDesktop === "true",
-		isGameClientBrowser: dataset.isGameClientBrowser === "true",
-		isInApp: dataset.isInApp === "true",
-		isIOSApp: dataset.isIosApp === "true",
-		isIOSDevice: dataset.isIosDevice === "true",
-		isPhone: dataset.isPhone === "true",
-		isStudio: dataset.isStudio === "true",
-		isTablet: dataset.isTablet === "true",
-		isUniversalApp: dataset.isUniversalApp === "true",
-		isUWPApp: dataset.isUwpApp === "true",
-		isWin32App: dataset.isWin32App === "true",
-		isXboxApp: dataset.isXboxApp === "true",
-	};
-
 	let viewType = "web";
 	for (const key in viewTypeMap) {
 		if (data[key as keyof typeof viewTypeMap]) {
@@ -160,6 +166,8 @@ export function getDeviceMetaSync(el?: HTMLMetaElement): DeviceMeta | undefined 
 
 	return {
 		...data,
+		deviceType,
+		platformType: deviceType,
 		viewType,
 	};
 }

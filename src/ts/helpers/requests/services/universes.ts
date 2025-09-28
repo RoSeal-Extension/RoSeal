@@ -1,4 +1,4 @@
-import type { DeviceType } from "scripts/build/constants";
+import type { PlatformType } from "scripts/build/constants";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../cache";
 import { httpClient } from "../main";
@@ -7,7 +7,7 @@ import type { AvatarScales } from "./avatar";
 import type { SortOrder } from "./badges";
 
 export type MultigetUniversesPlayabilityStatusesRequest = {
-	overrideDeviceType?: DeviceType;
+	overridePlatformType?: PlatformType;
 	overrideCache?: boolean;
 	universeIds: number[];
 };
@@ -877,14 +877,14 @@ export async function getGroupShoutPreferences() {
 }
 
 export async function multigetUniversesPlayabilityStatuses({
-	overrideDeviceType,
+	overridePlatformType,
 	overrideCache,
 	...request
 }: MultigetUniversesPlayabilityStatusesRequest): Promise<UniversePlayabilityStatus[]> {
 	return getOrSetCaches({
 		baseKey: ["universes", "playability-statuses"],
 		keys: request.universeIds.map((universeId) => ({
-			id: `${universeId}/${overrideDeviceType ?? ""}`,
+			id: `${universeId}/${overridePlatformType ?? ""}`,
 			universeId,
 		})),
 		fn: (request) =>
@@ -894,13 +894,13 @@ export async function multigetUniversesPlayabilityStatuses({
 					search: {
 						universeIds: request.map((key) => key.universeId),
 					},
-					overrideDeviceType,
+					overridePlatformType,
 					includeCredentials: true,
 				})
 				.then((data) => {
 					const items: Record<string, UniversePlayabilityStatus> = {};
 					for (const item of data.body) {
-						items[`${item.universeId}/${overrideDeviceType ?? ""}`] = item;
+						items[`${item.universeId}/${overridePlatformType ?? ""}`] = item;
 					}
 
 					return items;

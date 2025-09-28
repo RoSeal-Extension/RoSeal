@@ -23,18 +23,18 @@ export default function JoinServerDebugPanel() {
 	const [deviceMeta] = usePromise(getDeviceMeta, []);
 	const { canManagePlace, dataCenters, placeId } = useServersTabContext();
 	const [canViewDebugChannelName] = usePromise(() => {
-		if (!deviceMeta?.deviceType) return;
+		if (!deviceMeta?.platformType) return;
 
 		return tryGetServerJoinData(getMatchmadeServerData, {
 			placeId,
 			channelName: TEST_RCC_CHANNEL_NAME,
-			overrideDeviceType: deviceMeta.deviceType,
+			overridePlatformType: deviceMeta.platformType,
 			gameJoinAttemptId: crypto.randomUUID(),
 			joinOrigin: "RoSealFetchInfo",
 		}).then((data) => {
 			return data.statusCode === JoinServerStatusCode.ChannelMismatch;
 		});
-	}, [deviceMeta?.deviceType]);
+	}, [deviceMeta?.platformType]);
 	const [serverId, setServerId] = useState("");
 	const [channelName, setChannelName] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -218,7 +218,7 @@ export default function JoinServerDebugPanel() {
 								{
 									placeId,
 									gameId: serverId,
-									overrideDeviceType: deviceMeta?.deviceType,
+									overridePlatformType: deviceMeta?.platformType,
 									joinOrigin: "RoSealFetchInfo",
 									gameJoinAttemptId: crypto.randomUUID(),
 								},
@@ -234,7 +234,7 @@ export default function JoinServerDebugPanel() {
 								{
 									placeId,
 									channelName,
-									overrideDeviceType: deviceMeta?.deviceType,
+									overridePlatformType: deviceMeta?.platformType,
 									joinOrigin: "RoSealFetchInfo",
 									gameJoinAttemptId: crypto.randomUUID(),
 								},

@@ -140,22 +140,27 @@ export function getUserAgentOverrides(robloxVersion = "0") {
 	return [
 		{
 			userAgent: `Roblox/WinInet RobloxApp/${robloxVersion} (GlobalDist; RobloxDirectDownload)`,
+			platformType: "Desktop",
 			deviceType: "Desktop",
 		},
 		{
 			userAgent: "Roblox/XboxOne ROBLOX Xbox App 1.0.0",
+			platformType: "Console",
 			deviceType: "Console",
 		},
 		{
 			userAgent: `(0MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Tablet RobloxApp/${robloxVersion} (GlobalDist; GooglePlayStore)`,
+			platformType: "Tablet",
 			deviceType: "Tablet",
 		},
 		{
 			userAgent: `(0MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Phone RobloxApp/${robloxVersion} (GlobalDist; GooglePlayStore)`,
+			platformType: "Phone",
 			deviceType: "Phone",
 		},
 		{
 			userAgent: `(0MB; 0x0; 0x0; 0x0; oculus Oculus Questseacliff; 0) ROBLOX Android VR OculusQuest3Store RobloxApp/${robloxVersion} (GlobalDist; OculusQuest3Store)`,
+			platformType: "VR",
 			deviceType: "VR",
 		},
 		/*
@@ -167,8 +172,9 @@ export function getUserAgentOverrides(robloxVersion = "0") {
 }
 
 export const ROSEAL_TRACKING_HEADER_NAME = "_rosealRequest";
-export const ROSEAL_OVERRIDE_DEVICE_TYPE_HEADER_NAME = "_rosealDeviceType";
+export const ROSEAL_OVERRIDE_PLATFORM_TYPE_HEADER_NAME = "_rosealPlatformType";
 
 export type DeviceType = ReturnType<typeof getUserAgentOverrides>[number]["deviceType"];
+export type PlatformType = ReturnType<typeof getUserAgentOverrides>[number]["platformType"];
 
 export const DEFAULT_OUTDIR = "./dist";

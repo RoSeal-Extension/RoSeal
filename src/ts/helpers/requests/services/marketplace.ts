@@ -1305,7 +1305,7 @@ export async function getMarketplaceWidgets({
 			},
 			errorHandling: "BEDEV2",
 			includeCredentials: true,
-			overrideDeviceType: "Desktop",
+			overridePlatformType: "Desktop",
 		})
 	).body;
 }
@@ -1443,7 +1443,7 @@ export async function listItemSocialConnections(request: ListItemSocialConnectio
 				value: request,
 			},
 			errorHandling: "BEDEV2",
-			overrideDeviceType: "Desktop",
+			overridePlatformType: "Desktop",
 			includeCredentials: true,
 		})
 	).body;

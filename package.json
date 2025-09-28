@@ -64,7 +64,7 @@
 		"tinycolor2": "1.6.0",
 		"usehooks-ts": "3.1.1",
 		"zod": "4.1.11",
-		"@roseal/http-client": "github:RoSeal-Extension/HTTPClient#e9119cc"
+		"@roseal/http-client": "github:RoSeal-Extension/HTTPClient#87df479"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.2.4",
