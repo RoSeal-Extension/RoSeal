@@ -5,12 +5,22 @@ import Icon from "../../core/Icon";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import RobuxView from "../../core/RobuxView";
+import { useMemo } from "preact/hooks";
+import { getItemRestrictionsClassName } from "../../marketplace/utils/items";
 
 export type UserRAPItemProps = {
 	item: ListedUserCollectibleAsset;
 };
 
 export default function UserRAPItem({ item }: UserRAPItemProps) {
+	const restrictionLabel = useMemo(() => {
+		return getItemRestrictionsClassName(
+			item.serialNumber !== null && item.serialNumber !== undefined
+				? ["LimitedUnique"]
+				: ["Limited"],
+		);
+	}, [item.serialNumber]);
+
 	return (
 		<li className="list-item item-card">
 			<div className="item-card-container">
@@ -24,6 +34,7 @@ export default function UserRAPItem({ item }: UserRAPItemProps) {
 									size: "420x420",
 								}}
 							/>
+							{restrictionLabel && <span className={restrictionLabel} />}
 							<div className="limited-icon-container">
 								<Icon name="shop-limited" />
 								{item.serialNumber !== undefined && item.serialNumber !== null && (

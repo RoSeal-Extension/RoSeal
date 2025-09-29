@@ -8,6 +8,7 @@ import SimpleModal from "../../core/modal/SimpleModal";
 import useProfileData from "../../hooks/useProfileData";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import UserRAPItem from "./UserRAPItem";
+import { crossSort } from "src/ts/utils/objects";
 
 export type UserRAPHeaderProps = {
 	userId: number;
@@ -19,7 +20,10 @@ export default function UserRAPHeader({ userId }: UserRAPHeaderProps) {
 	});
 	const [showCollectiblesModal, setShowCollectiblesModal] = useState(false);
 	const [alllCollectibles, allCollectiblesFetched] = usePromise(
-		() => listAllUserCollectibleItems(userId),
+		() =>
+			listAllUserCollectibleItems(userId).then((data) =>
+				crossSort(data, (a, b) => b.recentAveragePrice - a.recentAveragePrice),
+			),
 		[userId],
 	);
 	const [userRAP] = usePromise(() => {
