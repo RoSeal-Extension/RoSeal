@@ -25,9 +25,9 @@
 
 - `bun run build --target <TARGET> [--release]`
   * TARGET = "chrome" | "firefox" | "edge" | "safari"
-    * Safari target is currently unused and "experimental".
-    * Edge target really is just "chrome" but different env just *incase* we need to do anything related to store policy changes.
-  * Omit the brackets in `[--release]` for a release build, omit entirely for a development build.
+    * ⚠️ Safari target is currently unused and "experimental".
+    * ℹ️ Edge target really is just "chrome" but different env just *incase* we need to do anything related to store policy changes.
+  * ⚠️ Omit the brackets in `[--release]` for a release build, omit entirely for a development build.
   * Builds to the `dist/` directory
 
 - `bun run redist`
