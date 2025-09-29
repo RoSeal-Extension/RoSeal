@@ -8,11 +8,10 @@ import {
 	setInvokeListener,
 } from "src/ts/helpers/communication/dom";
 import { getMessagesInject } from "src/ts/helpers/domInvokes";
-import { watch, watchOnce } from "src/ts/helpers/elements";
 import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
 import { hijackRequest } from "src/ts/helpers/hijack/fetch";
 import { hijackCreateElement, hijackState } from "src/ts/helpers/hijack/react";
-import { hijackFunction, onSet, onSetCb } from "src/ts/helpers/hijack/utils";
+import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import {
 	getOutfitById,
@@ -21,7 +20,6 @@ import {
 	type AvatarRestrictions,
 	type AvatarScales,
 	type AvatarType,
-	type LegacyUserAvatar,
 	type ListedUserAvatarItem,
 } from "src/ts/helpers/requests/services/avatar";
 import {
@@ -34,12 +32,10 @@ import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { getClosestHexColor, normalizeColor } from "src/ts/utils/colors";
 import { onWindowRefocus } from "src/ts/utils/dom";
 import {
-	assetTypes,
 	filterWornAssets,
 	getAssetTypeData,
 	insertAssetMetaIntoAssetList,
 } from "src/ts/utils/itemTypes";
-import { getAvatarAssetLink } from "src/ts/utils/links";
 import { MY_AVATAR_REGEX } from "src/ts/utils/regex";
 import { overrideRobloxMessages } from "src/ts/utils/robloxI18n";
 import tinycolor from "tinycolor2";
@@ -78,17 +74,6 @@ type Category = {
 	categoryRows: CategoryRow[];
 	active: boolean;
 	avatarInventoryRequest: MenuAvatarInventoryRequest;
-};
-
-type Item = {
-	id: number;
-	name: string;
-	thumbnailType?: string;
-	link?: string;
-	itemType?: string;
-	itemRestrictionIcon?: string;
-	isHidden?: boolean;
-	selected?: boolean;
 };
 
 type AssetType = {
@@ -156,51 +141,6 @@ function getHashParts() {
 	return location.hash.replaceAll("#!/", "").split("/").map(menuToHash);
 }
 
-export type AvatarControllerScope = angular.IScope & {
-	avatarLibrary: {
-		avatarDetails: LegacyUserAvatar;
-		avatarRules: AvatarRestrictions;
-	};
-	avatarCallLimiter: {
-		itemCardsDisabled: boolean;
-	};
-	onItemClicked: (
-		item: {
-			type: "Outfit";
-			id: number;
-			isEditable: boolean;
-		},
-		event: Event,
-	) => void;
-	onItemMenuButtonClicked: (
-		_: unknown,
-		item: {
-			id: number;
-		},
-		event: {
-			name: "Update";
-		},
-	) => void;
-	loadAvatarDetailsSuccessCallBack: (data: LegacyUserAvatar) => void;
-	refreshThumbnail: () => void;
-};
-
-export type AvatarBackControllerScope = angular.IScope & {
-	refreshThumbnail: () => void;
-	onLayeredClothingSlotDown: (item: AvatarAssetDefinitionWithTypes) => void;
-	showLayeredClothingSlotDown: (item: AvatarAssetDefinitionWithTypes) => void;
-	onLayeredClothingSlotUp: (item: AvatarAssetDefinitionWithTypes) => void;
-	showLayeredClothingSlotUp: (item: AvatarAssetDefinitionWithTypes) => void;
-	layeredClothingSlots: AvatarAssetDefinitionWithTypes[];
-};
-
-export type AvatarItemsScope = angular.IScope & {
-	loading: boolean;
-	items: Item[];
-	requestedAssetTypes: number[];
-	onItemClicked: (item: Item, $event: MouseEvent) => void;
-};
-
 export default {
 	id: "myAvatar",
 	regex: [MY_AVATAR_REGEX],
@@ -211,16 +151,6 @@ export default {
 					b?: SubcategoryMenu | CategoryRow,
 					c?: SubcategoryMenu | CategoryRow,
 			  ) => void)
-			| undefined;
-		let scope:
-			| (angular.IScope & {
-					onMenuClick: typeof menuClick;
-					tabs: (Category | CategoryRow)[];
-					selectedTab?: Category;
-					selectedRow?: CategoryRow;
-					selectedMenu?: SubcategoryMenu;
-					tabWithOpenMenu?: Category | CategoryRow;
-			  })
 			| undefined;
 
 		let justChangedTab = false;
@@ -239,7 +169,7 @@ export default {
 		let setSelectedData: ((data: typeof selectedData) => void) | undefined;
 
 		setInvokeListener("avatar.getHoveredTabName", () => {
-			return selectedData?.hoveredTab?.name ?? scope?.tabWithOpenMenu?.name;
+			return selectedData?.hoveredTab?.name;
 		});
 
 		const onHashChange = () => {
@@ -250,9 +180,7 @@ export default {
 
 			const currentHashParts = getHashParts();
 			if (currentHashParts.length > 0) {
-				const row = (reactTabs ?? scope?.tabs)?.find(
-					(tab) => menuToHash(tab.name) === currentHashParts[0],
-				);
+				const row = reactTabs?.find((tab) => menuToHash(tab.name) === currentHashParts[0]);
 				if (row) {
 					if (currentHashParts.length > 1) {
 						if ("subCategoryMenu" in row) {
@@ -261,10 +189,7 @@ export default {
 									(menu) => menuToHash(menu.name) === currentHashParts[1],
 								) ?? row.subCategoryMenu[0];
 
-							if (
-								(selectedData?.selectedSubcategory?.name ??
-									scope?.selectedMenu?.name) !== subMenu.name
-							) {
+							if (selectedData?.selectedSubcategory?.name !== subMenu.name) {
 								if (!selectedData) menuClick?.(row, subMenu);
 
 								if (
@@ -287,10 +212,7 @@ export default {
 									(category) => menuToHash(category.name) === currentHashParts[2],
 								);
 
-								if (
-									(selectedData?.selectedTab?.name ??
-										scope?.selectedRow?.name) !== category.name
-								) {
+								if (selectedData?.selectedTab?.name !== category.name) {
 									if (!selectedData) menuClick?.(row, subcategory, category);
 
 									if (
@@ -308,10 +230,7 @@ export default {
 							} else {
 								const category = row.categoryRows[0];
 
-								if (
-									category.name !==
-									(selectedData?.selectedTab?.name ?? scope?.selectedRow?.name)
-								) {
+								if (category.name !== selectedData?.selectedTab?.name) {
 									if (!selectedData) menuClick?.(row, undefined, category);
 
 									if (
@@ -329,8 +248,8 @@ export default {
 					} else {
 						if ("subCategoryMenu" in row) {
 							if (
-								(selectedData?.selectedSubcategory?.name ??
-									scope?.selectedMenu?.name) !== row.subCategoryMenu[0].name
+								selectedData?.selectedSubcategory?.name !==
+								row.subCategoryMenu[0].name
 							) {
 								if (!selectedData) menuClick?.(row, row.subCategoryMenu[0]);
 
@@ -348,10 +267,7 @@ export default {
 						} else {
 							const category = row.categoryRows[0];
 
-							if (
-								category.name !==
-								(selectedData?.selectedTab?.name ?? scope?.selectedRow?.name)
-							) {
+							if (category.name !== selectedData?.selectedTab?.name) {
 								if (!selectedData) menuClick?.(row, category);
 
 								if (
@@ -626,40 +542,6 @@ export default {
 					return value.current;
 				},
 			});
-
-			watch('[ng-controller="avatarController"]', (rightPanel) => {
-				const firstRender = !scope;
-
-				const localScope = (window.angular.element(rightPanel).scope() as typeof scope)!;
-				scope = localScope;
-
-				handleTabs(localScope.tabs, false);
-				onSetCb(localScope, "tabs", (tabs) => handleTabs(tabs, false));
-
-				menuClick = hijackFunction(
-					localScope,
-					(target, thisArg, args) => {
-						const [a, b, c] = args;
-						justChangedTab = true;
-						location.hash = `#!/${menuToHash(a.name)}/${
-							c
-								? `${menuToHash(c.name)}/${menuToHash(b?.name ?? "")}`
-								: menuToHash(b?.name ?? "")
-						}`;
-						return target.apply(thisArg, args);
-					},
-					"onMenuClick",
-					true,
-				);
-
-				if (firstRender) {
-					featureValueIsInject("myAvatarHashNav", true, onHashChange);
-
-					onSetCb(localScope, "tabs", () => {
-						featureValueIsInject("myAvatarHashNav", true, onHashChange);
-					});
-				}
-			});
 		});
 
 		featureValueIsInject("avatarItemLists", true, async () => {
@@ -704,45 +586,6 @@ export default {
 				}
 			};
 
-			watch("#avatar-items-container", (itemsContainer) => {
-				const itemsScope = window.angular.element(itemsContainer).scope<AvatarItemsScope>();
-				if (!itemsScope) return;
-
-				try {
-					let setValues: number[] = itemsScope.requestedAssetTypes;
-					Object.defineProperty(itemsScope, "requestedAssetTypes", {
-						get: () => {
-							if (scope?.selectedTab?.name === "Lists") {
-								const listAssetTypes: number[] = [];
-								for (const assetType of assetTypes) {
-									if (assetType.isAvatarAsset) {
-										listAssetTypes.push(assetType.assetTypeId);
-									}
-								}
-
-								return listAssetTypes;
-							}
-
-							return setValues;
-						},
-						set: (value) => {
-							setValues = value;
-						},
-					});
-				} catch {}
-			});
-
-			watch('[ng-controller="avatarController"]', (rightPanel) => {
-				scope = (window.angular.element(rightPanel).scope() as typeof scope) ?? scope;
-				if (!scope) return;
-
-				handleTabs(scope.tabs, false);
-				onSetCb(scope, "tabs", (tabs) => handleTabs(tabs, false));
-				onSetCb(scope, "tabWithOpenMenu", (tab) => {
-					sendMessage("avatar.hoveredTabNameChanged", tab?.name);
-				});
-				scope.$apply();
-			});
 			hijackState<typeof reactTabs>({
 				matches: (state) => {
 					return (
@@ -808,10 +651,8 @@ export default {
 					if (setReactTabs && reactTabs) {
 						handleTabs(reactTabs);
 						setReactTabs([...reactTabs]);
-					} else if (scope) {
-						handleTabs(scope.tabs);
-						scope.$apply();
 					}
+
 					return;
 				}
 				const categoryObj: Category = {
@@ -825,28 +666,9 @@ export default {
 						sortOption: "rosealLists_allLists",
 					},
 				};
-				const angularCategoryObj: Category = {
-					active: false,
-					label: listsMessage,
-					name: "Lists",
-					tabType: "Assets",
-					menuType: "Nested",
-					categoryRows: [],
-					avatarInventoryRequest: {
-						sortOption: "rosealLists_allLists",
-					},
-				};
+
 				const categoryRowObj: CategoryRow = {
 					title: "RoSeal.Lists",
-					name: "Lists",
-					tabType: "Assets",
-					subCategoryMenu: [],
-					avatarInventoryRequest: {
-						sortOption: "rosealLists_allLists",
-					},
-				};
-				const angularCategoryRowObj: CategoryRow = {
-					title: listsMessage,
 					name: "Lists",
 					tabType: "Assets",
 					subCategoryMenu: [],
@@ -867,21 +689,12 @@ export default {
 						shouldUseCategory = true;
 
 						const subCategoryMenus: SubcategoryMenu[] = [];
-						const angularSubCategoryMenus: SubcategoryMenu[] = [];
 						for (const item of list.items) {
 							const id = `RoSeal.Lists.${item.id}`;
 							overrideObj[id] = item.name;
 
 							subCategoryMenus.push({
 								label: id,
-								name: item.id,
-								assetType: "Shirt",
-								avatarInventoryRequest: {
-									sortOption: `rosealList_${item.id}`,
-								},
-							});
-							angularSubCategoryMenus.push({
-								label: item.name,
 								name: item.id,
 								assetType: "Shirt",
 								avatarInventoryRequest: {
@@ -898,25 +711,9 @@ export default {
 								sortOption: `rosealList_${list.id}`,
 							},
 						});
-						angularCategoryObj.categoryRows.push({
-							title: list.isDefault ? unsortedMessage : list.name,
-							name: list.id,
-							subCategoryMenu: angularSubCategoryMenus,
-							avatarInventoryRequest: {
-								sortOption: `rosealList_${list.id}`,
-							},
-						});
 					} else {
 						categoryRowObj.subCategoryMenu.push({
 							label: id,
-							name: list.id,
-							assetType: "Shirt",
-							avatarInventoryRequest: {
-								sortOption: `rosealList_${list.id}`,
-							},
-						});
-						angularCategoryRowObj.subCategoryMenu.push({
-							label: list.name,
 							name: list.id,
 							assetType: "Shirt",
 							avatarInventoryRequest: {
@@ -929,16 +726,11 @@ export default {
 				if (!shouldUseCategory) {
 					categoryRowObj.label = "RoSeal.Lists";
 					delete categoryRowObj.title;
-
-					angularCategoryRowObj.label = listsMessage;
-					delete angularCategoryRowObj.title;
 				}
 
 				await overrideRobloxMessages("Feature.Avatar", overrideObj);
 				categoryToSet = shouldUseCategory ? categoryObj : categoryRowObj;
-				angularCategoryToSet = shouldUseCategory
-					? angularCategoryObj
-					: angularCategoryRowObj;
+
 				if (setReactTabs && reactTabs) {
 					handleTabs(reactTabs);
 					setReactTabs([...reactTabs]);
@@ -947,9 +739,6 @@ export default {
 						setSelectedData({});
 						setSelectedData?.(resetSelectedData);
 					}
-				} else if (scope) {
-					handleTabs(scope.tabs, false);
-					scope.$apply();
 				}
 			});
 
@@ -1424,211 +1213,6 @@ export default {
 			);
 		});
 
-		watchOnce('[ng-controller="avatarController"]').then((controller) => {
-			const scope = window.angular?.element(controller).scope<AvatarControllerScope>();
-			if (!scope) {
-				return;
-			}
-
-			addMessageListener("avatar.updateAssets", (data) => {
-				const newData = {
-					...scope.avatarLibrary.avatarDetails,
-					assets: data,
-				};
-
-				scope.loadAvatarDetailsSuccessCallBack(newData);
-			});
-
-			addMessageListener("avatar.refreshThumbnail", () => {
-				scope.refreshThumbnail();
-				scope.$apply();
-			});
-
-			featureValueIsInject("advancedAvatarCustomization", true, () => {
-				onSet(window, "Roblox")
-					.then((roblox) => onSet(roblox, "AvatarAccoutrementService"))
-					.then((service) => {
-						hijackFunction(
-							service,
-							(target, thisArg, args) => {
-								args[1] = true;
-
-								return target.apply(thisArg, args);
-							},
-							"buildMetaForAssets",
-						);
-					});
-			});
-
-			featureValueIsInject("hexBodyColors", true, async () => {
-				const getColors = () =>
-					scope.avatarLibrary.avatarRules.bodyColorsPalette.map((color) => ({
-						rgb: tinycolor(color.hexColor).toRgb(),
-						...color,
-					}));
-				const getHexFromColorId = (colorId: number) => {
-					const color = scope.avatarLibrary.avatarRules.bodyColorsPalette.find(
-						(color) => color.brickColorId === colorId,
-					);
-
-					return normalizeColor(color?.hexColor ?? "000000", true);
-				};
-
-				addMessageListener("avatar.updateDetailsFromOutfit", (data) => {
-					const colors = getColors();
-
-					scope.loadAvatarDetailsSuccessCallBack({
-						...scope.avatarLibrary.avatarDetails,
-						...data,
-						scales: data.scale,
-						bodyColors: {
-							headColorId: getClosestHexColor(colors, data.bodyColor3s.headColor3)
-								.brickColorId,
-							leftArmColorId: getClosestHexColor(
-								colors,
-								data.bodyColor3s.leftArmColor3,
-							).brickColorId,
-							rightArmColorId: getClosestHexColor(
-								colors,
-								data.bodyColor3s.rightArmColor3,
-							).brickColorId,
-							leftLegColorId: getClosestHexColor(
-								colors,
-								data.bodyColor3s.leftLegColor3,
-							).brickColorId,
-							rightLegColorId: getClosestHexColor(
-								colors,
-								data.bodyColor3s.rightLegColor3,
-							).brickColorId,
-							torsoColorId: getClosestHexColor(colors, data.bodyColor3s.torsoColor3)
-								.brickColorId,
-						},
-					});
-					scope.refreshThumbnail();
-					scope.$apply();
-				});
-
-				watchOnce('[ng-controller="outfitsController"]').then((controller) => {
-					const outfitsScope = window.angular?.element(controller).scope<
-						angular.IScope & {
-							onItemClicked: AvatarControllerScope["onItemClicked"];
-							createOutfitClicked: () => void;
-						}
-					>();
-					if (!outfitsScope) {
-						return;
-					}
-
-					addMessageListener("avatar.refreshCharacters", () => {
-						outfitsScope.$broadcast("Roblox.Avatar.OutfitsChanged");
-					});
-
-					hijackFunction(
-						outfitsScope,
-						() => {
-							return sendMessage("avatar.createCharacter", undefined);
-						},
-						"createOutfitClicked",
-					);
-
-					hijackFunction(
-						outfitsScope,
-						(target, thisArg, argArray) => {
-							const [item, event] = argArray;
-							event?.preventDefault?.();
-
-							if (item.type === "Outfit" && item.isEditable) {
-								scope.avatarCallLimiter.itemCardsDisabled = true;
-								return invokeMessage("avatar.wearCharacter", {
-									characterId: item.id,
-								}).then(() => {
-									scope.avatarCallLimiter.itemCardsDisabled = false;
-									scope.$apply();
-								});
-							}
-
-							return target.apply(thisArg, argArray);
-						},
-						"onItemClicked",
-					);
-				});
-
-				hijackFunction(
-					scope,
-					(target, thisArg, argArray) => {
-						const [, item, event] = argArray;
-						if (event.name === "Update") {
-							return sendMessage("avatar.updateCharacter", {
-								characterId: item.id,
-							});
-						}
-
-						return target.apply(thisArg, argArray);
-					},
-					"onItemMenuButtonClicked",
-				);
-
-				watchOnce("[avatar-back]").then((container) => {
-					const backScope = window.angular
-						.element(container)
-						?.scope<AvatarBackControllerScope>();
-					if (!backScope) {
-						return;
-					}
-
-					let justCalled = false;
-					addMessageListener("avatar.updateBodyColors", (data) => {
-						const colors = getColors();
-
-						const newData = scope.avatarLibrary.avatarDetails;
-						newData.bodyColors = {
-							headColorId: getClosestHexColor(colors, data.headColor3).brickColorId,
-							leftArmColorId: getClosestHexColor(colors, data.leftArmColor3)
-								.brickColorId,
-							rightArmColorId: getClosestHexColor(colors, data.rightArmColor3)
-								.brickColorId,
-							leftLegColorId: getClosestHexColor(colors, data.leftLegColor3)
-								.brickColorId,
-							rightLegColorId: getClosestHexColor(colors, data.rightLegColor3)
-								.brickColorId,
-							torsoColorId: getClosestHexColor(colors, data.torsoColor3).brickColorId,
-						};
-						backScope.refreshThumbnail();
-						backScope.$apply();
-						scope.loadAvatarDetailsSuccessCallBack(newData);
-
-						justCalled = true;
-						scope.$apply();
-						scope.$broadcast("Roblox.Avatar.BodyColorsChanged");
-					});
-
-					scope.$on("Roblox.Avatar.BodyColorsChanged", () => {
-						if (justCalled) {
-							justCalled = false;
-							return;
-						}
-						const bodyColors = scope.avatarLibrary.avatarDetails.bodyColors;
-						sendMessage("avatar.bodyColorsChanged", {
-							headColor3: normalizeColor(getHexFromColorId(bodyColors.headColorId)),
-							leftArmColor3: normalizeColor(
-								getHexFromColorId(bodyColors.leftArmColorId),
-							),
-							rightArmColor3: normalizeColor(
-								getHexFromColorId(bodyColors.rightArmColorId),
-							),
-							leftLegColor3: normalizeColor(
-								getHexFromColorId(bodyColors.leftLegColorId),
-							),
-							rightLegColor3: normalizeColor(
-								getHexFromColorId(bodyColors.rightLegColorId),
-							),
-							torsoColor3: normalizeColor(getHexFromColorId(bodyColors.torsoColorId)),
-						});
-					});
-				});
-			});
-		});
-
 		featureValueIsInject("avatarUnlockedAccessoryLimits", true, () => {
 			onSet(window, "Roblox")
 				.then((roblox) => onSet(roblox, "AvatarAccoutrementService"))
@@ -1653,64 +1237,6 @@ export default {
 						"insertAssetMetaIntoAssetList",
 					);
 				});
-		});
-
-		featureValueIsInject("viewHiddenAvatarItems", true, () => {
-			watch("[avatar-items]", (container) => {
-				const scope = window.angular?.element(container).scope<AvatarItemsScope>();
-
-				if (!scope) {
-					return;
-				}
-
-				hijackFunction(
-					scope,
-					(target, thisArg, args) => {
-						if (args[0].isHidden && !args[0].selected) {
-							args[1]?.preventDefault();
-							return globalThis.open(args[0].link, "_blank");
-						}
-
-						return target.apply(thisArg, args);
-					},
-					"onItemClicked",
-				);
-
-				const checkScope = (init = false) =>
-					onSet(scope, "items", !init).then((items) => {
-						checkScope();
-
-						if (!items.length) {
-							return;
-						}
-
-						const checkItems = () => {
-							if (scope.items !== items) {
-								return;
-							}
-
-							for (const item of items) {
-								if (!item.thumbnailType && "assetType" in item) {
-									item.thumbnailType = "Asset";
-									item.link = getAvatarAssetLink(item.id, item.name, true);
-									item.itemType = "Asset";
-									item.itemRestrictionIcon = "icon-roseal-hidden-label";
-									item.isHidden = true;
-								}
-							}
-
-							scope.$apply();
-						};
-
-						if (scope.loading) {
-							onSet(scope, "loading", true).then(checkItems);
-						} else {
-							checkItems();
-						}
-					});
-
-				checkScope(true);
-			});
 		});
 	},
 } satisfies Page;
