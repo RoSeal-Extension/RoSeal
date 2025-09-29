@@ -385,7 +385,7 @@ export default {
 				"RoSeal.Head": headMessage,
 			});
 
-			const handleTabs = (tabs: (Category | CategoryRow)[], isReact: boolean) => {
+			const handleTabs = (tabs: (Category | CategoryRow)[]) => {
 				for (let i = 0; i < tabs.length; i++) {
 					const tab = tabs[i];
 					if (tab.name === "Body" && !("categoryRows" in tab)) {
@@ -405,7 +405,7 @@ export default {
 							if (row.name === "Hair") {
 								hairAccessory = row;
 							} else if (row.name === "DynamicHeads") {
-								if (isReact) row.assetType = "Head"; // fix weird bug
+								row.assetType = "Head"; // fix weird bug
 								dynamicHeads = row;
 							} else if (row.name === "Head") {
 								classicHeads = row;
@@ -420,10 +420,10 @@ export default {
 							} else if (row.name === "RightLegs") {
 								rightLegs = row;
 							} else if (row.name === "BodyColors") {
-								if (isReact) row.assetType = "Head"; // fix weird bug
+								row.assetType = "Head"; // fix weird bug
 								skinColor = row;
 							} else if (row.name === "Scale") {
-								if (isReact) row.assetType = "Head"; // fix weird bug
+								row.assetType = "Head"; // fix weird bug
 								scales = row;
 							} else if (row.name === "Torso") {
 								torso = row;
@@ -440,14 +440,14 @@ export default {
 							menuType: "Nested",
 							categoryRows: [
 								{
-									title: isReact ? "RoSeal.Head" : headMessage,
+									title: "RoSeal.Head",
 									name: "Head",
 									subCategoryMenu: [
 										dynamicHeads,
 										hairAccessory,
 										{
 											name: "Eyebrows",
-											label: isReact ? "RoSeal.Eyebrows" : eyeBrowsMessage,
+											label: "RoSeal.Eyebrows",
 											assetType: eyeBrowsType?.alternativeTypes?.[0],
 											avatarInventoryRequest: {
 												sortOption: `rosealAssetType_${eyeBrowsType?.assetTypeId}`,
@@ -455,7 +455,7 @@ export default {
 										},
 										{
 											name: "Eyelashes",
-											label: isReact ? "RoSeal.Eyelashes" : eyeLashesMessage,
+											label: "RoSeal.Eyelashes",
 											assetType: eyeLashesType?.alternativeTypes?.[0],
 											avatarInventoryRequest: {
 												sortOption: `rosealAssetType_${eyeLashesType?.assetTypeId}`,
@@ -463,9 +463,7 @@ export default {
 										},
 										{
 											name: "MoodAnimation",
-											label: isReact
-												? "RoSeal.MoodAnimation"
-												: moodAnimationMessage,
+											label: "RoSeal.MoodAnimation",
 											assetType: moodAnimationType?.alternativeTypes?.[0],
 											avatarInventoryRequest: {
 												sortOption: `rosealAssetType_${moodAnimationType?.assetTypeId}`,
@@ -473,9 +471,7 @@ export default {
 										},
 										{
 											name: "DynamicHeadsAsset",
-											label: isReact
-												? "RoSeal.DynamicHeads"
-												: dynamicHeadsMessage,
+											label: "RoSeal.DynamicHeads",
 											assetType: dynamicHeadsType?.alternativeTypes?.[0],
 											avatarInventoryRequest: {
 												sortOption: `rosealAssetType_${dynamicHeadsType?.assetTypeId}`,
@@ -484,12 +480,12 @@ export default {
 									],
 								},
 								{
-									title: isReact ? "RoSeal.ClassicHead" : classicHeadMessage,
+									title: "RoSeal.ClassicHead",
 									name: "ClassicHead",
 									subCategoryMenu: [classicHeads, classicFaces],
 								},
 								{
-									title: isReact ? "RoSeal.BodyParts" : bodyPartsMessage,
+									title: "RoSeal.BodyParts",
 									name: "BodyParts",
 									subCategoryMenu: [
 										leftArms,
@@ -500,9 +496,9 @@ export default {
 									],
 								},
 								{
-									title: isReact ? "RoSeal.Body" : bodyMessage,
+									title: "RoSeal.Body",
 									name: "Body",
-									label: isReact ? "RoSeal.Body" : bodyMessage,
+									label: "RoSeal.Body",
 									subCategoryMenu: [scales, skinColor],
 								},
 							],
@@ -536,7 +532,7 @@ export default {
 				},
 				setState: ({ value }) => {
 					if (Array.isArray(value.current)) {
-						handleTabs(value.current, true);
+						handleTabs(value.current);
 					}
 
 					return value.current;
@@ -558,16 +554,15 @@ export default {
 			});
 
 			let categoryToSet: CategoryRow | Category | undefined;
-			let angularCategoryToSet: CategoryRow | Category | undefined;
 
 			let data: AvatarItemListsStorageValue | undefined;
 
-			const handleTabs = (data: typeof reactTabs, isReact = true) => {
+			const handleTabs = (data: typeof reactTabs) => {
 				if (!data) return;
 
 				let hasListsTab = false;
 
-				const target = isReact ? categoryToSet : angularCategoryToSet;
+				const target = categoryToSet;
 				for (let i = 0; i < data.length; i++) {
 					const category = data[i];
 					if (category.name === "Lists") {
