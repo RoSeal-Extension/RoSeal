@@ -2736,6 +2736,24 @@
 				"$context": ""
 			}
 		},
+		"improvedUserCurrentlyWearing": {
+			"name": {
+				"$message": "Improved user currently wearing section"
+			},
+			"description": {
+				"$message": "When enabled, uses RoSeal's version of the currently wearing section which adds Bundle thumbnails to the bottom right of items that are included in bundles."
+			},
+			"separateAnimationsTab": {
+				"name": {
+					"$message": "Separate Animation assets into their own tab"
+				}
+			},
+			"showTotalValue": {
+				"name": {
+					"$message": "Show the total value of the user's outfit and emotes next to the Currently Wearing header"
+				}
+			}
+		},
 		"userOmniSearchOverridePageLimit": {
 			"name": {
 				"$message": "Override the amount of results loaded at once in the users search page",
@@ -8205,10 +8223,18 @@
 					"$message": "Assets",
 					"$context": "View assets tab"
 				},
+				"animations": {
+					"$message": "Animations",
+					"$context": "View animations tab"
+				},
 				"emotes": {
 					"$message": "Emotes",
 					"$context": "View emotes tab"
 				}
+			},
+			"totalValue": {
+				"$context": "Total user outfit value next to the title ",
+				"$message": "Total Value: {value}"
 			},
 			"download3DAvatar": {
 				"$context": "Button that downloads a 3D avatar zip file when clicked",

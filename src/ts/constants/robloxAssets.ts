@@ -21,3 +21,20 @@ export const PROFILE_BACKGROUND_ASSETS: ProfileBackgroundAsset[] = [
 	{ hex: "#d9fbfe", modelAssetId: 114496949905759 },
 	{ hex: "#eff4fe", modelAssetId: 100343111787556 },
 ];
+
+export const RTHRO_ASSET_IDS = [
+	// Walk
+	2510242378,
+	// Climb
+	2510230574,
+	// Fall
+	2510233257,
+	// Idle
+	2510235063,
+	// Jump
+	2510236649,
+	// Run
+	2510238627,
+	// Swim
+	2510240941,
+];

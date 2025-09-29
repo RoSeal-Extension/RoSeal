@@ -1956,6 +1956,34 @@ export const sections = [
 					},
 					{
 						type: "Regular",
+						id: "improvedUserCurrentlyWearing",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
+						subfeatures: {
+							items: [
+								{
+									type: "Regular",
+									id: "improvedUserCurrentlyWearing.separateAnimationsTab",
+									component: {
+										type: "Toggle",
+										defaultValue: true,
+									},
+								},
+								{
+									type: "Regular",
+									id: "improvedUserCurrentlyWearing.showTotalValue",
+									component: {
+										type: "Toggle",
+										defaultValue: true,
+									},
+								},
+							],
+						},
+					},
+					{
+						type: "Regular",
 						id: "userProfileAddPadding",
 						component: {
 							type: "Toggle",

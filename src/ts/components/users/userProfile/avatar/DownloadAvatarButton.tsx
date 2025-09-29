@@ -1,6 +1,6 @@
-import usePromise from "../../hooks/usePromise";
-import useProfileData from "../../hooks/useProfileData";
-import Button from "../../core/Button";
+import usePromise from "../../../hooks/usePromise";
+import useProfileData from "../../../hooks/useProfileData";
+import Button from "../../../core/Button";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { invokeMessage } from "src/ts/helpers/communication/dom";
 import { getUser3dThumbnailDownloadData } from "src/ts/utils/avatar.inject";

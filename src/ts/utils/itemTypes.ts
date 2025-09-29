@@ -32,6 +32,7 @@ export type AssetTypeData = {
 	assetType: string;
 	alternativeTypes?: string[];
 
+	isBodyPart?: boolean;
 	canHaveThumbnail?: boolean;
 	isAvatarAsset?: boolean;
 	isWearable?: boolean;
@@ -176,6 +177,7 @@ export const assetTypes = [
 		is3D: true,
 		isAvatarAsset: true,
 		isWearable: true,
+		isBodyPart: true,
 	},
 	{
 		assetType: "RightArm",
@@ -184,6 +186,7 @@ export const assetTypes = [
 		is3D: true,
 		isAvatarAsset: true,
 		isWearable: true,
+		isBodyPart: true,
 	},
 	{
 		assetType: "LeftArm",
@@ -192,6 +195,7 @@ export const assetTypes = [
 		is3D: true,
 		isAvatarAsset: true,
 		isWearable: true,
+		isBodyPart: true,
 	},
 	{
 		assetType: "LeftLeg",
@@ -200,6 +204,7 @@ export const assetTypes = [
 		is3D: true,
 		isAvatarAsset: true,
 		isWearable: true,
+		isBodyPart: true,
 	},
 	{
 		assetType: "RightLeg",
@@ -208,6 +213,7 @@ export const assetTypes = [
 		is3D: true,
 		isAvatarAsset: true,
 		isWearable: true,
+		isBodyPart: true,
 	},
 	{
 		assetType: "Package",

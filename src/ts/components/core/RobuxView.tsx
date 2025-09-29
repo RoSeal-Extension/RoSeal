@@ -17,6 +17,7 @@ export type RobuxViewProps = {
 	containerClassName?: string;
 	textClassName?: string;
 	iconClassName?: string;
+	showZero?: boolean;
 };
 
 export default function RobuxView({
@@ -33,14 +34,16 @@ export default function RobuxView({
 	containerClassName,
 	textClassName,
 	iconClassName,
+	showZero,
 }: RobuxViewProps) {
 	const robuxAmount =
-		priceInRobux &&
+		priceInRobux !== undefined &&
+		priceInRobux !== null &&
 		asLocaleString(priceInRobux, {
 			useGrouping,
 		});
 	return priceInRobux || isForSale ? (
-		priceInRobux ? (
+		priceInRobux || showZero ? (
 			<span
 				className={classNames("roseal-robux-view", containerClassName, {
 					"align-robux": alignCenter,

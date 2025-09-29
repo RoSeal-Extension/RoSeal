@@ -151,7 +151,7 @@
         }
     }
 
-    .roseal-emotes-assets-toggle {
+    .roseal-accoutrements-pill {
         @media (max-width: 767px) {
             margin-top: 10px;
         }
@@ -433,4 +433,29 @@
 
 .roseal-profile-stat .text-lead {
     text-align: center;
+}
+
+.roseal-currently-wearing {
+    .accoutrement-image-container {
+        position: relative;
+    }
+    .accoutrement-bundle-container {
+        border-bottom-left-radius: 0 !important;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 45px !important;
+        height: 45px !important;
+        background-color: var(--RS_BACKGROUND-3-COLOR) !important;
+        border-top-right-radius: 0 !important;
+    }
+}
+
+.roseal-total-value {
+    padding-left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    height: 33px;
+    line-height: 33px;
 }

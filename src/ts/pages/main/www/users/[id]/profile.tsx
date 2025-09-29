@@ -7,8 +7,7 @@ import BlockedScreen from "src/ts/components/users/userProfile/BlockedScreen";
 import UserCommunityJoinedDateCarousel from "src/ts/components/users/userProfile/communities/JoinedDateCarousel";
 import UserCommunityJoinedDateGrid from "src/ts/components/users/userProfile/communities/JoinedDateGrid";
 import CustomizeProfileButton from "src/ts/components/users/userProfile/CustomizeProfileButton";
-import Download3DAvatarButton from "src/ts/components/users/userProfile/DownloadAvatarButton";
-import UserProfileEquippedEmotes from "src/ts/components/users/userProfile/EquippedEmotes";
+import Download3DAvatarButton from "src/ts/components/users/userProfile/avatar/DownloadAvatarButton";
 import FilteredTextPreview from "src/ts/components/users/userProfile/FilteredTextPreview";
 import UserJoinDate from "src/ts/components/users/userProfile/JoinDate";
 import UserLastSeen from "src/ts/components/users/userProfile/LastSeen";
@@ -39,6 +38,7 @@ import { getLangNamespace } from "src/ts/helpers/domInvokes";
 import { watch, watchAttributes, watchOnce, watchTextContent } from "src/ts/helpers/elements";
 import {
 	featureValueIs,
+	getFeatureValue,
 	multigetFeaturesValues,
 	setFeatureValue,
 } from "src/ts/helpers/features/helpers";
@@ -71,6 +71,7 @@ import {
 	renderIn,
 	renderPrepend,
 } from "src/ts/utils/render";
+import UserProfileCurrentlyWearing from "src/ts/components/users/userProfile/avatar/CurrentlyWearing";
 
 export default {
 	id: "user.profile",
@@ -97,13 +98,27 @@ export default {
 			}),
 		);
 
-		featureValueIs("viewUserEquippedEmotes", true, () =>
-			watchOnce(".profile-accoutrements-container:not(.roseal-emotes-container)").then(
-				(container) => {
-					renderBefore(<UserProfileEquippedEmotes userId={profileUserId} />, container);
-				},
-			),
-		);
+		getFeatureValue("improvedUserCurrentlyWearing").then((data) => {
+			if (data) {
+				watchOnce("#profile-current-wearing-avatar .profile-avatar-right").then((right) =>
+					renderAsContainer(
+						<UserProfileCurrentlyWearing userId={profileUserId} />,
+						right,
+					),
+				);
+			} else {
+				featureValueIs("viewUserEquippedEmotes", true, () =>
+					watchOnce(
+						".profile-accoutrements-container:not(.roseal-emotes-container)",
+					).then((container) => {
+						renderBefore(
+							<UserProfileCurrentlyWearing userId={profileUserId} forEmotes />,
+							container,
+						);
+					}),
+				);
+			}
+		});
 
 		featureValueIs("userProfileDownload3DAvatar", true, () =>
 			watchOnce<HTMLDivElement>(

@@ -958,6 +958,25 @@ export type ListItemSocialConnectionsResponse = {
 	cursor: string;
 };
 
+export type MultigetLookPurchaseDetailsItem = {
+	id: number;
+};
+
+export type MultigetLookPurchaseDetailsRequest = {
+	assets: MultigetLookPurchaseDetailsItem[];
+};
+
+export type LookPreview = {
+	totalValue: number;
+	totalPrice: number;
+	items: LookItemDetails<MarketplaceItemType>[];
+	nonVisibleAssetIds: number[];
+};
+
+export type MultigetLookPurchaseDetailsResponse = {
+	look: LookPreview;
+};
+
 export async function searchItems(request: SearchItemsRequest): Promise<SearchItemsResponse> {
 	return (
 		await httpClient.httpRequest<SearchItemsResponse>({
@@ -1444,6 +1463,21 @@ export async function listItemSocialConnections(request: ListItemSocialConnectio
 			},
 			errorHandling: "BEDEV2",
 			overridePlatformType: "Desktop",
+			includeCredentials: true,
+		})
+	).body;
+}
+
+export async function multigetLookPurchaseDetails(request: MultigetLookPurchaseDetailsRequest) {
+	return (
+		await httpClient.httpRequest<MultigetLookPurchaseDetailsResponse>({
+			method: "POST",
+			url: getRobloxUrl("apis", "/look-api/v1/looks/purchase-details"),
+			body: {
+				type: "json",
+				value: request,
+			},
+			errorHandling: "BEDEV2",
 			includeCredentials: true,
 		})
 	).body;
