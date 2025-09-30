@@ -48,16 +48,19 @@ export default function PostAvatarButton() {
 		</Button>
 	);
 
-	if (isRESTError) {
+	// R6 is not supported :<
+	if (isRESTError || currentAvatar.avatarType === "R6") {
 		return (
 			<Tooltip
 				button={button}
 				containerId="post-avatar-btn-container"
 				includeContainerClassName={false}
 			>
-				{error.errors?.[0]?.userFacingMessage ??
-					error.errors?.[0]?.message ??
-					getMessage("avatar.postAvatar.buttonText.errorTooltip")}
+				{currentAvatar.avatarType === "R6"
+					? getMessage("avatar.postAvatar.buttonText.tooltip.r6Unsupported")
+					: ((error as RESTError).errors?.[0]?.userFacingMessage ??
+						(error as RESTError).errors?.[0]?.message ??
+						getMessage("avatar.postAvatar.buttonText.tooltip.unknown"))}
 			</Tooltip>
 		);
 	}

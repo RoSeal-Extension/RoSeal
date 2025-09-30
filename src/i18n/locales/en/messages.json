@@ -10899,8 +10899,13 @@
 			"buttonText": {
 				"$context": "Post Avatar button text next to Advanced button",
 				"$message": "Post Avatar",
-				"errorTooltip": {
-					"$message": "Unknown error occurred"
+				"tooltip": {
+					"unknown": {
+						"$message": "Unknown error occurred"
+					},
+					"r6Unsupported": {
+						"$message": "R6 is not currently supported"
+					}
 				}
 			},
 			"modal": {

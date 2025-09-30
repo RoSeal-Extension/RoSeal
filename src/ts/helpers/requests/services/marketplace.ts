@@ -515,7 +515,7 @@ export type LookType = "Outfit" | "Avatar";
 
 export type LookAvatarProperties = {
 	scale: AvatarScales;
-	bodyColors3s: AvatarColors3s;
+	bodyColor3s: AvatarColors3s;
 	playerAvatarType: AvatarType;
 };
 

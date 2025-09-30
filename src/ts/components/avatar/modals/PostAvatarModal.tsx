@@ -36,6 +36,7 @@ export default function PostAvatarModal({ show, avatar, setShow }: PostAvatarMod
 	const onClickAction = useCallback(() => {
 		if (createdLook) {
 			window.open(getAvatarLookLink(createdLook.id, name), "_blank");
+			setShow(false);
 			return;
 		}
 
@@ -49,15 +50,15 @@ export default function PostAvatarModal({ show, avatar, setShow }: PostAvatarMod
 			assets: avatar.assets,
 			avatarProperties: {
 				playerAvatarType: avatar.avatarType,
-				bodyColors3s: avatar.bodyColors,
+				bodyColor3s: avatar.bodyColors,
 				scale: {
-					bodyType: avatar.scales.bodyType.value,
+					bodyType: avatar.scales.bodyType.value / 100,
 					// sometimes "depth" is undefined...
-					depth: avatar.scales.depth?.value,
-					head: avatar.scales.head.value,
-					height: avatar.scales.height.value,
-					proportion: avatar.scales.proportion.value,
-					width: avatar.scales.width.value,
+					depth: (avatar.scales.depth?.value ?? 100) / 100,
+					head: avatar.scales.head.value / 100,
+					height: avatar.scales.height.value / 100,
+					proportion: avatar.scales.proportion.value / 100,
+					width: avatar.scales.width.value / 100,
 				},
 			},
 		})
