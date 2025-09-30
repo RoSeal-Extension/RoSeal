@@ -247,7 +247,7 @@ export function getConfigureAvatarAssetLink(assetId: number) {
 }
 
 export function getDevExLink() {
-	return getLink("create", "/dashboard/transactions");
+	return getLink("create", "/dashboard/devex");
 }
 
 export function getManagePassesLink(universeId: number) {
