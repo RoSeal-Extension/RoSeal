@@ -16,7 +16,7 @@ import {
 import classNames from "classnames";
 import { emoteAssetTypeName, getAssetTypeData } from "src/ts/utils/itemTypes";
 import { RTHRO_ASSET_IDS } from "src/ts/constants/robloxAssets";
-import { watch } from "src/ts/helpers/elements";
+import { watch, watchTextContent } from "src/ts/helpers/elements";
 import RobuxView from "src/ts/components/core/RobuxView";
 import { createPortal } from "preact/compat";
 import useFeatureValue from "src/ts/components/hooks/useFeatureValue";
@@ -180,6 +180,24 @@ export default function UserProfileCurrentlyWearing({
 			containerHeaderRef.current = el;
 		});
 	}, [forEmotes, userId]);
+
+	useEffect(() => {
+		if (forEmotes || !showTotalValue || !containerHeaderRef.current) return;
+
+		const h2 = containerHeaderRef.current.querySelector("h2");
+		if (!h2) return;
+
+		const handleh2 = () => {
+			// rogold is not localized, so we are ok
+			const textNode = h2.childNodes[0];
+			if (!textNode.nodeValue?.includes(" | Outfit Cost")) return;
+
+			h2.replaceChildren(textNode.nodeValue.replace(" | Outfit Cost", ""));
+		};
+		handleh2();
+
+		return watchTextContent(h2, handleh2);
+	}, [containerHeaderRef.current, forEmotes, showTotalValue]);
 
 	const content = (
 		<>
