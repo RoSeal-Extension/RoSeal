@@ -8,9 +8,9 @@
 	"beta": false,
 	"author": "roseal.live",
 	// Public version shown to users
-	"version": "2.1.11",
+	"version": "2.1.12",
 	// The store version
-	"store_version": "2.1.11.0",
+	"store_version": "2.1.12.0",
 	"version_name": "__manifest_version__ (Gaia)",
 
 	"browser_specific_settings": {
@@ -49,7 +49,7 @@
 	"permissions": ["storage", "declarativeNetRequestWithHostAccess", "webRequest", "alarms"],
 	"optional_permissions": ["cookies", "notifications"],
 
-	"host_permissions": ["*://{ROBLOX_DOMAIN('*')}/*", "*://{ROSEAL_DOMAIN('*')}/*"],
+	"host_permissions": ["*://{Roblox_DOMAIN('*')}/*", "*://{ROSEAL_DOMAIN('*')}/*"],
 	"optional_host_permissions": ["*://{ROLIMONS_DOMAIN('*')}/*"],
 
 	"content_scripts": [
@@ -60,13 +60,13 @@
 			"run_at": "document_start"
 		},
 		{
-			"matches": ["https://{ROBLOX_DOMAIN('www')}/*", "https://{ROBLOX_DOMAIN('create')}/*"],
+			"matches": ["https://{Roblox_DOMAIN('www')}/*", "https://{Roblox_DOMAIN('create')}/*"],
 			"js": ["js/main.js"],
 			"all_frames": true,
 			"run_at": "document_start"
 		},
 		{
-			"matches": ["https://{ROBLOX_DOMAIN('www')}/*", "https://{ROBLOX_DOMAIN('create')}/*"],
+			"matches": ["https://{Roblox_DOMAIN('www')}/*", "https://{Roblox_DOMAIN('create')}/*"],
 			"js": ["js/inject.js"],
 			"world": "MAIN",
 			"all_frames": true,
