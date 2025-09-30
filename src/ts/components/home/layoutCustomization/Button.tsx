@@ -359,8 +359,10 @@ export default function CustomizeLayoutButton({ state }: CustomizeLayoutButtonPr
 
 													const oldSort = layout.sorts.find(
 														(sort2) =>
-															sort2.topicId === data.sort.topicId &&
-															sort2.typeIndex === data.typeIndex,
+															sort.data.type === "sort" &&
+															sort2.topicId ===
+																sort.data.sort.topicId &&
+															sort2.typeIndex === sort.data.typeIndex,
 													);
 
 													if (
