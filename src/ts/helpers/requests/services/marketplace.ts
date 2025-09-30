@@ -5,7 +5,7 @@ import { getOrSetCache, getOrSetCaches } from "../../cache.ts";
 import { renderGenericChallenge } from "../../domInvokes.ts";
 import { httpClient } from "../main.ts";
 import type { Agent } from "./assets.ts";
-import type { AvatarAssetMeta, AvatarColors3s, AvatarType, ScalesScalable } from "./avatar.ts";
+import type { AvatarAssetMeta, AvatarColors3s, AvatarScales, AvatarType } from "./avatar.ts";
 import type { SortOrder } from "./badges.ts";
 
 export type AnyItemType = "Asset" | "Bundle" | "Badge" | "GamePass" | "DeveloperProduct" | "Look";
@@ -514,7 +514,7 @@ export type LookItemDetails<T extends MarketplaceItemType> = {
 export type LookType = "Outfit" | "Avatar";
 
 export type LookAvatarProperties = {
-	scale: ScalesScalable;
+	scale: AvatarScales;
 	bodyColors3s: AvatarColors3s;
 	playerAvatarType: AvatarType;
 };
@@ -975,6 +975,56 @@ export type LookPreview = {
 
 export type MultigetLookPurchaseDetailsResponse = {
 	look: LookPreview;
+};
+
+export type ListUserLooksRequest = {
+	userId: number;
+	limit: number;
+	cursor?: string;
+};
+
+export type ListedUserLookItem = {
+	id: number;
+	meta?: AvatarAssetMeta;
+};
+
+export type ListedUserLook = {
+	lookId: string;
+	moderationStatus: LookModerationStatus;
+	displayProperties: LookDisplayProperties | null;
+	lookType: LookType;
+	assets: ListedUserLookItem[];
+	bundles: ListedUserLookItem[];
+};
+
+export type ListUserLooksResponse = {
+	data: ListedUserLook[];
+	nextCursor?: string | null;
+	previousCursor?: string | null;
+};
+
+export type DeleteUserLookRequest = {
+	lookId: string;
+};
+
+export type PreviewUserLookCreationRequest = {
+	assets: ListedUserLookItem[];
+};
+
+export type PreviewUserLookCreation = {
+	look: LookPreview;
+	warnings: unknown[];
+};
+
+export type CreateUserLookRequest = {
+	name: string;
+	description: string;
+	assets: ListedUserLookItem[];
+	avatarProperties: LookAvatarProperties;
+};
+
+export type CreateUserLookResponse = {
+	id: string;
 };
 
 export async function searchItems(request: SearchItemsRequest): Promise<SearchItemsResponse> {
@@ -1476,6 +1526,57 @@ export async function multigetLookPurchaseDetails(request: MultigetLookPurchaseD
 			body: {
 				type: "json",
 				value: request,
+			},
+			errorHandling: "BEDEV2",
+			includeCredentials: true,
+		})
+	).body;
+}
+
+export async function listUserLooks({ userId, ...request }: ListUserLooksRequest) {
+	return (
+		await httpClient.httpRequest<ListUserLooksResponse>({
+			url: `${getRobloxUrl("apis")}/look-api/v1/users/${userId}/looks`,
+			search: request,
+			errorHandling: "BEDEV2",
+			includeCredentials: true,
+		})
+	).body;
+}
+
+export async function deleteUserLook({ lookId }: DeleteUserLookRequest) {
+	await httpClient.httpRequest<void>({
+		method: "DELETE",
+		url: `${getRobloxUrl("apis")}/look-api/v1/looks/${lookId}`,
+		errorHandling: "BEDEV2",
+		includeCredentials: true,
+		expect: "none",
+	});
+}
+
+export async function previewUserLookCreation(data: PreviewUserLookCreationRequest) {
+	return (
+		await httpClient.httpRequest<PreviewUserLookCreation>({
+			method: "POST",
+			url: getRobloxUrl("apis", "/look-api/v1/looks/preview"),
+			body: {
+				type: "json",
+				value: data,
+			},
+			errorHandling: "BEDEV2",
+			includeCredentials: true,
+		})
+	).body;
+}
+
+export async function createUserLook(data: CreateUserLookRequest) {
+	return (
+		await httpClient.httpRequest<CreateUserLookResponse>({
+			method: "POST",
+			url: getRobloxUrl("apis", "/look-api/v1/looks/create"),
+			body: {
+				type: "json",
+				value: data,
 			},
 			errorHandling: "BEDEV2",
 			includeCredentials: true,

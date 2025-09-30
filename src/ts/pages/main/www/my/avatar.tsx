@@ -6,6 +6,7 @@ import AvatarEditorSearchBar from "src/ts/components/avatar/filters/AvatarEditor
 import CreateCharacterModal from "src/ts/components/avatar/modals/CreateCharacterModal";
 import EditItemListsModal from "src/ts/components/avatar/modals/EditItemListsModal";
 import UpdateCharacterModal from "src/ts/components/avatar/modals/UpdateCharacterModal";
+import PostAvatarButton from "src/ts/components/avatar/PostAvatar";
 import SetBodyColor from "src/ts/components/avatar/SetBodyColor";
 import SetBodyColors from "src/ts/components/avatar/SetBodyColors";
 import AddToAvatarListButton from "src/ts/components/avatarItem/lists/AddToListButton";
@@ -54,6 +55,12 @@ export default {
 	regex: [MY_AVATAR_REGEX],
 	css: ["css/avatar.css"],
 	fn: () => {
+		featureValueIs("avatarEditorPostAvatar", true, () =>
+			watchOnce(".left-wrapper .redraw-avatar").then((el) => {
+				renderAfter(<PostAvatarButton />, el);
+			}),
+		);
+
 		featureValueIs("avatarEditorSearch", true, () => {
 			const keyword = signal<string>("");
 
@@ -177,15 +184,6 @@ export default {
 			});
 		});
 
-		featureValueIs("viewHiddenAvatarItems", true, () => {
-			watchOnce("[avatar-base]").then((base) => {
-				base.style.setProperty(
-					"--data-roseal-hidden-label-content",
-					`"${getMessage("avatarItem.itemLabels.hidden")}"`,
-				);
-			});
-		});
-
 		featureValueIs("avatarItemLists", true, () => {
 			const showModal = signal(false);
 			watch(".right-panel .tab-horizontal-submenu", (panel) => {
@@ -209,6 +207,7 @@ export default {
 					}
 				});
 				if (!value) return;
+
 				sendMessage("avatar.setItemLists", value);
 			});
 

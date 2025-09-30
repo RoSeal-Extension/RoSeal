@@ -1,9 +1,10 @@
 import classNames from "classnames";
 import type { JSX } from "preact/jsx-runtime";
 
-export type TextInputProps = OmitExtend<
-	JSX.IntrinsicElements["input"],
+export type TextInputProps<T extends "textarea" | "input"> = OmitExtend<
+	JSX.IntrinsicElements[T],
 	{
+		as?: T;
 		onType?: (value: string) => void;
 		onChange?: (value: string) => void;
 		onEnter?: (value: string) => void;
@@ -19,7 +20,8 @@ export type TextInputProps = OmitExtend<
 	}
 >;
 
-export default function TextInput({
+export default function TextInput<T extends "textarea" | "input" = "input">({
+	as: _as,
 	className,
 	disabled,
 	typePattern,
@@ -32,15 +34,17 @@ export default function TextInput({
 	onKeyDown,
 	onEnter,
 	...otherProps
-}: TextInputProps) {
+}: TextInputProps<T>) {
+	const Type = _as ?? "input";
+
 	return (
-		<input
+		<Type
 			className={classNames("input-field form-control", className, {
 				disabled,
 			})}
 			type="text"
 			onKeyDown={(e) => {
-				if (e.key === "Enter") {
+				if (e.key === "Enter" && Type !== "textarea") {
 					onEnter?.(e.currentTarget.value);
 
 					if (blurOnEnter) {
@@ -53,6 +57,7 @@ export default function TextInput({
 						return e.preventDefault();
 					}
 
+					// @ts-expect-error: fine
 					onKeyDown?.(e);
 				}
 			}}

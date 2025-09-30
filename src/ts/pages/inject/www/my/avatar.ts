@@ -8,12 +8,13 @@ import {
 	setInvokeListener,
 } from "src/ts/helpers/communication/dom";
 import { getMessagesInject } from "src/ts/helpers/domInvokes";
-import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
+import { featureValueIsInject, getFeatureValueInject } from "src/ts/helpers/features/helpersInject";
 import { hijackRequest } from "src/ts/helpers/hijack/fetch";
 import { hijackCreateElement, hijackState } from "src/ts/helpers/hijack/react";
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import {
+	type AvatarColors3s,
 	getOutfitById,
 	type AvatarAssetDefinitionWithTypes,
 	type AvatarBodyColorsLegacy,
@@ -133,6 +134,13 @@ type ReactScales = Record<
 		value: number;
 	}
 >;
+
+export type ReactAvatarEditorPageAvatar = {
+	assets: AvatarAssetDefinitionWithTypes[];
+	bodyColors: AvatarColors3s;
+	scales: ReactScales;
+	avatarType: AvatarType;
+};
 
 function menuToHash(name: string) {
 	return name.replaceAll(" ", "-")?.toLowerCase();
@@ -650,6 +658,7 @@ export default {
 
 					return;
 				}
+
 				const categoryObj: Category = {
 					active: false,
 					label: "RoSeal.Lists",
@@ -943,44 +952,91 @@ export default {
 			globalThis.addEventListener("hashchange", onHashChange);
 		});
 
-		featureValueIsInject("hexBodyColors", true, () => {
-			let prevCreateOutfitDialogOpen = false;
-			let refreshOutfits: (() => void) | undefined;
+		let prevCreateOutfitDialogOpen = false;
+		let refreshOutfits: (() => void) | undefined;
 
-			let prevOutfitToUpdateId: number | undefined;
+		let prevOutfitToUpdateId: number | undefined;
 
-			let setAvatarCardsLoading: ((loading: boolean) => void) | undefined;
+		let setAvatarCardsLoading: ((loading: boolean) => void) | undefined;
 
-			let avatarRules: AvatarRestrictions | undefined;
+		let avatarRules: AvatarRestrictions | undefined;
 
-			let setBodyColors: ((colors: AvatarBodyColorsLegacy) => void) | undefined;
-			let setAvatarType: ((type: AvatarType) => void) | undefined;
-			let setCurrentlyWornAssets:
-				| ((assets: AvatarAssetDefinitionWithTypes[]) => void)
-				| undefined;
+		let bodyColors: AvatarColors3s | undefined;
+		let setBodyColors: ((colors: AvatarBodyColorsLegacy) => void) | undefined;
 
-			let scales: ReactScales | undefined;
-			let setScales: ((scales: ReactScales) => void) | undefined;
+		let avatarType: AvatarType | undefined;
+		let setAvatarType: ((type: AvatarType) => void) | undefined;
 
-			const getColors = () =>
-				avatarRules?.bodyColorsPalette.map((color) => ({
-					rgb: tinycolor(color.hexColor).toRgb(),
-					...color,
-				})) ?? [];
-			const getHexFromColorId = (colorId: number) => {
-				const color = avatarRules?.bodyColorsPalette.find(
-					(color) => color.brickColorId === colorId,
-				);
+		let currentlyWornAssets: AvatarAssetDefinitionWithTypes[] | undefined;
+		let setCurrentlyWornAssets:
+			| ((assets: AvatarAssetDefinitionWithTypes[]) => void)
+			| undefined;
 
-				return normalizeColor(color?.hexColor ?? "000000", true);
+		let scales: ReactScales | undefined;
+		let setScales: ((scales: ReactScales) => void) | undefined;
+
+		const getColors = () =>
+			avatarRules?.bodyColorsPalette.map((color) => ({
+				rgb: tinycolor(color.hexColor).toRgb(),
+				...color,
+			})) ?? [];
+		const getHexFromColorId = (colorId: number) => {
+			const color = avatarRules?.bodyColorsPalette.find(
+				(color) => color.brickColorId === colorId,
+			);
+
+			return normalizeColor(color?.hexColor ?? "000000", true);
+		};
+
+		// when we update body colors internally but do not want to alert content script (because it already knows...)
+		let hasSetBodyColorsManually = false;
+		let hasSetupHijack = false;
+
+		const setupReactHijack = async () => {
+			if (hasSetupHijack) return;
+
+			hasSetupHijack = true;
+			const enableHexColors = await getFeatureValueInject("hexBodyColors");
+			onWindowRefocus(10_000, () => {
+				hasSetBodyColorsManually = false;
+			});
+
+			let lastAssets: typeof currentlyWornAssets;
+			let lastScales: typeof scales;
+			let lastBodyColors: typeof bodyColors;
+			let lastAvatarType: typeof avatarType;
+
+			const onAvatarUpdate = () => {
+				if (
+					(lastAssets !== currentlyWornAssets ||
+						lastScales !== scales ||
+						lastBodyColors !== bodyColors ||
+						lastAvatarType !== avatarType) &&
+					currentlyWornAssets &&
+					scales &&
+					bodyColors &&
+					avatarType
+				) {
+					lastAssets = currentlyWornAssets;
+					lastScales = scales;
+					lastBodyColors = bodyColors;
+					lastAvatarType = avatarType;
+
+					sendMessage("avatar.avatarUpdated", {
+						assets: currentlyWornAssets,
+						scales,
+						bodyColors,
+						avatarType,
+					});
+				}
 			};
-
 			addMessageListener("avatar.updateAssets", (data) => setCurrentlyWornAssets?.(data));
 			addMessageListener("avatar.refreshCharacters", () => refreshOutfits?.());
 			addMessageListener("avatar.updateBodyColors", (data) => {
+				bodyColors = data;
 				const colors = getColors();
 
-				oneCallBodyColors = true;
+				hasSetBodyColorsManually = true;
 				setBodyColors?.({
 					headColorId: getClosestHexColor(colors, data.headColor3).brickColorId,
 					torsoColorId: getClosestHexColor(colors, data.torsoColor3).brickColorId,
@@ -991,10 +1047,6 @@ export default {
 				});
 			});
 
-			let oneCallBodyColors = false;
-			onWindowRefocus(10_000, () => {
-				oneCallBodyColors = false;
-			});
 			hijackState<AvatarBodyColorsLegacy>({
 				matches: (state) =>
 					typeof state === "object" && state !== null && "headColorId" in state,
@@ -1002,10 +1054,10 @@ export default {
 					setBodyColors = publicSetState;
 
 					if (originFromSetState) {
-						if (oneCallBodyColors) {
+						if (!hasSetBodyColorsManually) {
 							const colors = value.current;
 
-							sendMessage("avatar.bodyColorsChanged", {
+							const data = {
 								headColor3: normalizeColor(getHexFromColorId(colors.headColorId)),
 								leftArmColor3: normalizeColor(
 									getHexFromColorId(colors.leftArmColorId),
@@ -1020,10 +1072,13 @@ export default {
 									getHexFromColorId(colors.rightLegColorId),
 								),
 								torsoColor3: normalizeColor(getHexFromColorId(colors.torsoColorId)),
-							});
-						} else {
-							oneCallBodyColors = true;
+							};
+
+							bodyColors = data;
+							sendMessage("avatar.bodyColorsChanged", data);
 						}
+
+						onAvatarUpdate();
 					}
 
 					return value.current;
@@ -1039,9 +1094,13 @@ export default {
 					state.head !== null &&
 					"value" in state.head &&
 					"increment" in state.head,
-				setState: ({ value, publicSetState }) => {
+				setState: ({ value, publicSetState, originFromSetState }) => {
 					setScales = publicSetState;
 					scales = value.current;
+
+					if (originFromSetState) {
+						onAvatarUpdate();
+					}
 
 					return value.current;
 				},
@@ -1083,12 +1142,14 @@ export default {
 						  }
 						| {
 								value: {
+									avatarType: AvatarType;
 									setAvatarType: (type: AvatarType) => void;
 									avatarRules?: AvatarRestrictions;
 								};
 						  }
 						| {
 								value: {
+									currentlyWornAssetsList: AvatarAssetDefinitionWithTypes[];
 									setCurrentlyWornAssets: (
 										assets: AvatarAssetDefinitionWithTypes[],
 									) => void;
@@ -1104,6 +1165,7 @@ export default {
 						  };
 
 					if ("outfit" in propsType) {
+						if (!enableHexColors) return;
 						if (propsType.outfit?.id !== prevOutfitToUpdateId) {
 							prevOutfitToUpdateId = propsType.outfit?.id;
 
@@ -1119,6 +1181,7 @@ export default {
 					}
 
 					if ("refreshOutfits" in propsType) {
+						if (!enableHexColors) return;
 						if (propsType.open !== prevCreateOutfitDialogOpen) {
 							prevCreateOutfitDialogOpen = propsType.open;
 							if (prevCreateOutfitDialogOpen) {
@@ -1132,6 +1195,8 @@ export default {
 					}
 
 					if ("onItemClicked" in propsType) {
+						if (!enableHexColors) return;
+
 						hijackFunction(
 							propsType,
 							(target, thisArg, args) => {
@@ -1156,7 +1221,7 @@ export default {
 											setScales?.(newScales);
 										}
 
-										oneCallBodyColors = true;
+										hasSetBodyColorsManually = true;
 										setBodyColors?.({
 											headColorId: getClosestHexColor(
 												colors,
@@ -1198,15 +1263,21 @@ export default {
 							setAvatarCardsLoading =
 								propsType.value.setAvatarCallLimiterItemCardsDisabled;
 						} else if ("setCurrentlyWornAssets" in propsType.value) {
+							currentlyWornAssets = propsType.value.currentlyWornAssetsList;
 							setCurrentlyWornAssets = propsType.value.setCurrentlyWornAssets;
 						} else if ("setAvatarType" in propsType.value) {
+							avatarType = propsType.value.avatarType;
 							setAvatarType = propsType.value.setAvatarType;
 							avatarRules = propsType.value.avatarRules;
 						}
 					}
+
+					onAvatarUpdate();
 				},
 			);
-		});
+		};
+
+		featureValueIsInject("hexBodyColors", true, setupReactHijack);
 
 		featureValueIsInject("avatarUnlockedAccessoryLimits", true, () => {
 			onSet(window, "Roblox")

@@ -632,3 +632,22 @@ span.icon-roseal-hidden-label::after {
         }
     }
 }
+
+#post-avatar-btn-container,
+#post-avatar-btn:not(.has-error) {
+    margin-top: 30px;
+    float: left;
+}
+
+.post-avatar-modal {
+    .post-avatar-data {
+        margin-bottom: 5px;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+
+        .input-field {
+            margin-top: 2px;
+        }
+    }
+}

@@ -3488,6 +3488,11 @@
 				"$message": "Add search bar to Avatar Editor page"
 			}
 		},
+		"avatarEditorPostAvatar": {
+			"name": {
+				"$message": "Post your Avatars from the Avatar Editor"
+			}
+		},
 		"viewAvatarItemSaleTimer": {
 			"name": {
 				"$message": "View the currently hidden sale timer on avatar items",
@@ -10889,6 +10894,54 @@
 	},
 	"avatar": {
 		"$context": "My Avatar page",
+		"postAvatar": {
+			"$context": "Post avatar modal & button",
+			"buttonText": {
+				"$context": "Post Avatar button text next to Advanced button",
+				"$message": "Post Avatar",
+				"errorTooltip": {
+					"$message": "Unknown error occurred"
+				}
+			},
+			"modal": {
+				"$context": "Modal",
+				"title": {
+					"$message": "{sealEmoji} Post Avatar"
+				},
+				"buttons": {
+					"neutral": {
+						"$message": "Cancel"
+					},
+					"action": {
+						"post": {
+							"$message": "Post Avatar"
+						},
+						"posted": {
+							"$message": "View Avatar"
+						}
+					}
+				},
+				"body": {
+					"$context": "Modal body",
+					"post": {
+						"name": {
+							"$message": "Name"
+						},
+						"description": {
+							"$message": "Description"
+						}
+					},
+					"posted": {
+						"$message": "Your avatar was successfully published"
+					}
+				},
+				"footer": {
+					"errorMessage": {
+						"$message": "Unknown error occurred"
+					}
+				}
+			}
+		},
 		"filters": {
 			"search": {
 				"placeholder": {

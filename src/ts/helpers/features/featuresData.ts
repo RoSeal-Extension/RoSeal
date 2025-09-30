@@ -2555,6 +2555,14 @@ export const sections = [
 					},
 					{
 						type: "Regular",
+						id: "avatarEditorPostAvatar",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
+					},
+					{
+						type: "Regular",
 						id: "bypassR6RestrictionModal",
 						component: {
 							type: "Toggle",

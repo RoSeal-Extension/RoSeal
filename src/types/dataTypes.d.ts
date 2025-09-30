@@ -50,6 +50,7 @@ import type {
 import type { ListUserOnlineFriendsResponse } from "src/ts/helpers/requests/services/users";
 import type { SortOrder } from "src/ts/helpers/requests/services/badges";
 import type { CurrentServerJoinMetadata } from "src/ts/utils/gameLauncher";
+import type { ReactAvatarEditorPageAvatar } from "src/ts/pages/inject/www/my/avatar";
 
 export type PopupData = {
 	permissions: chrome.permissions.Permissions;
@@ -180,6 +181,9 @@ export type DOMCommunicationMessageDataTypes = {
 	};
 	"avatar.refreshCharacters": {
 		args: undefined;
+	};
+	"avatar.avatarUpdated": {
+		args: ReactAvatarEditorPageAvatar;
 	};
 	"avatar.updateAssets": {
 		args: AvatarAssetDefinitionWithTypes[];
