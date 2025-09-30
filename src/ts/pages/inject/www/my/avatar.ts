@@ -456,7 +456,6 @@ export default {
 										{
 											name: "Eyebrows",
 											label: "RoSeal.Eyebrows",
-											assetType: eyeBrowsType?.alternativeTypes?.[0],
 											avatarInventoryRequest: {
 												sortOption: `rosealAssetType_${eyeBrowsType?.assetTypeId}`,
 											},
@@ -464,7 +463,6 @@ export default {
 										{
 											name: "Eyelashes",
 											label: "RoSeal.Eyelashes",
-											assetType: eyeLashesType?.alternativeTypes?.[0],
 											avatarInventoryRequest: {
 												sortOption: `rosealAssetType_${eyeLashesType?.assetTypeId}`,
 											},
@@ -472,7 +470,6 @@ export default {
 										{
 											name: "MoodAnimation",
 											label: "RoSeal.MoodAnimation",
-											assetType: moodAnimationType?.alternativeTypes?.[0],
 											avatarInventoryRequest: {
 												sortOption: `rosealAssetType_${moodAnimationType?.assetTypeId}`,
 											},
@@ -480,7 +477,6 @@ export default {
 										{
 											name: "DynamicHeadsAsset",
 											label: "RoSeal.DynamicHeads",
-											assetType: dynamicHeadsType?.alternativeTypes?.[0],
 											avatarInventoryRequest: {
 												sortOption: `rosealAssetType_${dynamicHeadsType?.assetTypeId}`,
 											},
@@ -700,7 +696,6 @@ export default {
 							subCategoryMenus.push({
 								label: id,
 								name: item.id,
-								assetType: "Shirt",
 								avatarInventoryRequest: {
 									sortOption: `rosealList_${item.id}`,
 								},
@@ -719,7 +714,6 @@ export default {
 						categoryRowObj.subCategoryMenu.push({
 							label: id,
 							name: list.id,
-							assetType: "Shirt",
 							avatarInventoryRequest: {
 								sortOption: `rosealList_${list.id}`,
 							},
