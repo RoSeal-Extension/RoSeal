@@ -29,6 +29,7 @@ import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type { UserProfileResponse } from "src/ts/helpers/processors/profileProcessor";
 import type {
 	MarketplaceItemType,
+	MultigetAvatarItemsResponse,
 	SearchItemsDetailsResponse,
 } from "src/ts/helpers/requests/services/marketplace";
 import type {
@@ -486,14 +487,21 @@ export default {
 
 					const url = new URL(req.url);
 					if (url.hostname === getRobloxUrl("catalog")) {
-						if (url.pathname === "/v1/catalog/items/details" && hasItemConfig) {
-							const data = (await res
-								.clone()
-								.json()) as SearchItemsDetailsResponse<MarketplaceItemType>;
+						const isSearchDetails =
+							url.pathname === "/v2/search/items/details" ||
+							url.pathname === "/v1/search/items/details";
+						if (
+							(url.pathname === "/v1/catalog/items/details" || isSearchDetails) &&
+							hasItemConfig
+						) {
+							const data = (await res.clone().json()) as
+								| MultigetAvatarItemsResponse<MarketplaceItemType>
+								| SearchItemsDetailsResponse<MarketplaceItemType>;
 
 							if (
 								data.data.length === 1 &&
-								AVATAR_ITEM_REGEX.test(currentUrl.value.path.realPath)
+								AVATAR_ITEM_REGEX.test(currentUrl.value.path.realPath) &&
+								!isSearchDetails
 							) {
 								return;
 							}
@@ -515,9 +523,8 @@ export default {
 									i--;
 
 									if (
-										AVATAR_MARKETPLACE_REGEX.test(
-											currentUrl.value.path.realPath,
-										) &&
+										isAvatarMarketplace &&
+										!isSearchDetails &&
 										!blockedItems.some(
 											(item2) =>
 												item2.id === item.id &&
@@ -532,7 +539,7 @@ export default {
 								}
 							}
 
-							if (isAvatarMarketplace) {
+							if (isAvatarMarketplace && !isSearchDetails) {
 								return;
 							}
 							return new Response(JSON.stringify(data), res);
