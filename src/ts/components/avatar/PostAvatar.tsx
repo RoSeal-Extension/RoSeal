@@ -31,8 +31,7 @@ export default function PostAvatarButton() {
 	}, [error, lookPreview, lookPreviewFetched]);
 
 	if (!currentAvatar || !lookPreviewFetched || (isRESTError && error.errors?.[0].code === 1)) {
-		// temp
-		if (!currentAvatar) return null;
+		return null;
 	}
 
 	const button = (
