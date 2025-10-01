@@ -1823,6 +1823,14 @@ export const sections = [
 							defaultValue: true,
 						},
 					},
+					{
+						type: "Regular",
+						id: "viewUserSharedPrivateServers",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
+					},
 				],
 			},
 			{

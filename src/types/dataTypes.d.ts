@@ -66,6 +66,12 @@ export type DOMCommunicationMessageDataTypes = {
 	"marketplace.sendItems": {
 		args: AvatarItemDetail<MarketplaceItemType>[];
 	};
+	"user.inventory.canViewInventory": {
+		args: {
+			canViewInventory: boolean;
+			isPrivateServersTab: boolean;
+		};
+	};
 	"user.inventory.addAssets": {
 		args: {
 			userId: number;
@@ -257,8 +263,8 @@ export type DOMCommunicationMessageDataTypes = {
 	"charts.setFilters": {
 		args: ChartFiltersState;
 	};
-	"user.inventory.addCategory": {
-		args: UserInventoryCategory;
+	"user.inventory.addCategories": {
+		args: UserInventoryCategory[];
 	};
 	"user.inventory.setupCategories": {
 		args: ListUserInventoryCategoriesResponse;

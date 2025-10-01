@@ -4,12 +4,13 @@ import type { ArchivedItemsItem } from "src/ts/constants/misc";
 import { addMessageListener, sendMessage } from "src/ts/helpers/communication/dom";
 import { watchOnce, watch } from "src/ts/helpers/elements";
 import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
-import { hijackResponse } from "src/ts/helpers/hijack/fetch";
+import { hijackRequest, hijackResponse } from "src/ts/helpers/hijack/fetch";
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type {
 	ListUserInventoryAssetsDetailedResponse,
 	ListUserInventoryCategoriesResponse,
+	ListUserPrivateServersResponse,
 } from "src/ts/helpers/requests/services/inventory";
 import {
 	type AvatarItemRequest,
@@ -27,11 +28,26 @@ import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { getAvatarAssetLink, getAvatarBundleLink } from "src/ts/utils/links";
 import { USER_INVENTORY_REGEX } from "src/ts/utils/regex";
 
+type AssetsExplorerType = angular.IScope & {
+	$ctrl: {
+		staticData: {
+			canViewInventory: boolean;
+		};
+		currentData: {
+			categoryName: string;
+		};
+	};
+};
+
 export default {
 	id: "user.inventory",
 	regex: [USER_INVENTORY_REGEX],
 	runInIframe: true,
-	fn: () => {
+	fn: ({ regexMatches }) => {
+		const targetUserId = regexMatches?.[0]?.[2]
+			? Number.parseInt(regexMatches?.[0]?.[2], 10)
+			: undefined;
+
 		addMessageListener("user.inventory.setupArchive", () => {
 			const currentArchivedItems = signal<ArchivedItemsItem[]>([]);
 
@@ -406,7 +422,7 @@ export default {
 			handleInventoryFavoritesCategories(data);
 		});
 
-		addMessageListener("user.inventory.addCategory", (category) => {
+		addMessageListener("user.inventory.addCategories", (categories) => {
 			hijackResponse(async (req, res) => {
 				if (!res) return;
 
@@ -416,10 +432,82 @@ export default {
 					/^\/v1\/users\/\d+\/categories\/$/
 				) {
 					const data = (await res.clone().json()) as ListUserInventoryCategoriesResponse;
-					data.categories.push(category);
+					data.categories.push(...categories);
 
 					return new Response(JSON.stringify(data), res);
 				}
+			});
+		});
+
+		featureValueIsInject("viewUserSharedPrivateServers", true, () => {
+			hijackRequest((req) => {
+				const url = new URL(req.url);
+				if (
+					url.hostname === getRobloxUrl("games") &&
+					url.pathname === "/v1/private-servers/my-private-servers" &&
+					url.searchParams.get("privateServersTab") === "SharedPrivateServers"
+				) {
+					url.searchParams.set("privateServersTab", "OtherPrivateServers");
+					url.searchParams.set("rosealPrivateServersTab", "SharedPrivateServers");
+					if (!url.searchParams.get("cursor")) {
+						url.searchParams.set("cursor", `1_${targetUserId}_0`);
+					}
+
+					return new Request(url.toString(), req);
+				}
+			});
+
+			hijackResponse(async (req, res) => {
+				if (!res?.ok) return;
+
+				const url = new URL(req.url);
+				if (
+					url.hostname === getRobloxUrl("games") &&
+					url.pathname === "/v1/private-servers/my-private-servers" &&
+					url.searchParams.get("rosealPrivateServersTab") === "SharedPrivateServers"
+				) {
+					const data = (await res.json()) as ListUserPrivateServersResponse;
+					let shouldEndCursor = false;
+					for (let i = 0; i < data.data.length; i++) {
+						const item = data.data[i];
+						if (item.ownerId !== targetUserId) {
+							data.data.splice(i, 1);
+							shouldEndCursor = true;
+
+							i--;
+						}
+					}
+
+					if (shouldEndCursor) {
+						data.nextPageCursor = null;
+					}
+
+					return new Response(JSON.stringify(data), res);
+				}
+			});
+
+			watch(".assets-explorer-main-content", (explorer) => {
+				const scope = window.angular.element(explorer)?.scope<AssetsExplorerType>();
+				if (!scope) return;
+
+				let canViewInventory = scope.$ctrl.staticData.canViewInventory;
+				Object.defineProperty(scope.$ctrl.staticData, "canViewInventory", {
+					get: () => {
+						const isPrivateServersTab =
+							scope.$ctrl.currentData.categoryName === "private-servers";
+						console.log(scope.$ctrl.currentData);
+
+						sendMessage("user.inventory.canViewInventory", {
+							canViewInventory,
+							isPrivateServersTab,
+						});
+
+						return canViewInventory || isPrivateServersTab;
+					},
+					set: (value) => {
+						canViewInventory = value;
+					},
+				});
 			});
 		});
 

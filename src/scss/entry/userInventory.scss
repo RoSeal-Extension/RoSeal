@@ -108,3 +108,9 @@
         color: var(--RS_SUCCESS-COLOR);
     }
 }
+
+.inventory-category-notice {
+    @media (min-width: 768px) {
+        margin-top: 13px !important;
+    }
+}

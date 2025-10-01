@@ -3342,6 +3342,11 @@
 				"$message": "User inventory sort filters"
 			}
 		},
+		"viewUserSharedPrivateServers": {
+			"name": {
+				"$message": "View the private servers that a user has shared with you in their inventory"
+			}
+		},
 		"userPagesNewTitle": {
 			"name": {
 				"$message": "Show username in the title of the connections list, inventory, and favorites pages of other users",
@@ -7954,6 +7959,17 @@
 		}
 	},
 	"userInventory": {
+		"sharedPrivateServersNotice": {
+			"$context": "User shared private servers notice view",
+			"title": {
+				"$message": "{sealEmoji} Viewing shared private servers",
+				"$context": "Title"
+			},
+			"description": {
+				"$message": "These are the Private Servers that this user has decided to share with you. Other parts of their inventory may be private.",
+				"$context": "Description"
+			}
+		},
 		"filters": {
 			"$context": "User inventory filters",
 			"obtained": {
@@ -8136,6 +8152,10 @@
 			"otherPrivateServers": {
 				"$message": "Other Private Servers",
 				"$context": "Other Private Servers category"
+			},
+			"sharedPrivateServers": {
+				"$message": "Shared Private Servers",
+				"$context": "Their private servers"
 			}
 		},
 		"list": {

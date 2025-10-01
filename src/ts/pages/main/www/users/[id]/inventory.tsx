@@ -1,4 +1,5 @@
 import storageSignal from "src/ts/components/hooks/storageSignal";
+import SharedPrivateServersNotice from "src/ts/components/inventory/SharedPrivateServersNotice";
 import InventoryItemObtainedDate from "src/ts/components/userInventory/ObtainedDate";
 import UserInventorySortOptions from "src/ts/components/userInventory/SortOptions";
 import { ARCHIVED_ITEMS_STORAGE_KEY, type ArchivedItemsStorageValue } from "src/ts/constants/misc";
@@ -12,7 +13,10 @@ import {
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { multigetBadgesAwardedDates } from "src/ts/helpers/requests/services/badges";
-import type { ListedUserInventoryAssetDetailed } from "src/ts/helpers/requests/services/inventory";
+import type {
+	ListedUserInventoryAssetDetailed,
+	UserInventoryCategory,
+} from "src/ts/helpers/requests/services/inventory";
 import { getUserById } from "src/ts/helpers/requests/services/users";
 import { getInventoryFavoritesCategories } from "src/ts/specials/getInventoryFavoritesCategories";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
@@ -38,6 +42,16 @@ export default {
 
 		const isCurrentUserPage = targetUserId === authenticatedUser?.userId;
 
+		if (!isCurrentUserPage)
+			featureValueIs("viewUserSharedPrivateServers", true, () =>
+				watch("assets-explorer .current-items .container-header", (title) => {
+					if (title.hasAttribute("data-has-notice")) return;
+
+					title.setAttribute("data-has-notice", "");
+					renderAfter(<SharedPrivateServersNotice />, title);
+				}),
+			);
+
 		featureValueIs("inventorySortFilters", true, () =>
 			watch("#inventory-container .header-content:has(.get-more)", (header) => {
 				renderAfter(
@@ -54,38 +68,55 @@ export default {
 		multigetFeaturesValues([
 			"viewMoreInventoryFavoritesTypes",
 			"avatarItemArchiveInInventory",
+			"viewUserSharedPrivateServers",
 		]).then((data) => {
 			if (!data.viewMoreInventoryFavoritesTypes && !data.avatarItemArchiveInInventory) return;
 
-			const otherCategory =
-				data.avatarItemArchiveInInventory && isCurrentUserPage
-					? {
+			const categories: UserInventoryCategory[] = [];
+			if (data.avatarItemArchiveInInventory && isCurrentUserPage) {
+				categories.push({
+					name: "Archived",
+					displayName: "Archived",
+					categoryType: "Archived",
+					items: [
+						{
 							name: "Archived",
 							displayName: "Archived",
+							filter: null,
+							id: -1,
+							type: "AssetType" as const,
 							categoryType: "Archived",
-							items: [
-								{
-									name: "Archived",
-									displayName: "Archived",
-									filter: null,
-									id: -1,
-									type: "AssetType" as const,
-									categoryType: "Archived",
-								},
-							],
-						}
-					: undefined;
+						},
+					],
+				});
+			}
+			if (data.viewUserSharedPrivateServers && !isCurrentUserPage) {
+				categories.push({
+					name: "Private Servers",
+					displayName: getMessage("userInventory.categories.privateServers"),
+					categoryType: "PrivateServers",
+					items: [
+						{
+							name: "Shared Private Servers",
+							displayName: getMessage(
+								"userInventory.categories.sharedPrivateServers",
+							),
+							filter: "SharedPrivateServers",
+							id: 11,
+							type: "AssetType" as const,
+							categoryType: "OtherPrivateServers",
+						},
+					],
+				});
+			}
+
 			if (data.viewMoreInventoryFavoritesTypes) {
 				sendMessage(
 					"user.inventory.setupCategories",
-					getInventoryFavoritesCategories(
-						true,
-						isCurrentUserPage,
-						otherCategory ? [otherCategory] : undefined,
-					),
+					getInventoryFavoritesCategories(true, isCurrentUserPage, categories),
 				);
-			} else if (otherCategory) {
-				sendMessage("user.inventory.addCategory", otherCategory);
+			} else if (categories.length > 0) {
+				sendMessage("user.inventory.addCategories", categories);
 			}
 
 			if (data.avatarItemArchiveInInventory && isCurrentUserPage) {

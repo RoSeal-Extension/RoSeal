@@ -94,7 +94,9 @@ export default function UserInventorySortOptions({
 				return {
 					isDeletingSupported: false,
 					isArchivingSupported: false,
-					isCountingSupported: !isFavoritesPage,
+					isCountingSupported:
+						categoryData.subcategory?.filter !== "SharedPrivateServers" &&
+						!isFavoritesPage,
 					isArchivedPage: false,
 					isAvatarItem: false,
 					hasGetMore: false,
