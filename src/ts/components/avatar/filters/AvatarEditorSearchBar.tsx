@@ -46,11 +46,11 @@ export default function AvatarEditorSearchBar({ keyword }: AvatarEditorSearchBar
 	if (!show) return null;
 
 	return (
-		<div className="input-group with-search-bar roseal-search-filter">
+		<div className={classNames("input-group with-search-bar roseal-search-filter", {
+			"half-width": halfWidth
+		})}>
 			<TextInput
-				className={classNames("roseal-avatar-editor-search", {
-					"half-width": halfWidth,
-				})}
+				className="roseal-avatar-editor-search"
 				onType={(value) => {
 					keyword.value = value;
 				}}
