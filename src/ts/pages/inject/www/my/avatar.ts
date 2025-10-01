@@ -1282,6 +1282,7 @@ export default {
 
 		featureValueIsInject("hexBodyColors", true, setupReactHijack);
 		featureValueIsInject("avatarEditorPostAvatar", true, setupReactHijack);
+		featureValueIsInject("avatarEditorCurrentlyWearing", true, setupReactHijack);
 
 		featureValueIsInject("avatarUnlockedAccessoryLimits", true, () => {
 			onSet(window, "Roblox")
