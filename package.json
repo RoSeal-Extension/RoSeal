@@ -71,7 +71,7 @@
 		"@formatjs/icu-messageformat-parser": "2.11.2",
 		"@types/angular": "1.8.9",
 		"@types/bun": "1.2.23",
-		"@types/chrome": "0.1.14",
+		"@types/chrome": "0.1.16",
 		"@types/fs-extra": "11.0.4",
 		"@types/html-minifier-terser": "7.0.2",
 		"@types/klaw": "3.0.7",
@@ -83,6 +83,6 @@
 		"kleur": "4.1.5",
 		"sass-embedded": "1.93.2",
 		"ts-json-schema-generator": "2.4.0",
-		"typescript": "5.9.2"
+		"typescript": "5.9.3"
 	}
 }
