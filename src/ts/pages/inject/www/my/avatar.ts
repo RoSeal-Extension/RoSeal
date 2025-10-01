@@ -839,7 +839,16 @@ export default {
 							formattedItems.push({
 								itemCategory: {
 									itemType: 2,
-									itemSubType: 0,
+									itemSubType: outfit?.isEditable
+										? 3
+										: outfit?.inventoryType === "DynamicHead"
+											? 2
+											: outfit?.inventoryType === "Shoes"
+												? 4
+												: outfit?.inventoryType === "Animations"
+													? 5
+													: // purchased avatar
+														1,
 								},
 								itemId: item.id,
 								itemName: outfit?.name ?? "",

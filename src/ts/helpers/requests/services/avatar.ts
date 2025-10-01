@@ -172,9 +172,9 @@ export type AvatarRestrictions = {
 	accessoryRefinementUpperBounds?: Record<string, AccessoryRefinementBounds>;
 };
 
-export type OutfitType = "Avatar" | "DynamicHead";
+export type OutfitType = "Avatar" | "DynamicHead" | "Shoes";
 
-export type OutfitInventoryType = "Avatar";
+export type OutfitInventoryType = "Avatar" | "Animations" | "DynamicHead" | "Body" | "Shoes";
 
 export type OutfitRequest = {
 	id: number;
