@@ -1,6 +1,7 @@
 import { effect, signal } from "@preact/signals";
 import { useEffect, useState } from "preact/hooks";
 import AdvancedCustomizationButton from "src/ts/components/avatar/AdvancedCustomizationButton";
+import AvatarEditorCurrentlyWearing from "src/ts/components/avatar/CurrentlyWearing";
 import EditItemListsButton from "src/ts/components/avatar/EditItemListsButton";
 import AvatarEditorSearchBar from "src/ts/components/avatar/filters/AvatarEditorSearchBar";
 import CreateCharacterModal from "src/ts/components/avatar/modals/CreateCharacterModal";
@@ -316,6 +317,13 @@ export default {
 				if (!document.body.querySelector("#advanced-customization-btn")) {
 					renderAfter(<AdvancedCustomizationButton />, el);
 				}
+			});
+		});
+
+		featureValueIs("avatarEditorCurrentlyWearing", true, () => {
+			watch("#advanced-customization-btn", (el) => {
+				if (!document.body.querySelector("#currently-wearing-items"))
+					renderAfter(<AvatarEditorCurrentlyWearing />, el);
 			});
 		});
 

@@ -2564,6 +2564,15 @@ export const sections = [
 					},
 					{
 						type: "Regular",
+						id: "avatarEditorCurrentlyWearing",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
+						hasCSS: true,
+					},
+					{
+						type: "Regular",
 						id: "avatarEditorPostAvatar",
 						component: {
 							type: "Toggle",

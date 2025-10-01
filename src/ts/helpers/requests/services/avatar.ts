@@ -30,6 +30,7 @@ export type AvatarAssetDefinition = {
 };
 
 export type AvatarAssetDefinitionWithTypes = AvatarAssetDefinition & {
+	name?: string;
 	assetType: {
 		id: number;
 		name?: string;

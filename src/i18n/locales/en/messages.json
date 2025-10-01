@@ -4778,6 +4778,11 @@
 				"$context": ""
 			}
 		},
+		"avatarEditorCurrentlyWearing": {
+			"name": {
+				"$message": "Currently wearing items on the left side of the Avatar Editor"
+			}
+		},
 		"animalImages": {
 			"name": {
 				"$message": "Replace all images with images of a certain animal",
@@ -10914,6 +10919,15 @@
 	},
 	"avatar": {
 		"$context": "My Avatar page",
+		"currentlyWearing": {
+			"$context": "Currently wearing section on the left",
+			"systemFeedback": {
+				"error": {
+					"$context": "Failed to remove item system feedback",
+					"$message": "Failed to remove item from your avatar. Please try again later."
+				}
+			}
+		},
 		"postAvatar": {
 			"$context": "Post avatar modal & button",
 			"buttonText": {

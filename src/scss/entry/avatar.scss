@@ -651,3 +651,42 @@ span.icon-roseal-hidden-label::after {
         }
     }
 }
+
+#currently-wearing-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+    max-height: 435px;
+
+    .list-item {
+        padding: 0;
+        cursor: pointer;
+
+        .item-card-caption {
+            padding: 0;
+        }
+
+        &,
+        .item-card-container,
+        .item-card-thumb-container,
+        .item-card-thumb,
+        .item-card-equipped {
+            width: 87px;
+            min-width: 87px;
+            max-width: 87px;
+
+            height: 87px;
+            min-height: 87px;
+            max-height: 87px;
+        }
+    }
+}
+
+[data-rosealfe-avatareditorcurrentlywearing] {
+    .left-wrapper,
+    .left-wrapper-placeholder {
+        min-height: 600px;
+        height: fit-content;
+    }
+}
