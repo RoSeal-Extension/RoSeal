@@ -18,6 +18,7 @@ export type GetPrivateServerStatusByCodeResponse =
 	| {
 			valid: true;
 			accessCode: string;
+			linkCode?: string;
 	  };
 
 export type ListPlacePrivateServersRequest = {
@@ -182,7 +183,7 @@ export async function getPrivateServerStatusByCode({
 	const accessCode = script.innerText.match(/joinPrivateGame\(\d+?, '(.+?)', '.+?'\)/)?.[1];
 	if (!accessCode) return { valid: false };
 
-	return { valid: true, accessCode };
+	return { valid: true, accessCode, linkCode: privateServerLinkCode };
 }
 
 export async function listPlacePrivateServers({
