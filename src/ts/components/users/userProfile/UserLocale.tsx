@@ -37,14 +37,18 @@ export default function UserProfileLocale({ userId }: UserProfileLocaleProps) {
 	const displayLanguage = useMemo(() => {
 		if (!userLocale || !viewingUserLocale || userLocale === viewingUserLocale) return;
 
-		const splitUserLocale = userLocale?.split("_")[0];
-		const splitViewingUserLocale = viewingUserLocale?.split("_")[0];
+		const splitUserLocale = userLocale?.split("_");
+		const splitViewingUserLocale = viewingUserLocale?.split("_");
 
-		if (splitUserLocale === splitViewingUserLocale) {
-			return languageNamesFormat.of(viewingUserLocale);
+		if (splitUserLocale[0] === splitViewingUserLocale[0]) {
+			try {
+				return languageNamesFormat.of(splitViewingUserLocale.join("-"));
+			} catch {
+				return;
+			}
 		}
 
-		return languageNamesFormat.of(splitViewingUserLocale);
+		return languageNamesFormat.of(splitViewingUserLocale[0]);
 	}, [viewingUserLocale, userLocale]);
 
 	if (!displayLanguage) return;
