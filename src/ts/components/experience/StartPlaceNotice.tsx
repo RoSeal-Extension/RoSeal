@@ -48,6 +48,8 @@ export default function StartPlaceNotice({
 				onClick={() => {
 					sendJoinMultiplayerGame({
 						placeId: rootPlaceId,
+						joinAttemptOrigin: "PlayButton",
+						joinAttemptId: crypto.randomUUID(),
 					});
 				}}
 			>

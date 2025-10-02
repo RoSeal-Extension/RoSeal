@@ -4783,6 +4783,11 @@
 				"$message": "Currently wearing items on the left side of the Avatar Editor"
 			}
 		},
+		"experienceAllowJoinNonRootPlaces": {
+			"name": {
+				"$message": "Allow joining non-starter places from their respectve detail pages"
+			}
+		},
 		"animalImages": {
 			"name": {
 				"$message": "Replace all images with images of a certain animal",

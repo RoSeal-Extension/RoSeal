@@ -77,6 +77,7 @@ import { getDeviceMeta } from "src/ts/utils/context";
 import currentUrl from "src/ts/utils/currentUrl";
 import { renderMentions } from "src/ts/utils/description";
 import { onDOMReady } from "src/ts/utils/dom";
+import { sendJoinMultiplayerGame } from "src/ts/utils/gameLauncher";
 import { getPlaceJoinData, getUniversePlayableDevices } from "src/ts/utils/joinData";
 import { EXPERIENCE_DEEPLINK_REGEX, EXPERIENCE_DETAILS_REGEX } from "src/ts/utils/regex";
 import {
@@ -647,6 +648,42 @@ export default {
 				);
 			});
 		});
+
+		if (rootPlaceId !== placeId) {
+			featureValueIs("experienceAllowJoinNonRootPlaces", true, () =>
+				getDeviceMeta().then((deviceMeta) =>
+					getPlaceJoinData({
+						placeId,
+						overridePlatformType: deviceMeta?.platformType ?? "Desktop",
+						gameJoinAttemptId: crypto.randomUUID(),
+						joinOrigin: "RoSealFetchInfo",
+						requireSuccessful: false,
+					}).then((data) => {
+						if (data?.success && data.data?.sessionInfo.placeId === placeId) {
+							watchOnce(
+								"#game-details-play-button-container .btn-common-play-game-lg",
+							).then((btn) => {
+								btn.addEventListener(
+									"click",
+									(e) => {
+										e.stopImmediatePropagation();
+
+										sendJoinMultiplayerGame({
+											placeId,
+											joinAttemptOrigin: "PlayButton",
+											joinAttemptId: crypto.randomUUID(),
+										});
+									},
+									{
+										capture: true,
+									},
+								);
+							});
+						}
+					}),
+				),
+			);
+		}
 
 		featureValueIs("checkExperienceBan", true, () =>
 			getDeviceMeta().then((deviceMeta) =>

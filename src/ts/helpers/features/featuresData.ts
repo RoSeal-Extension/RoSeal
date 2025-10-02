@@ -18,6 +18,11 @@ import {
 	AVATAR_ITEM_LISTS_STORAGE_KEY,
 	BYPASS_R6_RESTRICTION_MODAL_LOCALSTORAGE_KEY,
 } from "src/ts/constants/avatar";
+import {
+	COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
+	COMMUNITY_SHOUT_NOTIFICATIONS_FEATURE_ID,
+	COMMUNITY_SHOUT_NOTIFICATIONS_STORAGE_KEY,
+} from "src/ts/constants/communities";
 import { DEVEX_FIAT_CURRENCIES } from "src/ts/constants/devexRates";
 import { PRIVATE_NOTE_STORAGE_KEY } from "src/ts/constants/experiences";
 import {
@@ -26,8 +31,8 @@ import {
 	FRIENDS_LAST_SEEN_FEATURE_ID,
 	FRIENDS_LAST_SEEN_STORAGE_KEY,
 	FRIENDS_PRESENCE_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
-	FRIENDS_PRESENCE_NOTIFICATIONS_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_KEY,
+	FRIENDS_PRESENCE_NOTIFICATIONS_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_INEXPERIENCE_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_INSTUDIO_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_TYPE_ONLINE_FEATURE_ID,
@@ -43,17 +48,12 @@ import {
 	STARTUP_NOTIFICATIONS_FEATURE_ID,
 	SYNC_THEME_ENABLED_LOCALSTORAGE_KEY,
 } from "src/ts/constants/misc";
-import {
-	COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
-	COMMUNITY_SHOUT_NOTIFICATIONS_FEATURE_ID,
-	COMMUNITY_SHOUT_NOTIFICATIONS_STORAGE_KEY,
-} from "src/ts/constants/communities";
+import { EXPERIMENTS_DISCOVERED_STORAGE_KEY } from "src/ts/constants/robloxExperiments";
 import {
 	TRADING_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
 	TRADING_NOTIFICATIONS_FEATURE_ID,
 	TRADING_NOTIFICATIONS_STORAGE_KEY,
 } from "src/ts/constants/trades";
-import { EXPERIMENTS_DISCOVERED_STORAGE_KEY } from "src/ts/constants/robloxExperiments";
 import { getRolimonsUrl } from "src/ts/utils/baseUrls";
 import { getHomePageUrl } from "src/ts/utils/links";
 import { getDelayKey } from "src/ts/utils/misc";
@@ -1129,6 +1129,14 @@ export const sections = [
 					{
 						type: "Regular",
 						id: "easyExperienceAltText",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
+					},
+					{
+						type: "Regular",
+						id: "experienceAllowJoinNonRootPlaces",
 						component: {
 							type: "Toggle",
 							defaultValue: true,
