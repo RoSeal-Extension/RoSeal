@@ -2617,6 +2617,7 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
+						hasCSS: true,
 					},
 					{
 						type: "Regular",
@@ -3505,6 +3506,7 @@ export const sections = [
 							],
 							toggleDefaultValue: true,
 						},
+						variant: 1,
 						hasCSS: true,
 					},
 					{
