@@ -75,7 +75,7 @@
 	],
 
 	"options_ui": {
-		"page": "popup.html?options"
+		"page": "html/popup.html?options"
 	},
 
 	"action": {
@@ -94,7 +94,7 @@
 				"js/inject.js.map",
 				"js/main.js.map",
 				"img/*",
-				"popup.html"
+				"html/popup.html"
 			],
 			"matches": ["*://{ROBLOX_DOMAIN('*')}/*"]
 		}

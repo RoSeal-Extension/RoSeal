@@ -32,7 +32,7 @@ export function FeaturePermissionsContainer({
 	const url = useMemo(
 		() =>
 			browser.runtime.getURL(
-				`popup.html?type=embedded&locales=${locales.join(",")}&bodyClassName=${
+				`html/popup.html?type=embedded&locales=${locales.join(",")}&bodyClassName=${
 					document.body?.className
 				}&subType=featurePermissions&featureId=${feature.id}`,
 			),

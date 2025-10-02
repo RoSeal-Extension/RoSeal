@@ -8,9 +8,9 @@ import {
 	getBuildArgs,
 	getManifest,
 	writeDNRRules,
+	writeHTMLFiles,
 	writeI18n,
 	writeManifest,
-	writePopup,
 } from "./build.ts";
 import { DEFAULT_OUTDIR, DEV_SERVER_WS_PORT } from "./build/constants.ts";
 import { getBuildTimeParams, getDevServersAvailable, updateLog } from "./build/utils.ts";
@@ -69,8 +69,9 @@ await updateLog(
 			isDev: true,
 			devServers,
 		}),
-		writePopup({
+		writeHTMLFiles({
 			outDir: DEFAULT_OUTDIR,
+			target,
 			isDev: true,
 		}),
 		copyAssets({ outDir: DEFAULT_OUTDIR, isDev: true, manifest }),
@@ -176,10 +177,12 @@ watch("./src/manifest.jsonc", { recursive: true }, () =>
 		"Reload",
 	),
 );
-watch("./src/popup.html", { recursive: true }, () =>
+
+watch("./src/html/", { recursive: true }, () =>
 	handleChange(
-		writePopup({
+		writeHTMLFiles({
 			outDir: DEFAULT_OUTDIR,
+			target,
 			isDev: true,
 		}),
 		"Reload",

@@ -23,6 +23,7 @@ import {
 } from "./build/constants.ts";
 import { buildPagesPlugin } from "./build/plugins/rosealPlugins.ts";
 import {
+	CONTENT_SECURITY_POLICY_HEADER_NAME,
 	type DevServersAvailable,
 	getBuildOptions,
 	getBuildTimeParams,
@@ -184,7 +185,8 @@ function replaceTextVariable(
 			/{ROSEAL_WWW_URL}/g,
 			`${isDev && devServers?.IS_DEV_WWW_ACCESSIBLE ? "http" : "https"}://${ROSEAL_WEBSITE_DOMAIN}`,
 		)
-		.replaceAll(/{ROLIMONS_DOMAIN\('(.+?)'\)}/g, ROLIMONS_DOMAIN.replace("{service}", "$1"));
+		.replaceAll(/{ROLIMONS_DOMAIN\('(.+?)'\)}/g, ROLIMONS_DOMAIN.replace("{service}", "$1"))
+		.replaceAll(/{ROSEAL_TRACKING_HEADER_NAME}/g, ROSEAL_TRACKING_HEADER_NAME);
 }
 
 export type WriteDNRRuleProps = {
@@ -248,7 +250,7 @@ export function writeDNRRules({
 							type: "modifyHeaders",
 							responseHeaders: [
 								{
-									header: "content-security-policy",
+									header: CONTENT_SECURITY_POLICY_HEADER_NAME,
 									operation: "set",
 									value: cspPolicy.replace(
 										"img-src 'self'",
@@ -511,22 +513,27 @@ export function writeI18n({ outDir }: WriteI18nProps) {
 	);
 }
 
-export type WritePopupProps = {
+export type WriteHTMLFilesProps = {
 	outDir: string;
+	target: Target;
 	isDev?: boolean;
 };
 
-export function writePopup({ outDir, isDev }: WritePopupProps) {
+export function writeHTMLFiles({ outDir, target, isDev }: WriteHTMLFilesProps) {
 	return updateLog(
-		Bun.file("./src/popup.html")
-			.text()
-			.then(async (text) => {
-				return Bun.write(
-					`${outDir}/popup.html`,
+		(async () => {
+			for await (const file of walk("./src/html/")) {
+				if (!file.stats.isFile()) continue;
+
+				const parsedPath = parsePath(file.path);
+				const data = replaceTextVariable(target, await Bun.file(file.path).text(), isDev);
+
+				await Bun.write(
+					`${outDir}/html/${parsedPath.name}${parsedPath.ext}`,
 					`${HTML_COMMENT_BANNER}\n${
 						isDev
-							? text
-							: await minifyHTML(text, {
+							? data
+							: await minifyHTML(data, {
 									removeAttributeQuotes: true,
 									collapseWhitespace: true,
 									removeOptionalTags: true,
@@ -534,8 +541,9 @@ export function writePopup({ outDir, isDev }: WritePopupProps) {
 								})
 					}`,
 				);
-			}),
-		"Popup minify and write",
+			}
+		})(),
+		"HTML files minify and write",
 	);
 }
 
@@ -605,7 +613,11 @@ export async function build({
 			cspPolicy,
 		}),
 		writeI18n({ outDir }),
-		writePopup({ outDir, isDev }),
+		writeHTMLFiles({
+			outDir,
+			target,
+			isDev,
+		}),
 		compileSCSS({
 			outDir,
 			target,
