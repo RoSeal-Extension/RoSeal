@@ -71,7 +71,7 @@
 		"@formatjs/icu-messageformat-parser": "2.11.2",
 		"@types/angular": "1.8.9",
 		"@types/bun": "1.2.23",
-		"@types/chrome": "0.1.16",
+		"@types/chrome": "0.1.17",
 		"@types/fs-extra": "11.0.4",
 		"@types/html-minifier-terser": "7.0.2",
 		"@types/klaw": "3.0.7",
