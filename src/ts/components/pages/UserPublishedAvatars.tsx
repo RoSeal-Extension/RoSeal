@@ -157,7 +157,9 @@ export default function UserPublishedAvatars({ userId }: UserPublishedAvatarsPro
 													.then(() => removeItem(look))
 													.catch(() => {
 														warning(
-															"Could not delete published avatar.",
+															getMessage(
+																"userAvatars.list.item.contextMenu.deleteAvatar.systemFeedback.error",
+															),
 														);
 													});
 											}}

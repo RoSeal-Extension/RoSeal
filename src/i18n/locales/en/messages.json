@@ -8220,7 +8220,12 @@
 				"contextMenu": {
 					"$context": "Context menu",
 					"deleteAvatar": {
-						"$message": "Delete Avatar"
+						"$message": "Delete Avatar",
+						"systemFeedback": {
+							"error": {
+								"$message": "An error occurred while deleting this published avatar."
+							}
+						}
 					}
 				}
 			}
