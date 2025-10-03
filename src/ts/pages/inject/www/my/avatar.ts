@@ -1077,25 +1077,29 @@ export default {
 				hasSetBodyColorsManually = false;
 			});
 
-			let lastAssets: typeof currentlyWornAssets;
-			let lastScales: typeof scales;
-			let lastBodyColors: typeof bodyColors;
-			let lastAvatarType: typeof avatarType;
+			let lastAssets: string | undefined;
+			let lastScales: string | undefined;
+			let lastBodyColors: string | undefined;
+			let lastAvatarType: AvatarType | undefined;
 
 			const onAvatarUpdate = () => {
+				const wornAssetsJSON = JSON.stringify(currentlyWornAssets);
+				const scalesJSON = JSON.stringify(scales);
+				const bodyColorsJSON = JSON.stringify(bodyColors);
+
 				if (
-					(lastAssets !== currentlyWornAssets ||
-						lastScales !== scales ||
-						lastBodyColors !== bodyColors ||
+					(lastAssets !== wornAssetsJSON ||
+						lastScales !== scalesJSON ||
+						lastBodyColors !== bodyColorsJSON ||
 						lastAvatarType !== avatarType) &&
 					currentlyWornAssets &&
 					scales &&
 					bodyColors &&
 					avatarType
 				) {
-					lastAssets = currentlyWornAssets;
-					lastScales = scales;
-					lastBodyColors = bodyColors;
+					lastAssets = wornAssetsJSON;
+					lastScales = scalesJSON;
+					lastBodyColors = bodyColorsJSON;
 					lastAvatarType = avatarType;
 
 					sendMessage("avatar.avatarUpdated", {

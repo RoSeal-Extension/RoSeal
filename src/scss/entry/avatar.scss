@@ -660,7 +660,7 @@ span.icon-roseal-hidden-label::after {
 #currently-wearing-items {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 3px;
     margin-top: 10px;
     max-height: 435px;
 
@@ -677,13 +677,17 @@ span.icon-roseal-hidden-label::after {
         .item-card-thumb-container,
         .item-card-thumb,
         .item-card-equipped {
-            width: 87px;
-            min-width: 87px;
-            max-width: 87px;
+            width: 67px;
+            min-width: 67px;
+            max-width: 67px;
 
-            height: 87px;
-            min-height: 87px;
-            max-height: 87px;
+            height: 67px;
+            min-height: 67px;
+            max-height: 67px;
+        }
+
+        .icon-check-selection {
+            margin: 0;
         }
     }
 }

@@ -195,89 +195,94 @@ export default {
 				sendMessage("avatar.setItemLists", value);
 			});
 
-			watch<HTMLAnchorElement>("#avatar-web-app .item-card-thumb-container", (itemCard) => {
-				const href = itemCard.href;
+			watch<HTMLAnchorElement>(
+				"#avatar-web-app .tab-pane .item-card-thumb-container",
+				(itemCard) => {
+					const href = itemCard.href;
 
-				let itemId: number | undefined;
-				let itemType: AvatarItemListItemType | undefined;
+					let itemId: number | undefined;
+					let itemType: AvatarItemListItemType | undefined;
 
-				if (href) {
-					const match = new URL(href).pathname.match(AVATAR_ITEM_REGEX);
-					if (match?.[1] === "catalog") {
-						itemId = Number.parseInt(match[2], 10);
-						itemType = "Asset";
-					}
-				} else {
-					const container = itemCard.querySelector<HTMLDivElement>(".item-card-thumb");
-					const type = container?.getAttribute("data-thumbnail-type");
+					if (href) {
+						const match = new URL(href).pathname.match(AVATAR_ITEM_REGEX);
+						if (match?.[1] === "catalog") {
+							itemId = Number.parseInt(match[2], 10);
+							itemType = "Asset";
+						}
+					} else {
+						const container =
+							itemCard.querySelector<HTMLDivElement>(".item-card-thumb");
+						const type = container?.getAttribute("data-thumbnail-type");
 
-					if (type === "Asset" || type === "Outfit") {
-						itemId = Number.parseInt(
-							container!.getAttribute("data-thumbnail-target-id") ?? "",
-							10,
-						);
-						itemType = type === "Outfit" ? "UserOutfit" : type;
-					} else if (!type && container) {
-						watchAttributes(
-							container,
-							(_, _2, _3, _4, kill) => {
-								const type = container?.getAttribute("data-thumbnail-type");
-								if (type === "Asset" || type === "Outfit") {
-									const itemId = Number.parseInt(
-										container!.getAttribute("data-thumbnail-target-id") ?? "",
-										10,
-									);
-
-									const cardCaption =
-										itemCard?.parentElement?.parentElement?.querySelector<HTMLElement>(
-											".item-card-caption",
+						if (type === "Asset" || type === "Outfit") {
+							itemId = Number.parseInt(
+								container!.getAttribute("data-thumbnail-target-id") ?? "",
+								10,
+							);
+							itemType = type === "Outfit" ? "UserOutfit" : type;
+						} else if (!type && container) {
+							watchAttributes(
+								container,
+								(_, _2, _3, _4, kill) => {
+									const type = container?.getAttribute("data-thumbnail-type");
+									if (type === "Asset" || type === "Outfit") {
+										const itemId = Number.parseInt(
+											container!.getAttribute("data-thumbnail-target-id") ??
+												"",
+											10,
 										);
 
-									if (!cardCaption) return;
+										const cardCaption =
+											itemCard?.parentElement?.parentElement?.querySelector<HTMLElement>(
+												".item-card-caption",
+											);
 
-									if (cardCaption.hasAttribute("rendered")) return;
-									cardCaption.setAttribute("rendered", "");
-									kill?.();
+										if (!cardCaption) return;
 
-									renderAppend(
-										<AddToAvatarListButton
-											itemType={type === "Outfit" ? "UserOutfit" : type}
-											itemId={itemId}
-											isOwnedOverride
-											isAvatarPage
-										/>,
-										cardCaption,
-									);
-								} else if (type) {
-									kill?.();
-								}
-							},
-							["thumbnail-type"],
+										if (cardCaption.hasAttribute("rendered")) return;
+										cardCaption.setAttribute("rendered", "");
+										kill?.();
+
+										renderAppend(
+											<AddToAvatarListButton
+												itemType={type === "Outfit" ? "UserOutfit" : type}
+												itemId={itemId}
+												isOwnedOverride
+												isAvatarPage
+											/>,
+											cardCaption,
+										);
+									} else if (type) {
+										kill?.();
+									}
+								},
+								["thumbnail-type"],
+							);
+
+							return;
+						}
+					}
+
+					if (!itemId || !itemType) return;
+					const cardCaption =
+						itemCard?.parentElement?.parentElement?.querySelector<HTMLElement>(
+							".item-card-caption",
 						);
 
-						return;
-					}
-				}
+					if (!cardCaption) return;
+					if (cardCaption.querySelector(".item-toggle-list-button-container")) return;
 
-				if (!itemId || !itemType) return;
-				const cardCaption =
-					itemCard?.parentElement?.parentElement?.querySelector<HTMLElement>(
-						".item-card-caption",
+					renderAppend(
+						<AddToAvatarListButton
+							itemType={itemType}
+							itemId={itemId}
+							isOwnedOverride
+							isAvatarPage
+						/>,
+						cardCaption,
 					);
-
-				if (!cardCaption) return;
-				if (cardCaption.querySelector(".item-toggle-list-button-container")) return;
-
-				renderAppend(
-					<AddToAvatarListButton
-						itemType={itemType}
-						itemId={itemId}
-						isOwnedOverride
-						isAvatarPage
-					/>,
-					cardCaption,
-				);
-			});
+				},
+			);
 
 			onStorageValueUpdate<AvatarItemListsStorageValue>(
 				[AVATAR_ITEM_LISTS_STORAGE_KEY],

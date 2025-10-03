@@ -20,7 +20,7 @@ export default function AvatarEditorCurrentlyWearing() {
 	);
 
 	return (
-		<ul id="currently-wearing-items" className="hlist item-cards-stackable roseal-scrollbar">
+		<ul id="currently-wearing-items" className="item-cards-stackable roseal-scrollbar">
 			{currentlyWearing.map((item) => (
 				<CurrentlyWearingItem
 					key={item.id}
