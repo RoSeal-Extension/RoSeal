@@ -2446,6 +2446,11 @@
 	},
 	"features": {
 		"$context": "Features page",
+		"viewUserPublishedAvatars": {
+			"name": {
+				"$message": "View a user's published Avatars if you have access to post Curated Avatars"
+			}
+		},
 		"trendingSearchesPage": {
 			"name": {
 				"$message": "Trending Searches page looked at `/trending-searches`"
@@ -5267,10 +5272,10 @@
 		},
 		"experienceTestPilotSettings": {
 			"name": {
-				"$message": "Show Test Pilot experiment settings next to the Play button"
+				"$message": "Show Beta Programs experiment settings next to the Play button"
 			},
 			"description": {
-				"$message": "This feature is intended for Roblox engineers and people in the Roblox Research Panel."
+				"$message": "This feature is intended for Roblox engineers, and users who have gained access to private Beta Programs, such as Roblox Research Panel members."
 			}
 		},
 		"launcherDisableEmptyChannelName": {
@@ -8186,8 +8191,49 @@
 			"$context": "New inventory page title that includes the user's display name and username"
 		}
 	},
+	"userAvatars": {
+		"$context": "User avatars page (published only), /users/{USER_ID}/avatars",
+		"title": {
+			"$message": "{displayName}'s Inventory",
+			"withUsername": "{displayName} (@{username})'s Published Avatars"
+		},
+		"postMessage": {
+			"$context": "Message talking about posting/publishing avatars",
+			"message": {
+				"$message": "Go to the Avatar Editor to post your current avatar!"
+			},
+			"buttonText": {
+				"$context": "Button text",
+				"$message": "Post Avatar"
+			}
+		},
+		"list": {
+			"$context": "List section",
+			"noItems": {
+				"$message": "This user has not published any Avatars yet."
+			},
+			"notAuthorized": {
+				"$message": "You are not authorized to view this user's published avatars at this time."
+			},
+			"item": {
+				"$context": "Look item",
+				"contextMenu": {
+					"$context": "Context menu",
+					"deleteAvatar": {
+						"$message": "Delete Avatar"
+					}
+				}
+			}
+		}
+	},
 	"user": {
 		"$context": "User profile page",
+		"avatars": {
+			"$context": "Curated avatars/published avatars/looks section",
+			"title": {
+				"$message": "Published Avatars"
+			}
+		},
 		"confirmRemoveConnectionModal": {
 			"$context": "Modal shown when trying to remove a connection in order to confirm that the user actually wants to do that",
 			"title": {

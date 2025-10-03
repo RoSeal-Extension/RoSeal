@@ -70,6 +70,10 @@ export function getUserProfileLink(userId: number, tab?: string, isDeleted?: boo
 	);
 }
 
+export function getUserAvatarsLink(userId: number) {
+	return getLink("www", `/users/${userId}/avatars`);
+}
+
 export function getUserTradeLink(userId: number, rItems?: string) {
 	return getLink(
 		"www",

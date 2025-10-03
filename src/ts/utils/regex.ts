@@ -13,6 +13,7 @@ export const MY_AVATAR_REGEX = /^\/my\/avatar$/i;
 export const EXPERIENCE_DETAILS_REGEX = /^\/games\/(\d+)(\/([a-z0-9-]+)?)?$/i;
 export const EXPERIENCE_DEEPLINK_REGEX = /^\/games\/start$/i;
 export const EXPERIENCE_EVENT_REGEX = /^\/events\/(\d+)$/i;
+export const USER_AVATARS_REGEX = /^\/users\/(\d+)\/avatars$/;
 // We want to support just the ID. Do not add $
 export const PLACE_CHECK_REGEX = /^\/games\/check\/(\d+)/i;
 export const REQUEST_ERROR_REGEX = /^\/request-error$/i;

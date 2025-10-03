@@ -21,6 +21,7 @@ import useFeatureValue from "../hooks/useFeatureValue";
 import VerifiedBadge from "../icons/VerifiedBadge";
 import { useMarketplaceCart } from "./providers/ShoppingCartProvider";
 import { getItemRestrictionsClassName } from "./utils/items";
+import type { ComponentChildren, JSX } from "preact";
 
 export type MarketplaceCardCreator = {
 	id?: number;
@@ -30,19 +31,23 @@ export type MarketplaceCardCreator = {
 };
 
 export type MarketplaceCardProps = {
+	as?: keyof JSX.IntrinsicElements;
 	type: MarketplaceWidgetItemType;
 	id: number | string;
 	name: string;
-	creator: MarketplaceCardCreator;
+	creator?: MarketplaceCardCreator;
 	totalValue?: number | null;
 	totalPrice?: number | null;
 	totalQuantity?: number;
 	remaining?: number;
 	itemRestrictions?: AvatarItemRestriction[] | null;
 	encryptedAdTrackingData?: string;
+	containerClassName?: string;
+	children?: ComponentChildren;
 };
 
 export default function MarketplaceCard({
+	as: _as,
 	type,
 	id,
 	name,
@@ -53,6 +58,8 @@ export default function MarketplaceCard({
 	remaining,
 	itemRestrictions,
 	encryptedAdTrackingData,
+	containerClassName,
+	children,
 }: MarketplaceCardProps) {
 	const { shoppingCart, isShoppingCartFull, toggleShoppingCart } = useMarketplaceCart();
 	const [showQuantityRemaining] = useFeatureValue("marketplaceShowQuantityRemaining", false);
@@ -86,16 +93,21 @@ export default function MarketplaceCard({
 		});
 	}, [type, encryptedAdTrackingData]);
 
+	const Type = _as ?? "li";
+
 	return (
-		<li
-			className={classNames("catalog-item-container", {
-				"look-container-item": type === "Look",
-			})}
+		<Type
+			className={classNames(
+				containerClassName || "catalog-item-container roseal-catalog-item-container",
+				{
+					"look-container-item": type === "Look",
+				},
+			)}
 			onMouseEnter={() => setIsHovering(true)}
 			onMouseLeave={() => setIsHovering(false)}
 			onClick={onClick}
 		>
-			<div className="item-card-container">
+			<div className="item-card-container roseal-item-card-container">
 				<a href={link} className="item-card-link">
 					<div className="item-card-link">
 						<div className="item-card-thumb-container">
@@ -160,47 +172,51 @@ export default function MarketplaceCard({
 					</div>
 					<div className="item-card-caption">
 						<div className="item-card-name-link">
-							<div className="item-card-name-link">{name}</div>
+							<div className="item-card-name">{name}</div>
 						</div>
 						<div className="item-card-secondary-info text-secondary">
-							<div className="text-overflow item-card-creator">
-								<span className="text-overflow">
-									{getMessage("item.byWith@", {
-										creatorType: creator.type,
-										creatorName: creator.name,
-										creatorLink: (contents: string) => {
-											if (
-												creator.id !== undefined &&
-												creator.type !== undefined
-											) {
-												return (
-													<a
-														href={getCreatorProfileLink(
-															creator.id,
-															creator.type,
-															creator.name,
-														)}
-														className="creator-name text-link"
-													>
-														{contents}
-													</a>
-												);
-											}
+							{creator && (
+								<div className="text-overflow item-card-creator">
+									<span className="text-overflow">
+										{getMessage("item.byWith@", {
+											creatorType: creator.type,
+											creatorName: creator.name,
+											creatorLink: (contents: string) => {
+												if (
+													creator.id !== undefined &&
+													creator.type !== undefined
+												) {
+													return (
+														<a
+															href={getCreatorProfileLink(
+																creator.id,
+																creator.type,
+																creator.name,
+															)}
+															className="creator-name text-link"
+														>
+															{contents}
+														</a>
+													);
+												}
 
-											return <span className="creator-name">{contents}</span>;
-										},
-									})}
-								</span>
-								{creator.hasVerifiedBadge && (
-									<VerifiedBadge
-										width={16}
-										height={16}
-										className="verified-badge-icon-catalog-item-rendered"
-									/>
-								)}
-							</div>
+												return (
+													<span className="creator-name">{contents}</span>
+												);
+											},
+										})}
+									</span>
+									{creator.hasVerifiedBadge && (
+										<VerifiedBadge
+											width={16}
+											height={16}
+											className="verified-badge-icon-catalog-item-rendered"
+										/>
+									)}
+								</div>
+							)}
 						</div>
-						<div className="text-overflow item-card-price font-header-2 text-subheader margin-top-none">
+						<div className="text-overflow item-card-price font-header-2 text-subheader margin-top-none value-cost-container">
 							{totalValue !== undefined && totalValue !== totalPrice && (
 								<RobuxView
 									textClassName="text-robux-tile"
@@ -220,7 +236,8 @@ export default function MarketplaceCard({
 						</div>
 					</div>
 				</a>
+				{children}
 			</div>
-		</li>
+		</Type>
 	);
 }

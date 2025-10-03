@@ -1,0 +1,57 @@
+.content {
+    max-width: 970px;
+    padding: 0;
+}
+
+#published-avatars {
+    padding: 0;
+    min-height: 350px;
+    margin-top: 1em;
+
+    .avatars-title {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .publish-more-text-container {
+        width: 300px;
+        flex-shrink: 0;
+        text-align: right;
+        margin: 2px 6px 0 0;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+
+        .publish-more-text {
+            overflow: hidden;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .publish-avatar-btn {
+            flex-shrink: 0;
+        }
+    }
+
+    .looks-container-list {
+        margin-top: 1em;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        row-gap: 10px;
+
+        .item-card-name {
+            font: var(--typography-title-medium-font);
+            letter-spacing: var(--typography-title-medium-letter-spacing);
+        }
+
+        .look-context-menu {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+        }
+
+        @media (min-width: 768px) {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+}

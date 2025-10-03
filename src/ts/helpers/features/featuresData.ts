@@ -1859,6 +1859,15 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
+						variant: 1,
+					},
+					{
+						type: "Regular",
+						id: "viewUserPublishedAvatars",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
 					},
 					{
 						type: "Regular",

@@ -459,3 +459,44 @@
     height: 33px;
     line-height: 33px;
 }
+
+.profile-published-avatars {
+    .collection-carousel-container {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-left: 0px;
+        margin-right: 0px;
+
+        .carousel-container {
+            position: relative;
+
+            .carousel {
+                display: flex;
+                overflow-x: hidden;
+                scroll-snap-type: x mandatory;
+                scroll-behavior: smooth;
+                gap: 15px;
+                width: 100%;
+                height: fit-content;
+                margin: 0;
+
+                .carousel-item {
+                    height: fit-content;
+                    flex-shrink: 0;
+                    width: calc((100% / 6) - 12px);
+
+                    @media (max-width: 767px) {
+                        width: calc((100% / 4) - 12px);
+                    }
+
+                    .value-cost-container {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                    }
+                }
+            }
+        }
+    }
+}

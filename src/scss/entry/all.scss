@@ -1685,3 +1685,12 @@ roseal-font {
 .pointer-events-all {
     pointer-events: all !important;
 }
+
+.roseal-catalog-item-container {
+    .value-cost-container {
+        .icon-robux-16x16 {
+            margin-bottom: 0;
+            margin-right: 0;
+        }
+    }
+}

@@ -3,11 +3,12 @@ import { isSameDay, setYear } from "date-fns";
 import { type ContainerNode, render } from "preact";
 import BlockCreatorButton from "src/ts/components/item/BlockCreatorButton";
 import CopyShareLinkButton from "src/ts/components/misc/CopyShareLinkButton";
+import UserProfileCurrentlyWearing from "src/ts/components/users/userProfile/avatar/CurrentlyWearing";
+import Download3DAvatarButton from "src/ts/components/users/userProfile/avatar/DownloadAvatarButton";
 import BlockedScreen from "src/ts/components/users/userProfile/BlockedScreen";
 import UserCommunityJoinedDateCarousel from "src/ts/components/users/userProfile/communities/JoinedDateCarousel";
 import UserCommunityJoinedDateGrid from "src/ts/components/users/userProfile/communities/JoinedDateGrid";
 import CustomizeProfileButton from "src/ts/components/users/userProfile/CustomizeProfileButton";
-import Download3DAvatarButton from "src/ts/components/users/userProfile/avatar/DownloadAvatarButton";
 import FilteredTextPreview from "src/ts/components/users/userProfile/FilteredTextPreview";
 import UserJoinDate from "src/ts/components/users/userProfile/JoinDate";
 import UserLastSeen from "src/ts/components/users/userProfile/LastSeen";
@@ -15,6 +16,7 @@ import ConfirmUnfriendModal from "src/ts/components/users/userProfile/modals/Con
 import MutualFriendsHeader from "src/ts/components/users/userProfile/MutualFriendsHeader";
 import PlayerBadgesContainer from "src/ts/components/users/userProfile/PlayerBadgesContainer";
 import UserPortraitView from "src/ts/components/users/userProfile/PortraitView";
+import UserProfilePublishedAvatars from "src/ts/components/users/userProfile/publishedAvatars/Carousel";
 import RemoveFollowerButton from "src/ts/components/users/userProfile/RemoveFollowerButton";
 import RobloxBadgesContainer from "src/ts/components/users/userProfile/RobloxBadgesContainer";
 import SearchMarketplaceItemsButton from "src/ts/components/users/userProfile/SearchMarketplaceItemsButton";
@@ -71,7 +73,6 @@ import {
 	renderIn,
 	renderPrepend,
 } from "src/ts/utils/render";
-import UserProfileCurrentlyWearing from "src/ts/components/users/userProfile/avatar/CurrentlyWearing";
 
 export default {
 	id: "user.profile",
@@ -79,6 +80,12 @@ export default {
 	css: ["css/userProfile.css"],
 	fn: async ({ regexMatches }) => {
 		if (!(await isAuthenticated())) return;
+
+		featureValueIs("viewUserPublishedAvatars", true, () =>
+			watchOnce(".profile-tab-content > .profile-store").then((store) =>
+				renderAfter(<UserProfilePublishedAvatars userId={profileUserId} />, store),
+			),
+		);
 
 		const authenticatedUser = (await getAuthenticatedUser())!;
 		const profileUserId = Number.parseInt(regexMatches![0]?.[1], 10);
