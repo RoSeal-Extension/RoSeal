@@ -59,7 +59,7 @@
         "@formatjs/icu-messageformat-parser": "2.11.2",
         "@types/angular": "1.8.9",
         "@types/bun": "1.2.23",
-        "@types/chrome": "0.1.18",
+        "@types/chrome": "0.1.21",
         "@types/fs-extra": "11.0.4",
         "@types/html-minifier-terser": "7.0.2",
         "@types/klaw": "3.0.7",
@@ -346,7 +346,7 @@
 
     "@types/bun": ["@types/bun@1.2.23", "", { "dependencies": { "bun-types": "1.2.23" } }, "sha512-le8ueOY5b6VKYf19xT3McVbXqLqmxzPXHsQT/q9JHgikJ2X22wyTW3g3ohz2ZMnp7dod6aduIiq8A14Xyimm0A=="],
 
-    "@types/chrome": ["@types/chrome@0.1.18", "", { "dependencies": { "@types/filesystem": "*", "@types/har-format": "*" } }, "sha512-FYdpIrZmyon1lVhHsxY0xIH+7jkhy9JUzi6r+5lM7nChaq5LnWe7WLHZKzebZgPDIF2SP0XQ2qRb5t6Cp9ju+g=="],
+    "@types/chrome": ["@types/chrome@0.1.21", "", { "dependencies": { "@types/filesystem": "*", "@types/har-format": "*" } }, "sha512-ll0HNiSOO6hx8V3s/xd2Rer6Al7+dmcsgcoEfZxQ//MQHTLSOdV6Eklyd4hi8QBosaxGaj4HcP2SZKkpYOFJog=="],
 
     "@types/d3-color": ["@types/d3-color@2.0.6", "", {}, "sha512-tbaFGDmJWHqnenvk3QGSvD3RVwr631BjKRD7Sc7VLRgrdX5mk5hTyoeBL6rXZaeoXzmZwIl1D2HPogEdt1rHBg=="],
 
