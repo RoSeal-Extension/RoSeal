@@ -3495,7 +3495,7 @@
 		},
 		"avatarEditorSearch": {
 			"name": {
-				"$message": "Add search bar to Avatar Editor page"
+				"$message": "Add search bar and filters to Avatar Editor page"
 			}
 		},
 		"avatarEditorPostAvatar": {
@@ -11040,8 +11040,22 @@
 		"filters": {
 			"search": {
 				"placeholder": {
-					"$message": "Search for items by name...",
+					"$message": "Search by name...",
 					"$context": "Placeholder for search bar in avatar page"
+				}
+			},
+			"creatorName": {
+				"label": {
+					"$message": "Creator",
+					"$context": "Title"
+				},
+				"previewLabel": {
+					"$message": "By {creatorName}",
+					"$context": "Creator name preview"
+				},
+				"inputPlaceholder": {
+					"$context": "Placeholder input",
+					"$message": "Creator Name"
 				}
 			}
 		},

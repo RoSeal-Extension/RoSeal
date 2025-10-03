@@ -1,5 +1,13 @@
 import Filter from "./Filter";
 
+export type FilterTextInput = {
+	type: "input";
+	value: string;
+	placeholder: string;
+	maxLength?: number;
+	defaultValue: string;
+};
+
 export type FilterNumberInput = {
 	type: "number";
 	min: number;
@@ -47,7 +55,13 @@ export type FilterData = {
 	titleTooltip?: string;
 	previewTitle: string;
 	firstItemDivider?: boolean;
-} & (FilterDropdown | FilterNumberInput | FilterCheckbox | FilterColorsWithCheckboxesFilter);
+} & (
+	| FilterDropdown
+	| FilterNumberInput
+	| FilterCheckbox
+	| FilterColorsWithCheckboxesFilter
+	| FilterTextInput
+);
 
 export type ApplyFilterValueFn<T extends FilterData> = (
 	filterId: T["id"],
@@ -55,7 +69,7 @@ export type ApplyFilterValueFn<T extends FilterData> = (
 ) => void;
 
 export type FiltersContainerProps<T extends FilterData> = {
-	title: string;
+	title?: string;
 	filters: T[];
 	applyFilterValue: ApplyFilterValueFn<T>;
 };
@@ -67,9 +81,11 @@ export default function FiltersContainer<T extends FilterData>({
 }: FiltersContainerProps<T>) {
 	return (
 		<div className="roseal-filters-container">
-			<div className="filters-header-container">
-				<span className="filters-header">{title}</span>
-			</div>
+			{title && (
+				<div className="filters-header-container">
+					<span className="filters-header">{title}</span>
+				</div>
+			)}
 			<div className="filter-items-container">
 				{filters.map((filter) => (
 					<Filter key={filter.id} filter={filter} applyFilterValue={applyFilterValue} />

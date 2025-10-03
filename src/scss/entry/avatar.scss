@@ -611,23 +611,28 @@ span.icon-roseal-hidden-label::after {
     }
 }
 
-.roseal-search-filter {
+.roseal-search-filters {
+    display: flex;
+
     &.half-width {
         width: 75%;
     }
-    .roseal-avatar-editor-search {
-        border-radius: 8px !important;
-        height: 32px;
-    }
 
-    .input-addon-btn {
-        height: 32px;
+    .keyword-filter {
+        .keyword-filter-input {
+            border-radius: 8px !important;
+            height: 32px;
+        }
+
+        .input-addon-btn {
+            height: 32px;
+        }
     }
 }
 
 [data-rosealfe-avatareditorsearch] {
     #avatar-web-app {
-        input.form-control.input-field[type="text"]:not(.roseal-avatar-editor-search) {
+        input.form-control.input-field[type="text"]:not(.roseal-search-filters input) {
             display: none;
         }
     }

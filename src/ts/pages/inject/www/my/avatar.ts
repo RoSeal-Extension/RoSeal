@@ -1,4 +1,6 @@
 import { signal } from "@preact/signals";
+import type { ComponentType } from "preact";
+import { AVATAR_EDITOR_FILTERS_INITIAL_VALUE } from "src/ts/components/avatar/constants";
 import type { AvatarItemListItem, AvatarItemListsStorageValue } from "src/ts/constants/avatar";
 import type { ArchivedItemsItem } from "src/ts/constants/misc";
 import {
@@ -9,7 +11,7 @@ import {
 } from "src/ts/helpers/communication/dom";
 import { getMessagesInject } from "src/ts/helpers/domInvokes";
 import { featureValueIsInject, getFeatureValueInject } from "src/ts/helpers/features/helpersInject";
-import { hijackRequest } from "src/ts/helpers/hijack/fetch";
+import { hijackRequest, hijackResponse } from "src/ts/helpers/hijack/fetch";
 import { hijackCreateElement, hijackState } from "src/ts/helpers/hijack/react";
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
@@ -27,6 +29,11 @@ import {
 	listUserInventoryAssetsDetailed,
 	userOwnsItem,
 } from "src/ts/helpers/requests/services/inventory";
+import type {
+	AvatarItemDetail,
+	MarketplaceItemType,
+	MultigetAvatarItemsResponse,
+} from "src/ts/helpers/requests/services/marketplace";
 import { handleArchivedItems } from "src/ts/specials/handleArchivedItems";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
@@ -147,6 +154,39 @@ function menuToHash(name: string) {
 }
 function getHashParts() {
 	return location.hash.replaceAll("#!/", "").split("/").map(menuToHash);
+}
+
+type FilteredItemListComponentProps = {
+	type: ComponentType;
+	props: {
+		items: ReactItemBase[];
+	};
+	cachedItems: Record<string, AvatarItemDetail<MarketplaceItemType> | undefined>;
+	createElement: typeof window.React.createElement;
+};
+
+function filteredItemListComponent({
+	type,
+	props,
+	cachedItems,
+	createElement,
+}: FilteredItemListComponentProps) {
+	const [state, setState] = window.React.useState(AVATAR_EDITOR_FILTERS_INITIAL_VALUE);
+	window.React.useEffect(() => addMessageListener("avatar.setFilters", setState), []);
+
+	return createElement(type, {
+		...props,
+		// @ts-expect-error: fine
+		items: props.items.filter((item) => {
+			const cachedItem = cachedItems[`${item.itemType}${item.id}`];
+
+			return (
+				(!state.keyword.length || item.name.toLowerCase().includes(state.keyword)) &&
+				(!state.creatorName.length ||
+					cachedItem?.creatorName.toLowerCase() === state.creatorName)
+			);
+		}),
+	});
 }
 
 export default {
@@ -542,6 +582,39 @@ export default {
 					return value.current;
 				},
 			});
+		});
+
+		const cachedItems: Record<string, AvatarItemDetail<MarketplaceItemType> | undefined> = {};
+
+		featureValueIsInject("avatarEditorSearch", true, () => {
+			hijackResponse((req, res) => {
+				if (req.url !== `https://${getRobloxUrl("catalog")}/v1/catalog/items/details`)
+					return;
+
+				res?.clone()
+					.json()
+					.then((data: MultigetAvatarItemsResponse<MarketplaceItemType>) => {
+						for (const item of data.data) {
+							cachedItems[`${item.itemType}${item.id}`] = item;
+						}
+					});
+			});
+
+			hijackCreateElement(
+				(_, props) =>
+					props !== null &&
+					"items" in props &&
+					"loading" in props &&
+					"getNextPage" in props &&
+					"emptyMessage" in props,
+				(createElement, type, props) =>
+					createElement(filteredItemListComponent, {
+						type: type as ComponentType,
+						props: props as FilteredItemListComponentProps["props"],
+						cachedItems,
+						createElement,
+					}),
+			);
 		});
 
 		featureValueIsInject("avatarItemLists", true, async () => {

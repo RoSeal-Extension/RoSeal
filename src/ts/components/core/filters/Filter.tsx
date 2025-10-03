@@ -260,6 +260,18 @@ export default function Filter<T extends FilterData>({
 								);
 							})}
 						</div>
+					) : filter.type === "input" ? (
+						<div className="filter-input-container filter-options-container">
+							<button type="button" className="filter-option selected-option">
+								<TextInput
+									className="filter-input"
+									placeholder={filter.placeholder}
+									maxLength={filter.maxLength}
+									onType={setValue}
+									value={value as string}
+								/>
+							</button>
+						</div>
 					) : (
 						<div
 							className={classNames("filter-options-container", {

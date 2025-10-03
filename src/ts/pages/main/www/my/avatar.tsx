@@ -1,9 +1,10 @@
 import { effect, signal } from "@preact/signals";
 import { useEffect, useState } from "preact/hooks";
 import AdvancedCustomizationButton from "src/ts/components/avatar/AdvancedCustomizationButton";
+import { AVATAR_EDITOR_FILTERS_INITIAL_VALUE } from "src/ts/components/avatar/constants";
 import AvatarEditorCurrentlyWearing from "src/ts/components/avatar/CurrentlyWearing";
 import EditItemListsButton from "src/ts/components/avatar/EditItemListsButton";
-import AvatarEditorSearchBar from "src/ts/components/avatar/filters/AvatarEditorSearchBar";
+import AvatarEditorSearch from "src/ts/components/avatar/filters/AvatarEditorSearch";
 import CreateCharacterModal from "src/ts/components/avatar/modals/CreateCharacterModal";
 import EditItemListsModal from "src/ts/components/avatar/modals/EditItemListsModal";
 import UpdateCharacterModal from "src/ts/components/avatar/modals/UpdateCharacterModal";
@@ -63,38 +64,20 @@ export default {
 		);
 
 		featureValueIs("avatarEditorSearch", true, () => {
-			const keyword = signal<string>("");
+			const filters = signal(AVATAR_EDITOR_FILTERS_INITIAL_VALUE);
 
-			const handleCard = (el: HTMLDivElement) => {
-				if (el.closest(".recommended-items-slider")) return;
-
-				if (!keyword.value) {
-					return el.removeAttribute("data-display-none");
-				}
-
-				const name = el.querySelector(".item-card-name")?.textContent;
-
-				if (name !== "" && name?.toLowerCase().includes(keyword.value.toLowerCase())) {
-					return el.removeAttribute("data-display-none");
-				}
-
-				return el.setAttribute("data-display-none", "");
-			};
-
-			keyword.subscribe(() => {
-				for (const item of document.querySelectorAll<HTMLDivElement>(
-					"#avatar-web-app .list-item.item-card",
-				)) {
-					handleCard(item);
-				}
-			});
-
-			watch<HTMLDivElement>("#avatar-web-app .list-item.item-card", handleCard);
+			filters.subscribe((value) =>
+				sendMessage("avatar.setFilters", {
+					creatorName: value.creatorName.toLowerCase(),
+					keyword: value.keyword.toLowerCase(),
+				}),
+			);
 
 			watch("#avatar-web-app .breadcrumb-container", (el) =>
-				renderAfter(<AvatarEditorSearchBar keyword={keyword} />, el),
+				renderAfter(<AvatarEditorSearch filters={filters} />, el),
 			);
 		});
+
 		featureValueIs("avatarItemArchiveInInventory", true, () => {
 			sendMessage("avatar.setupArchive", undefined);
 

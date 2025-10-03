@@ -51,6 +51,7 @@ import type { ListUserOnlineFriendsResponse } from "src/ts/helpers/requests/serv
 import type { SortOrder } from "src/ts/helpers/requests/services/badges";
 import type { CurrentServerJoinMetadata } from "src/ts/utils/gameLauncher";
 import type { ReactAvatarEditorPageAvatar } from "src/ts/pages/inject/www/my/avatar";
+import type { AvatarEditorFiltersValue } from "src/ts/components/avatar/constants";
 
 export type PopupData = {
 	permissions: chrome.permissions.Permissions;
@@ -190,6 +191,9 @@ export type DOMCommunicationMessageDataTypes = {
 	};
 	"avatar.avatarUpdated": {
 		args: ReactAvatarEditorPageAvatar;
+	};
+	"avatar.setFilters": {
+		args: AvatarEditorFiltersValue;
 	};
 	"avatar.updateAssets": {
 		args: AvatarAssetDefinitionWithTypes[];
