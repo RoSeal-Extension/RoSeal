@@ -196,7 +196,7 @@ export default {
 			});
 
 			watch<HTMLAnchorElement>(
-				"#avatar-web-app .tab-pane .item-card-thumb-container",
+				"#avatar-web-app .hlist .item-card-thumb-container",
 				(itemCard) => {
 					const href = itemCard.href;
 
