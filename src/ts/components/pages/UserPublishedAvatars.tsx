@@ -99,7 +99,9 @@ export default function UserPublishedAvatars({ userId }: UserPublishedAvatarsPro
 		<div id="published-avatars">
 			<div className="avatars-title">
 				<h1 className="text-overflow">
-					{!includeUsernameInTitle || !profileData
+					{!includeUsernameInTitle ||
+					!profileData ||
+					profileData.names.combinedName === profileData.names.username
 						? getMessage("userAvatars.title", {
 								displayName: profileData?.names.combinedName || "",
 							})
