@@ -613,12 +613,19 @@ span.icon-roseal-hidden-label::after {
 
 .roseal-search-filters {
     display: flex;
+    margin-bottom: 5px;
 
     &.half-width {
         width: 75%;
     }
 
+    .roseal-filters-container {
+        margin-bottom: 0;
+    }
+
     .keyword-filter {
+        height: 32px;
+
         .keyword-filter-input {
             border-radius: 8px !important;
             height: 32px;

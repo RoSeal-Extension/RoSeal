@@ -415,6 +415,7 @@ export default function FriendsListCarousel({
 
 							return (
 								<FriendsListCard
+									key={user.id}
 									userId={user.id}
 									canChat={canAccessChat === true}
 									blockedUniverseIds={blockedUniverseIds || undefined}
