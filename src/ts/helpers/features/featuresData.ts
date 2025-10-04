@@ -1990,6 +1990,14 @@ export const sections = [
 							items: [
 								{
 									type: "Regular",
+									id: "improvedUserCurrentlyWearing.showAssociatedItemsBundle",
+									component: {
+										type: "Toggle",
+										defaultValue: true,
+									},
+								},
+								{
+									type: "Regular",
 									id: "improvedUserCurrentlyWearing.separateAnimationsTab",
 									component: {
 										type: "Toggle",

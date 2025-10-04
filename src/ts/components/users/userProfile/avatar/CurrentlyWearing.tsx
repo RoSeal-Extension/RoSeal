@@ -46,6 +46,10 @@ export default function UserProfileCurrentlyWearing({
 		false,
 	);
 	const [showTotalValue] = useFeatureValue("improvedUserCurrentlyWearing.showTotalValue", false);
+	const [showAssociatedBundle] = useFeatureValue(
+		"improvedUserCurrentlyWearing.showAssociatedItemsBundle",
+		false,
+	);
 
 	const [activeTab, setActiveTab] = useState<ActiveTab>("assets");
 	const [avatar] = usePromise(() => getUserAvatar({ userId }), [userId]);
@@ -234,7 +238,7 @@ export default function UserProfileCurrentlyWearing({
 											: undefined
 									}
 									details={asset.details}
-									showBundle={asset.showBundle}
+									showBundle={showAssociatedBundle && asset.showBundle}
 								/>
 							))}
 						</ul>
@@ -269,7 +273,7 @@ export default function UserProfileCurrentlyWearing({
 											: undefined
 									}
 									details={asset.details}
-									showBundle={asset.showBundle}
+									showBundle={showAssociatedBundle && asset.showBundle}
 								/>
 							))}
 						</ul>
@@ -286,7 +290,7 @@ export default function UserProfileCurrentlyWearing({
 									assetId={emote.assetId}
 									assetName={emote.assetName}
 									details={emote.details}
-									showBundle={emote.showBundle}
+									showBundle={showAssociatedBundle && emote.showBundle}
 								/>
 							))}
 						</ul>

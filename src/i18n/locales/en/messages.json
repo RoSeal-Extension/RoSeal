@@ -2748,6 +2748,11 @@
 			"description": {
 				"$message": "When enabled, uses RoSeal's version of the currently wearing section which adds Bundle thumbnails to the bottom right of items that are included in bundles."
 			},
+			"showAssociatedItemsBundle": {
+				"name": {
+					"$message": "Show the associated bundle in the bottom right corner of each item"
+				}
+			},
 			"separateAnimationsTab": {
 				"name": {
 					"$message": "Separate Animation assets into their own tab"
