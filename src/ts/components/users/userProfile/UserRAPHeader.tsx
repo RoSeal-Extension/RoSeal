@@ -71,7 +71,7 @@ export default function UserRAPHeader({ userId }: UserRAPHeaderProps) {
 			>
 				<ul className="hlist item-cards roseal-scrollbar">
 					{alllCollectibles?.map((item) => (
-						<UserRAPItem item={item} />
+						<UserRAPItem key={item.userAssetId} item={item} />
 					))}
 				</ul>
 			</SimpleModal>

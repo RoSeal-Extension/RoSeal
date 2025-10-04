@@ -4790,7 +4790,7 @@
 		},
 		"experienceAllowJoinNonRootPlaces": {
 			"name": {
-				"$message": "Allow joining non-starter places from their respectve detail pages"
+				"$message": "Allow joining non-starter places from their respective detail pages"
 			}
 		},
 		"animalImages": {
