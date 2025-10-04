@@ -12,6 +12,7 @@ import { allowedItemsData, blockedItemsData } from "src/ts/constants/misc";
 import { addMessageListener, invokeMessage, sendMessage } from "src/ts/helpers/communication/dom";
 import { watch } from "src/ts/helpers/elements";
 import { featureValueIsInject, getFeatureValueInject } from "src/ts/helpers/features/helpersInject";
+import { getFlagInject } from "src/ts/helpers/flags/flagsInject";
 import { hijackRequest } from "src/ts/helpers/hijack/fetch";
 import { hijackCreateElement, hijackState } from "src/ts/helpers/hijack/react";
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
@@ -45,38 +46,52 @@ export default {
 			if (hasBlockedSDUI) return;
 
 			hasBlockedSDUI = true;
-			hijackRequest(async (req) => {
-				if (!hasCustomizedLayout && !hasBlockedExperience) return;
+			checks.push(
+				getFlagInject("homePage", "blockSDUI").then((shouldBlockSDUI) => {
+					if (!shouldBlockSDUI) return;
 
-				const url = new URL(req.url);
-				if (
-					url.hostname === getRobloxUrl("apis") &&
-					url.pathname === "/discovery-api/omni-recommendation"
-				) {
-					const body = (await req.clone().json()) as GetOmniRecommendationsRequest;
+					return hijackRequest(async (req) => {
+						if (!hasCustomizedLayout && !hasBlockedExperience) return;
 
-					if (body.sduiTreatmentTypes)
-						body.sduiTreatmentTypes = body.sduiTreatmentTypes.filter(
-							(item) => !ALLOWED_CUSTOMIZATION_TREATMENTS.includes(item),
-						);
+						const url = new URL(req.url);
+						if (
+							url.hostname === getRobloxUrl("apis") &&
+							url.pathname === "/discovery-api/omni-recommendation"
+						) {
+							const body = (await req
+								.clone()
+								.json()) as GetOmniRecommendationsRequest;
 
-					return new Request(req, {
-						body: JSON.stringify(body),
+							if (body.sduiTreatmentTypes)
+								body.sduiTreatmentTypes = body.sduiTreatmentTypes.filter(
+									(item) => !ALLOWED_CUSTOMIZATION_TREATMENTS.includes(item),
+								);
+
+							return new Request(req, {
+								body: JSON.stringify(body),
+							});
+						}
 					});
-				}
-			});
+				}),
+			);
 		};
 
 		checks.push(
 			blockedItemsData.subscribe((blockedData) => {
-				const hasCreatorConfig =
-					blockedData?.creators.length !== 0 ||
-					allowedItemsData.value?.creators.length !== 0;
+				const _hasCreatorConfig =
+					blockedData?.creators.length || allowedItemsData.value?.creators.length;
+				const hasCreatorConfig = _hasCreatorConfig !== undefined && _hasCreatorConfig !== 0;
+
+				const _hasExperienceConfig =
+					blockedData?.experiences.ids.length ||
+					blockedData?.experiences.names.length ||
+					blockedData?.experiences.descriptions.length ||
+					allowedItemsData.value?.experiences.ids.length ||
+					hasCreatorConfig;
 				const hasExperienceConfig =
-					(blockedData?.experiences.ids.length ||
-						blockedData?.experiences.names.length ||
-						blockedData?.experiences.descriptions.length ||
-						allowedItemsData.value?.experiences.ids.length) !== 0 || hasCreatorConfig;
+					_hasExperienceConfig !== undefined &&
+					_hasExperienceConfig !== 0 &&
+					_hasExperienceConfig !== false;
 				if (hasExperienceConfig) {
 					blockSDUI();
 					hasBlockedExperience = true;

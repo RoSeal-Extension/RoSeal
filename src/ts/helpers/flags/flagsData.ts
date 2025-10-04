@@ -9,6 +9,9 @@ export type FlagsData = {
 	onboarding: {
 		showOnboarding: boolean;
 	};
+	homePage: {
+		blockSDUI: boolean;
+	};
 };
 
 export const flagsData: FlagsData = {
@@ -21,5 +24,8 @@ export const flagsData: FlagsData = {
 	},
 	onboarding: {
 		showOnboarding: true,
+	},
+	homePage: {
+		blockSDUI: false,
 	},
 };
