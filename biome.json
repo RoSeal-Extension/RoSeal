@@ -27,17 +27,30 @@
 				"noStaticElementInteractions": "off"
 			},
 			"correctness": {
-				"useExhaustiveDependencies": "off"
+				"useExhaustiveDependencies": "off",
+				"useJsxKeyInIterable": "error"
 			},
 			"performance": {
 				"noDelete": "off"
 			}
 		},
-		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"]
+		"includes": [
+			"**",
+			"!**/dist/**",
+			"!**/builds-dist/**",
+			"!**/*.gen.*",
+			"!**/secret/**"
+		]
 	},
 	"formatter": {
 		"indentWidth": 4,
 		"lineWidth": 100,
-		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"]
+		"includes": [
+			"**",
+			"!**/dist/**",
+			"!**/builds-dist/**",
+			"!**/*.gen.*",
+			"!**/secret/**"
+		]
 	}
 }

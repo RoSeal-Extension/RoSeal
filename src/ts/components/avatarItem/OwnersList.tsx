@@ -116,6 +116,7 @@ export default function AssetOwnersList({
 								{items.map((item) => (
 									<AssetOwnerItem
 										{...item}
+										key={item.collectibleItemInstanceId}
 										totalSerialNumbers={totalSerialNumbers}
 										isLimited={isLimited}
 										isUGC={isUGC}
