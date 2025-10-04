@@ -6052,7 +6052,7 @@
 		"connectionsOwned": {
 			"$context": "Button to show how many connections own an item",
 			"buttonText": {
-				"$message": "{count} {countNum, plural, =1 {Connection} other {Connections}} own"
+				"$message": "{count} {countNum, plural, =1 {Connection owns} other {Connections own}}"
 			},
 			"modal": {
 				"$context": "Modal shown when clicked on the owned text",
