@@ -204,16 +204,29 @@ export function transformManifest({
 				break;
 			}
 			case "firefox": {
-				if (!isDev && !manifest.beta) {
-					if (manifest.browser_specific_settings?.firefox) {
-						manifest.browser_specific_settings.firefox.id = undefined;
-						manifest.browser_specific_settings.firefox.update_url = undefined;
+				let id: string | undefined;
+				let updateUrl: string | undefined;
+
+				if (!isDev) {
+					if (manifest.beta) {
+						id = manifest.browser_specific_settings.firefox?.beta_id;
+						updateUrl = manifest.browser_specific_settings.firefox?.beta_id;
+					} else {
+						id = manifest.browser_specific_settings.firefox?.id;
 					}
 				}
+
+				if (manifest.browser_specific_settings.firefox) {
+					manifest.browser_specific_settings.firefox.beta_id = undefined;
+					manifest.browser_specific_settings.firefox.beta_update_url = undefined;
+				}
+
 				manifest.browser_specific_settings = {
 					// @ts-expect-error: Mapping to firefox browser_specific_settings
 					gecko: manifest.browser_specific_settings.firefox && {
 						...manifest.browser_specific_settings.firefox,
+						id,
+						update_url: updateUrl,
 						android: undefined,
 					},
 					gecko_android: manifest.browser_specific_settings.firefox?.android,

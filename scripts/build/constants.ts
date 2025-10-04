@@ -2,8 +2,9 @@ import type { DevServersAvailable } from "./utils";
 
 export type BrowserSpecificSettings = {
 	id?: string;
+	beta_id?: string;
 	key?: string;
-	update_url?: string;
+	beta_update_url?: string;
 	strict_min_version?: string;
 	strict_max_version?: string;
 };

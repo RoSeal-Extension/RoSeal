@@ -16,7 +16,7 @@ await cachedBuildTime.write(JSON.stringify(buildTimeParams));
 
 console.assert(
 	(
-		await Bun.$`zip -r ./builds-dist/RoSeal-${manifest.version}-src.zip "./cachedBuildTime.json" "./src/" "./scripts/" "./package.json" "./biome.json" "./tsconfig.json" "./bun.lockb" "./README.md" -x "**/.DS_Store" -x "**/__MACOSX" -x "**/*_secret*" -x "**/*_dev*" -x ".git" -9 > /dev/null`
+		await Bun.$`zip -r ./builds-dist/RoSeal-${manifest.version}-src.zip "./cachedBuildTime.json" "./src/"  "./.npmrc" "./scripts/" "./package.json" "./biome.json" "./tsconfig.json" "./bun.lock" "./README.md" -x "**/.DS_Store" -x "**/__MACOSX" -x "**/*_secret*" -x "**/*_dev*" -x ".git" -9 > /dev/null`
 	).exitCode === 0,
 );
 
