@@ -388,10 +388,10 @@ export default function SortItem({
 			</Popover>
 			<SortTextContainerType
 				type="button"
-				className="roseal-btn sort-item-text"
+				className="roseal-btn sort-item-text text-overflow"
 				onClick={playlist && render.onToggle}
 			>
-				<span className="sort-text">
+				<span className="sort-text text-overflow">
 					{data?.typeIndex !== 0
 						? getMessage("home.customizeLayout.modal.nameWithNumber", {
 								name: text,

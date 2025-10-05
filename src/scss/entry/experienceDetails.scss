@@ -136,6 +136,7 @@
 .experience-dev-stat {
     height: fit-content;
     width: fit-content;
+    clear: both;
 
     #btr-description-wrapper & {
         margin-left: 12px;
@@ -266,21 +267,17 @@
 }
 
 .private-note-section {
-    #btr-description-wrapper & {
-        border-bottom: 1px solid;
-        margin-bottom: 3px;
+    #btr-description-wrapper:has(&) {
+        .game-description-container > .container-header {
+            display: block !important;
+        }
+    }
 
+    #btr-description-wrapper & {
         @media (max-width: 991px) {
             .container-header {
                 padding: 0;
             }
-        }
-
-        .dark-theme & {
-            border-color: #656668;
-        }
-        .light-theme & {
-            border-color: #bdbebe;
         }
     }
 
@@ -302,6 +299,7 @@
 
     .container-header {
         padding: 0 !important;
+        margin-bottom: 0 !important;
     }
 }
 

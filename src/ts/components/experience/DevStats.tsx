@@ -38,6 +38,7 @@ export default function ExperienceDevStats({
 					<span className="text-label font-caption-header">
 						{getMessage("experience.universeId")}
 					</span>
+					&#8203;
 					<span className="font-caption-header">{universeId}</span>
 				</span>
 			)}
@@ -46,6 +47,7 @@ export default function ExperienceDevStats({
 					<span className="text-label font-caption-header">
 						{getMessage("experience.latestSavedVersion")}
 					</span>
+					&#8203;
 					<span className="font-caption-header">{asLocaleString(versions[0])}</span>
 				</span>
 			)}
@@ -54,6 +56,7 @@ export default function ExperienceDevStats({
 					<span className="text-label font-caption-header">
 						{getMessage("experience.latestPublishedVersion")}
 					</span>
+					&#8203;
 					<span className="font-caption-header">{asLocaleString(versions[1])}</span>
 				</span>
 			)}

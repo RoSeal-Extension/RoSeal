@@ -26,8 +26,8 @@ export default function PlaylistSortExperience({
 			>
 				<MdOutlineDelete className="roseal-icon" />
 			</button>
-			<div className="sort-item-text">
-				<span className="sort-text">{text}</span>
+			<div className="sort-item-text text-overflow">
+				<span className="sort-text text-overflow">{text}</span>
 			</div>
 		</div>
 	);
