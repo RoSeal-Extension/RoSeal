@@ -1,4 +1,3 @@
-import type { PassProductInfo } from "src/ts/helpers/requests/services/passes";
 import type { RobloxSharedExperiencePass } from "src/ts/helpers/requests/services/roseal";
 import { multigetUniversesByIds } from "src/ts/helpers/requests/services/universes";
 import Loading from "../../core/Loading";
@@ -13,18 +12,18 @@ import { getRegularTime } from "src/ts/helpers/i18n/intlFormats";
 
 export type SharedPassModalProps = {
 	sharedDetails: RobloxSharedExperiencePass;
-	productDetails: PassProductInfo;
 	show: boolean;
 	isOwned?: boolean;
+	priceInRobux?: number | null;
 	setShow: (open: boolean) => void;
 	buyPass: () => void;
 };
 
 export default function SharedPassModal({
 	sharedDetails,
-	productDetails,
 	show,
 	isOwned,
+	priceInRobux,
 	setShow,
 	buyPass,
 }: SharedPassModalProps) {
@@ -98,7 +97,7 @@ export default function SharedPassModal({
 							})
 						: getMessage("experience.passes.sharedPassModal.description", {
 								passName: sharedDetails.displayName,
-								robux: <RobuxView priceInRobux={productDetails.priceInRobux} />,
+								robux: <RobuxView priceInRobux={priceInRobux} />,
 							})}
 				</p>
 				<div className="section shared-pass-experiences">

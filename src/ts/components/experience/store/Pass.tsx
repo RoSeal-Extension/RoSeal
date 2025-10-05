@@ -4,8 +4,6 @@ import classNames from "classnames";
 import RobuxView from "../../core/RobuxView";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import PassPurchaseButton from "./PassPurchaseButton";
-import usePromise from "../../hooks/usePromise";
-import { getPassProductById } from "src/ts/helpers/requests/services/passes";
 import type { RobloxSharedExperiencePass } from "src/ts/helpers/requests/services/roseal";
 
 export type PassProps = {
@@ -14,9 +12,10 @@ export type PassProps = {
 	productId?: number | null;
 	sellerId?: number | null;
 	sellerName?: string | null;
-	priceInRobux?: number | null;
 	isOwned?: boolean;
 	sharedDetails?: RobloxSharedExperiencePass;
+	priceInRobux?: number | null;
+	displayIcon?: number | null;
 };
 
 export default function Pass({
@@ -28,15 +27,8 @@ export default function Pass({
 	priceInRobux,
 	isOwned,
 	sharedDetails,
+	displayIcon,
 }: PassProps) {
-	const [productDetails] = usePromise(() => {
-		return getPassProductById({
-			passId,
-		});
-	}, [passId]);
-
-	const displayIconAssetId = productDetails?.iconImageAssetId;
-
 	return (
 		<div
 			className={classNames("store-card", {
@@ -92,9 +84,8 @@ export default function Pass({
 							passExpectedPrice={priceInRobux}
 							passExpectedSellerId={sellerId}
 							passExpectedSellerName={sellerName}
-							displayIcon={displayIconAssetId}
+							displayIcon={displayIcon ?? undefined}
 							isOwned={isOwned}
-							productDetails={productDetails ?? undefined}
 							sharedDetails={sharedDetails}
 						/>
 					)}

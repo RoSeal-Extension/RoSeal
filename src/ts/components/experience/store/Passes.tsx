@@ -48,6 +48,7 @@ export default function Passes({ universeId, canManageUniverse }: PassesProps) {
 						id: data.targetId,
 						name: data.name,
 						displayName: data.name,
+						displayDescription: data.description || "",
 						productId: data.productId,
 						price: data.priceInRobux,
 						isOwned: requestUserId
@@ -61,7 +62,11 @@ export default function Passes({ universeId, canManageUniverse }: PassesProps) {
 							creatorType: data.creator.creatorType!,
 							creatorId: data.creator.creatorTargetId!,
 							name: data.creator.name!,
+							deprecatedId: data.creator.id,
 						},
+						displayIconImageAssetId: data.iconImageAssetId,
+						created: data.created,
+						updated: data.updated,
 						sharedDetails: pass,
 					})),
 				),
@@ -279,6 +284,7 @@ export default function Passes({ universeId, canManageUniverse }: PassesProps) {
 									targetUser ? targetUserOwned?.includes(pass.id) : pass.isOwned
 								}
 								sharedDetails={pass.sharedDetails}
+								displayIcon={pass.displayIconImageAssetId}
 							/>
 						</li>
 					))}

@@ -52,6 +52,7 @@ export type UniversePassDetailsCreator = {
 	creatorType: Agent;
 	creatorId: number;
 	name: string;
+	deprecatedId: number;
 };
 
 export type UniversePassDetails = {
@@ -59,9 +60,13 @@ export type UniversePassDetails = {
 	productId: number | null;
 	name: string;
 	displayName: string;
+	displayDescription: string;
 	price: number | null;
 	isOwned: boolean;
 	creator: UniversePassDetailsCreator | null;
+	displayIconImageAssetId?: number | null;
+	created: string;
+	updated: string;
 };
 
 export type ListUniversePassesResponse = {

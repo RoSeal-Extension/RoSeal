@@ -29,7 +29,6 @@ export default function PassPurchaseButton({
 	passExpectedSellerId,
 	passExpectedSellerName,
 	isOwned,
-	productDetails,
 	sharedDetails,
 }: PassPurchaseButtonProps) {
 	const [showSharedPassModal, setShowSharedPassModal] = useState(false);
@@ -67,12 +66,12 @@ export default function PassPurchaseButton({
 			onClick={sharedDetails ? () => setShowSharedPassModal(true) : buyPass}
 			{...robloxData}
 		>
-			{sharedDetails && productDetails && (
+			{sharedDetails && passExpectedPrice !== null && passExpectedPrice !== undefined && (
 				<SharedPassModal
 					show={showSharedPassModal}
 					isOwned={isOwned}
 					sharedDetails={sharedDetails}
-					productDetails={productDetails}
+					priceInRobux={passExpectedPrice}
 					setShow={setShowSharedPassModal}
 					buyPass={buyPass}
 				/>
