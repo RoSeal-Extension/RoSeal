@@ -86,7 +86,7 @@ export default function AvatarAssetContainer({ assetId }: AvatarAssetContainerPr
 	);
 	const [viewConnectionsOwnedEnabled] = useFeatureValue("viewAvatarItemConnectionsOwned", false);
 
-	const showRolimonsLink = useFlag("hiddenAvatarAssets", "showRolimonsLink");
+	const showRolimonsLink = useFlag("thirdParties", "showRolimonsLink");
 	const [showRolimonsLinkModal, setShowRolimonsLinkModal] = useState(false);
 
 	const [tryOnEnabled, setTryOnEnabled] = useState(false);

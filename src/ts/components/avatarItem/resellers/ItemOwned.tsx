@@ -22,7 +22,7 @@ export default function AvatarItemResellerOwned({
 	item,
 }: AvatarItemResellerOwnedProps) {
 	const [showRolimonsLinkModal, setShowRolimonsLinkModal] = useState(false);
-	const showRolimonsLink = useFlag("hiddenAvatarAssets", "showRolimonsLink");
+	const showRolimonsLink = useFlag("thirdParties", "showRolimonsLink");
 
 	const rolimonsLink = item?.userAssetId && getRolimonsUAIDLink(item.userAssetId);
 

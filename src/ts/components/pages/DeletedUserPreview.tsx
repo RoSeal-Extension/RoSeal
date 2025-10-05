@@ -72,7 +72,7 @@ export default function DeletedUserProfilePreview({ userId }: DeletedUserProfile
 		return baseThumbnailUrl.replaceAll(/AvatarHeadShot/gi, viewThumbnailType);
 	}, [viewThumbnailType, baseThumbnailUrl]);
 
-	const showRolimonsLink = useFlag("hiddenAvatarAssets", "showRolimonsLink");
+	const showRolimonsLink = useFlag("thirdParties", "showRolimonsLink");
 
 	if (error) return <Page404 />;
 	if (!data) {

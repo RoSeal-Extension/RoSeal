@@ -89,6 +89,7 @@ export default {
 
 		const authenticatedUser = (await getAuthenticatedUser())!;
 		const profileUserId = Number.parseInt(regexMatches![0]?.[1], 10);
+		const isMyProfile = authenticatedUser?.userId === profileUserId;
 
 		featureValueIs("robloxBadgesObtainedDates", true, () =>
 			watch(
@@ -210,10 +211,17 @@ export default {
 						div.classList.add("header-misc");
 						details.after(div);
 
-						if (data.viewUserProfileLocale)
-							renderIn(<UserProfileLocale userId={profileUserId} />, div);
-						if (data.linkUserMarketplaceShop)
-							renderIn(<SearchMarketplaceItemsButton userId={profileUserId} />, div);
+						renderIn(
+							<>
+								{data.viewUserProfileLocale && !isMyProfile && (
+									<UserProfileLocale userId={profileUserId} />
+								)}
+								{data.linkUserMarketplaceShop && (
+									<SearchMarketplaceItemsButton userId={profileUserId} />
+								)}
+							</>,
+							div,
+						);
 					},
 				);
 			},

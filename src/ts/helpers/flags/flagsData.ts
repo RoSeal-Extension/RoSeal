@@ -1,5 +1,5 @@
 export type FlagsData = {
-	hiddenAvatarAssets: {
+	thirdParties: {
 		showRolimonsLink: boolean;
 	};
 	developerProducts: {
@@ -15,7 +15,7 @@ export type FlagsData = {
 };
 
 export const flagsData: FlagsData = {
-	hiddenAvatarAssets: {
+	thirdParties: {
 		showRolimonsLink: true,
 	},
 	developerProducts: {
