@@ -541,8 +541,12 @@ export default function FriendRequestsTab({
 					disabled={shouldBeDisabled}
 				/>
 			)}
-			{recommendedUsers && recommendedUsers.length > 0 && !loading && (
-				<div className="recommended-users-section">
+			{recommendedUsers && recommendedUsers.length > 0 && (
+				<div
+					className={classNames("recommended-users-section", {
+						hidden: loading,
+					})}
+				>
 					<div className="container-header">
 						<h3>{getMessage("friends.friendRequests.recommendedUsers.title")}</h3>
 					</div>
