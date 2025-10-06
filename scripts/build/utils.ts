@@ -512,9 +512,22 @@ export function getI18nTypesFile() {
 							.filter((item) => item.type !== 0 && "value" in item)
 					: [];
 
+				const handledKeys: string[] = [];
+
 				return `"${key}": ${
 					args.length
 						? `{ ${args
+								.filter((item) => {
+									if ("value" in item && item.value) {
+										if (handledKeys.includes(item.value)) {
+											return false;
+										}
+
+										handledKeys.push(item.value);
+										return true;
+									}
+									return false;
+								})
 								.map((item) => `"${"value" in item && item.value}": unknown`)
 								.join("; ")} }`
 						: "void"
