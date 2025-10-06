@@ -181,6 +181,7 @@ export default function AddToAvatarListButton({
 					<div className="add-to-list-popover">
 						<div className="container-header">
 							<h4>{getMessage("avatarItem.addToList.title")}</h4>
+							<p className="small">{getMessage("avatarItem.addToList.subtitle")}</p>
 						</div>
 						<div className="container-body">
 							{storageValue.lists.length > 0 && (

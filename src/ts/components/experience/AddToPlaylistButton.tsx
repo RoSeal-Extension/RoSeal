@@ -103,6 +103,7 @@ export default function AddToPlaylistButton({ universeId }: AddToPlaylistButtonP
 				<div className="add-to-playlist-popover">
 					<div className="container-header">
 						<h4>{getMessage("experience.addToPlaylist.title")}</h4>
+						<p className="small">{getMessage("experience.addToPlaylist.subtitle")}</p>
 					</div>
 					<div className="container-body">
 						{storageValue._custom && storageValue._custom.length > 0 && (
