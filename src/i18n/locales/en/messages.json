@@ -2451,6 +2451,22 @@
 				"$message": "View a user's published Avatars if you have access to post Curated Avatars"
 			}
 		},
+		"forceProfileFullBodyAvatarType": {
+			"name": {
+				"$message": "Force all user profile full body thumbnails to use a certain avatar type"
+			},
+			"description": {
+				"$message": "When enabled, forces all user profiles to use a certain avatar type. NOTE: Due to technical limitations, this will use your thumbnail customizations."
+			},
+			"values": {
+				"R6": {
+					"$message": "R6"
+				},
+				"R15": {
+					"$message": "R15"
+				}
+			}
+		},
 		"trendingSearchesPage": {
 			"name": {
 				"$message": "Trending Searches page looked at `/trending-searches`"

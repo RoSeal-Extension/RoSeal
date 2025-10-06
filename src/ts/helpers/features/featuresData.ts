@@ -1891,6 +1891,23 @@ export const sections = [
 					},
 					{
 						type: "Regular",
+						id: "forceProfileFullBodyAvatarType",
+						component: {
+							type: "DropdownWithToggle",
+							values: [
+								{
+									value: "R15",
+								},
+								{
+									value: "R6",
+								},
+							],
+							defaultValue: "R15",
+							toggleDefaultValue: false,
+						},
+					},
+					{
+						type: "Regular",
 						id: "profilePlayerBadgesObtainedDates",
 						component: {
 							type: "Toggle",
