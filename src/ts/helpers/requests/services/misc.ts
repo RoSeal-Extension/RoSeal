@@ -391,6 +391,10 @@ export type CreationsModelsProfileComponent = {
 	assets: ProfileComponentItem[];
 };
 
+export type PlayerBadgesProfileComponent = {
+	badges: number[];
+};
+
 export type GetProfileComponentsDataResponse = {
 	profileType: ProfileComponentsProfileType;
 	profileId: string;
@@ -421,7 +425,7 @@ export type GetProfileComponentsDataResponse = {
 		Friends?: FriendsProfileComponent;
 		Communities?: CommunitiesProfileComponent;
 		RobloxBadges?: RobloxBadgesProfileComponent;
-		PlayerBadges?: unknown;
+		PlayerBadges?: PlayerBadgesProfileComponent;
 		Collections?: CollectionsProfileComponent;
 		Statistics?: RobloxStatisticsProfileComponent;
 		CreationsModels?: CreationsModelsProfileComponent;
