@@ -46,6 +46,15 @@ export default function UserProfileCurrentlyWearing({
 		false,
 	);
 	const [showTotalValue] = useFeatureValue("improvedUserCurrentlyWearing.showTotalValue", false);
+	const [showTotalValueIncludesEmotes] = useFeatureValue(
+		"improvedUserCurrentlyWearing.showTotalValue.includeEmotes",
+		false,
+	);
+	const [showTotalValueIncludesAnimations] = useFeatureValue(
+		"improvedUserCurrentlyWearing.showTotalValue.includeAnimations",
+		false,
+	);
+
 	const [showAssociatedBundle] = useFeatureValue(
 		"improvedUserCurrentlyWearing.showAssociatedItemsBundle",
 		false,
@@ -114,17 +123,19 @@ export default function UserProfileCurrentlyWearing({
 					details,
 					showBundle: shouldInclude,
 				};
-				if (
-					type?.isAnimated &&
-					type.assetType !== emoteAssetTypeName &&
-					separateAnimations
-				) {
+
+				const isAnimation = type?.isAnimated && type.assetType !== emoteAssetTypeName;
+				if (isAnimation && separateAnimations) {
 					animations.push(newAsset);
 				} else {
 					assets.push(newAsset);
 				}
 
-				if (shouldInclude && details?.priceInRobux) {
+				if (
+					shouldInclude &&
+					details?.priceInRobux &&
+					(!isAnimation || showTotalValueIncludesAnimations)
+				) {
 					totalValueItems.add(details);
 				}
 			}
@@ -137,7 +148,7 @@ export default function UserProfileCurrentlyWearing({
 				showBundle: true,
 			});
 
-			if (!forEmotes && details?.priceInRobux) {
+			if (!forEmotes && details?.priceInRobux && showTotalValueIncludesEmotes) {
 				totalValueItems.add(details);
 			}
 		}

@@ -2777,6 +2777,16 @@
 			"showTotalValue": {
 				"name": {
 					"$message": "Show the total value of the user's outfit and emotes next to the Currently Wearing header"
+				},
+				"includeAnimations": {
+					"name": {
+						"$message": "Include animations in the total value"
+					}
+				},
+				"includeEmotes": {
+					"name": {
+						"$message": "Include emotes in the total value"
+					}
 				}
 			}
 		},

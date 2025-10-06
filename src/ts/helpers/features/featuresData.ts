@@ -2028,6 +2028,26 @@ export const sections = [
 										type: "Toggle",
 										defaultValue: true,
 									},
+									subfeatures: {
+										items: [
+											{
+												type: "Regular",
+												id: "improvedUserCurrentlyWearing.showTotalValue.includeAnimations",
+												component: {
+													type: "Toggle",
+													defaultValue: true,
+												},
+											},
+											{
+												type: "Regular",
+												id: "improvedUserCurrentlyWearing.showTotalValue.includeEmotes",
+												component: {
+													type: "Toggle",
+													defaultValue: false,
+												},
+											},
+										],
+									},
 								},
 							],
 						},
