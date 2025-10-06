@@ -115,8 +115,8 @@ export default function AssetOwnersList({
 							<ul className="vlist">
 								{items.map((item) => (
 									<AssetOwnerItem
-										{...item}
 										key={item.collectibleItemInstanceId}
+										{...item}
 										totalSerialNumbers={totalSerialNumbers}
 										isLimited={isLimited}
 										isUGC={isUGC}
