@@ -1348,6 +1348,9 @@ export default {
 						} else if ("setAvatarType" in propsType.value) {
 							avatarType = propsType.value.avatarType;
 							setAvatarType = propsType.value.setAvatarType;
+							if (!avatarRules && propsType.value.avatarRules) {
+								sendMessage("avatar.setAvatarRules", propsType.value.avatarRules);
+							}
 							avatarRules = propsType.value.avatarRules;
 						}
 					}
@@ -1357,6 +1360,7 @@ export default {
 			);
 		};
 
+		featureValueIsInject("advancedAvatarCustomization", true, setupReactHijack);
 		featureValueIsInject("hexBodyColors", true, setupReactHijack);
 		featureValueIsInject("avatarEditorPostAvatar", true, setupReactHijack);
 		featureValueIsInject("avatarEditorCurrentlyWearing", true, setupReactHijack);

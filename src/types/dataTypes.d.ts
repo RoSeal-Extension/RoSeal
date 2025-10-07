@@ -17,6 +17,7 @@ import type { GetCurrentAuthenticatedUserResponse } from "src/ts/helpers/request
 import type {
 	AvatarAssetDefinitionWithTypes,
 	AvatarColors3s,
+	AvatarRestrictions,
 	OutfitRequest,
 } from "src/ts/helpers/requests/services/avatar";
 import type {
@@ -185,6 +186,9 @@ export type DOMCommunicationMessageDataTypes = {
 	};
 	"avatar.refreshThumbnail": {
 		args: void;
+	};
+	"avatar.setAvatarRules": {
+		args: AvatarRestrictions;
 	};
 	"avatar.refreshCharacters": {
 		args: undefined;

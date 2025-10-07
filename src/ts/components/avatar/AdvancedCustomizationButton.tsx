@@ -1,10 +1,10 @@
 import { useEffect, useState } from "preact/hooks";
-import { sendMessage } from "src/ts/helpers/communication/dom";
+import { addMessageListener, sendMessage } from "src/ts/helpers/communication/dom";
 import type { Agent } from "src/ts/helpers/requests/services/assets";
 import {
-	type AvatarAssetDefinitionWithTypes,
 	getAuthenticatedUserAvatar,
-	getAvatarRules,
+	type AvatarAssetDefinitionWithTypes,
+	type AvatarRestrictions,
 } from "src/ts/helpers/requests/services/avatar";
 import { onWindowRefocus } from "src/ts/utils/dom";
 import Button from "../core/Button";
@@ -66,7 +66,10 @@ export function AdvancedCustomizationModal({ show, setShow }: AdvancedCustomizat
 		[show],
 		false,
 	);
-	const [avatarRules] = usePromise(getAvatarRules);
+	const [avatarRules, setAvatarRules] = useState<AvatarRestrictions>();
+	console.log(avatarRules);
+
+	useEffect(() => addMessageListener("avatar.setAvatarRules", setAvatarRules), []);
 
 	useEffect(() => {
 		if (show) {
