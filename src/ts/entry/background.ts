@@ -15,7 +15,6 @@ import {
 	ACCOUNTS_DISCOVERY_FEATURE_ID,
 	ACCOUNTS_FEATURE_ID,
 	ACCOUNTS_RULES_SESSION_CACHE_STORAGE_KEY,
-	ACCOUNTS_RULES_START_ID,
 	ACCOUNTS_UPDATE_TABS_FEATURE_ID,
 	type AccountsRulesStorageValue,
 	ROBLOX_ACCOUNT_LIMIT,
@@ -25,6 +24,7 @@ import {
 	type StoredAccount,
 	UNENCRYPTED_ACCOUNTS_STORAGE_KEY,
 } from "../constants/accountsManager";
+import { ACCOUNTS_RULES_START_ID } from "../constants/dnrRules";
 import { ACCOUNT_TRACKING_PREVENTION_FEATURE_ID } from "../constants/accountTrackingPrevention";
 import {
 	FRIENDS_LAST_SEEN_BACKGROUND_CHECKS_FEATURE_ID,

@@ -35,6 +35,7 @@ import {
 	transformManifest,
 	updateLog,
 } from "./build/utils.ts";
+import { STATIC_RULES_START_ID } from "src/ts/constants/dnrRules.ts";
 
 const BASE_COMMENT_BANNER = `
  * RoSeal Extension
@@ -218,7 +219,8 @@ export function writeDNRRules({
 
 	const appendString = `RoSealExtension (RoSeal/${target}/${version}/${isDev ? "dev" : "prod"})`;
 
-	let idx = 1;
+	let idx = STATIC_RULES_START_ID;
+
 	return updateLog(
 		Bun.write(
 			`${outDir}/dnr_rules.json`,

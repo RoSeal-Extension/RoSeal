@@ -34,7 +34,6 @@ export const SET_COOKIE_STORE_DOMAIN = getRobloxUrl("");
 export const FETCH_COOKIE_STORE_URL = `https://${getRobloxUrl("www")}`;
 
 export const ACCOUNTS_RULES_SESSION_CACHE_STORAGE_KEY = "accountsManager.requestRules";
-export const ACCOUNTS_RULES_START_ID = 9000;
 
 export type AccountsRulesStorageValue = Record<
 	number,
