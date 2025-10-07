@@ -67,7 +67,6 @@ export function AdvancedCustomizationModal({ show, setShow }: AdvancedCustomizat
 		false,
 	);
 	const [avatarRules, setAvatarRules] = useState<AvatarRestrictions>();
-	console.log(avatarRules);
 
 	useEffect(() => addMessageListener("avatar.setAvatarRules", setAvatarRules), []);
 
