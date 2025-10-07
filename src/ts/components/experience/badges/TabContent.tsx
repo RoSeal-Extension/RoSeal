@@ -869,7 +869,7 @@ export default function BadgesTabContent({ universeId }: BadgesTabContentProps) 
 										progress={user1Progress.progress}
 										progressPercentage={user1Progress.progressPercentage}
 									/>
-									{recountBadgesBtn}
+									{badgeProgressEnabled && recountBadgesBtn}
 									<BadgeComparisonUser
 										user={user2}
 										setUser={(user) => setUsers([user1, user])}
