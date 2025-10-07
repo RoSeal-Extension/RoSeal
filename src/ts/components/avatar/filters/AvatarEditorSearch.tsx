@@ -66,6 +66,7 @@ export default function AvatarEditorSearch({ filters }: AvatarEditorSearchProps)
 						type: "input",
 						placeholder: getMessage("avatar.filters.creatorName.inputPlaceholder"),
 						value: filters.value.creatorName,
+						defaultLabel: getMessage("avatar.filters.creatorName.defaultLabel"),
 						defaultValue: AVATAR_EDITOR_FILTERS_INITIAL_VALUE.creatorName,
 					},
 				]}

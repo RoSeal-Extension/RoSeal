@@ -1,15 +1,25 @@
+import type { RequestedUser } from "src/ts/helpers/requests/services/users";
 import Filter from "./Filter";
 
 export type FilterTextInput = {
 	type: "input";
+	defaultLabel: string;
 	value: string;
 	placeholder: string;
 	maxLength?: number;
 	defaultValue: string;
 };
 
+export type FilterUserInput = {
+	type: "user";
+	defaultLabel: string;
+	value: RequestedUser | undefined;
+	defaultValue?: RequestedUser;
+};
+
 export type FilterNumberInput = {
 	type: "number";
+	defaultLabel: string;
 	min: number;
 	max: number;
 	value: [number, number];
@@ -55,12 +65,14 @@ export type FilterData = {
 	titleTooltip?: string;
 	previewTitle: string;
 	firstItemDivider?: boolean;
+	visible?: boolean;
 } & (
 	| FilterDropdown
 	| FilterNumberInput
 	| FilterCheckbox
 	| FilterColorsWithCheckboxesFilter
 	| FilterTextInput
+	| FilterUserInput
 );
 
 export type ApplyFilterValueFn<T extends FilterData> = (
@@ -87,9 +99,16 @@ export default function FiltersContainer<T extends FilterData>({
 				</div>
 			)}
 			<div className="filter-items-container">
-				{filters.map((filter) => (
-					<Filter key={filter.id} filter={filter} applyFilterValue={applyFilterValue} />
-				))}
+				{filters.map(
+					(filter) =>
+						filter.visible !== false && (
+							<Filter
+								key={filter.id}
+								filter={filter}
+								applyFilterValue={applyFilterValue}
+							/>
+						),
+				)}
 			</div>
 		</div>
 	);

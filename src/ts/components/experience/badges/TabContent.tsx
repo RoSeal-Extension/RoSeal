@@ -18,8 +18,6 @@ import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
 import { crossSort } from "src/ts/utils/objects";
 import Button from "../../core/Button";
 import CheckboxField from "../../core/CheckboxField";
-import Dropdown from "../../core/Dropdown";
-import DropdownLabel from "../../core/DropdownLabel";
 import Icon from "../../core/Icon";
 import AgentMentionContainer from "../../core/items/AgentMentionContainer";
 import Loading from "../../core/Loading";
@@ -30,6 +28,7 @@ import useFeatureValue from "../../hooks/useFeatureValue";
 import usePages from "../../hooks/usePages";
 import BadgesGrid from "./Grid";
 import BadgesList from "./List";
+import FiltersContainer from "../../core/filters/FiltersContainer";
 
 export type Filters = {
 	showActive: boolean;
@@ -623,164 +622,202 @@ export default function BadgesTabContent({ universeId }: BadgesTabContentProps) 
 				>
 					{filtersSortsEnabled && (
 						<div className="badges-filters store-item-filters">
-							<div className="badge-filter obtained-status-filter store-item-filter">
-								<div className="filter-title">
-									<span className="font-bold">
-										{getMessage("experience.badges.filtering.obtained.label")}
-									</span>
-								</div>
-								<div className="filters-list">
-									<CheckboxField
-										className="obtained-checkbox"
-										disabled={loading}
-										checked={filters.showObtained}
-										onChange={(value) => {
-											setFilters({ ...filters, showObtained: value });
-										}}
-									>
-										<label className="checkbox-label text-label">
-											{getMessage(
-												"experience.badges.filtering.obtained.obtained",
-											)}
-										</label>
-									</CheckboxField>
-									<CheckboxField
-										className="unobtained-checkbox"
-										disabled={loading}
-										checked={filters.showUnobtained}
-										onChange={(value) => {
-											setFilters({ ...filters, showUnobtained: value });
-										}}
-									>
-										<label className="checkbox-label text-label">
-											{getMessage(
-												"experience.badges.filtering.obtained.unobtained",
-											)}
-										</label>
-									</CheckboxField>
-								</div>
-							</div>
-							{showActiveFilter && (
-								<div className="badge-filter active-status-filter store-item-filter">
-									<div className="filter-title">
-										<span className="font-bold">
-											{getMessage("experience.badges.filtering.active.label")}
-										</span>
-									</div>
-									<div className="filters-list">
-										<CheckboxField
-											className="active-checkbox"
-											disabled={loading}
-											checked={filters.showActive}
-											onChange={(value) => {
-												setFilters({ ...filters, showActive: value });
-											}}
-										>
-											<label className="checkbox-label text-label">
-												{getMessage(
-													"experience.badges.filtering.active.active",
-												)}
-											</label>
-										</CheckboxField>
-										<CheckboxField
-											className="inactive-checkbox"
-											disabled={loading}
-											checked={filters.showInactive}
-											onChange={(value) => {
-												setFilters({ ...filters, showInactive: value });
-											}}
-										>
-											<label className="checkbox-label text-label">
-												{getMessage(
-													"experience.badges.filtering.active.inactive",
-												)}
-											</label>
-										</CheckboxField>
-									</div>
-								</div>
-							)}
-
-							<div className="badge-filter badge-sorts store-item-filter">
-								<div className="filter-title">
-									<span className="font-bold">
-										{getMessage("experience.badges.filtering.sorting.label")}
-									</span>
-								</div>
-								<div className="filters-list">
-									<DropdownLabel
-										label={getMessage(
-											"experience.badges.filtering.sorting.by.label",
-										)}
-										containerClassName="sort-by-dropdown"
-									>
-										<Dropdown
-											selectionItems={SORT_BY_TYPES.map((item) => ({
+							<FiltersContainer
+								filters={[
+									{
+										id: "obtainedStatus",
+										type: "checkbox",
+										options: [
+											{
 												label: getMessage(
-													`experience.badges.filtering.sorting.by.values.${item}`,
+													"experience.badges.filtering.obtainedStatus.values.obtained",
 												),
-												value: item,
-											}))}
-											selectedItemValue={sorts.sortBy}
-											disabled={loading}
-											onSelect={(value) => {
-												setSorts({
-													...sorts,
-													sortBy: value,
-												});
-											}}
-										/>
-									</DropdownLabel>
-									{!gridUIEnabled && (
-										<DropdownLabel
-											label={getMessage(
-												"experience.badges.filtering.sorting.obtained.label",
-											)}
-											containerClassName="sort-obtained-dropdown"
-										>
-											<Dropdown
-												selectionItems={SORT_OBTAINED_TYPES.map((item) => ({
-													label: getMessage(
-														`experience.badges.filtering.sorting.obtained.values.${item}`,
+												value: true,
+											},
+											{
+												label: getMessage(
+													"experience.badges.filtering.obtainedStatus.values.unobtained",
+												),
+												value: false,
+											},
+										],
+										previewTitle: filters.showObtained
+											? filters.showUnobtained
+												? getMessage(
+														"experience.badges.filtering.obtainedStatus.previewLabel.all",
+													)
+												: getMessage(
+														"experience.badges.filtering.obtainedStatus.values.obtained",
+													)
+											: filters.showUnobtained
+												? getMessage(
+														"experience.badges.filtering.obtainedStatus.values.unobtained",
+													)
+												: getMessage(
+														"experience.badges.filtering.obtainedStatus.previewLabel.none",
 													),
-													value: item,
-												}))}
-												selectedItemValue={sorts.sortObtained}
-												disabled={loading}
-												onSelect={(value) => {
-													setSorts({
-														...sorts,
-														sortObtained: value,
-													});
-												}}
-											/>
-										</DropdownLabel>
-									)}
-									<DropdownLabel
-										label={getMessage(
-											"experience.badges.filtering.sorting.direction.label",
-										)}
-										containerClassName="sort-direction-dropdown"
-									>
-										<Dropdown
-											selectionItems={SORT_DIRECTION_TYPES.map((item) => ({
+										title: getMessage(
+											"experience.badges.filtering.obtainedStatus.label",
+										),
+										defaultValue: [true, false],
+										value: filters.showObtained
+											? filters.showUnobtained
+												? [true, false]
+												: [true]
+											: filters.showUnobtained
+												? [false]
+												: [],
+									},
+									{
+										id: "activeStatus",
+										type: "checkbox",
+										options: [
+											{
 												label: getMessage(
-													`experience.badges.filtering.sorting.direction.values.${item}`,
+													"experience.badges.filtering.activeStatus.values.active",
 												),
-												value: item,
-											}))}
-											selectedItemValue={sorts.sortDirection}
-											disabled={loading}
-											onSelect={(value) => {
-												setSorts({
-													...sorts,
-													sortDirection: value,
-												});
-											}}
-										/>
-									</DropdownLabel>
-								</div>
-							</div>
-							{badgeProgressEnabled && recountBadgesBtn}
+												value: true,
+											},
+											{
+												label: getMessage(
+													"experience.badges.filtering.activeStatus.values.inactive",
+												),
+												value: false,
+											},
+										],
+										previewTitle: filters.showActive
+											? filters.showInactive
+												? getMessage(
+														"experience.badges.filtering.activeStatus.previewLabel.all",
+													)
+												: getMessage(
+														"experience.badges.filtering.activeStatus.values.active",
+													)
+											: filters.showInactive
+												? getMessage(
+														"experience.badges.filtering.activeStatus.values.inactive",
+													)
+												: getMessage(
+														"experience.badges.filtering.activeStatus.previewLabel.none",
+													),
+										title: getMessage(
+											"experience.badges.filtering.activeStatus.label",
+										),
+										defaultValue: [true],
+										value: filters.showActive
+											? filters.showInactive
+												? [true, false]
+												: [true]
+											: filters.showInactive
+												? [false]
+												: [],
+										visible: showActiveFilter,
+									},
+									{
+										id: "sortBy",
+										type: "dropdown",
+										options: SORT_BY_TYPES.map((option) => ({
+											label: getMessage(
+												`experience.badges.filtering.sortBy.values.${option}`,
+											),
+											value: option,
+										})),
+										previewTitle: getMessage(
+											"experience.badges.filtering.sortBy.previewLabel",
+											{
+												label: getMessage(
+													`experience.badges.filtering.sortBy.values.${sorts.sortBy}`,
+												),
+											},
+										),
+										title: getMessage(
+											"experience.badges.filtering.sortBy.label",
+										),
+										defaultValue: "Rank",
+										value: sorts.sortBy,
+									},
+									{
+										id: "sortDirection",
+										type: "dropdown",
+										options: SORT_DIRECTION_TYPES.map((option) => ({
+											label: getMessage(
+												`experience.badges.filtering.sortDirection.values.${option}`,
+											),
+											value: option,
+										})),
+										previewTitle: getMessage(
+											"experience.badges.filtering.sortDirection.previewLabel",
+											{
+												label: getMessage(
+													`experience.badges.filtering.sortDirection.values.${sorts.sortDirection}`,
+												),
+											},
+										),
+										title: getMessage(
+											"experience.badges.filtering.sortDirection.label",
+										),
+										defaultValue: "Descending",
+										value: sorts.sortDirection,
+									},
+									{
+										id: "sortObtained",
+										type: "dropdown",
+										options: SORT_OBTAINED_TYPES.map((option) => ({
+											label: getMessage(
+												`experience.badges.filtering.sortObtained.values.${option}`,
+											),
+											value: option,
+										})),
+										previewTitle: getMessage(
+											"experience.badges.filtering.sortObtained.previewLabel",
+											{
+												label: getMessage(
+													`experience.badges.filtering.sortObtained.values.${sorts.sortObtained}`,
+												),
+											},
+										),
+										title: getMessage(
+											"experience.badges.filtering.sortObtained.label",
+										),
+										defaultValue: "Default",
+										value: sorts.sortObtained,
+									},
+								]}
+								applyFilterValue={(key, value) => {
+									if (key === "obtainedStatus") {
+										setFilters({
+											...filters,
+											showObtained: (value as boolean[]).includes(true),
+											showUnobtained: (value as boolean[]).includes(false),
+										});
+									} else if (key === "activeStatus") {
+										setFilters({
+											...filters,
+											showActive: (value as boolean[]).includes(true),
+											showInactive: (value as boolean[]).includes(false),
+										});
+									} else if (key === "sortBy") {
+										setSorts({
+											...sorts,
+											sortBy: value as (typeof SORT_BY_TYPES)[number],
+										});
+									} else if (key === "sortDirection") {
+										setSorts({
+											...sorts,
+											sortDirection:
+												value as (typeof SORT_DIRECTION_TYPES)[number],
+										});
+									} else if (key === "sortObtained") {
+										setSorts({
+											...sorts,
+											sortObtained:
+												value as (typeof SORT_OBTAINED_TYPES)[number],
+										});
+									}
+								}}
+							/>
+
+							{!badgeProgressEnabled && recountBadgesBtn}
 							{badgeProgressEnabled && hasMaybeUnobtainableBadges && (
 								<div className="badge-filter badge-sorts store-item-filter">
 									<div className="filter-title">
@@ -832,7 +869,7 @@ export default function BadgesTabContent({ universeId }: BadgesTabContentProps) 
 										progress={user1Progress.progress}
 										progressPercentage={user1Progress.progressPercentage}
 									/>
-									{!filtersSortsEnabled && recountBadgesBtn}
+									{recountBadgesBtn}
 									<BadgeComparisonUser
 										user={user2}
 										setUser={(user) => setUsers([user1, user])}

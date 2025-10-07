@@ -340,19 +340,14 @@
     }
 }
 
+/*
+legacy code left here for the "Count All Badges in Progress" button, not sure how to deal with it yet
+*/
 .store-item-filters {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    gap: 5px;
-    margin: {
-        top: 8px;
-        bottom: 8px;
-    }
-
     .store-item-filter {
         display: flex;
         gap: 10px;
+        margin-left: 1em;
         align-items: center;
 
         .select-option {
@@ -397,13 +392,12 @@
                 width: 1em;
                 height: 1em;
             }
-
-            h4 {
-                line-height: normal;
-            }
         }
     }
 }
+/*
+end of legacy code
+*/
 
 .avatar-restriction-warning {
     margin-bottom: 3px;
@@ -603,6 +597,26 @@
 #store {
     #roseal-developer-products {
         display: none;
+
+        .store-item-filters {
+            display: flex;
+            margin-top: 12px;
+            flex-wrap: wrap;
+
+            .store-search-filter {
+                height: 32px;
+
+                .input-addon-btn {
+                    height: 32px;
+                }
+
+                .store-search-input {
+                    border-radius: 8px !important;
+                    height: 32px;
+                    width: 200px;
+                }
+            }
+        }
     }
 }
 

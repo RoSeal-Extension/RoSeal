@@ -12,16 +12,13 @@ import {
 } from "src/ts/helpers/requests/services/roseal";
 import type { RequestedUser } from "src/ts/helpers/requests/services/users";
 import { getManagePassesLink } from "src/ts/utils/links";
-import CheckboxField from "../../core/CheckboxField";
-import Icon from "../../core/Icon";
-import AgentMentionContainer from "../../core/items/AgentMentionContainer";
 import Loading from "../../core/Loading";
 import Pagination from "../../core/Pagination";
-import UserLookup from "../../core/UserLookup";
 import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 import usePages from "../../hooks/usePages";
 import usePromise from "../../hooks/usePromise";
 import Pass from "./Pass";
+import FiltersContainer from "../../core/filters/FiltersContainer";
 
 export type PassesProps = {
 	universeId: number;
@@ -165,107 +162,133 @@ export default function Passes({ universeId, canManageUniverse }: PassesProps) {
 				<h3>{getMessage("experience.passes.title")}</h3>
 			</div>
 			{hasAnyItems && (
-				<div className="pass-filters store-item-filters">
-					<div className="pass-filter sale-status-filter store-item-filter">
-						<div className="filter-title">
-							<span className="font-bold">
-								{getMessage("experience.passes.filtering.saleStatus.label")}
-							</span>
-						</div>
-						<div className="filters-list">
-							<CheckboxField
-								className="onsale-checkbox"
-								disabled={loading}
-								checked={filters.includeOnSale}
-								onChange={(value) => {
-									setFilters({ ...filters, includeOnSale: value });
-								}}
-							>
-								<label className="checkbox-label text-label">
-									{getMessage("experience.passes.filtering.saleStatus.onSale")}
-								</label>
-							</CheckboxField>
-							<CheckboxField
-								className="offsale-checkbox"
-								disabled={loading}
-								checked={filters.includeOffSale}
-								onChange={(value) => {
-									setFilters({ ...filters, includeOffSale: value });
-								}}
-							>
-								<label className="checkbox-label text-label">
-									{getMessage("experience.passes.filtering.saleStatus.offSale")}
-								</label>
-							</CheckboxField>
-						</div>
-					</div>
-					<div className="pass-filter ownership-filter store-item-filter">
-						<div className="filter-title">
-							<span className="font-bold">
-								{getMessage("experience.passes.filtering.ownershipStatus.label")}
-							</span>
-						</div>
-						<div className="filters-list">
-							<CheckboxField
-								className="owned-checkbox"
-								disabled={loading}
-								checked={filters.includeOwned}
-								onChange={(value) => {
-									setFilters({ ...filters, includeOwned: value });
-								}}
-							>
-								<label className="checkbox-label text-label">
-									{" "}
-									{getMessage(
-										"experience.passes.filtering.ownershipStatus.owned",
-									)}
-								</label>
-							</CheckboxField>
-							<CheckboxField
-								className="not-owned-checkbox"
-								disabled={loading}
-								checked={filters.includeNotOwned}
-								onChange={(value) => {
-									setFilters({ ...filters, includeNotOwned: value });
-								}}
-							>
-								<label className="checkbox-label text-label">
-									{getMessage(
-										"experience.passes.filtering.ownershipStatus.notOwned",
-									)}
-								</label>
-							</CheckboxField>
-						</div>
-					</div>
-					<div className="pass-filter target-user store-item-filter">
-						<div className="filter-title">
-							<span className="font-bold">
-								{getMessage("experience.passes.filtering.targetUser")}
-							</span>
-						</div>
-						<div className="filters-list">
-							{!targetUser && <UserLookup updateUser={setTargetUser} />}
-							{targetUser && (
-								<div className="target-user-container">
-									<AgentMentionContainer
-										targetType="User"
-										targetId={targetUser.id}
-										name={targetUser.name}
-										hasVerifiedBadge={targetUser.hasVerifiedBadge}
-									/>
-									<button
-										type="button"
-										className="remove-target-btn roseal-btn"
-										onClick={() => {
-											setTargetUser(undefined);
-										}}
-									>
-										<Icon name="close" size="16x16" />
-									</button>
-								</div>
-							)}
-						</div>
-					</div>
+				<div className="store-item-filters">
+					<FiltersContainer
+						filters={[
+							{
+								id: "saleStatus",
+								type: "checkbox",
+								options: [
+									{
+										label: getMessage(
+											"experience.passes.filtering.saleStatus.values.onSale",
+										),
+										value: true,
+									},
+									{
+										label: getMessage(
+											"experience.passes.filtering.saleStatus.values.offSale",
+										),
+										value: false,
+									},
+								],
+								title: getMessage("experience.passes.filtering.saleStatus.label"),
+								previewTitle: filters.includeOnSale
+									? filters.includeOffSale
+										? getMessage(
+												"experience.passes.filtering.saleStatus.previewLabel.all",
+											)
+										: getMessage(
+												"experience.passes.filtering.saleStatus.values.onSale",
+											)
+									: filters.includeOffSale
+										? getMessage(
+												"experience.passes.filtering.saleStatus.values.offSale",
+											)
+										: getMessage(
+												"experience.passes.filtering.saleStatus.previewLabel.none",
+											),
+								defaultValue: [true],
+								value: filters.includeOnSale
+									? filters.includeOffSale
+										? [true, false]
+										: [true]
+									: filters.includeOffSale
+										? [false]
+										: [],
+							},
+							{
+								id: "ownershipStatus",
+								type: "checkbox",
+								options: [
+									{
+										label: getMessage(
+											"experience.passes.filtering.ownershipStatus.values.owned",
+										),
+										value: true,
+									},
+									{
+										label: getMessage(
+											"experience.passes.filtering.ownershipStatus.values.notOwned",
+										),
+										value: false,
+									},
+								],
+								previewTitle: filters.includeOwned
+									? filters.includeNotOwned
+										? getMessage(
+												"experience.passes.filtering.ownershipStatus.previewLabel.all",
+											)
+										: getMessage(
+												"experience.passes.filtering.ownershipStatus.values.owned",
+											)
+									: filters.includeNotOwned
+										? getMessage(
+												"experience.passes.filtering.ownershipStatus.values.notOwned",
+											)
+										: getMessage(
+												"experience.passes.filtering.ownershipStatus.previewLabel.none",
+											),
+								title: getMessage(
+									"experience.passes.filtering.ownershipStatus.label",
+								),
+								defaultValue: [true],
+								value: filters.includeOwned
+									? filters.includeNotOwned
+										? [true, false]
+										: [true]
+									: filters.includeNotOwned
+										? [false]
+										: [],
+							},
+							{
+								id: "targetUser",
+								type: "user",
+								title: getMessage("experience.passes.filtering.viewAs.label"),
+								previewTitle: targetUser
+									? getMessage(
+											"experience.passes.filtering.viewAs.previewLabel.someone",
+											{
+												username: targetUser.displayName,
+											},
+										)
+									: getMessage(
+											"experience.passes.filtering.viewAs.previewLabel.you",
+										),
+								defaultLabel: getMessage(
+									"experience.passes.filtering.viewAs.defaultLabel",
+								),
+								value: targetUser,
+							},
+						]}
+						applyFilterValue={(id, value) => {
+							if (id === "saleStatus") {
+								setFilters({
+									...filters,
+									includeOnSale: (value as boolean[]).includes(true),
+									includeOffSale: (value as boolean[]).includes(false),
+								});
+							} else if (id === "ownershipStatus") {
+								setFilters({
+									...filters,
+									includeOwned: (value as boolean[]).includes(true),
+									includeNotOwned: (value as boolean[]).includes(false),
+								});
+							} else if (id === "targetUser") {
+								setTargetUser(value as RequestedUser | undefined);
+							}
+						}}
+					/>
 				</div>
 			)}
 			<ul className="hlist store-cards roseal-store-cards">

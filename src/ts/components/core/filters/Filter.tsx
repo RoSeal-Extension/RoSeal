@@ -12,6 +12,9 @@ import Icon from "../../core/Icon";
 import TextInput from "../../core/TextInput";
 import Tooltip from "../Tooltip";
 import type { ApplyFilterValueFn, ColorFilterWithCheckbox, FilterData } from "./FiltersContainer";
+import UserLookup from "../UserLookup";
+import AgentMentionContainer from "../items/AgentMentionContainer";
+import type { RequestedUser } from "src/ts/helpers/requests/services/users";
 
 export type FilterProps<T extends FilterData> = {
 	className?: string;
@@ -62,24 +65,30 @@ export default function Filter<T extends FilterData>({
 		setValue(filter.value);
 	}, [filter.value]);
 
-	/*
-	I dont remember what this is for?
 	const isDefaultValue = useMemo(() => {
-		if (filter.type === "checkbox") {
-			return compareArrays(value as number[], filter.defaultValue);
-		}
+		switch (filter.type) {
+			case "checkbox": {
+				return compareArrays(value as number[], filter.defaultValue);
+			}
+			case "colorsWithCheckboxes": {
+				return (value as ColorFilterWithCheckbox[]).every((filter2, index) => {
+					return (
+						compareArrays(filter.defaultValue[index].color, filter2.color) &&
+						filter.defaultValue[index].enabled === filter2.enabled
+					);
+				});
+			}
 
-		if (filter.type === "colorsWithCheckboxes") {
-			return (value as ColorFilterWithCheckbox[]).every((filter2, index) => {
+			case "number": {
 				return (
-					compareArrays(filter.defaultValue[index].color, filter2.color) &&
-					filter.defaultValue[index].enabled === filter2.enabled
+					(value as number[])[0] === filter.defaultValue[0] &&
+					(value as number[])[1] === filter.defaultValue[1]
 				);
-			});
+			}
 		}
 
 		return value === filter.defaultValue;
-	}, [filter.value, filter.defaultValue]);*/
+	}, [value, filter.defaultValue]);
 
 	const hasChanged = useMemo(() => {
 		if (filter.type === "checkbox") {
@@ -114,16 +123,30 @@ export default function Filter<T extends FilterData>({
 				className="filter-select"
 			>
 				<span className="filter-display-text text-overflow">{filter.previewTitle}</span>
-				<Icon name={isDropdownOpen ? "expand-arrow-selected" : "expand-arrow"} />
+				<Icon
+					className="selection-icon"
+					name={isDropdownOpen ? "expand-arrow-selected" : "expand-arrow"}
+				/>
 			</Button>
 			{isDropdownOpen && (
-				<div className="filters-modal-container">
+				<div
+					className={classNames("filters-modal-container", {
+						"no-fixed-width": filter.type === "user",
+					})}
+				>
 					<div className="header-container">
 						<h3>
 							{filter.title}
 							{filter.titleTooltip && (
 								<Tooltip
-									button={<Icon name="moreinfo" addSizeClass size="16x16" />}
+									button={
+										<Icon
+											className="selection-icon"
+											name="moreinfo"
+											addSizeClass
+											size="16x16"
+										/>
+									}
 								>
 									{filter.titleTooltip}
 								</Tooltip>
@@ -138,66 +161,108 @@ export default function Filter<T extends FilterData>({
 									setIsDropdownOpen(false);
 								}}
 							>
-								<Icon name="close" />
+								<Icon className="selection-icon" name="close" />
 							</button>
 						</div>
 					</div>
 					{filter.type === "number" ? (
-						<div className="filter-input-container filter-options-container">
-							<div className="filter-option">
-								<span>{getMessage("charts.filters.fields.minimum")}</span>
-								<TextInput
-									type="number"
-									value={(value as number[])[0] || ""}
-									min={filter.min}
-									max={filter.max}
-									onType={(newValue) => {
-										let num = Number.parseInt(newValue, 10);
-										if (Number.isNaN(num)) {
-											num = filter.defaultValue[0];
-										}
-
-										setValue([
-											num &&
-												clamp(
-													num,
-													filter.min,
-													(value as number[])[1] || filter.max,
-												),
-											(value as number[])[1],
-										]);
-									}}
-									placeholder={filter.min.toString()}
-									step={1}
+						<div className="filter-options-container filter-numbers-container">
+							<button
+								type="button"
+								className={classNames("filter-option", {
+									"selected-option": isDefaultValue,
+								})}
+								onClick={() => setValue(filter.defaultValue)}
+							>
+								<span class="filter-option-name">{filter.defaultLabel}</span>
+								<Icon
+									className="selection-icon"
+									name={
+										isDefaultValue
+											? "radio-check-circle-filled"
+											: "radio-check-circle"
+									}
 								/>
-							</div>
-							<div className="filter-option">
-								<span>{getMessage("charts.filters.fields.maximum")}</span>
-								<TextInput
-									type="number"
-									value={(value as number[])[1] || ""}
-									min={filter.min}
-									max={filter.max}
-									onType={(newValue) => {
-										let num = Number.parseInt(newValue, 10);
-										if (Number.isNaN(num)) {
-											num = filter.defaultValue[1];
+							</button>
+							<button
+								type="button"
+								className={classNames("filter-option", {
+									"selected-option": !isDefaultValue,
+								})}
+								onClick={() => {
+									if (hasChanged && isDefaultValue) {
+										setValue(filter.value);
+									}
+								}}
+							>
+								<div className="number-min-max-container">
+									<TextInput
+										type="number"
+										value={
+											(value as number[])[0] ||
+											(filter.value as number[])[0] ||
+											""
 										}
+										min={filter.min}
+										max={filter.max}
+										onType={(newValue) => {
+											let num = Number.parseInt(newValue, 10);
+											if (Number.isNaN(num)) {
+												num = filter.defaultValue[0];
+											}
 
-										setValue([
-											(value as number[])[0],
-											num &&
-												clamp(
-													num,
-													(value as number[])[0] || filter.min,
-													filter.max,
-												),
-										]);
-									}}
-									placeholder={filter.max.toString()}
-									step={1}
+											setValue([
+												num &&
+													clamp(
+														num,
+														filter.min,
+														(value as number[])[1] || filter.max,
+													),
+												(value as number[])[1],
+											]);
+										}}
+										placeholder={getMessage("charts.filters.fields.minimum")}
+										step={1}
+									/>
+
+									<TextInput
+										type="number"
+										value={
+											(value as number[])[1] ||
+											(filter.value as number[])[1] ||
+											""
+										}
+										min={filter.min}
+										max={filter.max}
+										onType={(newValue) => {
+											let num = Number.parseInt(newValue, 10);
+											if (Number.isNaN(num)) {
+												num = filter.defaultValue[1];
+											}
+
+											setValue([
+												(value as number[])[0],
+												num &&
+													clamp(
+														num,
+														(value as number[])[0] || filter.min,
+														filter.max,
+													),
+											]);
+										}}
+										placeholder={getMessage("charts.filters.fields.maximum")}
+										step={1}
+									/>
+								</div>
+								<Icon
+									className="selection-icon"
+									name={
+										!isDefaultValue
+											? "radio-check-circle-filled"
+											: "radio-check-circle"
+									}
 								/>
-							</div>
+							</button>
 						</div>
 					) : filter.type === "colorsWithCheckboxes" ? (
 						<div className="filter-color-options-container filter-options-container">
@@ -262,13 +327,110 @@ export default function Filter<T extends FilterData>({
 						</div>
 					) : filter.type === "input" ? (
 						<div className="filter-input-container filter-options-container">
-							<button type="button" className="filter-option selected-option">
+							<button
+								type="button"
+								className={classNames("filter-option", {
+									"selected-option": isDefaultValue,
+								})}
+								onClick={() => setValue(filter.defaultValue)}
+							>
+								<span class="filter-option-name">{filter.defaultLabel}</span>
+								<Icon
+									className="selection-icon"
+									name={
+										isDefaultValue
+											? "radio-check-circle-filled"
+											: "radio-check-circle"
+									}
+								/>
+							</button>
+							<button
+								type="button"
+								className={classNames("filter-option", {
+									"selected-option": !isDefaultValue,
+								})}
+								onClick={() => {
+									if (hasChanged && isDefaultValue) {
+										setValue(filter.value);
+									}
+								}}
+							>
 								<TextInput
 									className="filter-input"
 									placeholder={filter.placeholder}
 									maxLength={filter.maxLength}
 									onType={setValue}
-									value={value as string}
+									value={(value || filter.value) as string}
+								/>
+								<Icon
+									className="selection-icon"
+									name={
+										!isDefaultValue
+											? "radio-check-circle-filled"
+											: "radio-check-circle"
+									}
+								/>
+							</button>
+						</div>
+					) : filter.type === "user" ? (
+						<div className="filter-options-container">
+							<button
+								type="button"
+								className={classNames("filter-option", {
+									"selected-option": isDefaultValue,
+								})}
+								onClick={() => setValue(filter.defaultValue)}
+							>
+								<span class="filter-option-name">{filter.defaultLabel}</span>
+								<Icon
+									className="selection-icon"
+									name={
+										isDefaultValue
+											? "radio-check-circle-filled"
+											: "radio-check-circle"
+									}
+								/>
+							</button>
+							<button
+								type="button"
+								className={classNames("filter-option", {
+									"selected-option": !isDefaultValue,
+								})}
+								onClick={() => {
+									if (hasChanged && isDefaultValue) {
+										setValue(filter.value);
+									}
+								}}
+							>
+								{!value && <UserLookup updateUser={setValue} />}
+								{value && (
+									<div className="target-user-container">
+										<AgentMentionContainer
+											targetType="User"
+											targetId={(value as RequestedUser).id}
+											name={(value as RequestedUser).name}
+											hasVerifiedBadge={
+												(value as RequestedUser).hasVerifiedBadge
+											}
+										/>
+										<button
+											type="button"
+											className="remove-target-btn roseal-btn"
+											onClick={() => {
+												setValue(undefined);
+											}}
+										>
+											<Icon name="close" size="16x16" />
+										</button>
+									</div>
+								)}
+								<Icon
+									className="selection-icon"
+									name={
+										!isDefaultValue
+											? "radio-check-circle-filled"
+											: "radio-check-circle"
+									}
 								/>
 							</button>
 						</div>
@@ -320,6 +482,7 @@ export default function Filter<T extends FilterData>({
 												)
 											) : (
 												<Icon
+													className="selection-icon"
 													name={
 														isSelected
 															? "radio-check-circle-filled"
@@ -341,18 +504,6 @@ export default function Filter<T extends FilterData>({
 							"has-roseal-btn": filter.type === "number",
 						})}
 					>
-						{filter.type === "number" && (
-							<Button
-								type="secondary"
-								className="roseal-btn"
-								size="xs"
-								width="full"
-								onClick={() => setValue(filter.defaultValue)}
-								disabled={!hasChanged}
-							>
-								{getMessage("charts.filters.actions.resetToDefault")}
-							</Button>
-						)}
 						<Button
 							onClick={() => {
 								applyFilterValue(filter.id, value);

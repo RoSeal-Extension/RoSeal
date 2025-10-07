@@ -10,9 +10,6 @@ import {
 	type PendingDeveloperProductTransaction,
 } from "src/ts/helpers/requests/services/developerProducts";
 import { crossSort } from "src/ts/utils/objects";
-import CheckboxField from "../../core/CheckboxField";
-import Dropdown from "../../core/Dropdown";
-import DropdownLabel from "../../core/DropdownLabel";
 import Icon from "../../core/Icon";
 import Loading from "../../core/Loading";
 import Pagination from "../../core/Pagination";
@@ -22,6 +19,7 @@ import useFeatureValue from "../../hooks/useFeatureValue";
 import usePages from "../../hooks/usePages";
 import usePromise from "../../hooks/usePromise";
 import DeveloperProduct, { type DeveloperProductPropsDetails } from "./DeveloperProduct";
+import FiltersContainer from "../../core/filters/FiltersContainer";
 
 export type DeveloperProductsProps = {
 	universeId: number;
@@ -194,150 +192,172 @@ export default function DeveloperProducts({
 	return (
 		<div id="roseal-developer-products" className="container-list game-dev-store">
 			{storeFilteringEnabled && (hasAnyItems || filters.pregameSaleDisabled === false) && (
-				<div className="dev-products-filters store-item-filters">
-					<div className="dev-product-filter pregame-sale-filter store-item-filter">
-						<div className="filter-title">
-							<span className="font-bold">
-								{getMessage(
-									"experience.developerProducts.filtering.pregameSale.label",
-								)}
-							</span>
+				<div className="store-item-filters">
+					<div className="input-group with-search-bar store-search-filter">
+						<TextInput
+							className="store-search-input"
+							placeholder={getMessage(
+								"experience.developerProducts.filtering.keyword.placeholder",
+							)}
+							value={filters.keyword}
+							onType={(value) => {
+								setFilters({ ...filters, keyword: value });
+							}}
+						/>
+						<div className="input-group-btn">
+							<button className="input-addon-btn" type="button">
+								<Icon name="search" />
+							</button>
 						</div>
-						<div className="filters-list">
-							<Dropdown
-								className="pregame-sale-enabled-dropdown"
-								selectionItems={[
+					</div>
+					<FiltersContainer
+						filters={[
+							{
+								id: "pregameSale",
+								type: "dropdown",
+								options: [
 									{
 										label: getMessage(
-											"experience.developerProducts.filtering.pregameSale.disabled",
+											"experience.developerProducts.filtering.pregameSaleStatus.values.all",
 										),
 										value: true,
 									},
 									{
 										label: getMessage(
-											"experience.developerProducts.filtering.pregameSale.enabled",
+											"experience.developerProducts.filtering.pregameSaleStatus.values.external",
 										),
 										value: false,
 									},
-								]}
-								selectedItemValue={filters.pregameSaleDisabled}
-								onSelect={(value) => {
-									setFilters({ ...filters, pregameSaleDisabled: value });
-								}}
-							/>
-						</div>
-					</div>
-					<div className="dev-product-filter sort-by-filter store-item-filter">
-						<div className="filter-title">
-							<span className="font-bold">
-								{getMessage("experience.developerProducts.filtering.sorting.label")}
-							</span>
-						</div>
-						<div className="filters-list">
-							<DropdownLabel
-								label={getMessage(
-									"experience.developerProducts.filtering.sorting.by.label",
-								)}
-								containerClassName="sort-by-dropdown"
-							>
-								<Dropdown
-									selectionItems={SORT_BY_OPTIONS.map((item) => ({
-										label: getMessage(
-											`experience.developerProducts.filtering.sorting.by.${item}`,
+								],
+								title: getMessage(
+									"experience.developerProducts.filtering.pregameSaleStatus.label",
+								),
+								previewTitle: filters.pregameSaleDisabled
+									? getMessage(
+											"experience.developerProducts.filtering.pregameSaleStatus.values.all",
+										)
+									: getMessage(
+											"experience.developerProducts.filtering.pregameSaleStatus.values.external",
 										),
-										value: item,
-									}))}
-									selectedItemValue={filters.sortBy}
-									onSelect={(value) => {
-										setFilters({ ...filters, sortBy: value });
-									}}
-								/>
-							</DropdownLabel>
-							<DropdownLabel
-								label={getMessage(
-									"experience.developerProducts.filtering.sorting.direction.label",
-								)}
-								containerClassName="sort-direction-dropdown"
-							>
-								<Dropdown
-									selectionItems={SORT_DIRECTION_OPTIONS.map((item) => ({
+								value: filters.pregameSaleDisabled,
+								defaultValue: offSaleDefault,
+							},
+							{
+								id: "saleStatus",
+								type: "checkbox",
+								options: [
+									{
 										label: getMessage(
-											`experience.developerProducts.filtering.sorting.direction.${item}`,
+											"experience.developerProducts.filtering.saleStatus.values.onSale",
 										),
-										value: item,
-									}))}
-									selectedItemValue={filters.sortDirection}
-									onSelect={(value) => {
-										setFilters({ ...filters, sortDirection: value });
-									}}
-								/>
-							</DropdownLabel>
-						</div>
-					</div>
-					<div className="dev-product-filter sale-status-filter store-item-filter">
-						<div className="filter-title">
-							<span className="font-bold">
-								{getMessage(
+										value: true,
+									},
+									{
+										label: getMessage(
+											"experience.developerProducts.filtering.saleStatus.values.offSale",
+										),
+										value: false,
+									},
+								],
+								title: getMessage(
 									"experience.developerProducts.filtering.saleStatus.label",
-								)}
-							</span>
-						</div>
-						<div className="filters-list">
-							<CheckboxField
-								className="onsale-checkbox"
-								disabled={loading}
-								checked={filters.includeOnSale}
-								onChange={(value) => {
-									setFilters({ ...filters, includeOnSale: value });
-								}}
-							>
-								<label className="checkbox-label text-label">
-									{getMessage(
-										"experience.developerProducts.filtering.saleStatus.onSale",
-									)}
-								</label>
-							</CheckboxField>
-							<CheckboxField
-								className="offsale-checkbox"
-								disabled={loading}
-								checked={filters.includeOffSale}
-								onChange={(value) => {
-									setFilters({ ...filters, includeOffSale: value });
-								}}
-							>
-								<label className="checkbox-label text-label">
-									{getMessage(
-										"experience.developerProducts.filtering.saleStatus.offSale",
-									)}
-								</label>
-							</CheckboxField>
-						</div>
-					</div>
-					<div className="dev-product-filter keyword-filter store-item-filter">
-						<label className="filter-title">
-							<span className="font-bold">
-								{getMessage("experience.developerProducts.filtering.keyword.label")}
-							</span>
-						</label>
-						<div className="filters-list">
-							<div className="input-group with-search-bar">
-								<TextInput
-									placeholder={getMessage(
-										"experience.developerProducts.filtering.keyword.placeholder",
-									)}
-									value={filters.keyword}
-									onType={(value) => {
-										setFilters({ ...filters, keyword: value });
-									}}
-								/>
-								<div className="input-group-btn">
-									<button className="input-addon-btn" type="button">
-										<Icon name="search" />
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
+								),
+								previewTitle: filters.includeOnSale
+									? filters.includeOffSale
+										? getMessage(
+												"experience.developerProducts.filtering.saleStatus.previewLabel.all",
+											)
+										: getMessage(
+												"experience.developerProducts.filtering.saleStatus.values.onSale",
+											)
+									: filters.includeOffSale
+										? getMessage(
+												"experience.developerProducts.filtering.saleStatus.values.offSale",
+											)
+										: getMessage(
+												"experience.developerProducts.filtering.saleStatus.previewLabel.none",
+											),
+								defaultValue: [true, false],
+								value: filters.includeOnSale
+									? filters.includeOffSale
+										? [true, false]
+										: [true]
+									: filters.includeOffSale
+										? [false]
+										: [],
+							},
+							{
+								id: "sortBy",
+								type: "dropdown",
+								options: SORT_BY_OPTIONS.map((option) => ({
+									label: getMessage(
+										`experience.developerProducts.filtering.sortBy.values.${option}`,
+									),
+									value: option,
+								})),
+								title: getMessage(
+									"experience.developerProducts.filtering.sortBy.label",
+								),
+								previewTitle: getMessage(
+									"experience.developerProducts.filtering.sortBy.previewLabel",
+									{
+										label: getMessage(
+											`experience.developerProducts.filtering.sortBy.values.${filters.sortBy}`,
+										),
+									},
+								),
+								value: filters.sortBy,
+								defaultValue: "created",
+							},
+							{
+								id: "sortDirection",
+								type: "dropdown",
+								options: SORT_DIRECTION_OPTIONS.map((option) => ({
+									label: getMessage(
+										`experience.developerProducts.filtering.sortDirection.values.${option}`,
+									),
+									value: option,
+								})),
+								title: getMessage(
+									"experience.developerProducts.filtering.sortDirection.label",
+								),
+								previewTitle: getMessage(
+									"experience.developerProducts.filtering.sortDirection.previewLabel",
+									{
+										label: getMessage(
+											`experience.developerProducts.filtering.sortDirection.values.${filters.sortDirection}`,
+										),
+									},
+								),
+								value: filters.sortDirection,
+								defaultValue: "descending",
+							},
+						]}
+						applyFilterValue={(id, value) => {
+							if (id === "pregameSale") {
+								setFilters({
+									...filters,
+									pregameSaleDisabled: value as boolean,
+								});
+							} else if (id === "sortBy") {
+								setFilters({
+									...filters,
+									sortBy: value as (typeof SORT_BY_OPTIONS)[number],
+								});
+							} else if (id === "sortDirection") {
+								setFilters({
+									...filters,
+									sortDirection: value as (typeof SORT_DIRECTION_OPTIONS)[number],
+								});
+							} else if (id === "saleStatus") {
+								setFilters({
+									...filters,
+									includeOnSale: (value as boolean[]).includes(true),
+									includeOffSale: (value as boolean[]).includes(false),
+								});
+							}
+						}}
+					/>
 				</div>
 			)}
 			<ul

@@ -6138,6 +6138,10 @@
 				"$message": "Add to Editor List",
 				"$context": "Title of the modal"
 			},
+			"subtitle": {
+				"$message": "Add items to lists to quickly access them in the Lists tab in the Avatar Editor.",
+				"$context": "SubTitle of the modal"
+			},
 			"createList": {
 				"title": {
 					"$message": "Create List",
@@ -7166,11 +7170,11 @@
 			},
 			"fields": {
 				"minimum": {
-					"$message": "Minimum",
+					"$message": "Min",
 					"$context": "Minimum number value for a filter"
 				},
 				"maximum": {
-					"$message": "Maximum",
+					"$message": "Max",
 					"$context": "Maximum number value for a filter"
 				}
 			},
@@ -7228,6 +7232,10 @@
 						"$message": "Like Ratio",
 						"$context": "Title"
 					},
+					"defaultLabel": {
+						"$message": "All Like Ratios",
+						"$context": ""
+					},
 					"previewLabel": {
 						"$message": "{min} - {max} Likes",
 						"minOnly": {
@@ -7270,6 +7278,10 @@
 						"$message": "Player Count",
 						"$context": "Title"
 					},
+					"defaultLabel": {
+						"$message": "All Player Counts",
+						"$context": ""
+					},
 					"previewLabel": {
 						"$message": "{min} - {max} Players",
 						"minOnly": {
@@ -7296,6 +7308,10 @@
 					"label": {
 						"$message": "Favorite Count",
 						"$context": "Title"
+					},
+					"defaultLabel": {
+						"$message": "All Favorite Counts",
+						"$context": ""
 					},
 					"previewLabel": {
 						"$message": "{min} - {max} Favorites",
@@ -7345,6 +7361,10 @@
 						"$message": "Max Player Count",
 						"$context": "Title"
 					},
+					"defaultLabel": {
+						"$message": "All Max Player Counts",
+						"$context": ""
+					},
 					"previewLabel": {
 						"$message": "{min} - {max} Max Player Count",
 						"minOnly": {
@@ -7370,6 +7390,10 @@
 					"label": {
 						"$message": "Visit Count",
 						"$context": "Title"
+					},
+					"defaultLabel": {
+						"$message": "All Visit Counts",
+						"$context": ""
 					},
 					"previewLabel": {
 						"$message": "{min} - {max} Visits",
@@ -8659,6 +8683,10 @@
 				"$context": "Title",
 				"$message": "Add to Playlist"
 			},
+			"subtitle": {
+				"$context": "Subtitle",
+				"$message": "Add experiences to playlists to quickly access them on your home page."
+			},
 			"buttonText": {
 				"$context": "Button text, shown right next to Favorites in the social bars on experience details",
 				"add": {
@@ -9788,21 +9816,6 @@
 				}
 			},
 			"filtering": {
-				"pregameSale": {
-					"$context": "If the product can be purchased in the website or the app, outside of the game",
-					"label": {
-						"$message": "External Sale Status",
-						"$context": ""
-					},
-					"enabled": {
-						"$message": "Enabled",
-						"$context": ""
-					},
-					"disabled": {
-						"$message": "All",
-						"$context": ""
-					}
-				},
 				"keyword": {
 					"$context": "Keyword search",
 					"label": {
@@ -9814,69 +9827,114 @@
 						"$context": ""
 					}
 				},
-				"saleStatus": {
-					"$context": "If the product can be purchased at all",
+				"sortBy": {
 					"label": {
-						"$message": "Sale Status",
-						"$context": ""
+						"$message": "Sort By",
+						"$context": "Title"
 					},
-					"offSale": {
-						"$message": "Off Sale",
-						"$context": ""
+					"previewLabel": {
+						"$message": "Sort By {label}",
+						"$context": "Preview label"
 					},
-					"onSale": {
-						"$message": "On Sale",
-						"$context": ""
-					}
-				},
-				"sorting": {
-					"$context": "Sorting label stuff",
-					"label": {
-						"$message": "Sort",
-						"$context": ""
-					},
-					"by": {
-						"$context": "Sort by label",
-						"label": {
-							"$message": "By",
-							"$context": ""
-						},
-						"name": {
-							"$message": "Name",
-							"$context": ""
-						},
-						"price": {
-							"$message": "Price",
-							"$context": ""
-						},
+					"values": {
 						"created": {
-							"$message": "Created",
-							"$context": ""
+							"$message": "Created"
 						},
 						"updated": {
-							"$message": "Updated",
-							"$context": ""
+							"$message": "Updated"
 						},
 						"pendingTransactions": {
-							"$message": "Pending Transactions",
-							"$context": ""
-						}
-					},
-					"direction": {
-						"$context": "Sort direction label",
-						"label": {
-							"$message": "Direction",
-							"$context": ""
+							"$message": "Pending Transactions"
 						},
-						"ascending": {
-							"$message": "Ascending",
-							"$context": ""
+						"price": {
+							"$message": "Price"
 						},
-						"descending": {
-							"$message": "Descending",
-							"$context": ""
+						"name": {
+							"$message": "Name"
 						}
 					}
+				},
+				"sortDirection": {
+					"label": {
+						"$message": "Sort Direction",
+						"$context": "Title"
+					},
+					"previewLabel": {
+						"$message": "Sort {label}",
+						"$context": "Preview label"
+					},
+					"values": {
+						"ascending": {
+							"$message": "Ascending"
+						},
+						"descending": {
+							"$message": "Descending"
+						}
+					}
+				},
+				"pregameSaleStatus": {
+					"label": {
+						"$message": "External Purchases",
+						"$context": "Title"
+					},
+					"values": {
+						"external": {
+							"$message": "External Allowed"
+						},
+						"all": {
+							"$message": "In-Experience Only"
+						}
+					}
+				},
+				"saleStatus": {
+					"label": {
+						"$message": "Sale Status",
+						"$context": "TItle"
+					},
+					"previewLabel": {
+						"all": {
+							"$message": "On Sale, Off Sale"
+						},
+						"none": {
+							"$message": "No Sale Status"
+						}
+					},
+					"values": {
+						"onSale": {
+							"$message": "On Sale",
+							"$context": "On Sale passes"
+						},
+						"offSale": {
+							"$message": "Off Sale",
+							"$context": "Off Sale Passes"
+						}
+					},
+					"$context": "Sale status filter"
+				},
+				"ownershipStatus": {
+					"label": {
+						"$message": "Ownership Status",
+						"$context": "TItle"
+					},
+					"previewLabel": {
+						"all": {
+							"$message": "Owned, Not Owned"
+						},
+						"none": {
+							"$message": "No Ownership Status"
+						}
+					},
+					"values": {
+						"owned": {
+							"$message": "Owned",
+							"$context": "Owned passes"
+						},
+						"notOwned": {
+							"$message": "Not Owned",
+							"$context": "Not Owned Passes"
+						}
+					},
+					"$context": "Ownership status filter"
 				}
 			},
 			"error": {
@@ -10036,105 +10094,123 @@
 						"$context": ""
 					}
 				},
-				"obtained": {
+				"obtainedStatus": {
 					"label": {
 						"$message": "Obtained Status",
 						"$context": ""
 					},
-					"obtained": {
-						"$message": "Obtained",
-						"$context": ""
+					"previewLabel": {
+						"all": {
+							"$message": "Obtained, Unobtained"
+						},
+						"none": {
+							"$message": "No Obtained Status"
+						}
 					},
-					"unobtained": {
-						"$message": "Unobtained",
-						"$context": ""
+					"values": {
+						"obtained": {
+							"$message": "Obtained",
+							"$context": ""
+						},
+						"unobtained": {
+							"$message": "Unobtained",
+							"$context": ""
+						}
 					}
 				},
-				"active": {
+				"activeStatus": {
 					"label": {
 						"$message": "Active Status",
 						"$context": ""
 					},
-					"active": {
-						"$message": "Active",
-						"$context": ""
+					"previewLabel": {
+						"all": {
+							"$message": "Active, Inactive"
+						},
+						"none": {
+							"$message": "No Active Status"
+						}
 					},
-					"inactive": {
-						"$message": "Inactive",
-						"$context": ""
+					"values": {
+						"active": {
+							"$message": "Active",
+							"$context": ""
+						},
+						"inactive": {
+							"$message": "Inactive",
+							"$context": ""
+						}
 					}
 				},
-				"sorting": {
+				"sortBy": {
 					"label": {
-						"$message": "Sorting",
+						"$message": "Sort By",
 						"$context": ""
 					},
-					"by": {
-						"label": {
-							"$message": "By",
-							"$context": ""
-						},
-						"values": {
-							"WonYesterday": {
-								"$message": "Won Yesterday",
-								"$context": ""
-							},
-							"WonAllTime": {
-								"$message": "Won All-Time",
-								"$context": ""
-							},
-							"AwardedTime": {
-								"$message": "Awarded Time",
-								"$context": ""
-							},
-							"Created": {
-								"$message": "Created",
-								"$context": ""
-							},
-							"Name": {
-								"$message": "Name",
-								"$context": ""
-							},
-							"Rank": {
-								"$message": "Rank",
-								"$context": ""
-							}
-						}
+					"previewLabel": {
+						"$message": "Sort By {label}"
 					},
-					"obtained": {
-						"label": {
-							"$message": "Obtained",
+					"values": {
+						"WonYesterday": {
+							"$message": "Won Yesterday",
 							"$context": ""
 						},
-						"values": {
-							"First": {
-								"$message": "Sort First",
-								"$context": ""
-							},
-							"Last": {
-								"$message": "Sort Last",
-								"$context": ""
-							},
-							"Default": {
-								"$message": "Sort Normally",
-								"$context": ""
-							}
+						"WonAllTime": {
+							"$message": "Won All-Time",
+							"$context": ""
+						},
+						"AwardedTime": {
+							"$message": "Awarded Time",
+							"$context": ""
+						},
+						"Created": {
+							"$message": "Created",
+							"$context": ""
+						},
+						"Name": {
+							"$message": "Name",
+							"$context": ""
+						},
+						"Rank": {
+							"$message": "Rank",
+							"$context": ""
 						}
+					}
+				},
+				"sortDirection": {
+					"label": {
+						"$message": "Sort Direction",
+						"$context": ""
 					},
-					"direction": {
-						"label": {
-							"$message": "Direction",
-							"$context": ""
+					"previewLabel": {
+						"$message": "Sort {label}"
+					},
+					"values": {
+						"Descending": {
+							"$message": "Descending"
 						},
-						"values": {
-							"Ascending": {
-								"$message": "Ascending",
-								"$context": ""
-							},
-							"Descending": {
-								"$message": "Descending",
-								"$context": ""
-							}
+						"Ascending": {
+							"$message": "Ascending"
+						}
+					}
+				},
+				"sortObtained": {
+					"label": {
+						"$message": "Sort Obtained",
+						"$context": ""
+					},
+					"previewLabel": {
+						"$message": "Sort Obtained {label}"
+					},
+					"values": {
+						"Default": {
+							"$message": "Regularly"
+						},
+						"First": {
+							"$message": "First"
+						},
+						"Last": {
+							"$message": "Last"
 						}
 					}
 				}
@@ -10199,37 +10275,73 @@
 				}
 			},
 			"filtering": {
-				"targetUser": {
-					"$message": "View as",
-					"$context": "View as some user text, shows a user lookup input right next to it"
-				},
 				"saleStatus": {
 					"label": {
 						"$message": "Sale Status",
-						"$context": ""
+						"$context": "TItle"
 					},
-					"offSale": {
-						"$message": "Off Sale",
-						"$context": ""
+					"previewLabel": {
+						"all": {
+							"$message": "On Sale, Off Sale"
+						},
+						"none": {
+							"$message": "No Sale Status"
+						}
 					},
-					"onSale": {
-						"$message": "On Sale",
-						"$context": ""
-					}
+					"values": {
+						"onSale": {
+							"$message": "On Sale",
+							"$context": "On Sale passes"
+						},
+						"offSale": {
+							"$message": "Off Sale",
+							"$context": "Off Sale Passes"
+						}
+					},
+					"$context": "Sale status filter"
 				},
 				"ownershipStatus": {
 					"label": {
 						"$message": "Ownership Status",
-						"$context": ""
+						"$context": "TItle"
 					},
-					"owned": {
-						"$message": "Owned",
-						"$context": ""
+					"previewLabel": {
+						"all": {
+							"$message": "Owned, Not Owned"
+						},
+						"none": {
+							"$message": "No Ownership Status"
+						}
 					},
-					"notOwned": {
-						"$message": "Not Owned",
-						"$context": ""
-					}
+					"values": {
+						"owned": {
+							"$message": "Owned",
+							"$context": "Owned passes"
+						},
+						"notOwned": {
+							"$message": "Not Owned",
+							"$context": "Not Owned Passes"
+						}
+					},
+					"$context": "Ownership status filter"
+				},
+				"viewAs": {
+					"label": {
+						"$message": "View As User",
+						"$context": "TItle"
+					},
+					"previewLabel": {
+						"you": {
+							"$message": "View As You"
+						},
+						"someone": {
+							"$message": "View As {username}"
+						}
+					},
+					"defaultLabel": {
+						"$message": "Yourself"
+					},
+					"$context": "View as filter"
 				}
 			},
 			"item": {
@@ -11087,6 +11199,10 @@
 				"inputPlaceholder": {
 					"$context": "Placeholder input",
 					"$message": "Creator Name"
+				},
+				"defaultLabel": {
+					"$message": "All Creators",
+					"$context": "Default label"
 				}
 			}
 		},
