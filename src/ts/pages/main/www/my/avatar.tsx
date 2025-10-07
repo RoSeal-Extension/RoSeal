@@ -29,7 +29,7 @@ import {
 } from "src/ts/helpers/communication/dom";
 import { getLangNamespace } from "src/ts/helpers/domInvokes";
 import { watch, watchAttributes, watchOnce } from "src/ts/helpers/elements";
-import { featureValueIs } from "src/ts/helpers/features/helpers";
+import { featureValueIs, multigetFeaturesValues } from "src/ts/helpers/features/helpers";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import {
@@ -300,18 +300,27 @@ export default {
 			);
 		});
 
-		featureValueIs("advancedAvatarCustomization", true, () => {
-			watch(".redraw-avatar", (el) => {
-				if (!document.body.querySelector("#advanced-customization-btn")) {
-					renderAfter(<AdvancedCustomizationButton />, el);
-				}
-			});
-		});
+		multigetFeaturesValues([
+			"advancedAvatarCustomization",
+			"avatarEditorCurrentlyWearing",
+		]).then((data) => {
+			if (!data.advancedAvatarCustomization && !data.avatarEditorCurrentlyWearing) return;
 
-		featureValueIs("avatarEditorCurrentlyWearing", true, () => {
-			watch("#advanced-customization-btn", (el) => {
-				if (!document.body.querySelector("#currently-wearing-items"))
-					renderAfter(<AvatarEditorCurrentlyWearing />, el);
+			return watch(".redraw-avatar", (el) => {
+				if (
+					document.body.querySelector(
+						"#advanced-customization-btn, #currently-wearing-items",
+					)
+				)
+					return;
+
+				renderAfter(
+					<>
+						{data.advancedAvatarCustomization && <AdvancedCustomizationButton />}
+						{data.avatarEditorCurrentlyWearing && <AvatarEditorCurrentlyWearing />}
+					</>,
+					el,
+				);
 			});
 		});
 
