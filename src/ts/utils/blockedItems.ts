@@ -1,6 +1,50 @@
+import { signal } from "@preact/signals";
 import { allowedItemsData, blockedItemsData } from "../constants/misc";
 import type { Agent } from "../helpers/requests/services/assets";
 import type { MarketplaceItemType } from "../helpers/requests/services/marketplace";
+import { error } from "./console";
+import { REGEX_STRING_REGEX } from "./regex";
+
+export const blockedItemsKeywordToRegEx = signal<Record<string, RegExp>>({});
+
+function handleKeywords(keywords: string[]) {
+	for (const keyword of keywords) {
+		if (blockedItemsKeywordToRegEx.value[keyword]) continue;
+
+		if (keyword.startsWith("/")) {
+			const match = REGEX_STRING_REGEX.exec(keyword);
+			if (match) {
+				try {
+					const regex = new RegExp(match[1], match[2]);
+
+					blockedItemsKeywordToRegEx.value[keyword] = regex;
+				} catch {
+					error(`Could not compile RegEx for blocked items: ${keyword}`);
+				}
+			}
+		}
+	}
+}
+
+blockedItemsData.subscribe((blocked) => {
+	blockedItemsKeywordToRegEx.value = {};
+
+	if (blocked?.items.names) {
+		handleKeywords(blocked.items.names);
+	}
+
+	if (blocked?.items.descriptions) {
+		handleKeywords(blocked.items.descriptions);
+	}
+
+	if (blocked?.experiences.names) {
+		handleKeywords(blocked.experiences.names);
+	}
+
+	if (blocked?.experiences.descriptions) {
+		handleKeywords(blocked.experiences.descriptions);
+	}
+});
 
 export function isExperienceBlocked(
 	id?: number,
@@ -29,12 +73,16 @@ export function isExperienceBlocked(
 			(name !== undefined &&
 				name !== null &&
 				blockedItemsData.value?.experiences.names.some((keyword) =>
-					name.includes(keyword),
+					blockedItemsKeywordToRegEx.value[keyword]
+						? blockedItemsKeywordToRegEx.value[keyword].test(name)
+						: name.includes(keyword),
 				)) ||
 			(description !== undefined &&
 				description !== null &&
 				blockedItemsData.value?.experiences.descriptions.some((keyword) =>
-					description.includes(keyword),
+					blockedItemsKeywordToRegEx.value[keyword]
+						? blockedItemsKeywordToRegEx.value[keyword].test(description)
+						: description.includes(keyword),
 				)) ||
 			(creatorType !== undefined &&
 				creatorId !== undefined &&
@@ -71,10 +119,16 @@ export function isAvatarItemBlocked(
 			(item) => item.id === itemId && item.type === itemType,
 		) ||
 			(name !== undefined &&
-				blockedItemsData.value?.items.names.some((keyword) => name.includes(keyword))) ||
+				blockedItemsData.value?.items.names.some((keyword) =>
+					blockedItemsKeywordToRegEx.value[keyword]
+						? blockedItemsKeywordToRegEx.value[keyword].test(name)
+						: name.includes(keyword),
+				)) ||
 			(description !== undefined &&
 				blockedItemsData.value?.items.descriptions.some((keyword) =>
-					description.includes(keyword),
+					blockedItemsKeywordToRegEx.value[keyword]
+						? blockedItemsKeywordToRegEx.value[keyword].test(description)
+						: description.includes(keyword),
 				)) ||
 			(creatorType !== undefined &&
 				creatorId !== undefined &&

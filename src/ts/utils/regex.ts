@@ -48,6 +48,8 @@ export const CREATOR_STORE_ASSET_REGEX = /^\/store\/asset\/(\d+)(\/([a-z0-9-]+))
 export const SYMBOL_REGEX =
 	/[\u00A1-\u00BF\u00D7\u00F7\u02B0-\u036F\u2000-\u206F\u20A0-\u20CF\u2100-\u214F\u2190-\u21FF\u2200-\u22FF\u25A0-\u25FF\u2600-\u26FF\u2700-\u27BF]/gu;
 
+export const REGEX_STRING_REGEX = /^\/(.*)\/([gimyusd]*)$/;
+
 export function escapeRegExp(text: string) {
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }

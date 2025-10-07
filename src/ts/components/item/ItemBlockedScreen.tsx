@@ -20,6 +20,7 @@ import Thumbnail from "../core/Thumbnail";
 import AgentMentionContainer from "../core/items/AgentMentionContainer";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePromise from "../hooks/usePromise";
+import { blockedItemsKeywordToRegEx } from "src/ts/utils/blockedItems";
 
 type ItemBlockedScreenCreator = {
 	id: number;
@@ -176,7 +177,11 @@ export default function ItemBlockedScreen({
 
 				if (realName) {
 					for (const keyword of blockedItemsData.value.experiences.names) {
-						if (realName.includes(keyword)) {
+						if (
+							blockedItemsKeywordToRegEx.value[keyword]
+								? blockedItemsKeywordToRegEx.value[keyword].test(realName)
+								: realName.includes(keyword)
+						) {
 							blockedTypes.push("Name");
 							keywords.push(keyword);
 						}
@@ -186,7 +191,11 @@ export default function ItemBlockedScreen({
 				if (data?.description) {
 					const realDescription = asLocaleLowerCase(data.description);
 					for (const keyword of blockedItemsData.value.experiences.descriptions) {
-						if (realDescription.includes(keyword)) {
+						if (
+							blockedItemsKeywordToRegEx.value[keyword]
+								? blockedItemsKeywordToRegEx.value[keyword].test(realDescription)
+								: realDescription.includes(keyword)
+						) {
 							blockedTypes.push("Description");
 							keywords.push(keyword);
 						}
@@ -209,7 +218,11 @@ export default function ItemBlockedScreen({
 
 				if (realName) {
 					for (const keyword of blockedItemsData.value.items.names) {
-						if (realName.includes(keyword)) {
+						if (
+							blockedItemsKeywordToRegEx.value[keyword]
+								? blockedItemsKeywordToRegEx.value[keyword].test(realName)
+								: realName.includes(keyword)
+						) {
 							blockedTypes.push("Name");
 							keywords.push(keyword);
 						}
@@ -219,7 +232,11 @@ export default function ItemBlockedScreen({
 				if (data?.description) {
 					const realDescription = asLocaleLowerCase(data.description);
 					for (const keyword of blockedItemsData.value.items.descriptions) {
-						if (realDescription.includes(keyword)) {
+						if (
+							blockedItemsKeywordToRegEx.value[keyword]
+								? blockedItemsKeywordToRegEx.value[keyword].test(realDescription)
+								: realDescription.includes(keyword)
+						) {
 							blockedTypes.push("Description");
 							keywords.push(keyword);
 						}
@@ -241,7 +258,13 @@ export default function ItemBlockedScreen({
 			otherCount: blockedTypes.length - 1,
 			keywords,
 		};
-	}, [name, data, blockedItemsData.value, allowedItemsData.value]);
+	}, [
+		name,
+		data,
+		blockedItemsData.value,
+		allowedItemsData.value,
+		blockedItemsKeywordToRegEx.value,
+	]);
 
 	useEffect(() => {
 		setBypassScreen(!blockedType);

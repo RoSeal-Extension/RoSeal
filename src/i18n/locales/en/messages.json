@@ -10775,7 +10775,7 @@
 					"$context": "Title"
 				},
 				"description": {
-					"$message": "You can block experiences by keywords in their name and description.",
+					"$message": "You can block experiences by keywords in their name and description. RegEx patterns with flags are supported.",
 					"$context": "Description"
 				},
 				"performanceNotice": {
@@ -10813,7 +10813,7 @@
 					"$context": "Title"
 				},
 				"description": {
-					"$message": "You can block avatar items by keywords in their name and description.",
+					"$message": "You can block avatar items by keywords in their name and description. RegEx patterns with flags are supported.",
 					"$context": "Description"
 				},
 				"nameKeywords": {
