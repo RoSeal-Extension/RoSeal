@@ -13,11 +13,18 @@ import { getMessage } from "src/ts/helpers/i18n/getMessage";
 export default function PostAvatarButton() {
 	const [showModal, setShowModal] = useState(false);
 	const [currentAvatar, setCurrentAvatar] = useState<ReactAvatarEditorPageAvatar>();
+	const [isAccessible, setIsAccessible] = useState(true);
 	const [lookPreview, lookPreviewFetched, error] = usePromise(() => {
-		if (!currentAvatar) return;
+		if (!currentAvatar || !isAccessible) return;
 
 		return previewUserLookCreation({
 			assets: currentAvatar.assets,
+		}).catch((err) => {
+			if (err && err instanceof RESTError && err.errors?.[0].code === 1) {
+				setIsAccessible(false);
+			}
+
+			throw err;
 		});
 	}, [currentAvatar]);
 
@@ -30,7 +37,7 @@ export default function PostAvatarButton() {
 		setShowModal((show) => !show);
 	}, [error, lookPreview, lookPreviewFetched]);
 
-	if (!currentAvatar || !lookPreviewFetched || (isRESTError && error.errors?.[0].code === 1)) {
+	if (!currentAvatar || !lookPreviewFetched || !isAccessible) {
 		return null;
 	}
 
