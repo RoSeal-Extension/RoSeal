@@ -41,14 +41,14 @@ export default function ExperienceRestrictedScreen({ placeId }: ExperienceRestri
 
 		[placeId],
 	);
-	const [universeId] = usePromise(
+	const [universeId, universeIdFetched] = usePromise(
 		() =>
 			getPlaceUniverseId({
 				placeId,
 			}),
 		[placeId],
 	);
-	const [playabilityReason] = usePromise(() => {
+	const [playabilityReason, playabilityReasonFetched] = usePromise(() => {
 		if (!universeId) {
 			return;
 		}
@@ -91,7 +91,7 @@ export default function ExperienceRestrictedScreen({ placeId }: ExperienceRestri
 	if (isPlace === false) {
 		return <Page404 />;
 	}
-	if (!isPlace || !playabilityReason) {
+	if (!isPlace || !playabilityReasonFetched || !universeIdFetched) {
 		return <Loading />;
 	}
 
