@@ -911,7 +911,7 @@ export default {
 							}
 						} else if (item.type === "UserOutfit") {
 							// NOT hydrated by roblox's frontend.... silly goobers
-							const outfit = outfitsDetails.find((item2) => item.id === item2.id);
+							const outfit = outfitsDetails.find((item2) => item.id === item2?.id);
 							formattedItems.push({
 								itemCategory: {
 									itemType: 2,
