@@ -38,6 +38,7 @@ import { handleArchivedItems } from "src/ts/specials/handleArchivedItems";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { getClosestHexColor, normalizeColor } from "src/ts/utils/colors";
+import { error } from "src/ts/utils/console";
 import { onWindowRefocus } from "src/ts/utils/dom";
 import {
 	filterWornAssets,
@@ -883,6 +884,8 @@ export default {
 							outfitIds.map((outfitId) =>
 								getOutfitById({
 									outfitId,
+								}).catch(() => {
+									error(`Could not fetch details for outfit ID ${outfitId}`);
 								}),
 							),
 						),
