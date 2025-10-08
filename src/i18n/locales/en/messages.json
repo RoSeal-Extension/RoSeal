@@ -5335,6 +5335,25 @@
 				"name": {
 					"$message": "Show username under display name on connection tiles"
 				}
+			},
+			"autoUpdate": {
+				"name": {
+					"$message": "Automatically update the order of online connections"
+				},
+				"values": {
+					"1": {
+						"$message": "Every 1 second"
+					},
+					"3": {
+						"$message": "Every 3 seconds"
+					},
+					"5": {
+						"$message": "Every 5 seconds"
+					},
+					"10": {
+						"$message": "Every 10 seconds"
+					}
+				}
 			}
 		},
 		"moveReportAbuse": {

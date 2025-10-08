@@ -60,12 +60,14 @@ export default function FriendsListCarousel({
 		false,
 	);
 	const [addConnectionsCardDisabled] = useFeatureValue("hideAddFriendsButton", false);
+	const [autoUpdate] = useFeatureValue("improvedConnectionsCarousel.autoUpdate", [false, 3]);
 
 	const [visibleFriendsList, setVisibleFriendsList] = useState<SkinnyUserFriend[]>();
 	const [listIsFull, setListIsFull] = useState(false);
 	const [visibleTileCount, setVisibleTileCount] = useState(0);
 
 	const [typeFilter, setTypeFilter] = useState<string | number>(DEFAULT_ALL_CONNECTION_TYPE.id);
+	const [isHovering, setIsHovering] = useState(false);
 
 	const parentRef = useRef<HTMLDivElement | null>(null);
 	const containerRef = useRef<HTMLDivElement | null>(null);
@@ -117,13 +119,29 @@ export default function FriendsListCarousel({
 		return _friendsCount;
 	}, [_friendsCount, userId]);
 
-	const [_onlineFriends, _onlineFriendsFetched] = useOnlineFriends();
-	const [onlineFriends, onlineFriendsFetched] = useMemo(() => {
-		return [_onlineFriends, _onlineFriendsFetched];
-	}, [_onlineFriendsFetched]);
+	const [onlineFriends, onlineFriendsFetched] = useOnlineFriends();
+	const [[onlineFriendsMemoized, onlineFriendsMemoizedFetched], setOnlineFriendsData] = useState([
+		onlineFriends,
+		onlineFriendsFetched,
+	]);
+	const [onlineFriendsIntervalCount, setOnlineFriendsIntervalCount] = useState(0);
+
+	useEffect(() => {
+		setOnlineFriendsData([onlineFriends, onlineFriendsFetched]);
+	}, [onlineFriendsFetched, onlineFriendsIntervalCount]);
+
+	useEffect(() => {
+		if (!autoUpdate?.[0] || isHovering || !onlineFriendsFetched) return;
+
+		const interval = setInterval(() => {
+			setOnlineFriendsIntervalCount((count) => count + 1);
+		}, autoUpdate[1] * 1_000);
+
+		return () => clearInterval(interval);
+	}, [isHovering, autoUpdate?.[0], autoUpdate?.[1], onlineFriendsFetched]);
 
 	const [onlineFriendsProfileData, onlineFriendsProfileDataFetched] =
-		useProfilesData(onlineFriends);
+		useProfilesData(onlineFriendsMemoized);
 	const [otherFriends, otherFriendsFetched] = usePromise(
 		() =>
 			listUserFriends({
@@ -191,19 +209,19 @@ export default function FriendsListCarousel({
 
 	const friendsList = useMemo(() => {
 		if (
-			!onlineFriendsFetched ||
+			!onlineFriendsMemoizedFetched ||
 			!otherFriendsFetched ||
 			!taggedUserIdsFetched ||
-			(onlineFriends?.length && !onlineFriendsProfileDataFetched)
+			(onlineFriendsMemoized?.length && !onlineFriendsProfileDataFetched)
 		)
 			return;
 
 		const users: SkinnyUserFriend[] = [];
 		const usersMapCheck = new Map<number, boolean>();
 
-		if (onlineFriends)
+		if (onlineFriendsMemoized)
 			for (const friend of sortOnlineFriends(
-				onlineFriends,
+				onlineFriendsMemoized,
 				onlineFriendsProfileData,
 				connectionTypesEnabled ? connectionTypesStorageValue : undefined,
 				connectionTypesEnabled ? connectionTypes : undefined,
@@ -247,7 +265,7 @@ export default function FriendsListCarousel({
 		return users;
 	}, [
 		typeFilter,
-		onlineFriendsFetched,
+		onlineFriendsMemoizedFetched,
 		otherFriends,
 		otherFriendsFetched,
 		taggedUserIdsFetched,
@@ -255,7 +273,7 @@ export default function FriendsListCarousel({
 	]);
 
 	const [blockedUniverseIds] = usePromise(() => {
-		if (!onlineFriends) return;
+		if (!onlineFriendsMemoized) return;
 
 		if (
 			!blockedItemsData.value?.creators.length &&
@@ -266,7 +284,7 @@ export default function FriendsListCarousel({
 			return;
 
 		const universeIds: number[] = [];
-		for (const friend of onlineFriends) {
+		for (const friend of onlineFriendsMemoized) {
 			if (friend.universeId) {
 				universeIds.push(friend.universeId);
 			}
@@ -292,7 +310,7 @@ export default function FriendsListCarousel({
 
 			return blockedUniverseIds;
 		});
-	}, [blockedItemsData.value, onlineFriends]);
+	}, [blockedItemsData.value, onlineFriendsMemoized]);
 
 	const { width: windowWidth } = useWindowSize();
 
@@ -353,7 +371,11 @@ export default function FriendsListCarousel({
 	if (friendsCount === 0) return null;
 
 	return (
-		<div className="react-friends-carousel-container roseal-friends-carousel-container">
+		<div
+			className="react-friends-carousel-container roseal-friends-carousel-container"
+			onMouseEnter={() => setIsHovering(true)}
+			onMouseLeave={() => setIsHovering(false)}
+		>
 			<div className="container-header people-list-header">
 				<h2>
 					{getMessage("connectionsCarousel.title", {

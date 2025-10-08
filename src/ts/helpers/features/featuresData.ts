@@ -593,6 +593,29 @@ export const sections = [
 										defaultValue: true,
 									},
 								},
+								{
+									type: "Regular",
+									id: "improvedConnectionsCarousel.autoUpdate",
+									component: {
+										type: "DropdownWithToggle",
+										values: [
+											{
+												value: 1,
+											},
+											{
+												value: 3,
+											},
+											{
+												value: 5,
+											},
+											{
+												value: 10,
+											},
+										],
+										defaultValue: 3,
+										toggleDefaultValue: false,
+									},
+								},
 							],
 						},
 					},
