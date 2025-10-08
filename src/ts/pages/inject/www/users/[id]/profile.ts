@@ -104,6 +104,7 @@ export default {
 							if (item.name?.includes("R6")) {
 								showAnyways = true;
 								data.assets.splice(i, 1);
+								i--;
 							}
 						}
 					}
