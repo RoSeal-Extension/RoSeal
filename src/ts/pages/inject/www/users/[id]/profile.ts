@@ -97,10 +97,23 @@ export default {
 				userId: profileUserId,
 			}).then((data) => {
 				if (data.playerAvatarType === value[1]) {
-					requestCallback();
-					responseCallback();
+					let showAnyways = false;
+					if (value[1] === "R15") {
+						for (let i = 0; i < data.assets.length; i++) {
+							const item = data.assets[i];
+							if (item.name?.includes("R6")) {
+								showAnyways = true;
+								data.assets.splice(i, 1);
+							}
+						}
+					}
 
-					return;
+					if (!showAnyways) {
+						requestCallback();
+						responseCallback();
+
+						return;
+					}
 				}
 
 				definition = {
