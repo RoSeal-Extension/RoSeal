@@ -2448,7 +2448,7 @@
 		"$context": "Features page",
 		"viewUserPublishedAvatars": {
 			"name": {
-				"$message": "View a user's published Avatars if you have access to post Curated Avatars"
+				"$message": "View a user's published Avatars if you have access to post Avatars on the Marketplace"
 			}
 		},
 		"forceProfileFullBodyAvatarType": {
