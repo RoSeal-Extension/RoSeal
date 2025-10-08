@@ -57,12 +57,6 @@ export default {
 	regex: [MY_AVATAR_REGEX],
 	css: ["css/avatar.css"],
 	fn: () => {
-		featureValueIs("avatarEditorPostAvatar", true, () =>
-			watchOnce(".left-wrapper .redraw-avatar").then((el) => {
-				renderAfter(<PostAvatarButton />, el);
-			}),
-		);
-
 		featureValueIs("avatarEditorSearch", true, () => {
 			const filters = signal(AVATAR_EDITOR_FILTERS_INITIAL_VALUE);
 
@@ -303,10 +297,19 @@ export default {
 		multigetFeaturesValues([
 			"advancedAvatarCustomization",
 			"avatarEditorCurrentlyWearing",
+			"avatarEditorPostAvatar",
 		]).then((data) => {
-			if (!data.advancedAvatarCustomization && !data.avatarEditorCurrentlyWearing) return;
+			if (
+				!data.advancedAvatarCustomization &&
+				!data.avatarEditorCurrentlyWearing &&
+				!data.avatarEditorPostAvatar
+			)
+				return;
 
-			return watch(".redraw-avatar", (el) => {
+			return watch(".left-wrapper .redraw-avatar", (el) => {
+				if (el.hasAttribute("data-handled")) return;
+				el.setAttribute("data-handled", "");
+
 				if (
 					document.body.querySelector(
 						"#advanced-customization-btn, #currently-wearing-items",
@@ -316,6 +319,7 @@ export default {
 
 				renderAfter(
 					<>
+						{data.avatarEditorPostAvatar && <PostAvatarButton />}
 						{data.advancedAvatarCustomization && <AdvancedCustomizationButton />}
 						{data.avatarEditorCurrentlyWearing && <AvatarEditorCurrentlyWearing />}
 					</>,
