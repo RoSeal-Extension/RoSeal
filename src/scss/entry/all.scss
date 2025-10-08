@@ -1686,11 +1686,27 @@ roseal-font {
     pointer-events: all !important;
 }
 
-.roseal-catalog-item-container {
+.roseal-item-card-container {
     .value-cost-container {
         .icon-robux-16x16 {
             margin-bottom: 0;
             margin-right: 0;
+        }
+    }
+
+    .item-card-thumb-container-inner {
+        width: 100%;
+        height: 100%;
+    }
+
+    .look-img-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+
+        .look-img {
+            width: auto;
         }
     }
 }
