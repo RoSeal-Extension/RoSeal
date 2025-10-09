@@ -6,11 +6,7 @@ import {
 	MUTUAL_FRIENDS_SHOW_COUNT,
 } from "src/ts/constants/friends";
 import { getMessage, hasMessage } from "src/ts/helpers/i18n/getMessage";
-import {
-	asLocaleString,
-	getRegularTime,
-	getShortRelativeTime,
-} from "src/ts/helpers/i18n/intlFormats";
+import { asLocaleString, getShortRelativeTime } from "src/ts/helpers/i18n/intlFormats";
 import {
 	acceptUserFriendRequest,
 	declineUserFriendRequest,
@@ -201,6 +197,7 @@ export default function FriendCard({
 		}
 
 		switch (requestsSortType) {
+			/*
 			case "mutualCommunitiesCount": {
 				return (
 					<span className="mutual-friends-tooltip-label">
@@ -210,7 +207,7 @@ export default function FriendCard({
 						})}
 					</span>
 				);
-			}
+			}*/
 
 			case "connectionsCount": {
 				return (
@@ -231,6 +228,7 @@ export default function FriendCard({
 					</span>
 				);
 			}
+			/*
 			case "joinedDate": {
 				if (!components?.joinedDate) return null;
 
@@ -241,7 +239,7 @@ export default function FriendCard({
 						})}
 					</span>
 				);
-			}
+			}*/
 			case "followersCount": {
 				return (
 					<span className="mutual-friends-tooltip-label">

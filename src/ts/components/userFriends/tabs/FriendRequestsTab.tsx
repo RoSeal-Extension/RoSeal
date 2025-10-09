@@ -4,7 +4,6 @@ import { FRIEND_REQUESTS_FILTER_SORTS } from "src/ts/constants/friends";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import type { SortOrder } from "src/ts/helpers/requests/services/badges";
-import { listUserGroupsRoles } from "src/ts/helpers/requests/services/groups";
 import { getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
 import {
 	multigetUniversesByIds,
@@ -37,8 +36,8 @@ export type FriendRequestsTabProps = {
 };
 
 export type UserFriendRequestAdditionalComponents = {
-	robloxBadgeIds: number[];
-	mutualCommunitiesCount: number;
+	//robloxBadgeIds: number[];
+	//mutualCommunitiesCount: number;
 	connectionsCount: number;
 	followersCount: number;
 	followingsCount: number;
@@ -52,9 +51,9 @@ export type UserFriendRequestWithComponents = UserFriendRequest & {
 };
 
 export type FriendRequestsFilters = {
-	robloxBadgeIds?: number[];
-	minMutualCommunitiesCount?: number;
-	maxMutualCommunitiesCount?: number;
+	//robloxBadgeIds?: number[];
+	/*minMutualCommunitiesCount?: number;
+	maxMutualCommunitiesCount?: number;*/
 	minConnectionsCount?: number;
 	maxConnectionsCount?: number;
 	minFollowersCount?: number;
@@ -63,14 +62,20 @@ export type FriendRequestsFilters = {
 	maxFollowingsCount?: number;
 	isPremium?: boolean;
 	isVerified?: boolean;
+	/*
 	minJoinedDate?: number;
 	maxJoinedDate?: number;
+	*/
 	minMutualConnectionsCount?: number;
 	maxMutualConnectionsCount?: number;
 	sortBy: (typeof FRIEND_REQUESTS_FILTER_SORTS)[number];
 };
 
 function checkValue<T>(value: T, min?: NoInfer<T>, max?: NoInfer<T>) {
+	if (value === undefined && min === undefined && max === undefined) {
+		return true;
+	}
+
 	if (typeof value === "number") {
 		return (
 			(min === undefined || value >= (min as number)) &&
@@ -116,13 +121,14 @@ export default function FriendRequestsTab({
 	const [filters, setFilters] = useState<FriendRequestsFilters>({
 		sortBy: "sentDate",
 	});
+	/*
 	const [myGroups] = usePromise(
 		() =>
 			listUserGroupsRoles({
 				userId,
 			}).then((data) => data.data.map((group) => group.group.id)),
 		[userId],
-	);
+	);*/
 	const [hasSetFilters, shouldRequestProfilePlatform] = useMemo(() => {
 		let hasSetFilters = false;
 
@@ -187,20 +193,12 @@ export default function FriendRequestsTab({
 					profileId: request.id.toString(),
 					components: [
 						{
-							component: "Communities",
-						},
-						{
 							component: "UserProfileHeader",
-						},
-						{
-							component: "RobloxBadges",
-						},
-						{
-							component: "Statistics",
 						},
 					],
 					includeCredentials: false,
 				}).then((data) => {
+					/*
 					const robloxBadgeIds: number[] = [];
 					if (data.components.RobloxBadges) {
 						for (const item of data.components.RobloxBadges.robloxBadgeList) {
@@ -214,13 +212,14 @@ export default function FriendRequestsTab({
 							if (data.components.Communities.groupsIds.includes(item)) {
 								mutualCommunitiesCount++;
 							}
-						}
+						}*/
 
 					return {
 						...request,
 						components: {
+							/*
 							robloxBadgeIds,
-							mutualCommunitiesCount,
+							mutualCommunitiesCount,*/
 							connectionsCount:
 								data.components.UserProfileHeader?.counts?.friendsCount ?? 0,
 							followersCount:
@@ -229,13 +228,12 @@ export default function FriendRequestsTab({
 								data.components.UserProfileHeader?.counts?.followingsCount ?? 0,
 							isVerified: data.components.UserProfileHeader?.isVerified ?? false,
 							isPremium: data.components.UserProfileHeader?.isPremium ?? false,
-							joinedDate: data.components.Statistics
+							/*joinedDate: data.components.About?.joinDateTime
 								? Math.floor(
-										new Date(
-											data.components.Statistics.userJoinedDate,
-										).getTime() / 1_000,
+										new Date(data.components.About?.joinDateTime).getTime() /
+											1_000,
 									)
-								: undefined,
+								: undefined,*/
 						},
 					};
 				}),
@@ -246,6 +244,7 @@ export default function FriendRequestsTab({
 								const direction = sortOrder === "Desc" ? -1 : 1;
 
 								switch (filters.sortBy) {
+									/*
 									case "joinedDate": {
 										return (
 											((a.components?.joinedDate ?? 0) >
@@ -253,7 +252,8 @@ export default function FriendRequestsTab({
 												? 1
 												: -1) * direction
 										);
-									}
+									}*/
+									/*
 									case "mutualCommunitiesCount": {
 										return (
 											((a.components?.mutualCommunitiesCount ?? 0) >
@@ -261,7 +261,7 @@ export default function FriendRequestsTab({
 												? 1
 												: -1) * direction
 										);
-									}
+									}*/
 									case "mutualConnectionsCount": {
 										return (
 											((a.mutualFriendsList.length ?? 0) >
@@ -317,15 +317,15 @@ export default function FriendRequestsTab({
 								(item.components !== undefined &&
 									checkValue(item.components.isPremium, filters.isPremium) &&
 									checkValue(item.components.isVerified, filters.isVerified) &&
-									checkValue(
+									/*checkValue(
 										item.components.robloxBadgeIds,
 										filters.robloxBadgeIds,
-									) &&
-									checkValue(
+									) &&*/
+									/*checkValue(
 										item.components.mutualCommunitiesCount,
 										filters.minMutualCommunitiesCount,
 										filters.maxMutualCommunitiesCount,
-									) &&
+									) &&*/
 									checkValue(
 										item.components.followersCount,
 										filters.minFollowersCount,
@@ -340,12 +340,12 @@ export default function FriendRequestsTab({
 										item.components.followingsCount,
 										filters.minFollowingsCount,
 										filters.maxFollowingsCount,
-									) &&
+									)) /*&&
 									checkValue(
 										item.components.joinedDate,
 										filters.minJoinedDate,
 										filters.maxJoinedDate,
-									)))
+									)*/)
 						);
 					}
 				: undefined,
@@ -368,7 +368,7 @@ export default function FriendRequestsTab({
 			refreshToFirstPage: [
 				advancedFilteringEnabled,
 				filters,
-				hasSetFilters && myGroups,
+				hasSetFilters,
 				shouldRequestProfilePlatform,
 			],
 		},
