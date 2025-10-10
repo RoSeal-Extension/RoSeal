@@ -1,8 +1,9 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import classNames from "classnames";
 import { OverlayTrigger, type OverlayTriggerProps, Popover as BSPopover } from "react-bootstrap";
 import type { ComponentChildren, VNode } from "preact";
 import type { JSX } from "preact/jsx-runtime";
+import { watch } from "src/ts/helpers/elements";
 
 export type PopoverProps = OmitExtend<
 	OverlayTriggerProps,
@@ -30,10 +31,30 @@ export default function Popover({
 	...otherProps
 }: PopoverProps) {
 	const [state, setState] = useState(false);
+	const ref = useRef<HTMLElement>(null);
 
 	useEffect(() => {
 		setState(show === true);
 	}, [show]);
+
+	if (!button.ref) button.ref = ref;
+
+	useEffect(() => {
+		if (!ref.current) return;
+
+		return watch(
+			ref.current,
+			(el, kill) => {
+				if (el.isConnected) {
+					return;
+				}
+
+				setState(false);
+				kill?.();
+			},
+			true,
+		);
+	}, [ref.current]);
 
 	return (
 		<OverlayTrigger
