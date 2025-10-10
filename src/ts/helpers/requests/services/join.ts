@@ -396,6 +396,7 @@ export function parseJoinServerStatusMessage(value: string): JoinServerStatusMes
 			return JoinServerStatusMessage.ExperienceGroupOnly;
 		case "<This text is not reviewed by UX because it is not displayed to users. Each client provides their own translation> This experience is unavailable to you as it is unrated.":
 		case "This experience is not accessible because it is unrated":
+		case "This experience is unavailable to you as it is unrated.":
 			return JoinServerStatusMessage.ExperienceUnrated;
 		case "<This text is not reviewed by UX because it is not displayed to users. Each client provides their own translation> This experience is unavailable to you as it is a Social Hangout and/or includes Freeform In-Game Creation.":
 			return JoinServerStatusMessage.SocialHangoutNotAllowed;
