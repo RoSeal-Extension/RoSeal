@@ -45,6 +45,7 @@ export default function ExperiencePlayableDevices({ universeId }: ExperiencePlay
 
 		return (
 			<Tooltip
+				key={deviceType}
 				button={icon}
 				containerClassName="playable-device-item"
 				as="div"

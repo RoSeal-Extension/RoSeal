@@ -16,7 +16,7 @@ export async function modifyItemStats<T extends VNode | (() => VNode)>(
 	const elements = (Array.isArray(_elements) ? _elements : ([_elements] as T[])).map(
 		(Element) => {
 			// @ts-expect-error: Fine, quiet
-			return typeof Element === "function" ? <Element /> : Element;
+			return typeof Element === "function" ? <Element key={Element} /> : Element;
 		},
 	) as VNode[];
 
