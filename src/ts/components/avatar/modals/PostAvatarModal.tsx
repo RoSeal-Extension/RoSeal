@@ -40,7 +40,7 @@ export default function PostAvatarModal({ show, avatar, setShow }: PostAvatarMod
 			return;
 		}
 
-		if (!name || !description) return;
+		if (!name) return;
 
 		setErrorMessage(undefined);
 		setLoading(true);
@@ -92,7 +92,7 @@ export default function PostAvatarModal({ show, avatar, setShow }: PostAvatarMod
 						`avatar.postAvatar.modal.buttons.action.${createdLook ? "posted" : "post"}`,
 					),
 					loading,
-					disabled: !name || !description,
+					disabled: !name,
 					onClick: onClickAction,
 				},
 			]}
