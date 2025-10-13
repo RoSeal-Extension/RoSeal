@@ -31,7 +31,8 @@ export default function UserProfilePublishedAvatars({ userId }: UserProfilePubli
 	);
 
 	// don't render it, probably doesnt have access
-	if (!looks) return null;
+	// or empty array
+	if (!looks?.length) return null;
 
 	return (
 		<div className="profile-published-avatars">

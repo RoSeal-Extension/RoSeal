@@ -70,10 +70,6 @@ export type MinimalServerJoinData = {
 		sessionInfo: {
 			placeId: number;
 			gameId: string;
-			playtime?: {
-				_14d?: number;
-				_28d?: number;
-			};
 			userLatLong?: [number, number];
 		};
 	};
@@ -165,24 +161,6 @@ export async function tryGetServerJoinData<
 						sessionInfo: {
 							placeId: response.joinScript.placeId,
 							gameId: response.joinScript.gameId,
-							playtime: sessionInfoRaw && {
-								_14d:
-									sessionInfoRaw.PlayerSignals.timespent_sum_last_14d ??
-									(sessionInfoRaw.PlayerSignals.timespent_sum_last_14d_log10
-										? 10 **
-												sessionInfoRaw.PlayerSignals
-													.timespent_sum_last_14d_log10 *
-											60
-										: undefined),
-								_28d:
-									sessionInfoRaw.PlayerSignals.timespent_sum_last_28d ??
-									(sessionInfoRaw.PlayerSignals.timespent_sum_last_28d_log10
-										? 10 **
-												sessionInfoRaw.PlayerSignals
-													.timespent_sum_last_28d_log10 *
-											60
-										: undefined),
-							},
 							userLatLong: sessionInfoRaw && [
 								sessionInfoRaw.Latitude,
 								sessionInfoRaw.Longitude,
