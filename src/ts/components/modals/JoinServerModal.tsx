@@ -274,6 +274,7 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 					resolveOnJoin.value?.();
 				})
 				.catch(async () => {
+					setHasAuthenticationError(true);
 					if (shouldDelayJoin) {
 						await sleep(3_000);
 					}
