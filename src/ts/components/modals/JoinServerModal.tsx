@@ -190,7 +190,7 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 			);
 		makeSillyText();
 
-		const interval = setInterval(makeSillyText, 1_000);
+		const interval = setInterval(makeSillyText, 1_500);
 
 		return () => clearInterval(interval);
 	}, [

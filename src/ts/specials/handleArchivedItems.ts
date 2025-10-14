@@ -114,17 +114,18 @@ export function handleArchivedItems(signal: Signal<ArchivedItemsItem[]>) {
 								shouldRemove = true;
 								break;
 							}
-						} else if (item2.type === "Bundle") {
+						} else if (item2.type === "UserOutfit") {
 							if (item.itemCategory?.itemType === 2 && item.itemId === item2.id) {
 								shouldRemove = true;
 								break;
 							}
-						} else if (item2.type === "UserOutfit") {
+						} /*else if (item2.type === "Bundle") {
+							console.log(item.itemCategory?.itemType, item.itemId, item.itemName);
 							if (item.itemCategory?.itemType === 3 && item.itemId === item2.id) {
 								shouldRemove = true;
 								break;
 							}
-						}
+						}*/
 					}
 
 					if (shouldRemove) {
