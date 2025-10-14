@@ -118,7 +118,7 @@ export function _buildRobloxProtocolUrlV1(request: BuildProtocolUrlV1Request): s
 }
 
 export function _buildPlaceLauncherUrl(parameters: PlaceLauncherURLParameters): string {
-	const url = new URL(`https://${getRobloxUrl("assetgame", "/game/PlaceLauncher.ashx")}`);
+	const url = new URL(`https://${getRobloxUrl("www", "/game/PlaceLauncher.ashx")}`);
 	const stringifiedParameters: Record<string, string> = {};
 	for (const [key, value] of Object.entries(parameters)) {
 		if (value !== undefined && value !== null) {

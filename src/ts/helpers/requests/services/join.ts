@@ -9,7 +9,7 @@ export type GameJoinAttemptOrigin =
 	| "privateServerListJoin"
 	| "PlayButton"
 	| "RoSealFetchInfo"
-	| "RoSealActivitydNotification";
+	| "RoSealActivityNotification";
 
 export type GetPrivateServerDataRequest = {
 	placeId: number;

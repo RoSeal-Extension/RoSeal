@@ -76,12 +76,6 @@ export type MinimalServerJoinData = {
 };
 
 type SessionInfoRaw = {
-	PlayerSignals: {
-		timespent_sum_last_14d?: number;
-		timespent_sum_last_14d_log10?: number;
-		timespent_sum_last_28d?: number;
-		timespent_sum_last_28d_log10?: number;
-	};
 	Longitude: number;
 	Latitude: number;
 	JoinType?: SessionJoinType;
