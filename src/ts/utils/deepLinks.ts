@@ -41,7 +41,7 @@ export const authedProtocolParser = lazyLoad(
 				robloxStudioProtocol: import.meta.env.ROBLOX_STUDIO_PROTOCOL as AuthedProtocolType,
 				robloxStudioAuthProtocol: import.meta.env
 					.ROBLOX_STUDIO_AUTH_PROTOCOL as AuthedProtocolType,
-				placeLauncherUrl: getRobloxUrl("www", "/game/PlaceLauncher.ashx"),
+				placeLauncherUrl: `https://${getRobloxUrl("www", "/game/PlaceLauncher.ashx")}`,
 			},
 		}),
 );

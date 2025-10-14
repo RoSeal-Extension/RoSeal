@@ -1573,6 +1573,14 @@ export const sections = [
 										defaultValue: false,
 									},
 								},
+								{
+									type: "Regular",
+									id: "improvedServerJoinModal.sillyText",
+									component: {
+										type: "Toggle",
+										defaultValue: false,
+									},
+								},
 							],
 						},
 					},

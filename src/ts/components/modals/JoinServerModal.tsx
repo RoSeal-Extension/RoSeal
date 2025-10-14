@@ -7,7 +7,7 @@ import { type Signal, useSignal } from "@preact/signals";
 import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { DEFAULT_RELEASE_CHANNEL_NAME } from "src/ts/constants/misc";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getMessage, getMessageKeysWithPrefix } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import { onNotificationType } from "src/ts/helpers/notifications";
 import { profileProcessor } from "src/ts/helpers/processors/profileProcessor";
@@ -36,6 +36,7 @@ import Thumbnail from "../core/Thumbnail";
 import { getLocalizedRegionName } from "../experience/servers/utils";
 import useFeatureValue from "../hooks/useFeatureValue";
 import usePromise from "../hooks/usePromise";
+import { randomArrItem } from "src/ts/utils/random";
 
 export type JoinServerModalProps = {
 	data: Signal<CurrentServerJoinMetadata | undefined | null>;
@@ -60,6 +61,7 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 		"improvedServerJoinModal.useDeepLinkProtocol",
 		false,
 	);
+	const [shouldShowSillyText] = useFeatureValue("improvedServerJoinModal.sillyText", false);
 
 	const [showDownload, setShowDownload] = useState(false);
 	const [showDownloadInstructions, setShowDownloadInstructions] = useState(false);
@@ -140,6 +142,64 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 				placeIds: [experiencePlaceId],
 			}).then((data) => data[0]);
 	}, [experiencePlaceId]);
+	const sillyTextVariables = useMemo(() => {
+		if (!shouldShowSillyText) return;
+
+		const participles: string[] = [];
+		const subjects: string[] = [];
+		const modifiers: string[] = [];
+
+		for (const key of getMessageKeysWithPrefix("joinModal.startup.sillyText.")) {
+			const data = key.split(".");
+			const type = data.at(-2)!;
+
+			switch (type) {
+				case "participle": {
+					participles.push(getMessage(key));
+					break;
+				}
+				case "subject": {
+					subjects.push(getMessage(key));
+					break;
+				}
+				case "modifier": {
+					modifiers.push(getMessage(key));
+					break;
+				}
+			}
+		}
+
+		return { participles, subjects, modifiers };
+	}, [shouldShowSillyText]);
+	const [sillyText, setSillyText] = useState<string>();
+
+	useEffect(() => {
+		if (
+			showDownload ||
+			showDownloadInstructions ||
+			hasJoinedServer.value ||
+			!shouldShowSillyText ||
+			!sillyTextVariables ||
+			data.value === undefined
+		)
+			return setSillyText(undefined);
+
+		const makeSillyText = () =>
+			setSillyText(
+				`${randomArrItem(sillyTextVariables.participles)} ${randomArrItem(sillyTextVariables.modifiers)} ${randomArrItem(sillyTextVariables.subjects)}`,
+			);
+		makeSillyText();
+
+		const interval = setInterval(makeSillyText, 1_000);
+
+		return () => clearInterval(interval);
+	}, [
+		showDownload,
+		showDownloadInstructions,
+		hasJoinedServer.value,
+		sillyTextVariables,
+		data.value,
+	]);
 
 	useEffect(() => {
 		setShowDownload(false);
@@ -176,7 +236,6 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 					resolveOnJoin.value?.();
 				})
 				.catch(async () => {
-					setHasAuthenticationError(true);
 					if (shouldDelayJoin) {
 						await sleep(3_000);
 					}
@@ -513,9 +572,10 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 						<div className="text-container">
 							<span className="app-icon-windows app-icon-bluebg" />
 							<span className="startup-text">
-								{getMessage(
-									`joinModal.startup.text.${hasJoinedServer.value ? "loaded" : showDownload ? "download" : hasAuthenticationError ? "authError" : "loading"}`,
-								)}
+								{sillyText ||
+									getMessage(
+										`joinModal.startup.text.${hasJoinedServer.value ? "loaded" : showDownload ? "download" : hasAuthenticationError ? "authError" : "loading"}`,
+									)}
 							</span>
 						</div>
 						{shouldShowClientChannelName &&

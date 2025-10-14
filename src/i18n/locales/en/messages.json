@@ -1699,6 +1699,104 @@
 					"$message": "Authentication error.\nAttempting fallback..."
 				}
 			},
+			"sillyText": {
+				"$context": "Silly text participle, modifier, subject",
+				"participle": {
+					"1": "Accelerating",
+					"2": "Aggregating",
+					"3": "Allocating",
+					"4": "Acquiring",
+					"5": "Automating",
+					"6": "Backtracing",
+					"7": "Bloxxing",
+					"8": "Bootstrapping",
+					"9": "Calibrating",
+					"10": "Correlating",
+					"11": "De-noobing",
+					"12": "De-ionizing",
+					"13": "Deriving",
+					"14": "Energizing",
+					"15": "Filtering",
+					"16": "Generating",
+					"17": "Indexing",
+					"18": "Loading",
+					"19": "Noobing",
+					"20": "Optimizing",
+					"21": "Oxidizing",
+					"22": "Queueing",
+					"23": "Parsing",
+					"24": "Processing",
+					"25": "Rasterizing",
+					"26": "Reading",
+					"27": "Registering",
+					"28": "Re-routing",
+					"29": "Resolving",
+					"30": "Sampling",
+					"31": "Updating",
+					"32": "Writing"
+				},
+				"modifier": {
+					"1": "Blox",
+					"2": "Count Zero",
+					"3": "Cylon",
+					"4": "Data",
+					"5": "Ectoplasm",
+					"6": "Encryption",
+					"7": "Event",
+					"8": "Farnsworth",
+					"9": "Bebop",
+					"10": "Flux Capacitor",
+					"11": "Fusion",
+					"12": "Game",
+					"13": "Gibson",
+					"14": "Host",
+					"15": "Mainframe",
+					"16": "Metaverse",
+					"17": "Nerf Herder",
+					"18": "Neutron",
+					"19": "Noob",
+					"20": "Photon",
+					"21": "Profile",
+					"22": "Script",
+					"23": "Skynet",
+					"24": "TARDIS",
+					"25": "Virtual"
+				},
+				"subject": {
+					"1": "Analogs",
+					"2": "Blocks",
+					"3": "Cannon",
+					"4": "Channels",
+					"5": "Core",
+					"6": "Database",
+					"7": "Dimensions",
+					"8": "Directives",
+					"9": "Engine",
+					"10": "Files",
+					"11": "Gear",
+					"12": "Index",
+					"13": "Layer",
+					"14": "Matrix",
+					"15": "Paradox",
+					"16": "Parameters",
+					"17": "Parsecs",
+					"18": "Pipeline",
+					"19": "Players",
+					"20": "Ports",
+					"21": "Protocols",
+					"22": "Reactors",
+					"23": "Sphere",
+					"24": "Spooler",
+					"25": "Stream",
+					"26": "Switches",
+					"27": "Table",
+					"28": "Targets",
+					"29": "Throttle",
+					"30": "Tokens",
+					"31": "Torpedoes",
+					"32": "Tubes"
+				}
+			},
 			"button": {
 				"download": {
 					"$message": "Download Roblox"
@@ -2598,6 +2696,11 @@
 			"delayServerJoin": {
 				"name": {
 					"$message": "Delay initializing client join for 3 seconds"
+				}
+			},
+			"sillyText": {
+				"name": {
+					"$message": "Display silly text from pre-2015 instead of the regular Joining text"
 				}
 			},
 			"showRCCServerInfo": {
