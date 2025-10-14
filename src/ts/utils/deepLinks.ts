@@ -13,7 +13,7 @@ export type AuthedProtocolType = "roblox-player" | "roblox-studio" | "roblox-stu
 export const deepLinksParser = lazyLoad(() => {
 	const parser = new DeepLinkParser({
 		urls: {
-			robloxProtocol: import.meta.env.ROBLOX_PLAYER_DEEPLINK_PROTOCOL,
+			robloxPlayerDeepLinkProtocol: import.meta.env.ROBLOX_PLAYER_DEEPLINK_PROTOCOL,
 			robloxUrl: getRobloxUrl("www"),
 			robloxApiDomain: getRobloxUrl(""),
 		},

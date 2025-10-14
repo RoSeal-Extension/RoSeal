@@ -11,7 +11,7 @@
         "@preact/compat": "17.1.2",
         "@preact/signals": "2.3.2",
         "@roseal/http-client": "github:RoSeal-Extension/HTTPClient#87df479",
-        "@roseal/roblox-deeplink-parser": "npm:@jsr/roseal__roblox-deeplink-parser@0.1.15",
+        "@roseal/roblox-deeplink-parser": "npm:@jsr/roseal__roblox-deeplink-parser@0.1.16",
         "@types/d3-drag": "3.0.7",
         "@types/react-simple-maps": "3.0.6",
         "@types/tinycolor2": "1.4.6",
@@ -314,7 +314,7 @@
 
     "@roseal/http-client": ["@roseal/http-client@github:RoSeal-Extension/HTTPClient#87df479", { "peerDependencies": { "json-bigint-native": "^1.2.0", "parse-roblox-errors": "^1.1.10", "roblox-bat": "^0.6.0", "typescript": "^5.9.2" } }, "RoSeal-Extension-HTTPClient-87df479"],
 
-    "@roseal/roblox-deeplink-parser": ["@jsr/roseal__roblox-deeplink-parser@0.1.15", "https://npm.jsr.io/~/11/@jsr/roseal__roblox-deeplink-parser/0.1.15.tgz", {}, "sha512-mB/cKuXQK+gsVh7fXhmxTAq9VXVIQ7hMW84DQTwZ+q81IQWF3NWL6zRPaZTcyzZTmPs4u44+smiGKTTnFYiUog=="],
+    "@roseal/roblox-deeplink-parser": ["@jsr/roseal__roblox-deeplink-parser@0.1.16", "https://npm.jsr.io/~/11/@jsr/roseal__roblox-deeplink-parser/0.1.16.tgz", {}, "sha512-N1dt+p3aYpL4z1P3RTZxe1ZTF9jYRbpZyDAHLaLkgZwcg8suYpTXkKrrxXlgL4A3hMD2JZ+J6VzCb3JDBFuN2w=="],
 
     "@svgr/babel-plugin-add-jsx-attribute": ["@svgr/babel-plugin-add-jsx-attribute@8.0.0", "", { "peerDependencies": { "@babel/core": "^7.0.0-0" } }, "sha512-b9MIk7yhdS1pMCZM8VeNfUlSKVRhsHZNMl5O9SfaX0l0t5wjdgu4IDzGB8bpnGBBOjGST3rRFVsaaEtI4W6f7g=="],
 
