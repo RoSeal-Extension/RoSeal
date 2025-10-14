@@ -111,6 +111,7 @@ export default function ExperienceTopSongsList({
 				>
 					{topSongs.map((song) => (
 						<div
+							key={song.assetId}
 							className="grid-item-container game-card-container"
 							data-testid="game-tile"
 						>
@@ -132,6 +133,9 @@ export default function ExperienceTopSongsList({
 								<div className="game-card-name game-name-title" title={song.title}>
 									{song.title}
 								</div>
+								<span className="artist-name" title={song.artist}>
+									{song.artist}
+								</span>
 							</a>
 						</div>
 					))}

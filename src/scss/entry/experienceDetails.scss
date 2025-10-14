@@ -2082,6 +2082,10 @@ end of legacy code
 
         .game-carousel {
             max-width: 966px;
+
+            .artist-name {
+                margin-top: auto;
+            }
         }
     }
 }
