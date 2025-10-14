@@ -8,8 +8,7 @@ import {
 import type { GameJoinAttemptOrigin } from "../helpers/requests/services/join";
 import { getDeviceMeta, getPlaceLauncherData } from "./context";
 import { getUserAccountIdBTID, getUserReferralPlayerId } from "./cookies";
-import { _buildPlaceLauncherUrl, _buildRobloxProtocolUrlV1 } from "./robloxProtocol";
-import { deepLinksParser } from "./deepLinks";
+import { authedProtocolParser, type AuthedProtocolType, deepLinksParser } from "./deepLinks";
 
 export type CurrentServerJoinMetadata =
 	| ({
@@ -76,7 +75,7 @@ export async function buildRobloxProtocolUrl(data: CurrentServerJoinMetadata) {
 	const browserTrackerId = cookiesData?.[1];
 	switch (data.type) {
 		case "privateServer": {
-			placeLauncherUrl = _buildPlaceLauncherUrl({
+			placeLauncherUrl = authedProtocolParser().buildAuthedPlaceLauncherUrl({
 				request: "RequestPrivateGame",
 				browserTrackerId,
 				placeId: data.placeId,
@@ -89,7 +88,7 @@ export async function buildRobloxProtocolUrl(data: CurrentServerJoinMetadata) {
 			break;
 		}
 		case "playWithUser": {
-			placeLauncherUrl = _buildPlaceLauncherUrl({
+			placeLauncherUrl = authedProtocolParser().buildAuthedPlaceLauncherUrl({
 				request: "RequestFollowUser",
 				browserTrackerId,
 				userId: data.userId,
@@ -100,7 +99,7 @@ export async function buildRobloxProtocolUrl(data: CurrentServerJoinMetadata) {
 			break;
 		}
 		case "specific": {
-			placeLauncherUrl = _buildPlaceLauncherUrl({
+			placeLauncherUrl = authedProtocolParser().buildAuthedPlaceLauncherUrl({
 				request: "RequestGameJob",
 				browserTrackerId,
 				placeId: data.placeId,
@@ -114,7 +113,7 @@ export async function buildRobloxProtocolUrl(data: CurrentServerJoinMetadata) {
 			break;
 		}
 		case "matchmade": {
-			placeLauncherUrl = _buildPlaceLauncherUrl({
+			placeLauncherUrl = authedProtocolParser().buildAuthedPlaceLauncherUrl({
 				request: "RequestGame",
 				browserTrackerId,
 				placeId: data.placeId,
@@ -127,10 +126,8 @@ export async function buildRobloxProtocolUrl(data: CurrentServerJoinMetadata) {
 		}
 	}
 
-	return _buildRobloxProtocolUrlV1({
-		type:
-			(placeLauncherData?.playerProtocolName as "roblox-player" | undefined) ??
-			"roblox-player",
+	return authedProtocolParser().buildAuthedProtocolUrl({
+		type: import.meta.env.ROBLOX_PLAYER_PROTOCOL as AuthedProtocolType,
 		launchMode: "play",
 		launchTime: Date.now().toString(),
 		gameInfo: authTicket.code ?? undefined,

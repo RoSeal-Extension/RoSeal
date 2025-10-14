@@ -64,6 +64,12 @@ export const DEV_SERVER_WWW_PORT = 359_22;
 export function getDomains(target?: Target, isDev?: boolean, devServers?: DevServersAvailable) {
 	const ROBLOX_DOMAIN = "{service}.roblox.com";
 	const ROBLOX_CDN_DOMAIN = "{service}.rbxcdn.com";
+
+	const ROBLOX_PLAYER_DEEPLINK_PROTOCOL = "roblox";
+	const ROBLOX_PLAYER_PROTOCOL = "roblox-player";
+	const ROBLOX_STUDIO_PROTOCOL = "roblox-studio";
+	const ROBLOX_STUDIO_AUTH_PROTOCOL = "roblox-studio-auth";
+
 	const ROSEAL_DOMAIN = "{service}.roseal.live";
 	const ROSEAL_API_DOMAIN =
 		isDev && devServers?.IS_DEV_API_ACCESSIBLE
@@ -105,6 +111,12 @@ export function getDomains(target?: Target, isDev?: boolean, devServers?: DevSer
 	return {
 		ROBLOX_DOMAIN,
 		ROBLOX_CDN_DOMAIN,
+
+		ROBLOX_PLAYER_DEEPLINK_PROTOCOL,
+		ROBLOX_PLAYER_PROTOCOL,
+		ROBLOX_STUDIO_PROTOCOL,
+		ROBLOX_STUDIO_AUTH_PROTOCOL,
+
 		ROSEAL_DOMAIN,
 		ROSEAL_API_DOMAIN,
 		ROSEAL_WEBSITE_DOMAIN,

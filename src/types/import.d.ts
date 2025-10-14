@@ -9,6 +9,11 @@ declare module "bun" {
 		VERSION_NAME: string;
 		BASE_STORAGE_TYPE: chrome.storage.AreaName;
 
+		ROBLOX_PLAYER_DEEPLINK_PROTOCOL: string;
+		ROBLOX_PLAYER_PROTOCOL: string;
+		ROBLOX_STUDIO_PROTOCOL: string;
+		ROBLOX_STUDIO_AUTH_PROTOCOL: string;
+
 		TWEMOJI_EMOJI_BASE_URL: string;
 		FLUENTUI_EMOJI_BASE_URL: string;
 
