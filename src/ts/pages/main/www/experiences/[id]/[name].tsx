@@ -1,5 +1,4 @@
 import { signal } from "@preact/signals";
-import DeepLinkParser from "@roseal/roblox-deeplink-parser";
 import type { ChartJSOrUndefined } from "node_modules/react-chartjs-2/dist/types";
 import { Fragment } from "preact";
 import { useEffect, useMemo, useState } from "preact/hooks";
@@ -75,6 +74,7 @@ import { checkItemTimes } from "src/ts/specials/times";
 import { getAuthenticatedUser, isAuthenticated } from "src/ts/utils/authenticatedUser";
 import { getDeviceMeta } from "src/ts/utils/context";
 import currentUrl from "src/ts/utils/currentUrl";
+import { deepLinksParser } from "src/ts/utils/deepLinks";
 import { renderMentions } from "src/ts/utils/description";
 import { onDOMReady } from "src/ts/utils/dom";
 import { sendJoinMultiplayerGame } from "src/ts/utils/gameLauncher";
@@ -443,8 +443,7 @@ export default {
 				return;
 			}
 
-			const parser = new DeepLinkParser();
-			const link = parser
+			const link = deepLinksParser()
 				.createDeepLink("joinPlace", {
 					placeId: joinPlaceId.toString(),
 					...Object.fromEntries(currentUrl.value.url.searchParams.entries()),
