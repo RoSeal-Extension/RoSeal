@@ -62,6 +62,18 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 		false,
 	);
 	const [shouldShowSillyText] = useFeatureValue("improvedServerJoinModal.sillyText", false);
+	const [sillyTextCustomParticiple] = useFeatureValue(
+		"improvedServerJoinModal.sillyText.customParticiple",
+		[false, ""],
+	);
+	const [sillyTextCustomModifier] = useFeatureValue(
+		"improvedServerJoinModal.sillyText.customModifier",
+		[false, ""],
+	);
+	const [sillyTextCustomSubject] = useFeatureValue(
+		"improvedServerJoinModal.sillyText.customSubject",
+		[false, ""],
+	);
 
 	const [showDownload, setShowDownload] = useState(false);
 	const [showDownloadInstructions, setShowDownloadInstructions] = useState(false);
@@ -149,28 +161,54 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 		const subjects: string[] = [];
 		const modifiers: string[] = [];
 
+		if (sillyTextCustomParticiple?.[0] && sillyTextCustomParticiple[1]) {
+			for (const item of sillyTextCustomParticiple[1].split(";")) {
+				participles.push(item);
+			}
+		}
+
+		if (sillyTextCustomModifier?.[0] && sillyTextCustomModifier[1]) {
+			for (const item of sillyTextCustomModifier[1].split(";")) {
+				modifiers.push(item);
+			}
+		}
+
+		if (sillyTextCustomSubject?.[0] && sillyTextCustomSubject[1]) {
+			for (const item of sillyTextCustomSubject[1].split(";")) {
+				subjects.push(item);
+			}
+		}
+
 		for (const key of getMessageKeysWithPrefix("joinModal.startup.sillyText.")) {
 			const data = key.split(".");
 			const type = data.at(-2)!;
 
 			switch (type) {
 				case "participle": {
-					participles.push(getMessage(key));
-					break;
-				}
-				case "subject": {
-					subjects.push(getMessage(key));
+					if (!sillyTextCustomParticiple?.[0]) participles.push(getMessage(key));
 					break;
 				}
 				case "modifier": {
-					modifiers.push(getMessage(key));
+					if (!sillyTextCustomModifier?.[0]) modifiers.push(getMessage(key));
+					break;
+				}
+				case "subject": {
+					if (!sillyTextCustomSubject?.[0]) subjects.push(getMessage(key));
 					break;
 				}
 			}
 		}
 
 		return { participles, subjects, modifiers };
-	}, [shouldShowSillyText]);
+	}, [
+		shouldShowSillyText,
+		sillyTextCustomParticiple?.[0],
+		sillyTextCustomParticiple?.[1],
+		sillyTextCustomModifier?.[0],
+		sillyTextCustomModifier?.[1],
+		sillyTextCustomSubject?.[0],
+		sillyTextCustomSubject?.[1],
+	]);
 	const [sillyText, setSillyText] = useState<string>();
 
 	useEffect(() => {

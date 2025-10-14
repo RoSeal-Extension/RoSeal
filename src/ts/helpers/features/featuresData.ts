@@ -1580,6 +1580,34 @@ export const sections = [
 										type: "Toggle",
 										defaultValue: false,
 									},
+									subfeatures: {
+										items: [
+											{
+												type: "Regular",
+												id: "improvedServerJoinModal.sillyText.customParticiple",
+												component: {
+													type: "InputWithToggle",
+													toggleDefaultValue: false,
+												},
+											},
+											{
+												type: "Regular",
+												id: "improvedServerJoinModal.sillyText.customModifier",
+												component: {
+													type: "InputWithToggle",
+													toggleDefaultValue: false,
+												},
+											},
+											{
+												type: "Regular",
+												id: "improvedServerJoinModal.sillyText.customSubject",
+												component: {
+													type: "InputWithToggle",
+													toggleDefaultValue: false,
+												},
+											},
+										],
+									},
 								},
 							],
 						},

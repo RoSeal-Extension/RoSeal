@@ -2701,6 +2701,39 @@
 			"sillyText": {
 				"name": {
 					"$message": "Display silly text from pre-2015 instead of the regular Joining text"
+				},
+				"customParticiple": {
+					"name": {
+						"$message": "Custom participle text"
+					},
+					"description": {
+						"$message": "The first text in the sequence. Separate different types by a semicolon: ;"
+					},
+					"inputPlaceholder": {
+						"$message": "Participle"
+					}
+				},
+				"customModifier": {
+					"name": {
+						"$message": "Custom modifier text"
+					},
+					"description": {
+						"$message": "The second text in the sequence. Separate different types by a semicolon: ;"
+					},
+					"inputPlaceholder": {
+						"$message": "Modifier"
+					}
+				},
+				"customSubject": {
+					"name": {
+						"$message": "Custom subject text"
+					},
+					"description": {
+						"$message": "The third text in the sequence. Separate different types by a semicolon: ;"
+					},
+					"inputPlaceholder": {
+						"$message": "Subject"
+					}
 				}
 			},
 			"showRCCServerInfo": {
