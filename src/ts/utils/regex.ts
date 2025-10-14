@@ -17,7 +17,7 @@ export const USER_AVATARS_REGEX = /^\/users\/(\d+)\/avatars$/;
 // We want to support just the ID. Do not add $
 export const PLACE_CHECK_REGEX = /^\/games\/check\/(\d+)/i;
 export const REQUEST_ERROR_REGEX = /^\/request-error$/i;
-export const CHARTS_REGEX = /^\/(discover|charts)$/i;
+export const CHARTS_REGEX = /^\/(discover|charts((\/(v2)\/(.+))|\/(.+))?)$/i;
 export const HOME_REGEX = /^\/home$/i;
 export const SHARE_LINK_REGEX = /^\/share-links$/i;
 export const TRANSACTIONS_REGEX = /^\/transactions$/i;

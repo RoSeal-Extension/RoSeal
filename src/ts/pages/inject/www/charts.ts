@@ -68,10 +68,11 @@ export default {
 		let isCurrentlyV2Sort: boolean | undefined;
 
 		const runChecks = () => {
-			const isNextV2Sort = location.hash.includes("v2");
+			const isNextV2Sort = location.pathname.includes("v2") || location.hash.includes("v2");
 			if (isCurrentlyV2Sort === isNextV2Sort) {
 				return;
 			}
+
 			isCurrentlyV2Sort = isNextV2Sort;
 			if (checks.length > 0) {
 				Promise.all(checks).then((checks) => {
