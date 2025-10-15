@@ -36,6 +36,7 @@ export default function UserProfileAccoutrementItem({
 						targetId: assetId,
 						size: "150x150",
 					}}
+					altText={assetName}
 				>
 					{details?.itemType === "Bundle" && showBundle && (
 						<a
@@ -50,6 +51,7 @@ export default function UserProfileAccoutrementItem({
 									targetId: details.id,
 									size: "150x150",
 								}}
+								altText={details.name}
 							/>
 						</a>
 					)}

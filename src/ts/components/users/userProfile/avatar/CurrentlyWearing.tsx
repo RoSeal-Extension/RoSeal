@@ -244,9 +244,10 @@ export default function UserProfileCurrentlyWearing({
 									key={asset.id}
 									assetId={asset.id}
 									assetName={
-										asset.details?.itemType === "Asset"
+										asset.name ??
+										(asset.details?.itemType === "Asset"
 											? asset.details.name
-											: undefined
+											: undefined)
 									}
 									details={asset.details}
 									showBundle={showAssociatedBundle && asset.showBundle}
@@ -279,9 +280,10 @@ export default function UserProfileCurrentlyWearing({
 									key={asset.id}
 									assetId={asset.id}
 									assetName={
-										asset.details?.itemType === "Asset"
+										asset.name ??
+										(asset.details?.itemType === "Asset"
 											? asset.details.name
-											: undefined
+											: undefined)
 									}
 									details={asset.details}
 									showBundle={showAssociatedBundle && asset.showBundle}
