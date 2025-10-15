@@ -34,6 +34,7 @@ export default function CurrentlyWearingItem({
 									targetId: assetId,
 									size: "150x150",
 								}}
+								altText={assetName}
 							/>
 						</div>
 					</a>
