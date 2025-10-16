@@ -178,7 +178,7 @@ export function invokeMessage<
 	T extends keyof InvokeDataTypes,
 	U extends InvokeDataTypes[T]["args"],
 	V extends InvokeDataTypes[T]["res"],
->(action: T, args: U, target?: MessageTarget): Promise<["data"]> {
+>(action: T, args: U, target?: MessageTarget): Promise<V["data"]> {
 	const id = crypto.randomUUID();
 
 	sendMessage(

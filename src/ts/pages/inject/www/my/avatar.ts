@@ -671,6 +671,7 @@ export default {
 				},
 				setState: ({ value, publicSetState }) => {
 					setReactTabs = publicSetState;
+					reactTabs = value.current;
 
 					if (value.current) {
 						let hasListsTab = false;
