@@ -59,7 +59,7 @@ export type MessageTarget = {
 };
 
 const onLoaded =
-	import.meta.env.ENV !== "background"
+	import.meta.env.ENV === "main" || import.meta.env.ENV === "inject"
 		? watchOnce(
 				`meta[name="roseal-script-loaded"]:not([data-script-env=${import.meta.env.ENV}])`,
 			)
@@ -103,11 +103,12 @@ export function sendMessage<
 }
 
 if (import.meta.env.ENV !== "background") {
-	const el = document.createElement("meta");
-	el.setAttribute("name", "roseal-script-loaded");
-	el.setAttribute("data-script-env", import.meta.env.ENV);
-
-	document.documentElement.appendChild(el);
+	if (onLoaded) {
+		const el = document.createElement("meta");
+		el.setAttribute("name", "roseal-script-loaded");
+		el.setAttribute("data-script-env", import.meta.env.ENV);
+		document.documentElement.appendChild(el);
+	}
 
 	globalThis.addEventListener("message", ({ data, source, origin }: MessageEvent<EventData>) => {
 		if (
