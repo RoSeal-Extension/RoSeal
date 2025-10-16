@@ -309,7 +309,10 @@ export type DOMCommunicationInvokeDataTypes = {
 	};
 	setGameLaunchData: {
 		args: CurrentServerJoinMetadata;
-		res: void;
+		res: {
+			data: void;
+			reason: DefaultError;
+		};
 	};
 	getMessage: {
 		args: {

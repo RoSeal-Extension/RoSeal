@@ -17,47 +17,104 @@ function makeKillFn(watch: Watch) {
 	};
 }
 
-const observer = new MutationObserver((records) => {
-	const collectedNodes = new Map<Watch, Set<Node>>();
-	const removedNodes = new Map<Watch, Set<Node>>();
-	for (const record of records) {
-		for (const node of record.removedNodes) {
-			if (node.nodeType !== Node.ELEMENT_NODE) continue;
+if (import.meta.env.ENV !== "background") {
+	const observer = new MutationObserver((records) => {
+		const collectedNodes = new Map<Watch, Set<Node>>();
+		const removedNodes = new Map<Watch, Set<Node>>();
+		for (const record of records) {
+			for (const node of record.removedNodes) {
+				if (node.nodeType !== Node.ELEMENT_NODE) continue;
 
-			for (const watch of watches) {
-				let watchRemoved = removedNodes.get(watch);
-				if (!watchRemoved) {
-					watchRemoved = new Set<Node>();
-					collectedNodes.set(watch, watchRemoved);
-				}
-				if (watchRemoved.has(node)) {
-					continue;
-				}
-
-				const [selector, isOnce, isDeep, callback, removed] = watch;
-				if (!removed) continue;
-
-				const killFn = makeKillFn(watch);
-				const matchesSelector =
-					typeof selector === "string"
-						? (node as Element).matches(selector)
-						: node === selector;
-
-				if (matchesSelector) {
-					watchRemoved.add(node);
-					callback(node, isOnce ? undefined : killFn);
-
-					if (isOnce) {
-						killFn();
+				for (const watch of watches) {
+					let watchRemoved = removedNodes.get(watch);
+					if (!watchRemoved) {
+						watchRemoved = new Set<Node>();
+						collectedNodes.set(watch, watchRemoved);
+					}
+					if (watchRemoved.has(node)) {
 						continue;
 					}
-				}
 
-				if (isDeep) {
-					if (typeof selector === "string") {
+					const [selector, isOnce, isDeep, callback, removed] = watch;
+					if (!removed) continue;
+
+					const killFn = makeKillFn(watch);
+					const matchesSelector =
+						typeof selector === "string"
+							? (node as Element).matches(selector)
+							: node === selector;
+
+					if (matchesSelector) {
+						watchRemoved.add(node);
+						callback(node, isOnce ? undefined : killFn);
+
+						if (isOnce) {
+							killFn();
+							continue;
+						}
+					}
+
+					if (isDeep) {
+						if (typeof selector === "string") {
+							for (const newElement of (node as Element).querySelectorAll(selector)) {
+								if (watchRemoved.has(newElement)) continue;
+								watchRemoved.add(newElement);
+
+								callback(newElement, killFn);
+
+								if (isOnce) {
+									killFn();
+									break;
+								}
+							}
+						} else {
+							if (node.contains(selector)) {
+								watchRemoved.add(selector);
+								callback(selector, killFn);
+
+								if (isOnce) {
+									killFn();
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			for (const node of record.addedNodes) {
+				if (node.nodeType !== Node.ELEMENT_NODE) continue;
+
+				for (const watch of watches) {
+					let watchCollected = collectedNodes.get(watch);
+					if (!watchCollected) {
+						watchCollected = new Set<Node>();
+						collectedNodes.set(watch, watchCollected);
+					}
+					if (watchCollected.has(node)) {
+						continue;
+					}
+					const [selector, isOnce, isDeep, callback, removed] = watch;
+					if (removed || typeof selector !== "string") continue;
+
+					const matchesSelector = selector === "*" || (node as Element).matches(selector);
+					const killFn = makeKillFn(watch);
+
+					if (matchesSelector) {
+						watchCollected.add(node);
+
+						callback(node, isOnce ? undefined : killFn);
+
+						if (isOnce) {
+							killFn();
+							continue;
+						}
+					}
+
+					if (isDeep) {
 						for (const newElement of (node as Element).querySelectorAll(selector)) {
-							if (watchRemoved.has(newElement)) continue;
-							watchRemoved.add(newElement);
+							if (watchCollected.has(newElement)) continue;
+							watchCollected.add(newElement);
 
 							callback(newElement, killFn);
 
@@ -66,67 +123,17 @@ const observer = new MutationObserver((records) => {
 								break;
 							}
 						}
-					} else {
-						if (node.contains(selector)) {
-							watchRemoved.add(selector);
-							callback(selector, killFn);
-
-							if (isOnce) {
-								killFn();
-								break;
-							}
-						}
 					}
 				}
 			}
 		}
+	});
 
-		for (const node of record.addedNodes) {
-			if (node.nodeType !== Node.ELEMENT_NODE) continue;
-
-			for (const watch of watches) {
-				let watchCollected = collectedNodes.get(watch);
-				if (!watchCollected) {
-					watchCollected = new Set<Node>();
-					collectedNodes.set(watch, watchCollected);
-				}
-				if (watchCollected.has(node)) {
-					continue;
-				}
-				const [selector, isOnce, isDeep, callback, removed] = watch;
-				if (removed || typeof selector !== "string") continue;
-
-				const matchesSelector = selector === "*" || (node as Element).matches(selector);
-				const killFn = makeKillFn(watch);
-
-				if (matchesSelector) {
-					watchCollected.add(node);
-
-					callback(node, isOnce ? undefined : killFn);
-
-					if (isOnce) {
-						killFn();
-						continue;
-					}
-				}
-
-				if (isDeep) {
-					for (const newElement of (node as Element).querySelectorAll(selector)) {
-						if (watchCollected.has(newElement)) continue;
-						watchCollected.add(newElement);
-
-						callback(newElement, killFn);
-
-						if (isOnce) {
-							killFn();
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-});
+	observer.observe(document, {
+		subtree: true,
+		childList: true,
+	});
+}
 
 export function watch<T extends HTMLElement = HTMLElement, U = unknown>(
 	selector: string | Node,
@@ -286,12 +293,7 @@ export function watchTextContent<T extends Node = Node>(
 	return () => observer.disconnect();
 }
 
-observer.observe(document, {
-	subtree: true,
-	childList: true,
-});
-
-let currentTitle: string | undefined = undefined;
+let currentTitle: string | undefined;
 let currentNotifications: string | undefined;
 
 let currentlyChecking = false;

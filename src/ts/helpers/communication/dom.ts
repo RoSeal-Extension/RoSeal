@@ -4,6 +4,7 @@ import type {
 	DOMCommunicationInvokeDataTypes as InvokeDataTypes,
 	DOMCommunicationMessageDataTypes as MessageDataTypes,
 } from "src/types/dataTypes";
+import { watchOnce } from "../elements";
 
 export type EventData<
 	T extends keyof MessageDataTypes = keyof MessageDataTypes,
@@ -57,26 +58,57 @@ export type MessageTarget = {
 	url: string;
 };
 
+const onLoaded =
+	import.meta.env.ENV !== "background"
+		? watchOnce(
+				`meta[name="roseal-script-loaded"]:not([data-script-env=${import.meta.env.ENV}])`,
+			)
+		: undefined;
+
 export function sendMessage<
 	T extends keyof MessageDataTypes,
 	U extends MessageDataTypes[T]["args"],
 >(action: T, args: U, target?: MessageTarget): void {
-	(target?.window ?? window).postMessage(
-		{
-			type: "rosealCommunication",
-			details: {
-				action,
-				args,
-				origin: import.meta.env.ENV,
+	if (!onLoaded) {
+		(target?.window ?? window).postMessage(
+			{
+				type: "rosealCommunication",
+				details: {
+					action,
+					args,
+					origin: import.meta.env.ENV,
+				},
 			},
-		},
-		{
-			targetOrigin: target?.url,
-		},
-	);
+			{
+				targetOrigin: target?.url,
+			},
+		);
+	} else {
+		onLoaded.then(() =>
+			(target?.window ?? window).postMessage(
+				{
+					type: "rosealCommunication",
+					details: {
+						action,
+						args,
+						origin: import.meta.env.ENV,
+					},
+				},
+				{
+					targetOrigin: target?.url,
+				},
+			),
+		);
+	}
 }
 
-if (import.meta.env.ENV !== "background")
+if (import.meta.env.ENV !== "background") {
+	const el = document.createElement("meta");
+	el.setAttribute("name", "roseal-script-loaded");
+	el.setAttribute("data-script-env", import.meta.env.ENV);
+
+	document.documentElement.appendChild(el);
+
 	globalThis.addEventListener("message", ({ data, source, origin }: MessageEvent<EventData>) => {
 		if (
 			typeof data === "object" &&
@@ -107,6 +139,7 @@ if (import.meta.env.ENV !== "background")
 			}
 		}
 	});
+}
 
 export function addMessageListener<
 	T extends keyof MessageDataTypes,
@@ -144,7 +177,7 @@ export function invokeMessage<
 	T extends keyof InvokeDataTypes,
 	U extends InvokeDataTypes[T]["args"],
 	V extends InvokeDataTypes[T]["res"],
->(action: T, args: U, target?: MessageTarget): Promise<V["data"]> {
+>(action: T, args: U, target?: MessageTarget): Promise<["data"]> {
 	const id = crypto.randomUUID();
 
 	sendMessage(
