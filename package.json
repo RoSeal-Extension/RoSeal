@@ -16,8 +16,8 @@
 	},
 	"dependencies": {
 		"@formatjs/intl-durationformat": "0.7.6",
-		"@material-symbols/svg-400": "0.36.3",
-		"@material-symbols/svg-600": "0.36.3",
+		"@material-symbols/svg-400": "0.36.4",
+		"@material-symbols/svg-600": "0.36.4",
 		"@minoru/react-dnd-treeview": "3.5.3",
 		"@phosphor-icons/react": "2.1.10",
 		"@preact/compat": "17.1.2",
