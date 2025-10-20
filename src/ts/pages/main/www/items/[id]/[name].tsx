@@ -563,12 +563,16 @@ export default {
 		checks.push(
 			featureValueIs("viewOwnedAvatarItemPrice", true, () => {
 				watch(".item-owned", (owned) => {
+					if (owned.hasAttribute("data-has-roseal-price")) return;
+
 					const container = owned
 						.closest("#item-details-container")
 						?.querySelector<HTMLElement>(".price-container-text");
 					if (!container) {
 						return;
 					}
+
+					owned.setAttribute("data-has-roseal-price", "");
 
 					const firstLine = container.querySelector<HTMLElement>(".item-first-line");
 					if (!firstLine) {
