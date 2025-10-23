@@ -265,18 +265,19 @@ export default {
 			(data) => {
 				if (!data.linkUserMarketplaceShop && !data.viewUserProfileLocale) return;
 
-				const localePromise = data.viewUserProfileLocale
-					? tryOpenCloudAuthRequest(
-							authenticatedUser.userId,
-							authenticatedUser.isUnder13 === false,
-							(authType, authCode) =>
-								getOpenCloudUser({
-									authType,
-									authCode,
-									userId: profileUserId,
-								}).then((data) => data.locale),
-						)
-					: undefined;
+				const localePromise =
+					data.viewUserProfileLocale && !isMyProfile
+						? tryOpenCloudAuthRequest(
+								authenticatedUser.userId,
+								authenticatedUser.isUnder13 === false,
+								(authType, authCode) =>
+									getOpenCloudUser({
+										authType,
+										authCode,
+										userId: profileUserId,
+									}).then((data) => data.locale),
+							)
+						: undefined;
 				if (localePromise) {
 					watchOnce(
 						"#treatment-redesigned-header .user-profile-header-details-avatar-container",
