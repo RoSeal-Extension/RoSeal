@@ -1,10 +1,38 @@
 import type { ComponentType, VNode } from "preact";
+import type { PropsWithChildren } from "preact/compat";
 import { addMessageListener, invokeMessage } from "src/ts/helpers/communication/dom";
+import { watchOnce } from "src/ts/helpers/elements";
 import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
 import { hijackComponent, hijackCreateElement } from "src/ts/helpers/hijack/react";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type { ExperienceEvent } from "src/ts/helpers/requests/services/universes";
 import { EXPERIENCE_DEEPLINK_REGEX, EXPERIENCE_DETAILS_REGEX } from "src/ts/utils/regex";
+
+type PortaledEventsProps = PropsWithChildren<{
+	eventList: ExperienceEvent[];
+}>;
+
+let promise: Promise<string> | undefined;
+function PortaledEvents({ children, ...props }: PortaledEventsProps) {
+	const [el, setEl] = window.React.useState<HTMLElement>();
+
+	window.React.useEffect(() => {
+		if (!promise) {
+			promise = invokeMessage(
+				"experience.events.onReady",
+				(
+					props as {
+						eventList: ExperienceEvent[];
+					}
+				).eventList.length,
+			);
+		}
+
+		promise.then((selector) => watchOnce(selector).then(setEl));
+	}, []);
+
+	return el ? window.ReactDOM.createPortal(children, el) : null;
+}
 
 export default {
 	id: "experience.details",
@@ -67,29 +95,14 @@ export default {
 		});
 
 		featureValueIsInject("moveExperienceEvents", true, () => {
-			let alreadySent = false;
-
 			hijackCreateElement(
 				(_, props) => !!props && "eventList" in props,
 				(createElement, type, props) => {
-					if (!alreadySent) {
-						alreadySent = true;
-						invokeMessage(
-							"experience.events.onReady",
-							(
-								props as {
-									eventList: ExperienceEvent[];
-								}
-							).eventList.length,
-						).then((selector) => {
-							window.ReactDOM.render(
-								createElement(type as ComponentType, props!),
-								document.querySelector(selector)!,
-							);
-						});
-					}
-
-					return null;
+					return createElement(
+						PortaledEvents,
+						props as PortaledEventsProps,
+						createElement(type as ComponentType, props!),
+					);
 				},
 			);
 		});

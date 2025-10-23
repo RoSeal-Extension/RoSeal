@@ -1041,6 +1041,7 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
+						variant: 1,
 						subfeatures: {
 							items: [
 								{
