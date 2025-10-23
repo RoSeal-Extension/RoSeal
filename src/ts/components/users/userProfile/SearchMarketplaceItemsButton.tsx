@@ -1,7 +1,10 @@
 import { getAvatarMarketplaceLink } from "src/ts/utils/links";
 import Icon from "../../core/Icon";
 import usePromise from "../../hooks/usePromise";
-import { searchItemsDetails } from "src/ts/helpers/requests/services/marketplace";
+import {
+	MarketplaceSortType,
+	searchItemsDetails,
+} from "src/ts/helpers/requests/services/marketplace";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getAssetById } from "src/ts/helpers/requests/services/assets";
 import { differenceInYears } from "date-fns";
@@ -17,7 +20,7 @@ export default function SearchMarketplaceItemsButton({
 		return searchItemsDetails({
 			creatorTargetId: userId,
 			creatorType: "User",
-			sortType: "Updated",
+			sortType: MarketplaceSortType.RecentlyCreated,
 			includeNotForSale: false,
 		}).then((data) => {
 			const item = data.data.find((item) => item.itemType === "Asset");

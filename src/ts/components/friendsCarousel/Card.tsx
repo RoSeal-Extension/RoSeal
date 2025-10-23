@@ -19,6 +19,8 @@ import VerifiedBadge from "../icons/VerifiedBadge";
 import type { ConnectionType } from "src/ts/constants/friends";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getConnectionTypeDisplayName, getConnectionTypeIcon } from "../userFriends/utils/types";
+import usePromise from "../hooks/usePromise";
+import { getUserTrustedFriendStatus } from "src/ts/helpers/requests/services/users";
 
 export type FriendsListCardProps = {
 	userId: number;
@@ -33,6 +35,13 @@ export default function FriendsListCard({
 	canChat,
 	connectionType,
 }: FriendsListCardProps) {
+	const [isTrustedConnection] = usePromise(
+		() =>
+			getUserTrustedFriendStatus({
+				userId,
+			}).then((data) => data.status === "TrustedFriends"),
+		[userId],
+	);
 	const [showPopover, setShowPopover] = useState(false);
 	const [bypassBlockedView, setBypassBlockedView] = useState(false);
 	const [joinStatus, setJoinStatus] = useState<CanJoinUserDetermination>();
@@ -158,7 +167,13 @@ export default function FriendsListCard({
 														size: "420x420",
 														targetId: userId,
 													}}
-													containerClassName="avatar-card-image"
+													containerClassName={classNames(
+														"avatar-card-image",
+														{
+															"trusted-connection-avatar-headshot":
+																isTrustedConnection,
+														},
+													)}
 												/>
 											}
 										/>

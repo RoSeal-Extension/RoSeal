@@ -8614,6 +8614,10 @@
 			"$message": "Shop creator in Marketplace",
 			"$context": "Shop the creator's items in marketplace button shown under their username, or next to RoPro's reputation stuff"
 		},
+		"joinDateV2": {
+			"$message": "Joined {date}",
+			"$context": "User's join date in the more modal"
+		},
 		"joinDate": {
 			"$message": "Join Date",
 			"$context": "User's join data field in the profile statistics"

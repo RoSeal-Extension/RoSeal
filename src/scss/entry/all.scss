@@ -15,6 +15,7 @@
 @use "../components/tooltip.scss";
 @use "../components/joinModal.scss";
 //@use "../components/toast.scss";
+@use "../templates/button.scss";
 
 @use "../functions/replaceText.scss" as replace-text;
 
@@ -1500,6 +1501,60 @@ roseal-font {
         .rbx-upgrade-now {
             display: none;
         }
+    }
+}
+
+.foundation-web-menu .roseal-menu-item {
+    outline-offset: 0px;
+    overflow: hidden;
+    display: flex;
+    border-radius: var(--radius-medium);
+    border-style: solid;
+    border-width: var(--stroke-none);
+    box-sizing: border-box;
+    column-gap: var(--gap-medium);
+    padding-top: var(--padding-small);
+    padding-bottom: var(--padding-small);
+    padding-left: var(--padding-medium);
+    padding-right: var(--padding-medium);
+    width: 100%;
+    text-align: left;
+    font: var(--typography-body-medium-font);
+    letter-spacing: var(--typography-body-medium-letter-spacing);
+    color: var(--color-content-default);
+    background-color: var(--color-none);
+    flex-grow: 1;
+    flex-direction: column;
+    row-gap: var(--gap-xsmall);
+    text-overflow: ellipsis;
+
+    transition-property:
+        color,
+        background-color,
+        border-color,
+        -webkit-text-decoration-color,
+        text-decoration-color,
+        fill,
+        stroke;
+    transition-timing-function: var(--ease-linear);
+    transition-duration: var(--time-100);
+
+    &:hover {
+        background-color: var(--color-state-hover);
+    }
+
+    > span,
+    > button,
+    > a {
+        @extend %roseal-btn;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.4em;
+        color: var(--color-content-emphasis);
+        text-align: left;
     }
 }
 

@@ -1468,6 +1468,10 @@ end of legacy code
             right: 15px;
             top: calc(var(--player-thumbnails-height) + var(--add-height));
 
+            .Roblokis-installed & {
+                position: inherit;
+            }
+
             .server-connection-speed {
                 font-size: 13px;
             }
@@ -1477,6 +1481,10 @@ end of legacy code
         // for ropro compatibility
         .rbx-public-game-server-item {
             width: 100%;
+
+            .Roblokis-installed & {
+                width: 100% !important;
+            }
 
             .card-item {
                 height: calc(100% - 18px);

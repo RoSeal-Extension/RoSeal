@@ -7,12 +7,14 @@ import UserProfileField from "../../core/items/UserProfileField";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import classNames from "classnames";
 import useFeatureValue from "../../hooks/useFeatureValue";
+import UserProfileFieldV2 from "../../core/items/UserProfileFieldV2";
 
 export type UserJoinDateProps = {
 	userId: number;
+	useV2?: boolean;
 };
 
-export default function UserJoinDate({ userId }: UserJoinDateProps) {
+export default function UserJoinDate({ userId, useV2 }: UserJoinDateProps) {
 	const [isClickSwitchEnabled] = useFeatureValue("times.clickSwitch", false);
 	const [getTime, timeType, setTimeType] = useTime("userProfiles", "time", true);
 	const [getTooltipTime, tooltipTimeType] = useTime("userProfiles", "tooltip", true);
@@ -33,23 +35,32 @@ export default function UserJoinDate({ userId }: UserJoinDateProps) {
 		"time-type-switch": isClickSwitchEnabled,
 	});
 
-	return (
-		<UserProfileField title={getMessage("user.joinDate")}>
-			{tooltipTimeType !== undefined ? (
-				<Tooltip
-					as="p"
-					containerClassName={innerClass}
-					includeContainerClassName={false}
-					button={<span onClick={onClick}>{time}</span>}
-					title={tooltipTime}
-				>
-					{tooltipTime}
-				</Tooltip>
-			) : (
-				<p className={innerClass} onClick={onClick}>
-					{time}
-				</p>
-			)}
-		</UserProfileField>
-	);
+	const inner =
+		tooltipTimeType !== undefined ? (
+			<Tooltip
+				as="p"
+				containerClassName={innerClass}
+				includeContainerClassName={false}
+				button={<span onClick={onClick}>{time}</span>}
+				title={tooltipTime}
+			>
+				{tooltipTime}
+			</Tooltip>
+		) : (
+			<p className={innerClass} onClick={onClick}>
+				{time}
+			</p>
+		);
+
+	if (useV2) {
+		return (
+			<UserProfileFieldV2>
+				{getMessage("user.joinDateV2", {
+					date: inner,
+				})}
+			</UserProfileFieldV2>
+		);
+	}
+
+	return <UserProfileField title={getMessage("user.joinDate")}>{inner}</UserProfileField>;
 }

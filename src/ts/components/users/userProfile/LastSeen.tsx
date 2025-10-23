@@ -9,12 +9,14 @@ import usePresence from "../../hooks/usePresence";
 import useStorage from "../../hooks/useStorage";
 import useTime from "../../hooks/useTime";
 import { handleTimeSwitch } from "../../utils/handleTimeSwitch";
+import SocialHeaderV2 from "./SocialHeaderV2";
 
 export type UserLastSeenProps = {
 	userId: number;
+	useV2?: boolean;
 };
 
-export default function UserLastSeen({ userId }: UserLastSeenProps) {
+export default function UserLastSeen({ userId, useV2 }: UserLastSeenProps) {
 	const [isClickSwitchEnabled] = useFeatureValue("times.clickSwitch", false);
 	const [getTime, timeType, setTimeType] = useTime("userProfiles", "time", true);
 	const [getTooltipTime, tooltipTimeType] = useTime("userProfiles", "tooltip", true);
@@ -38,27 +40,41 @@ export default function UserLastSeen({ userId }: UserLastSeenProps) {
 		"time-type-switch": isClickSwitchEnabled && !isOnline && lastSeenDate,
 	});
 
+	const inner =
+		tooltipTimeType !== undefined && !isOnline && lastSeenDate ? (
+			<Tooltip
+				as="p"
+				containerClassName={innerClass}
+				includeContainerClassName={false}
+				button={<span onClick={onClick}>{time}</span>}
+				title={tooltipTime}
+			>
+				{tooltipTime}
+			</Tooltip>
+		) : (
+			<p className={innerClass} onClick={onClick}>
+				{isOnline
+					? getMessage("user.stats.lastSeen.now")
+					: lastSeenDate
+						? time
+						: getMessage("user.stats.lastSeen.notSeen")}
+			</p>
+		);
+
+	if (useV2) {
+		return (
+			<SocialHeaderV2
+				className="roseal-user-last-seen-v2"
+				title={getMessage("user.stats.lastSeen.title")}
+				alt={getMessage("user.stats.lastSeen.title")}
+				value={inner}
+				enabled
+				onClick={onClick}
+			/>
+		);
+	}
+
 	return (
-		<UserProfileField title={getMessage("user.stats.lastSeen.title")}>
-			{tooltipTimeType !== undefined && !isOnline && lastSeenDate ? (
-				<Tooltip
-					as="p"
-					containerClassName={innerClass}
-					includeContainerClassName={false}
-					button={<span onClick={onClick}>{time}</span>}
-					title={tooltipTime}
-				>
-					{tooltipTime}
-				</Tooltip>
-			) : (
-				<p className={innerClass} onClick={onClick}>
-					{isOnline
-						? getMessage("user.stats.lastSeen.now")
-						: lastSeenDate
-							? time
-							: getMessage("user.stats.lastSeen.notSeen")}
-				</p>
-			)}
-		</UserProfileField>
+		<UserProfileField title={getMessage("user.stats.lastSeen.title")}>{inner}</UserProfileField>
 	);
 }

@@ -5,6 +5,7 @@ export const ROBLOX_AUDIO_ASSETS = {
 export const ROBLOX_IMAGE_ASSETS = {
 	moderatedAvatarThumbnail: 89053445842149,
 	moderatedAvatarHeadShot: 140234539950892,
+	gilbertDecal: 127784013643197,
 };
 
 export type ProfileBackgroundAsset = {

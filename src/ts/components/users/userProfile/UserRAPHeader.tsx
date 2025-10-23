@@ -1,4 +1,3 @@
-import { listAllUserCollectibleItems } from "src/ts/utils/assets";
 import usePromise from "../../hooks/usePromise";
 import { abbreviateNumber, asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import SocialHeader from "./SocialHeader";
@@ -8,22 +7,26 @@ import SimpleModal from "../../core/modal/SimpleModal";
 import useProfileData from "../../hooks/useProfileData";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import UserRAPItem from "./UserRAPItem";
-import { crossSort } from "src/ts/utils/objects";
+import SocialHeaderV2 from "./SocialHeaderV2";
+import type { ListedUserCollectibleAsset } from "src/ts/helpers/requests/services/inventory";
 
 export type UserRAPHeaderProps = {
 	userId: number;
+	useV2?: boolean;
+	allCollectiblesPromise: Promise<ListedUserCollectibleAsset[]>;
 };
 
-export default function UserRAPHeader({ userId }: UserRAPHeaderProps) {
+export default function UserRAPHeader({
+	userId,
+	useV2,
+	allCollectiblesPromise,
+}: UserRAPHeaderProps) {
 	const profileData = useProfileData({
 		userId,
 	});
 	const [showCollectiblesModal, setShowCollectiblesModal] = useState(false);
 	const [alllCollectibles, allCollectiblesFetched] = usePromise(
-		() =>
-			listAllUserCollectibleItems(userId).then((data) =>
-				crossSort(data, (a, b) => b.recentAveragePrice - a.recentAveragePrice),
-			),
+		() => allCollectiblesPromise,
 		[userId],
 	);
 	const [userRAP] = usePromise(() => {
@@ -44,9 +47,11 @@ export default function UserRAPHeader({ userId }: UserRAPHeaderProps) {
 		userRAP !== undefined && userRAP !== null ? abbreviateNumber(userRAP) : "...";
 	const fullCount = userRAP !== undefined && userRAP !== null ? asLocaleString(userRAP) : "...";
 
+	const Component = useV2 ? SocialHeaderV2 : SocialHeader;
+
 	return (
 		<>
-			<SocialHeader
+			<Component
 				title={getMessage("user.header.social.rap")}
 				alt={getMessage("user.header.social.rap.alt", {
 					count: fullCount,

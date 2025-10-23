@@ -1,6 +1,7 @@
 import { signal } from "@preact/signals";
 import { isSameDay, setYear } from "date-fns";
 import { type ContainerNode, render } from "preact";
+import Thumbnail from "src/ts/components/core/Thumbnail";
 import BlockCreatorButton from "src/ts/components/item/BlockCreatorButton";
 import CopyShareLinkButton from "src/ts/components/misc/CopyShareLinkButton";
 import UserProfileCurrentlyWearing from "src/ts/components/users/userProfile/avatar/CurrentlyWearing";
@@ -33,6 +34,7 @@ import {
 	PROFILE_BACKGROUND_ASSETS,
 	type ProfileBackgroundAsset,
 	ROBLOX_AUDIO_ASSETS,
+	ROBLOX_IMAGE_ASSETS,
 } from "src/ts/constants/robloxAssets";
 import { ROBLOX_USERS } from "src/ts/constants/robloxUsers";
 import { modifyItemContextMenu } from "src/ts/helpers/contextMenus";
@@ -51,17 +53,21 @@ import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { filterText, getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
 import {
 	checkUsersReciprocalBlocked,
+	getOpenCloudUser,
 	getUserFriendStatus,
 	multigetUsersPresences,
 	unfriendUser,
 } from "src/ts/helpers/requests/services/users";
 import { checkItemTimes } from "src/ts/specials/times";
+import { listAllUserCollectibleItems } from "src/ts/utils/assets";
 import { getAuthenticatedUser, isAuthenticated } from "src/ts/utils/authenticatedUser";
+import { tryOpenCloudAuthRequest } from "src/ts/utils/cloudAuth";
 import { getDeviceMeta } from "src/ts/utils/context";
 import { renderMentions } from "src/ts/utils/description";
 import { isFocusedOnInput } from "src/ts/utils/dom";
 import { sealRain } from "src/ts/utils/fun/sealRain";
 import { clearFollowUserJoinData, determineCanJoinUser } from "src/ts/utils/joinData";
+import { crossSort } from "src/ts/utils/objects";
 import { randomInt } from "src/ts/utils/random";
 import { GROUP_DETAILS_REGEX, USER_PROFILE_REGEX } from "src/ts/utils/regex";
 import {
@@ -144,13 +150,73 @@ export default {
 			),
 		);
 
-		featureValueIs("viewUserRAP", true, () =>
-			watchOnce(".profile-header-social-counts").then((el) =>
-				renderAppend(<UserRAPHeader userId={profileUserId} />, el),
-			),
-		);
+		multigetFeaturesValues([
+			"improvedUserFriendsPage.mutualsTab",
+			"viewUserRAP",
+			FRIENDS_LAST_SEEN_FEATURE_ID,
+		]).then((features) => {
+			if (
+				!features[FRIENDS_LAST_SEEN_FEATURE_ID] &&
+				!features["improvedUserFriendsPage.mutualsTab"] &&
+				!features.viewUserRAP
+			)
+				return;
 
-		if (authenticatedUser.userId === profileUserId) {
+			const collectiblesPromise = features.viewUserRAP
+				? listAllUserCollectibleItems(profileUserId).then((data) =>
+						crossSort(data, (a, b) => b.recentAveragePrice - a.recentAveragePrice),
+					)
+				: undefined;
+
+			watchOnce(".profile-header-social-counts").then((el) =>
+				renderAppend(
+					<>
+						{features["improvedUserFriendsPage.mutualsTab"] && !isMyProfile && (
+							<MutualFriendsHeader userId={profileUserId} />
+						)}
+						{collectiblesPromise && (
+							<UserRAPHeader
+								userId={profileUserId}
+								allCollectiblesPromise={collectiblesPromise}
+							/>
+						)}
+					</>,
+					el,
+				),
+			);
+
+			const showLastSeen = signal(false);
+			if (!isMyProfile && features[FRIENDS_LAST_SEEN_FEATURE_ID])
+				getUserFriendStatus({
+					userId: profileUserId,
+				}).then((data) => {
+					showLastSeen.value = data.status === "Friends";
+				});
+			watchOnce(
+				"#treatment-redesigned-header .user-profile-header > .flex-nowrap:not(.user-profile-header-info)",
+			).then((el) =>
+				renderAppend(
+					() => (
+						<>
+							{features["improvedUserFriendsPage.mutualsTab"] && !isMyProfile && (
+								<MutualFriendsHeader userId={profileUserId} useV2 />
+							)}
+							{collectiblesPromise && (
+								<UserRAPHeader
+									userId={profileUserId}
+									allCollectiblesPromise={collectiblesPromise}
+									useV2
+								/>
+							)}
+							{showLastSeen.value && <UserLastSeen userId={profileUserId} useV2 />}
+						</>
+					),
+					el,
+				),
+			);
+		});
+
+		if (isMyProfile) {
 			featureValueIs("copyShareLinks", true, () =>
 				modifyItemContextMenu(() => <CopyShareLinkButton type="User" id={profileUserId} />),
 			);
@@ -166,6 +232,7 @@ export default {
 					));
 				}),
 			);
+
 			featureValueIs(FRIENDS_LAST_SEEN_FEATURE_ID, true, () => {
 				getUserFriendStatus({
 					userId: profileUserId,
@@ -175,13 +242,6 @@ export default {
 					modifyItemStats("User", () => <UserLastSeen userId={profileUserId} />);
 				});
 			});
-
-			featureValueIs("improvedUserFriendsPage.mutualsTab", true, () =>
-				watchOnce(".profile-header-social-counts").then((el) =>
-					renderAppend(<MutualFriendsHeader userId={profileUserId} />, el),
-				),
-			);
-
 			featureValueIs("liveProfilePresenceUpdate", true, () => {
 				setInterval(() => {
 					if (isFocusedOnInput()) return;
@@ -205,6 +265,35 @@ export default {
 			(data) => {
 				if (!data.linkUserMarketplaceShop && !data.viewUserProfileLocale) return;
 
+				const localePromise = data.viewUserProfileLocale
+					? tryOpenCloudAuthRequest(
+							authenticatedUser.userId,
+							authenticatedUser.isUnder13 === false,
+							(authType, authCode) =>
+								getOpenCloudUser({
+									authType,
+									authCode,
+									userId: profileUserId,
+								}).then((data) => data.locale),
+						)
+					: undefined;
+				if (localePromise) {
+					watchOnce(
+						"#treatment-redesigned-header .user-profile-header-details-avatar-container",
+					).then((el) => {
+						const afterEl = el.nextElementSibling?.lastElementChild;
+						if (afterEl) {
+							renderAfter(
+								<UserProfileLocale
+									userId={profileUserId}
+									promise={localePromise}
+								/>,
+								afterEl as HTMLElement,
+							);
+						}
+					});
+				}
+
 				watchOnce("#profile-header-container .header-names, .profile-header-names").then(
 					(details) => {
 						const div = document.createElement("div");
@@ -213,8 +302,11 @@ export default {
 
 						renderIn(
 							<>
-								{data.viewUserProfileLocale && !isMyProfile && (
-									<UserProfileLocale userId={profileUserId} />
+								{data.viewUserProfileLocale && !isMyProfile && localePromise && (
+									<UserProfileLocale
+										userId={profileUserId}
+										promise={localePromise}
+									/>
 								)}
 								{data.linkUserMarketplaceShop && (
 									<SearchMarketplaceItemsButton userId={profileUserId} />
@@ -318,7 +410,7 @@ export default {
 
 					const cancelledText = getMessage("user.cancelFriendRequest.cancelled");
 					label.textContent = cancelledText;
-					label.classList.add("disabled", "Mui-disabled");
+					label.classList.add("disabled", "Mui-disabled", "opacity-[0.5]");
 					label.setAttribute("disabled", "");
 					label.removeEventListener("click", cancelFriendRequest, {
 						capture: true,
@@ -331,7 +423,7 @@ export default {
 					return;
 				}
 
-				el.classList.remove("disabled", "Mui-disabled");
+				el.classList.remove("disabled", "Mui-disabled", "opacity-[0.5]");
 				el.removeAttribute("disabled");
 				el.textContent = getMessage("user.cancelFriendRequest");
 
@@ -341,12 +433,15 @@ export default {
 				});
 			};
 
-			watch(".profile-header-buttons button", (el) => {
-				handleChange(el);
-				watchTextContent(el, () => {
+			watch(
+				".profile-header-buttons button, .buttons-show-on-desktop button, .buttons-show-on-mobile button",
+				(el) => {
 					handleChange(el);
-				});
-			});
+					watchTextContent(el, () => {
+						handleChange(el);
+					});
+				},
+			);
 		});
 
 		if (profileUserId !== authenticatedUser?.userId) {
@@ -372,9 +467,16 @@ export default {
 					(data) => data["Action.JoinGame"],
 				);
 				watch(
-					".desktop-action .btn-join-game, .profile-header-buttons > button",
+					".desktop-action .btn-join-game, .profile-header-buttons > button, .buttons-show-on-desktop button, .buttons-show-on-mobile button",
 					async (desktop) => {
 						if (desktop.className.includes("Mui")) {
+							if (
+								desktop.querySelector("span")?.textContent !==
+								(await joinButtonLabel)
+							) {
+								return;
+							}
+						} else if (desktop.classList.contains("foundation-web-button")) {
 							if (
 								desktop.querySelector("span")?.textContent !==
 								(await joinButtonLabel)
@@ -440,22 +542,23 @@ export default {
 
 		featureValueIs("formatItemMentions", true, () =>
 			// use ng-binding to ensure that it is angular.
-			// if it randomly becomes React, it won't frick up
-
 			watch(
-				".profile-about-content-text.ng-binding, .profile-about-content-text[ng-non-bindable]",
+				".profile-about-content-text.ng-binding, .profile-about-content-text[ng-non-bindable], .foundation-web-dialog-content .description-content, .user-profile-header > pre.description-content",
 				(el) => renderMentions(el),
 			),
 		);
 
 		featureValueIs("userProfileEasterEggs", true, () => {
 			if (profileUserId === ROBLOX_USERS.parryGripp) {
-				watchOnce(".profile-header-main").then((desktopActions) => {
-					const btn = (
-						<TacoButton audioAssetId={ROBLOX_AUDIO_ASSETS.parryGrippTacoSong} />
-					);
-					renderAfter(btn, desktopActions);
-				});
+				watch(
+					".profile-header-main, #treatment-redesigned-header .user-profile-header-info",
+					(desktopActions) => {
+						const btn = (
+							<TacoButton audioAssetId={ROBLOX_AUDIO_ASSETS.parryGrippTacoSong} />
+						);
+						renderAfter(btn, desktopActions);
+					},
+				);
 			} else if (profileUserId === ROBLOX_USERS.sayerSooth) {
 				const birthdate = new Date(USER_BIRTHDAYS.sayerSooth);
 				const date = new Date();
@@ -463,6 +566,20 @@ export default {
 				if (isSameDay(date, setYear(birthdate, date.getFullYear()))) {
 					sealRain(randomInt(10_000, 50_000), undefined, false);
 				}
+			} else if (profileUserId === ROBLOX_USERS.notValra) {
+				watchOnce(".profile-platform-container").then((content) => {
+					renderAfter(
+						<Thumbnail
+							containerClassName="roseal-valra"
+							request={{
+								type: "Asset",
+								targetId: ROBLOX_IMAGE_ASSETS.gilbertDecal,
+								size: "420x420",
+							}}
+						/>,
+						content,
+					);
+				});
 			}
 		});
 
@@ -473,76 +590,98 @@ export default {
 		);
 
 		featureValueIs("previewFilteredText", true, () =>
-			watch("#SaveInfoSettings", (btn) => {
-				const field = document.body.querySelector<HTMLTextAreaElement>(
-					"profile-description .personal-field-description",
-				);
-				const buttons = document.body.querySelector<HTMLButtonElement>(
-					"profile-description .description-buttons",
-				);
-				if (!field || !buttons) {
-					return;
-				}
+			watch(
+				"#SaveInfoSettings, .foundation-web-dialog-overlay .gap-small:has(.personal-field-description) .content-action-emphasis",
+				(btn) => {
+					const field = document.body.querySelector<HTMLTextAreaElement>(
+						"profile-description .personal-field-description, .foundation-web-dialog-overlay .personal-field-description",
+					);
+					const buttons = document.body.querySelector<HTMLButtonElement>(
+						"profile-description .description-buttons, .foundation-web-dialog-overlay .gap-small:has(.personal-field-description) .content-action-emphasis",
+					);
+					if (!field || !buttons) {
+						return;
+					}
 
-				let currentText: string | undefined;
-				let filterPreviewDiv: ContainerNode | undefined;
-				btn.addEventListener(
-					"click",
-					(e) => {
-						if (filterPreviewDiv) {
-							render(null, filterPreviewDiv);
-							filterPreviewDiv = undefined;
-						}
-
-						if (currentText === field.value) {
-							currentText = undefined;
-
-							return;
-						}
-
-						btn.classList.add("disabled");
-
-						e.stopImmediatePropagation();
-
-						const skipThrough = (sendEvent?: boolean) => {
-							btn.classList.remove("disabled");
-							currentText = field.value;
-
-							if (sendEvent) {
-								btn.dispatchEvent(new CustomEvent("click"));
+					let currentText: string | undefined;
+					let filterPreviewDiv: ContainerNode | undefined;
+					btn.addEventListener(
+						"click",
+						(e) => {
+							if (filterPreviewDiv) {
+								render(null, filterPreviewDiv);
+								filterPreviewDiv = undefined;
 							}
-						};
 
-						const textToFilter = field.value;
-						filterText({
-							text: textToFilter,
-						})
-							.then((data) => {
-								if (data.moderationLevel === 1) {
-									return skipThrough(true);
+							if (currentText === field.value) {
+								currentText = undefined;
+
+								return;
+							}
+
+							btn.classList.add("disabled");
+
+							e.stopImmediatePropagation();
+
+							const skipThrough = (sendEvent?: boolean) => {
+								btn.classList.remove("disabled");
+								currentText = field.value;
+
+								if (sendEvent) {
+									if (btn.click) {
+										btn.click();
+									} else {
+										// I have no idea why i had this, but it's here!
+										btn.dispatchEvent(new CustomEvent("click"));
+									}
 								}
+							};
 
-								filterPreviewDiv = renderBefore(
-									<FilteredTextPreview
-										text={field.value}
-										filteredText={data.filteredText}
-										moderationLevel={data.moderationLevel}
-									/>,
-									buttons,
-								);
-								skipThrough();
+							const textToFilter = field.value;
+							filterText({
+								text: textToFilter,
 							})
+								.then((data) => {
+									if (data.moderationLevel === 1) {
+										return skipThrough(true);
+									}
 
-							.catch(() => skipThrough(true));
-					},
-					{
-						capture: true,
-					},
-				);
-			}),
+									filterPreviewDiv = renderBefore(
+										<FilteredTextPreview
+											text={field.value}
+											filteredText={data.filteredText}
+											moderationLevel={data.moderationLevel}
+										/>,
+										buttons,
+									);
+									skipThrough();
+								})
+
+								.catch(() => skipThrough(true));
+						},
+						{
+							capture: true,
+						},
+					);
+				},
+			),
 		);
 
 		featureValueIs("pastUsernamesCount", true, () => {
+			getLangNamespace("Feature.Profile").then((data) => {
+				const expectText = data["Label.PreviousNames"];
+
+				watch(".group-description-dialog-body-header", (text) => {
+					if (text.textContent !== expectText) return;
+
+					const count = text.nextElementSibling?.textContent?.split("; ").length;
+					if (count)
+						text.textContent = getMessage("user.pastUsernamesCount", {
+							count,
+						});
+				});
+			});
+
 			watchOnce(".profile-name-history .tooltip-pastnames").then((tooltip) => {
 				const count = (
 					tooltip.dataset.originalTitle ?? tooltip.getAttribute("title")
@@ -578,10 +717,26 @@ export default {
 			if (profileUserId === authenticatedUser.userId) {
 				watchOnce(".profile-header-buttons").then((btns) => {
 					renderPrepend(
-						<CustomizeProfileButton selectedBackground={selectedBackground} />,
+						<CustomizeProfileButton
+							selectedBackground={selectedBackground}
+							container={btns}
+						/>,
 						btns,
 					);
 				});
+
+				watch(
+					".buttons-show-on-desktop .button-container, .buttons-show-on-mobile .button-container",
+					(btns) => {
+						renderPrepend(
+							<CustomizeProfileButton
+								selectedBackground={selectedBackground}
+								container={btns}
+							/>,
+							btns,
+						);
+					},
+				);
 			}
 
 			selectedBackground.subscribe((value) => {
@@ -617,6 +772,7 @@ export default {
 				}
 			});
 		});
+
 		featureValueIs("showCommunityJoinedDate", true, () => {
 			const groupIdToJoinedDate = signal<Record<string, string>>({});
 
@@ -744,33 +900,48 @@ export default {
 						}
 					});
 
-				watch(".btn-friends > button, .profile-header-buttons > button", (button) => {
-					watchAttributes(button, checkIfBlocked, ["class"]);
-				});
+				watch(
+					".btn-friends > button, .profile-header-buttons > button, .buttons-show-on-desktop button, .buttons-show-on-mobile button",
+					(button) => {
+						watchAttributes(button, checkIfBlocked, ["class"]);
+					},
+				);
 
 				checkIfBlocked();
 			});
 		}
 
-		checkItemTimes("userProfiles").then((shouldHandle) => {
+		checkItemTimes("userProfiles").then(async (shouldHandle) => {
 			if (!shouldHandle) {
 				return;
 			}
 
+			const [joinText, statisticsText] = await getLangNamespace("Feature.Profile").then(
+				(ns) => [ns["Label.JoinDate"], ns["Heading.Statistics"]],
+			);
+
+			watch(
+				".foundation-web-dialog-overlay .group-description-dialog-body-header",
+				(header) => {
+					if (header.textContent !== statisticsText) return;
+
+					renderAsContainer(
+						<UserJoinDate userId={profileUserId} useV2 />,
+						header.nextElementSibling! as HTMLElement,
+					);
+				},
+			);
+
 			watch(
 				".profile-stats-container .profile-stat, #profile-statistics-container .profile-stat",
-				async (el, kill) => {
+				(el, kill) => {
 					const label = el.querySelector(".text-label, span")?.textContent;
 
 					if (!label) {
 						return;
 					}
 
-					const expect = await getLangNamespace("Feature.Profile").then(
-						(ns) => ns["Label.JoinDate"],
-					);
-
-					if (label !== expect) {
+					if (label !== joinText) {
 						return;
 					}
 

@@ -14,10 +14,12 @@ import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export type CustomizeProfileButtonProps = {
 	selectedBackground: Signal<ProfileBackgroundAsset | undefined>;
+	container: HTMLElement;
 };
 
 export default function CustomizeProfileButton({
 	selectedBackground,
+	container,
 }: CustomizeProfileButtonProps) {
 	const [authenticatedUser] = useAuthenticatedUser();
 	const setSelectedBackground = useCallback(
@@ -45,8 +47,13 @@ export default function CustomizeProfileButton({
 	return (
 		<Popover
 			trigger="click"
-			button={<Button type="control">{getMessage("user.customize.buttonText")}</Button>}
+			button={
+				<Button type="control" className="roseal-customize-profile-btn">
+					{getMessage("user.customize.buttonText")}
+				</Button>
+			}
 			className="customize-profile-container"
+			container={container}
 		>
 			<ul className="color-options">
 				<li
@@ -64,6 +71,7 @@ export default function CustomizeProfileButton({
 				</li>
 				{PROFILE_BACKGROUND_ASSETS.map((background) => (
 					<li
+						key={background.hex}
 						className={classNames("color-option-container", {
 							"is-selected": selectedBackground.value === background,
 						})}

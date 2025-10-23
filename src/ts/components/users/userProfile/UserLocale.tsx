@@ -1,34 +1,19 @@
 import MdOutlineTranslateFill from "@material-symbols/svg-400/outlined/translate-fill.svg";
-import { tryOpenCloudAuthRequest } from "src/ts/utils/cloudAuth";
 import usePromise from "../../hooks/usePromise";
 import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
-import { getOpenCloudUser } from "src/ts/helpers/requests/services/users";
 import { getSiteLocaleData } from "src/ts/utils/context";
 import { languageNamesFormat } from "src/ts/helpers/i18n/intlFormats";
 import { useMemo } from "preact/hooks";
 
 export type UserProfileLocaleProps = {
 	userId: number;
+	promise: Promise<string | undefined>;
 };
 
-export default function UserProfileLocale({ userId }: UserProfileLocaleProps) {
+export default function UserProfileLocale({ userId, promise }: UserProfileLocaleProps) {
 	const [authenticatedUser] = useAuthenticatedUser();
 
-	const [viewingUserLocale] = usePromise(
-		() =>
-			authenticatedUser &&
-			tryOpenCloudAuthRequest(
-				authenticatedUser.userId,
-				authenticatedUser.isUnder13 === false,
-				(authType, authCode) =>
-					getOpenCloudUser({
-						authType,
-						authCode,
-						userId,
-					}).then((data) => data.locale),
-			),
-		[userId, authenticatedUser?.userId],
-	);
+	const [viewingUserLocale] = usePromise(() => promise, [userId, authenticatedUser?.userId]);
 	const [userLocale] = usePromise(
 		() => getSiteLocaleData().then((data) => data?.languageCode),
 		[],

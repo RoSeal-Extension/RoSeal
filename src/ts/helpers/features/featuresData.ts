@@ -1988,6 +1988,7 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
+						deprecated: true,
 					},
 					{
 						type: "Regular",
@@ -1997,6 +1998,7 @@ export const sections = [
 							defaultValue: true,
 						},
 						hasCSS: true,
+						deprecated: true,
 					},
 					{
 						type: "Regular",
@@ -2013,6 +2015,7 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
+						deprecated: true,
 					},
 					{
 						type: "Regular",
@@ -2151,6 +2154,7 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
+						deprecated: true,
 					},
 					{
 						type: "Regular",

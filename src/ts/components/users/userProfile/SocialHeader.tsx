@@ -1,11 +1,13 @@
 import classNames from "classnames";
+import type { ComponentChild } from "preact";
 
 export type SocialHeaderProps = {
 	title: string;
-	value: string;
+	value: ComponentChild;
 	alt: string;
 	link?: string;
 	className?: string;
+	enabled?: boolean;
 	onClick?: () => void;
 };
 

@@ -19,6 +19,10 @@
     .profile-header-buttons button:not(:has([data-testid="MoreHorizIcon"])) {
         display: none !important;
     }
+
+    .foundation-web-icon-button[aria-label="Open Popover"] {
+        display: none;
+    }
 }
 
 .viewer-is-blocked {
@@ -60,6 +64,10 @@
         .game-cards .game-card {
             width: 159px;
         }
+    }
+
+    #treatment-redesigned-header .user-profile-header > .flex-nowrap:not(.user-profile-header-info) button[disabled] {
+        opacity: 0.5;
     }
     .profile-header-main {
         .profile-avatar-image {
@@ -326,6 +334,10 @@
     gap: 4px;
     align-items: center;
 
+    #treatment-redesigned-header & {
+        margin-top: 3px;
+    }
+
     .locale-icon-container {
         .roseal-icon,
         & {
@@ -426,8 +438,14 @@
         width: 680px;
         overflow: auto;
     }
+
     .list-item {
         max-width: fit-content;
+
+        .limited-icon-container {
+            bottom: 20px;
+            left: 2px;
+        }
     }
 }
 
@@ -499,4 +517,21 @@
             }
         }
     }
+}
+
+.roseal-valra {
+    background-color: transparent !important;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.roseal-user-last-seen-v2 {
+    p,
+    span {
+        display: inline;
+    }
+}
+
+.button-container .roseal-customize-profile-btn {
+    flex-shrink: 0;
 }
