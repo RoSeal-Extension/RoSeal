@@ -10,6 +10,11 @@
     margin-bottom: -100px;
     padding-bottom: 100px;
 
+    .rbx-body & {
+        right: initial;
+        left: 200px;
+    }
+
     .widget-button {
         display: flex;
         float: right;
