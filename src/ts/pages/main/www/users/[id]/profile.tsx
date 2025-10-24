@@ -594,12 +594,20 @@ export default {
 			watch(
 				"#SaveInfoSettings, .foundation-web-dialog-overlay .gap-small:has(.personal-field-description) .content-action-emphasis",
 				(btn) => {
-					const field = document.body.querySelector<HTMLTextAreaElement>(
-						"profile-description .personal-field-description, .foundation-web-dialog-overlay .personal-field-description",
-					);
-					const buttons = document.body.querySelector<HTMLButtonElement>(
-						"profile-description .description-buttons, .foundation-web-dialog-overlay .gap-small:has(.personal-field-description) .content-action-emphasis",
-					);
+					let field =
+						document.body.querySelector<HTMLTextAreaElement>(
+							".foundation-web-dialog-overlay .personal-field-description",
+						) ||
+						document.body.querySelector<HTMLTextAreaElement>(
+							"profile-description.profile-field-description",
+						);
+					let buttons =
+						document.body.querySelector<HTMLButtonElement>(
+							".foundation-web-dialog-overlay .gap-small:has(.personal-field-description) .content-action-emphasis",
+						) ||
+						document.body.querySelector<HTMLButtonElement>(
+							"profile-description .description-buttons",
+						);
 					if (!field || !buttons) {
 						return;
 					}
@@ -609,6 +617,23 @@ export default {
 					btn.addEventListener(
 						"click",
 						(e) => {
+							field =
+								document.body.querySelector<HTMLTextAreaElement>(
+									".foundation-web-dialog-overlay .personal-field-description",
+								) ||
+								document.body.querySelector<HTMLTextAreaElement>(
+									"profile-description.profile-field-description",
+								);
+							buttons =
+								document.body.querySelector<HTMLButtonElement>(
+									".foundation-web-dialog-overlay .gap-small:has(.personal-field-description) .content-action-emphasis",
+								) ||
+								document.body.querySelector<HTMLButtonElement>(
+									"profile-description .description-buttons",
+								);
+
+							if (!field) return;
+
 							if (filterPreviewDiv) {
 								render(null, filterPreviewDiv);
 								filterPreviewDiv = undefined;
@@ -626,7 +651,7 @@ export default {
 
 							const skipThrough = (sendEvent?: boolean) => {
 								btn.classList.remove("disabled");
-								currentText = field.value;
+								if (field) currentText = field.value;
 
 								if (sendEvent) {
 									if (btn.click) {
@@ -646,6 +671,8 @@ export default {
 									if (data.moderationLevel === 1) {
 										return skipThrough(true);
 									}
+
+									if (!field) return;
 
 									filterPreviewDiv = renderBefore(
 										<FilteredTextPreview

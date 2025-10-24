@@ -43,6 +43,10 @@
     margin-top: 15px;
     margin-bottom: 10px;
 
+    .foundation-web-dialog-content & {
+        flex: 1;
+    }
+
     .text-preview {
         white-space: pre-wrap;
         max-height: 200px;
