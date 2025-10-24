@@ -25,7 +25,8 @@ export default {
 
 					if (
 						url.hostname === getRobloxUrl("catalog") &&
-						url.pathname === "/v1/catalog/items/details"
+						(url.pathname === "/v1/catalog/items/details" ||
+							url.pathname === "/v2/search/items/details")
 					) {
 						const data = (await res
 							.clone()
