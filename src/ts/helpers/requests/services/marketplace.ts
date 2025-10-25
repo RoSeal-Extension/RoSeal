@@ -615,7 +615,8 @@ export type MarketplaceWidgetContext =
 	| "catalog-tab:clothing"
 	| "catalog-tab:allanimations"
 	| "catalog-tab:characters"
-	| "catalog-tab:heads";
+	| "catalog-tab:heads"
+	| "catalog-tab:avatars";
 
 export type GetMarketplaceWidgetsRequest = {
 	requestId: string;
