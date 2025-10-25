@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.3.0/schema.json",
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -34,23 +34,11 @@
 				"noDelete": "off"
 			}
 		},
-		"includes": [
-			"**",
-			"!**/dist/**",
-			"!**/builds-dist/**",
-			"!**/*.gen.*",
-			"!**/secret/**"
-		]
+		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"]
 	},
 	"formatter": {
 		"indentWidth": 4,
 		"lineWidth": 100,
-		"includes": [
-			"**",
-			"!**/dist/**",
-			"!**/builds-dist/**",
-			"!**/*.gen.*",
-			"!**/secret/**"
-		]
+		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"]
 	}
 }
