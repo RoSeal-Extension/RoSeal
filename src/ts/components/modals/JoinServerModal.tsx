@@ -222,10 +222,22 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 		)
 			return setSillyText(undefined);
 
-		const makeSillyText = () =>
-			setSillyText(
-				`${randomArrItem(sillyTextVariables.participles)} ${randomArrItem(sillyTextVariables.modifiers)} ${randomArrItem(sillyTextVariables.subjects)}`,
-			);
+		const makeSillyText = () => {
+			const texts: string[] = [];
+			if (sillyTextVariables.participles.length) {
+				texts.push(randomArrItem(sillyTextVariables.participles));
+			}
+
+			if (sillyTextVariables.modifiers.length) {
+				texts.push(randomArrItem(sillyTextVariables.modifiers));
+			}
+
+			if (sillyTextVariables.subjects.length) {
+				texts.push(randomArrItem(sillyTextVariables.subjects));
+			}
+
+			return setSillyText(texts.join(" "));
+		};
 		makeSillyText();
 
 		const interval = setInterval(makeSillyText, 1_500);
