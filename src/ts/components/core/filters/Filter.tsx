@@ -416,8 +416,9 @@ export default function Filter<T extends FilterData>({
 										<button
 											type="button"
 											className="remove-target-btn roseal-btn"
-											onClick={() => {
+											onClick={(e) => {
 												setValue(undefined);
+												e.stopImmediatePropagation();
 											}}
 										>
 											<Icon name="close" size="16x16" />
