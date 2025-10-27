@@ -101,6 +101,16 @@
         padding-right: 20px;
         border-right: 1px solid var(--RS_LINE-COLOR);
 
+        &.hide-card {
+            border: none;
+            margin: auto;
+
+            .server-info {
+                margin-top: 0;
+                margin-bottom: 0.6em;
+            }
+        }
+
         .game-card-container {
             width: 180px;
             margin: 0 0;

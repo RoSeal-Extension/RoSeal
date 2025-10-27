@@ -387,6 +387,132 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 
 	const placeVersion = joinData?.data?.rcc.placeVersion;
 
+	const shouldShowCard = !!(
+		data.value &&
+		(data.value.type === "playWithUser" ||
+			(data.value.type === "privateServer" && data.value.linkCode))
+	);
+
+	const serverInfo = data.value && joinData?.data && (
+		<div
+			className={classNames("server-info-container", {
+				"hide-card": !shouldShowCard,
+			})}
+		>
+			{shouldShowCard && (
+				<div className="game-card-container roseal-game-card-container">
+					<a
+						className="game-card-link"
+						href={
+							placeDetails
+								? getExperienceLink(placeDetails.placeId, placeDetails.name)
+								: undefined
+						}
+					>
+						<Thumbnail
+							containerClassName="game-card-thumb-container"
+							request={
+								placeDetails
+									? {
+											type: "PlaceIcon",
+											targetId: placeDetails.placeId,
+											size: "256x256",
+										}
+									: null
+							}
+						/>
+						<div
+							className={classNames("game-card-name game-name-title", {
+								"placeholder shimmer": !placeDetails,
+							})}
+						>
+							{placeDetails?.name}
+						</div>
+					</a>
+				</div>
+			)}
+
+			<div className="server-info">
+				<ul className="server-info-stats">
+					<li className="stat-item">
+						<span className="stat-icon">
+							<MdOutlineCloud className="roseal-icon" />
+						</span>
+						<span className="stat-text">
+							{getMessage(`joinModal.serverInfo.title.${joinedServerType}`)}
+						</span>
+					</li>
+					{privateServerOwner && (
+						<li className="stat-item private-server-owner">
+							<span className="stat-text">
+								{getMessage("joinModal.serverInfo.privateServer.text")}
+							</span>
+							<AgentMentionContainer
+								targetType="User"
+								targetId={privateServerOwner.userId}
+								name={privateServerOwner.names.username}
+								hasVerifiedBadge={privateServerOwner.isVerified}
+							/>
+						</li>
+					)}
+					{dataCenter && (
+						<li className="stat-item">
+							<span className="stat-icon">
+								<CountryFlag
+									code={dataCenter.location.country}
+									className="roseal-icon"
+								/>
+							</span>
+							<span className="stat-text">
+								{getLocalizedRegionName(dataCenter.location)}
+							</span>
+						</li>
+					)}
+					{placeVersion !== undefined && (
+						<li className="stat-item">
+							<span className="stat-icon">
+								<MdOutlineHistory className="roseal-icon" />
+							</span>
+							<span className="stat-text">
+								{getMessage("joinModal.serverInfo.placeVersion.text", {
+									placeVersion: asLocaleString(placeVersion),
+								})}
+							</span>
+						</li>
+					)}
+					{joinData.data?.rcc.channelName &&
+						joinData.data?.rcc.channelName !== DEFAULT_RELEASE_CHANNEL_NAME &&
+						shouldShowRCCServerInfo && (
+							<li className="stat-item">
+								<span className="stat-icon">
+									<MdOutlineTVRemote className="roseal-icon" />
+								</span>
+								<span className="stat-text">
+									{getMessage("joinModal.serverInfo.rccChannel.text", {
+										channelName: joinData.data.rcc.channelName,
+									})}
+								</span>
+							</li>
+						)}
+					{joinData.data?.rcc.version && shouldShowRCCServerInfo && (
+						<li className="stat-item">
+							<li className="stat-item">
+								<span className="stat-icon">
+									<MdOutlineComputer className="roseal-icon" />
+								</span>
+								<span className="stat-text">
+									{getMessage("joinModal.serverInfo.rccVersion.text", {
+										version: joinData.data.rcc.version,
+									})}
+								</span>
+							</li>
+						</li>
+					)}
+				</ul>
+			</div>
+		</div>
+	);
+
 	return (
 		<SimpleModal
 			show={showModal.value}
@@ -476,137 +602,7 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 				</div>
 			) : (
 				<div className="startup-info-container">
-					{joinData?.data && data.value && (
-						<div className="server-info-container">
-							<div className="game-card-container roseal-game-card-container">
-								<a
-									className="game-card-link"
-									href={
-										placeDetails
-											? getExperienceLink(
-													placeDetails.placeId,
-													placeDetails.name,
-												)
-											: undefined
-									}
-								>
-									<Thumbnail
-										containerClassName="game-card-thumb-container"
-										request={
-											placeDetails
-												? {
-														type: "PlaceIcon",
-														targetId: placeDetails.placeId,
-														size: "256x256",
-													}
-												: null
-										}
-									/>
-									<div
-										className={classNames("game-card-name game-name-title", {
-											"placeholder shimmer": !placeDetails,
-										})}
-									>
-										{placeDetails?.name}
-									</div>
-								</a>
-							</div>
-
-							<div className="server-info">
-								<ul className="server-info-stats">
-									<li className="stat-item">
-										<span className="stat-icon">
-											<MdOutlineCloud className="roseal-icon" />
-										</span>
-										<span className="stat-text">
-											{getMessage(
-												`joinModal.serverInfo.title.${joinedServerType}`,
-											)}
-										</span>
-									</li>
-									{privateServerOwner && (
-										<li className="stat-item private-server-owner">
-											<span className="stat-text">
-												{getMessage(
-													"joinModal.serverInfo.privateServer.text",
-												)}
-											</span>
-											<AgentMentionContainer
-												targetType="User"
-												targetId={privateServerOwner.userId}
-												name={privateServerOwner.names.username}
-												hasVerifiedBadge={privateServerOwner.isVerified}
-											/>
-										</li>
-									)}
-									{dataCenter && (
-										<li className="stat-item">
-											<span className="stat-icon">
-												<CountryFlag
-													code={dataCenter.location.country}
-													className="roseal-icon"
-												/>
-											</span>
-											<span className="stat-text">
-												{getLocalizedRegionName(dataCenter.location)}
-											</span>
-										</li>
-									)}
-									{placeVersion !== undefined && (
-										<li className="stat-item">
-											<span className="stat-icon">
-												<MdOutlineHistory className="roseal-icon" />
-											</span>
-											<span className="stat-text">
-												{getMessage(
-													"joinModal.serverInfo.placeVersion.text",
-													{
-														placeVersion: asLocaleString(placeVersion),
-													},
-												)}
-											</span>
-										</li>
-									)}
-									{joinData.data?.rcc.channelName &&
-										joinData.data?.rcc.channelName !==
-											DEFAULT_RELEASE_CHANNEL_NAME &&
-										shouldShowRCCServerInfo && (
-											<li className="stat-item">
-												<span className="stat-icon">
-													<MdOutlineTVRemote className="roseal-icon" />
-												</span>
-												<span className="stat-text">
-													{getMessage(
-														"joinModal.serverInfo.rccChannel.text",
-														{
-															channelName:
-																joinData.data.rcc.channelName,
-														},
-													)}
-												</span>
-											</li>
-										)}
-									{joinData.data?.rcc.version && shouldShowRCCServerInfo && (
-										<li className="stat-item">
-											<li className="stat-item">
-												<span className="stat-icon">
-													<MdOutlineComputer className="roseal-icon" />
-												</span>
-												<span className="stat-text">
-													{getMessage(
-														"joinModal.serverInfo.rccVersion.text",
-														{
-															version: joinData.data.rcc.version,
-														},
-													)}
-												</span>
-											</li>
-										</li>
-									)}
-								</ul>
-							</div>
-						</div>
-					)}
+					{shouldShowCard && serverInfo}
 					<div className="startup-container">
 						<div className="text-container">
 							<span className="app-icon-windows app-icon-bluebg" />
@@ -617,6 +613,7 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 									)}
 							</span>
 						</div>
+						{!shouldShowCard && serverInfo}
 						{shouldShowClientChannelName &&
 							placeLauncherData?.playerChannelName &&
 							placeLauncherData.playerChannelName !== "LIVE" && (
