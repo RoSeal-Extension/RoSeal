@@ -1,9 +1,9 @@
 export function getRobloxUrl(service: string, path?: string) {
-	return `${import.meta.env.ROBLOX_DOMAIN.replace("{service}", service)}${path || ""}`;
+	return `${import.meta.env.ROBLOX_DOMAIN!.replace("{service}", service)}${path || ""}`;
 }
 
 export function getRobloxCDNUrl(service: string, path?: string) {
-	return `${import.meta.env.ROBLOX_CDN_DOMAIN.replace("{service}", service)}${path || ""}`;
+	return `${import.meta.env.ROBLOX_CDN_DOMAIN!.replace("{service}", service)}${path || ""}`;
 }
 
 export function getRoSealWebsiteUrl(path?: string) {
@@ -14,8 +14,12 @@ export function getRoSealAPIUrl(path?: string) {
 	return `${import.meta.env.ROSEAL_API_DOMAIN}${path || ""}`;
 }
 
+export function getRoSealUrl(service: string, path?: string) {
+	return `${import.meta.env.ROSEAL_DOMAIN!.replace("{service}", service)}${path || ""}`;
+}
+
 export function getRolimonsUrl(service: string, path?: string) {
-	return `${import.meta.env.ROLIMONS_DOMAIN.replace("{service}", service)}${path || ""}`;
+	return `${import.meta.env.ROLIMONS_DOMAIN!.replace("{service}", service)}${path || ""}`;
 }
 
 export function getRoMonitorUrl(path?: string) {

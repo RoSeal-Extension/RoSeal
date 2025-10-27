@@ -54,7 +54,7 @@ import {
 	TRADING_NOTIFICATIONS_FEATURE_ID,
 	TRADING_NOTIFICATIONS_STORAGE_KEY,
 } from "src/ts/constants/trades";
-import { getRolimonsUrl } from "src/ts/utils/baseUrls";
+import { getRolimonsUrl, getRoSealUrl } from "src/ts/utils/baseUrls";
 import { getHomePageUrl } from "src/ts/utils/links";
 import { getDelayKey } from "src/ts/utils/misc";
 import type { FlagCall } from "../flags/flags";
@@ -70,6 +70,7 @@ export type FeatureComponentTypeToggle = {
 
 export type FeatureComponentTypeInputWithToggle = {
 	type: "InputWithToggle";
+
 	toggleDefaultValue: boolean;
 };
 
@@ -1093,6 +1094,11 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
+						permissions: {
+							required: {
+								origins: [`*://${getRoSealUrl("*", "/*")}`],
+							},
+						},
 					},
 					{
 						type: "Regular",
@@ -1119,6 +1125,11 @@ export const sections = [
 						component: {
 							type: "Toggle",
 							defaultValue: true,
+						},
+						permissions: {
+							required: {
+								origins: [`*://${getRoSealUrl("*", "/*")}`],
+							},
 						},
 						subfeatures: {
 							items: [
@@ -1273,6 +1284,11 @@ export const sections = [
 													type: "Toggle",
 													defaultValue: true,
 												},
+												permissions: {
+													required: {
+														origins: [`*://${getRoSealUrl("*", "/*")}`],
+													},
+												},
 											},
 											{
 												type: "Regular",
@@ -1281,6 +1297,11 @@ export const sections = [
 													type: "Toggle",
 													defaultValue: true,
 												},
+												permissions: {
+													required: {
+														origins: [`*://${getRoSealUrl("*", "/*")}`],
+													},
+												},
 											},
 											{
 												type: "Regular",
@@ -1288,6 +1309,11 @@ export const sections = [
 												component: {
 													type: "Toggle",
 													defaultValue: false,
+												},
+												permissions: {
+													required: {
+														origins: [`*://${getRoSealUrl("*", "/*")}`],
+													},
 												},
 											},
 											{
@@ -1331,6 +1357,13 @@ export const sections = [
 															component: {
 																type: "Toggle",
 																defaultValue: false,
+															},
+															permissions: {
+																required: {
+																	origins: [
+																		`*://${getRoSealUrl("/*")}`,
+																	],
+																},
 															},
 														},
 													],

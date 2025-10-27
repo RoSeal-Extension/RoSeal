@@ -8,9 +8,9 @@
 	"beta": false,
 	"author": "roseal.live",
 	// Public version shown to users
-	"version": "2.1.22",
+	"version": "2.1.23",
 	// The store version
-	"store_version": "2.1.22.0",
+	"store_version": "2.1.23.0",
 	"version_name": "__manifest_version__ (Gaia)",
 
 	"browser_specific_settings": {
