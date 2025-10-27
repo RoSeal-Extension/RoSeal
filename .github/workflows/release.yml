@@ -28,7 +28,7 @@ jobs:
       #  run: bun lint
         
       - name: Build Files
-        run: bun get-src; bun redist; bun get-i18n
+        run: bun get-src; UPLOAD_TO_AMO=true bun redist; bun get-i18n
 
       - name: Upload files to git release
         uses: svenstaro/upload-release-action@v2
