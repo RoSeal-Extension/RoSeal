@@ -31,7 +31,7 @@ jobs:
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.AMO_API_KEY_SECRET }}
-        run: bun get-src; UPLOAD_TO_AMO=false bun redist; bun get-i18n
+        run: bun get-src; UPLOAD_TO_AMO=true bun redist; bun get-i18n
 
       - name: Upload files to git release
         uses: svenstaro/upload-release-action@v2
