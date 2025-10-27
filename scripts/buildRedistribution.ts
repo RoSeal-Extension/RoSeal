@@ -42,11 +42,13 @@ await updateLog(
 			);
 
 			if (import.meta.env.UPLOAD_TO_AMO === "true" && target === "firefox") {
-				await $`cd ${outDir}; web-ext sign --channel listed --upload-source-code ../RoSeal-${manifest.version}-src.zip --artifacts-dir artifacts`;
-				await move(
-					`${outDir}/artifacts/RoSeal-${manifest.store_version}.xpi`,
-					`builds-dist/${folder}.xpi`,
-				);
+				try {
+					await $`cd ${outDir}; web-ext sign --channel listed --upload-source-code ../RoSeal-${manifest.version}-src.zip --artifacts-dir artifacts -approval-timeout 0`;
+					await move(
+						`${outDir}/artifacts/RoSeal-${manifest.store_version}.xpi`,
+						`builds-dist/${folder}.xpi`,
+					);
+				} catch {}
 			}
 
 			return remove(outDir);
