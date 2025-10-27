@@ -6,6 +6,7 @@
 		"redist": "bun i && bun ./scripts/buildRedistribution.ts",
 		"get-src": "bun ./scripts/getSrc.ts",
 		"get-i18n": "bun ./scripts/getCrowdinI18n.ts",
+		"sign-amo": "bun ./scripts/signAMO.ts",
 		"convert-crowdin-i18n": "bun ./scripts/convertCrowdinI18n.ts",
 		"dev": "bun --watch ./scripts/dev.ts",
 		"schema": "bun ts-json-schema-generator --path ./scripts/build/constants.ts --type Manifest --tsconfig ./tsconfig.json > ./src/types/schemas/manifest.json && bun ts-json-schema-generator --path ./scripts/build/constants.ts --type I18nFile --tsconfig ./tsconfig.json > ./src/types/schemas/i18nFile.json",
@@ -83,6 +84,7 @@
 		"kleur": "4.1.5",
 		"sass-embedded": "1.93.2",
 		"ts-json-schema-generator": "2.4.0",
-		"typescript": "5.9.3"
+		"typescript": "5.9.3",
+		"web-ext": "9.1.0"
 	}
 }

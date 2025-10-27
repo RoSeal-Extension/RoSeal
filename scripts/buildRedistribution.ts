@@ -1,4 +1,4 @@
-import { emptyDir, remove } from "fs-extra";
+import { ensureDir, move, remove } from "fs-extra";
 import { parse as parseJSONC } from "jsonc-parser";
 import { build } from "./build.ts";
 import { type Manifest, SUPPORTED_TARGETS } from "./build/constants.ts";
@@ -8,10 +8,11 @@ import {
 	getTargetBaseFromTarget,
 	updateLog,
 } from "./build/utils.ts";
+import { $ } from "bun";
+
+await ensureDir("builds-dist/");
 
 const manifest = parseJSONC(await Bun.file("./src/manifest.jsonc").text()) as Manifest;
-
-await emptyDir("builds-dist/");
 
 const devServers = await getDevServersAvailable(false);
 
@@ -39,6 +40,14 @@ await updateLog(
 					await Bun.$`cd ${parentFolder}/${folder} && zip -r ../${folder}.zip . -x "**/.DS_Store" -x "**/__MACOSX" -9 > /dev/null`
 				).exitCode === 0,
 			);
+
+			if (import.meta.env.UPLOAD_TO_AMO === "true" && target === "firefox") {
+				await $`cd ${outDir}; web-ext sign --channel listed --upload-source-code ../RoSeal-${manifest.version}-src.zip --artifacts-dir artifacts`;
+				await move(
+					`${outDir}/artifacts/RoSeal-${manifest.store_version}.xpi`,
+					`builds-dist/${folder}.xpi`,
+				);
+			}
 
 			return remove(outDir);
 		}),
