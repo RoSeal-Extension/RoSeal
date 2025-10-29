@@ -20,8 +20,14 @@ export default function CommunityJoinedDate({ groupId }: CommunityJoinedDateProp
 			return;
 		}
 
-		return getUserCommunityJoinedDate(groupId, authenticatedUser.userId, true);
-	}, [groupId, authenticatedUser?.userId]);
+		return getUserCommunityJoinedDate(
+			groupId,
+			authenticatedUser.userId,
+			authenticatedUser.userId,
+			authenticatedUser.isUnder13,
+			true,
+		);
+	}, [groupId, authenticatedUser?.userId, authenticatedUser?.isUnder13]);
 
 	const [getTimeType, timeType, setTimeType] = useTime("groupProfiles", "time");
 	const [getTooltipTimeType, tooltipTimeType] = useTime("groupProfiles", "tooltip");

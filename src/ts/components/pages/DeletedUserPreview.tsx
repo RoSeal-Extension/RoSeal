@@ -15,12 +15,15 @@ import ThirdPartyLinkModal from "../core/ThirdPartyLinkModal";
 import Thumbnail from "../core/Thumbnail";
 import useFlag from "../hooks/useFlag";
 import usePromise from "../hooks/usePromise";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import { tryOpenCloudAuthRequest } from "src/ts/utils/cloudAuth";
 
 export type DeletedUserProfilePreviewProps = {
 	userId: number;
 };
 
 export default function DeletedUserProfilePreview({ userId }: DeletedUserProfilePreviewProps) {
+	const [authenticatedUser] = useAuthenticatedUser();
 	const [data, , error] = usePromise(
 		() =>
 			getUserById({
@@ -42,12 +45,22 @@ export default function DeletedUserProfilePreview({ userId }: DeletedUserProfile
 		[userId],
 	);
 	const [baseThumbnailUrl] = usePromise(async () => {
+		if (!authenticatedUser) return;
+
 		let attempts = 5;
 		while (attempts > 0) {
 			attempts--;
-			const data = await getCloudUserThumbnail({
-				userId,
-			});
+			const data = await tryOpenCloudAuthRequest(
+				authenticatedUser.userId,
+				authenticatedUser.isUnder13 === false,
+				(authType, authCode) =>
+					getCloudUserThumbnail({
+						authType,
+						authCode,
+						userId,
+					}),
+			);
+
 			if (data.done && data.response?.imageUri) {
 				const parsedThumbnail = parseResizeThumbnailUrl(data.response.imageUri);
 				if (parsedThumbnail) {
@@ -57,7 +70,7 @@ export default function DeletedUserProfilePreview({ userId }: DeletedUserProfile
 				}
 			}
 		}
-	}, [userId]);
+	}, [userId, authenticatedUser?.userId, authenticatedUser?.isUnder13]);
 
 	const [showRolimonsLinkModal, setShowRolimonsLinkModal] = useState(false);
 	const [useHoverEffect, setUseHoverEffect] = useState(false);

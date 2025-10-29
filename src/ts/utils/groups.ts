@@ -4,6 +4,7 @@ import { getGroupProfileLink } from "./links";
 import { sendMessage } from "../helpers/communication/dom";
 import { getOrSetCache } from "../helpers/cache";
 import { listGroupMembersV2 } from "../helpers/requests/services/groups";
+import { tryOpenCloudAuthRequest } from "./cloudAuth";
 
 export function setActiveGroup(
 	groupId: Signal<number>,
@@ -44,15 +45,21 @@ export function setActiveGroup(
 export function getUserCommunityJoinedDate(
 	groupId: number,
 	userId: number,
+	viewerUserId: number,
+	viewerIsUnder13: boolean,
 	overrideCache?: boolean,
 ) {
 	return getOrSetCache({
 		key: ["communities", groupId, "members", userId, "joinTime"],
 		fn: () =>
-			listGroupMembersV2({
-				groupId,
-				filter: `user == 'users/${userId}'`,
-			}).then((memberships) => memberships.groupMemberships[0]?.createTime),
+			tryOpenCloudAuthRequest(viewerUserId, viewerIsUnder13 === false, (authType, authCode) =>
+				listGroupMembersV2({
+					authType,
+					authCode,
+					groupId,
+					filter: `user == 'users/${userId}'`,
+				}).then((memberships) => memberships.groupMemberships[0]?.createTime),
+			),
 		overrideCache,
 	});
 }

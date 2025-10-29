@@ -5,6 +5,8 @@ import { httpClient } from "../main";
 import type { MarketplaceItemType } from "./marketplace";
 import type { OmniLayoutData, OmniTreatmentType, OmniUniverseLayoutData } from "./universes";
 
+export type OpenCloudAuthType = "apiKey" | "bearer";
+
 export type SearchPageType = "discover" | "home" | "all";
 
 export type SearchVerticalType = "User" | "Game" | "Blended";

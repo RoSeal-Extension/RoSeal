@@ -1,12 +1,13 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { chunk } from "src/ts/utils/objects.ts";
-import { httpClient } from "../main.ts";
+import { CLOUD_API_KEY_HEADER_NAME, httpClient, OAUTH_AUTHORIZATION_HEADER_NAME } from "../main.ts";
 import type {
 	AvatarAssetDefinition,
 	AvatarBodyColorsRender,
 	AvatarType,
 	AvatarScales,
 } from "./avatar.ts";
+import type { OpenCloudAuthType } from "./misc.ts";
 
 export type ThumbnailType =
 	| "Avatar"
@@ -106,6 +107,8 @@ export type RenderAvatarResponse = {
 };
 
 export type GetCloudUserThumbnailRequest = {
+	authType?: OpenCloudAuthType;
+	authCode?: string;
 	userId: number;
 };
 
@@ -191,15 +194,21 @@ export async function getAnimatedThumbnail({
 }
 
 export async function getCloudUserThumbnail({
+	authType,
+	authCode,
 	userId,
 	...request
 }: GetCloudUserThumbnailRequest): Promise<GetCloudUserThumbnailResponse> {
 	return (
 		await httpClient.httpRequest<GetCloudUserThumbnailResponse>({
-			url: `${getRobloxUrl("apis")}/user/cloud/v2/users/${userId}:generateThumbnail`,
+			url: `${getRobloxUrl("apis")}/cloud/v2/users/${userId}:generateThumbnail`,
 			search: request,
+			headers: {
+				[OAUTH_AUTHORIZATION_HEADER_NAME]:
+					authType === "bearer" ? `Bearer ${authCode}` : undefined,
+				[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }

@@ -9,12 +9,15 @@ import useProfileData from "../hooks/useProfileData";
 import usePromise from "../hooks/usePromise";
 import useTime from "../hooks/useTime";
 import { handleTimeSwitch } from "../utils/handleTimeSwitch";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import { tryOpenCloudAuthRequest } from "src/ts/utils/cloudAuth";
 
 export type GroupCreatedDateProps = {
 	groupId: number;
 };
 
 export default function GroupCreatedDate({ groupId }: GroupCreatedDateProps) {
+	const [authenticatedUser] = useAuthenticatedUser();
 	const [isClickSwitchEnabled] = useFeatureValue("times.clickSwitch", false);
 	const [isShowOriginalCreatorEnabled] = useFeatureValue(
 		"showGroupCreatedDate.showOriginalCreator",
@@ -22,21 +25,41 @@ export default function GroupCreatedDate({ groupId }: GroupCreatedDateProps) {
 	);
 	const [groupData] = usePromise(
 		() =>
-			getOpenCloudGroup({
-				groupId,
-			}),
-		[groupId],
+			authenticatedUser &&
+			tryOpenCloudAuthRequest(
+				authenticatedUser.userId,
+				authenticatedUser.isUnder13 === false,
+				(authType, authCode) =>
+					getOpenCloudGroup({
+						authType,
+						authCode,
+						groupId,
+					}),
+			),
+		[groupId, authenticatedUser?.isUnder13, authenticatedUser?.userId],
 	);
 	const [firstMember] = usePromise(() => {
-		if (!isShowOriginalCreatorEnabled) {
+		if (!isShowOriginalCreatorEnabled || !authenticatedUser) {
 			return;
 		}
 
-		return listGroupMembersV2({
-			groupId,
-			maxPageSize: 1,
-		}).then((data) => data.groupMemberships[0]);
-	}, [isShowOriginalCreatorEnabled, groupId]);
+		return tryOpenCloudAuthRequest(
+			authenticatedUser.userId,
+			authenticatedUser.isUnder13 === false,
+			(authType, authCode) =>
+				listGroupMembersV2({
+					authType,
+					authCode,
+					groupId,
+					maxPageSize: 1,
+				}).then((data) => data.groupMemberships[0]),
+		);
+	}, [
+		isShowOriginalCreatorEnabled,
+		groupId,
+		authenticatedUser?.userId,
+		authenticatedUser?.isUnder13,
+	]);
 	const originalCreatorId = useMemo(() => {
 		if (!isShowOriginalCreatorEnabled || !firstMember || !groupData) {
 			return;

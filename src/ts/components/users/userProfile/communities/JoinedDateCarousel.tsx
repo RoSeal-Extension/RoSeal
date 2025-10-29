@@ -2,6 +2,7 @@ import type { Signal } from "@preact/signals";
 import classNames from "classnames";
 import { useMemo } from "preact/hooks";
 import Tooltip from "src/ts/components/core/Tooltip";
+import useAuthenticatedUser from "src/ts/components/hooks/useAuthenticatedUser";
 import useFeatureValue from "src/ts/components/hooks/useFeatureValue";
 import useTime from "src/ts/components/hooks/useTime";
 import { handleTimeSwitch } from "src/ts/components/utils/handleTimeSwitch";
@@ -19,6 +20,7 @@ export default function UserCommunityJoinedDateCarousel({
 	groupId,
 	state,
 }: UserCommunityJoinedDateCarouselProps) {
+	const [authenticatedUser] = useAuthenticatedUser();
 	const [isClickSwitchEnabled] = useFeatureValue("times.clickSwitch", false);
 	const joinedDate = useMemo(() => {
 		return state.value[groupId];
@@ -40,7 +42,15 @@ export default function UserCommunityJoinedDateCarousel({
 			return onTimeClick?.();
 		}
 
-		getUserCommunityJoinedDate(groupId, userId, true).then((date) => {
+		if (!authenticatedUser) return;
+
+		getUserCommunityJoinedDate(
+			groupId,
+			userId,
+			authenticatedUser.userId,
+			authenticatedUser.isUnder13,
+			true,
+		).then((date) => {
 			if (date) {
 				state.value = {
 					...state.value,

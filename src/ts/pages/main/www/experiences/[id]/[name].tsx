@@ -78,7 +78,7 @@ import { deepLinksParser } from "src/ts/utils/deepLinks";
 import { renderMentions } from "src/ts/utils/description";
 import { onDOMReady } from "src/ts/utils/dom";
 import { sendJoinMultiplayerGame } from "src/ts/utils/gameLauncher";
-import { getPlaceJoinData, getUniversePlayableDevices } from "src/ts/utils/joinData";
+import { getPlaceJoinData } from "src/ts/utils/joinData";
 import { EXPERIENCE_DEEPLINK_REGEX, EXPERIENCE_DETAILS_REGEX } from "src/ts/utils/regex";
 import {
 	renderAfter,
@@ -572,8 +572,6 @@ export default {
 		featureValueIs("viewItemSales", true, () =>
 			modifyItemStats("Experience", <ExperienceSales rootPlaceId={placeId} />, 2),
 		);
-
-		getUniversePlayableDevices(universeId);
 
 		featureValueIs("experiencePlaytime", true, () =>
 			watchOnce(".game-calls-to-action .game-creator").then((creatorLabel) =>

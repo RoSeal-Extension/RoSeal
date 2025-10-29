@@ -5,6 +5,7 @@ import type { Agent } from "./assets.ts";
 import type { SortOrder } from "./badges.ts";
 import type { AssetFavoritesRequest } from "./favorites.ts";
 import type { AvatarBundleType } from "./marketplace.ts";
+import type { OpenCloudAuthType } from "./misc.ts";
 
 export type InventoryItemType = "Asset" | "Bundle" | "Badge" | "GamePass";
 
@@ -140,7 +141,7 @@ export type ListUserInventoryCategoriesResponse = {
 };
 
 export type ListOpenCloudUserInventoryItemsRequest = {
-	authType: "apiKey" | "bearer";
+	authType: OpenCloudAuthType;
 	authCode: string;
 	userId: number;
 	filter: string;

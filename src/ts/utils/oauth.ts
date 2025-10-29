@@ -65,7 +65,7 @@ export async function tryOAuthRequest<T>(
 	userId: number,
 	fn: (code: string) => Promise<T>,
 	forceRefresh?: boolean,
-): Promise<T | undefined> {
+): Promise<T> {
 	const data = ((await storage.get([OAUTH_TOKENS_STORAGE_KEY]))?.[OAUTH_TOKENS_STORAGE_KEY] ??
 		{}) as OAuthTokensStorageValue;
 
@@ -76,7 +76,7 @@ export async function tryOAuthRequest<T>(
 
 	if (!userData || forceRefresh || userData.scope !== OAUTH_SCOPE_STR) {
 		const tokenData = await generateOAuthTokenForUser(userId);
-		if (!tokenData) return;
+		if (!tokenData) throw "Could not generate OAuth token for user.";
 
 		data[userId] = {
 			accessToken: tokenData.accessToken,
@@ -104,9 +104,9 @@ export async function tryOAuthRequest<T>(
 				expiresAt: time + tokenData.expiresIn,
 				scope: tokenData.scope,
 			};
-		} catch {
+		} catch (err) {
 			const tokenData = await generateOAuthTokenForUser(userId);
-			if (!tokenData) return;
+			if (!tokenData) throw err;
 
 			data[userId] = {
 				accessToken: tokenData.accessToken,
@@ -128,5 +128,7 @@ export async function tryOAuthRequest<T>(
 		const message = err instanceof RESTError && err.errors?.[0].message;
 		if (message && OAUTH_ERROR_MESSAGES.includes(message))
 			return tryOAuthRequest(userId, fn, true);
+
+		throw err;
 	}
 }

@@ -19,6 +19,7 @@ import {
 	getOpenCloudUniversePlace,
 } from "../helpers/requests/services/universes";
 import { sleep } from "./misc";
+import { tryOpenCloudAuthRequest } from "./cloudAuth";
 
 /*
 NewGame_NoAvailableSlots = 1
@@ -222,6 +223,8 @@ export type CanJoinUserDetermination = {
 
 export async function determineCanJoinUser(
 	props: FollowUserIntoExperienceRequest,
+	viewerUserId?: number,
+	viewerIsUnder13?: boolean,
 ): Promise<CanJoinUserDetermination> {
 	/*
 	const presenceData = presenceProcessor.request({
@@ -244,11 +247,18 @@ export async function determineCanJoinUser(
 		const presence = await presenceProcessor.request({
 			userId: props.userIdToFollow,
 		});
-		if (presence.universeId && presence.placeId) {
-			const openCloudPlaceData = await getOpenCloudUniversePlace({
-				universeId: presence.universeId,
-				placeId: presence.placeId,
-			});
+		if (presence.universeId && presence.placeId && viewerUserId) {
+			const openCloudPlaceData = await tryOpenCloudAuthRequest(
+				viewerUserId,
+				viewerIsUnder13 === false,
+				(authType, authCode) =>
+					getOpenCloudUniversePlace({
+						authType,
+						authCode,
+						universeId: presence.universeId!,
+						placeId: presence.placeId!,
+					}),
+			);
 
 			if (openCloudPlaceData.serverSize === 1) {
 				disabled = true;
@@ -369,33 +379,37 @@ export async function determineCanJoinUser(
 	};
 }
 
-export function getUniversePlayableDevices(universeId: number) {
+export function getUniversePlayableDevices(universeId: number, userId: number, isUnder13: boolean) {
 	return getOrSetCache<PlatformType[]>({
 		key: ["universes", universeId, "playableDevices"],
 		fn: () =>
-			getOpenCloudUniverse({
-				universeId,
-			})
-				.then((data) => {
-					const PlatformTypes: PlatformType[] = [];
-					if (data.desktopEnabled) {
-						PlatformTypes.push("Desktop");
-					}
-					if (data.mobileEnabled) {
-						PlatformTypes.push("Phone");
-					}
-					if (data.tabletEnabled) {
-						PlatformTypes.push("Tablet");
-					}
-					if (data.consoleEnabled) {
-						PlatformTypes.push("Console");
-					}
-					if (data.vrEnabled) {
-						PlatformTypes.push("VR");
-					}
-
-					return PlatformTypes;
+			tryOpenCloudAuthRequest(userId, isUnder13 === false, (authType, authCode) =>
+				getOpenCloudUniverse({
+					universeId,
+					authType,
+					authCode,
 				})
-				.catch(() => []),
+					.then((data) => {
+						const PlatformTypes: PlatformType[] = [];
+						if (data.desktopEnabled) {
+							PlatformTypes.push("Desktop");
+						}
+						if (data.mobileEnabled) {
+							PlatformTypes.push("Phone");
+						}
+						if (data.tabletEnabled) {
+							PlatformTypes.push("Tablet");
+						}
+						if (data.consoleEnabled) {
+							PlatformTypes.push("Console");
+						}
+						if (data.vrEnabled) {
+							PlatformTypes.push("VR");
+						}
+
+						return PlatformTypes;
+					})
+					.catch(() => []),
+			),
 	});
 }

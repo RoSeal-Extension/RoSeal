@@ -31,7 +31,7 @@ export async function tryAPIKeyRequest<T>(
 	fn: (apiKey: string) => Promise<T>,
 	forceRefresh?: boolean,
 	forceCreate?: boolean,
-): Promise<T | undefined> {
+): Promise<T> {
 	const data = ((await storage.get([API_KEYS_STORAGE_KEY]))?.[API_KEYS_STORAGE_KEY] ??
 		{}) as APIKeysStorageValue;
 
@@ -103,5 +103,7 @@ export async function tryAPIKeyRequest<T>(
 				return tryAPIKeyRequest(userId, fn, true, true);
 			}
 		}
+
+		throw err;
 	}
 }

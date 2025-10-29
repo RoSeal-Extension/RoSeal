@@ -1,7 +1,8 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../cache.ts";
-import { httpClient } from "../main.ts";
+import { CLOUD_API_KEY_HEADER_NAME, httpClient, OAUTH_AUTHORIZATION_HEADER_NAME } from "../main.ts";
 import type { SortOrder } from "./badges.ts";
+import type { OpenCloudAuthType } from "./misc.ts";
 
 export type GroupV2Owner = {
 	id: number;
@@ -29,6 +30,12 @@ export type MultigetGroupsByIdsRawResponse = {
 };
 
 export type GetGroupByIdRequest = {
+	groupId: number;
+};
+
+export type GetOpenCloudGroupRequest = {
+	authType: OpenCloudAuthType;
+	authCode: string;
 	groupId: number;
 };
 
@@ -258,6 +265,8 @@ export type ListGroupRoleMembersResponse = {
 };
 
 export type ListGroupMembersV2Request = {
+	authType: OpenCloudAuthType;
+	authCode: string;
 	groupId: number;
 	maxPageSize?: number;
 	pageToken?: string;
@@ -310,15 +319,19 @@ export async function getGroupGuildedShout({ groupId }: GetGroupGuildedShoutRequ
 	).body;
 }
 
-export function getOpenCloudGroup({ groupId }: GetGroupByIdRequest) {
+export function getOpenCloudGroup({ authType, authCode, groupId }: GetOpenCloudGroupRequest) {
 	return getOrSetCache({
 		key: ["groups", groupId, "openCloudDetails"],
 		fn: () =>
 			httpClient
 				.httpRequest<OpenCloudGroupDetails>({
-					url: `${getRobloxUrl("apis")}/user/cloud/v2/groups/${groupId}`,
+					url: `${getRobloxUrl("apis")}/cloud/v2/groups/${groupId}`,
+					headers: {
+						[OAUTH_AUTHORIZATION_HEADER_NAME]:
+							authType === "bearer" ? `Bearer ${authCode}` : undefined,
+						[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
+					},
 					errorHandling: "BEDEV2",
-					includeCredentials: true,
 				})
 				.then((res) => res.body),
 	});
@@ -507,12 +520,21 @@ export async function listGroupRoleMembers({
 	).body;
 }
 
-export async function listGroupMembersV2({ groupId, ...request }: ListGroupMembersV2Request) {
+export async function listGroupMembersV2({
+	groupId,
+	authType,
+	authCode,
+	...request
+}: ListGroupMembersV2Request) {
 	return (
 		await httpClient.httpRequest<ListGroupMembersV2Response>({
-			url: `${getRobloxUrl("apis")}/user/cloud/v2/groups/${groupId}/memberships`,
+			url: `${getRobloxUrl("apis")}/cloud/v2/groups/${groupId}/memberships`,
 			search: request,
-			includeCredentials: true,
+			headers: {
+				[OAUTH_AUTHORIZATION_HEADER_NAME]:
+					authType === "bearer" ? `Bearer ${authCode}` : undefined,
+				[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
+			},
 			errorHandling: "BEDEV2",
 		})
 	).body;

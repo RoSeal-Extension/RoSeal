@@ -5,7 +5,7 @@ export function tryOpenCloudAuthRequest<T>(
 	userId: number,
 	isUserOver13: boolean,
 	fn: (type: "apiKey" | "bearer", code: string) => Promise<T>,
-): Promise<T | undefined> {
+): Promise<T> {
 	if (isUserOver13) {
 		return tryOAuthRequest(userId, (code) => fn("bearer", code));
 	}

@@ -1,10 +1,11 @@
 import type { PlatformType } from "scripts/build/constants";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../cache";
-import { httpClient } from "../main";
+import { CLOUD_API_KEY_HEADER_NAME, httpClient, OAUTH_AUTHORIZATION_HEADER_NAME } from "../main";
 import type { Agent } from "./assets";
 import type { AvatarScales } from "./avatar";
 import type { SortOrder } from "./badges";
+import type { OpenCloudAuthType } from "./misc";
 
 export type MultigetUniversesPlayabilityStatusesRequest = {
 	overridePlatformType?: PlatformType;
@@ -582,6 +583,8 @@ export type ListAgentUniversesResponse = {
 };
 
 export type GetOpenCloudUniverseRequest = {
+	authType?: OpenCloudAuthType;
+	authCode?: string;
 	universeId: number;
 };
 
@@ -813,6 +816,8 @@ export type GetExperienceEventRSVPCountersResponse = {
 };
 
 export type GetOpenCloudUniversePlaceRequest = {
+	authType?: OpenCloudAuthType;
+	authCode?: string;
 	universeId: number;
 	placeId: number;
 };
@@ -1142,22 +1147,37 @@ export async function listAgentUniverses({
 	).body;
 }
 
-export async function getOpenCloudUniverse({ universeId }: GetOpenCloudUniverseRequest) {
+export async function getOpenCloudUniverse({
+	authType,
+	authCode,
+	universeId,
+}: GetOpenCloudUniverseRequest) {
 	return (
 		await httpClient.httpRequest<OpenCloudUniverse>({
-			url: `${getRobloxUrl("apis")}/user/cloud/v2/universes/${universeId}`,
-			includeCredentials: true,
+			url: `${getRobloxUrl("apis")}/cloud/v2/universes/${universeId}`,
+			headers: {
+				[OAUTH_AUTHORIZATION_HEADER_NAME]:
+					authType === "bearer" ? `Bearer ${authCode}` : undefined,
+				[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
+			},
 		})
 	).body;
 }
 
 export async function getOpenCloudUniversePlace({
+	authType,
+	authCode,
 	universeId,
 	placeId,
 }: GetOpenCloudUniversePlaceRequest) {
 	return (
 		await httpClient.httpRequest<OpenCloudPlace>({
-			url: `${getRobloxUrl("apis")}/user/cloud/v2/universes/${universeId}/places/${placeId}`,
+			url: `${getRobloxUrl("apis")}/cloud/v2/universes/${universeId}/places/${placeId}`,
+			headers: {
+				[OAUTH_AUTHORIZATION_HEADER_NAME]:
+					authType === "bearer" ? `Bearer ${authCode}` : undefined,
+				[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
+			},
 			includeCredentials: true,
 		})
 	).body;

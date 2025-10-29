@@ -7,12 +7,14 @@ import { handleTimeSwitch } from "src/ts/components/utils/handleTimeSwitch";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getUserCommunityJoinedDate } from "src/ts/utils/groups";
 import type { UserCommunityJoinedDateCarouselProps } from "./JoinedDateCarousel";
+import useAuthenticatedUser from "src/ts/components/hooks/useAuthenticatedUser";
 
 export default function UserCommunityJoinedDateGrid({
 	userId,
 	groupId,
 	state,
 }: UserCommunityJoinedDateCarouselProps) {
+	const [authenticatedUser] = useAuthenticatedUser();
 	const [isClickSwitchEnabled] = useFeatureValue("times.clickSwitch", false);
 	const joinedDate = useMemo(() => {
 		return state.value[groupId];
@@ -34,7 +36,15 @@ export default function UserCommunityJoinedDateGrid({
 			return onTimeClick?.();
 		}
 
-		getUserCommunityJoinedDate(groupId, userId, true).then((date) => {
+		if (!authenticatedUser) return;
+
+		getUserCommunityJoinedDate(
+			groupId,
+			userId,
+			authenticatedUser.userId,
+			authenticatedUser.isUnder13,
+			true,
+		).then((date) => {
 			if (date) {
 				state.value = {
 					...state.value,

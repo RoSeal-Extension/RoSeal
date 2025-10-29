@@ -9,13 +9,24 @@ import { getUniversePlayableDevices } from "src/ts/utils/joinData";
 import ExperienceField from "../core/items/ExperienceField";
 import Tooltip from "../core/Tooltip";
 import usePromise from "../hooks/usePromise";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 
 export type ExperiencePlayableDevicesProps = {
 	universeId: number;
 };
 
 export default function ExperiencePlayableDevices({ universeId }: ExperiencePlayableDevicesProps) {
-	const [deviceTypes] = usePromise(() => getUniversePlayableDevices(universeId), [universeId]);
+	const [authenticatedUser] = useAuthenticatedUser();
+	const [deviceTypes] = usePromise(
+		() =>
+			authenticatedUser &&
+			getUniversePlayableDevices(
+				universeId,
+				authenticatedUser?.userId,
+				authenticatedUser?.isUnder13,
+			),
+		[universeId, authenticatedUser?.userId, authenticatedUser?.isUnder13],
+	);
 	const icons = deviceTypes?.map((deviceType) => {
 		let icon: JSX.Element;
 		switch (deviceType) {

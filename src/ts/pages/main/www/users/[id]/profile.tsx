@@ -276,7 +276,7 @@ export default {
 										authCode,
 										userId: profileUserId,
 									}).then((data) => data.locale),
-							)
+							).catch(() => undefined)
 						: undefined;
 				if (localePromise) {
 					watchOnce(
