@@ -165,8 +165,8 @@ export default {
 				const child = el.childNodes[0];
 				if (child.nodeType === Node.TEXT_NODE) {
 					const span = document.createElement("span");
-					span.classList.add("text-label");
-					span.textContent = child.textContent;
+					span.classList.add("text-title-large", "account-info-inline-label");
+					span.textContent = child.textContent!.replace(":", "");
 
 					el.replaceChild(span, child);
 				}
