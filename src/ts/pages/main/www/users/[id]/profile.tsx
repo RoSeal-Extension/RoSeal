@@ -672,7 +672,7 @@ export default {
 										return skipThrough(true);
 									}
 
-									if (!field) return;
+									if (!field || !buttons) return;
 
 									filterPreviewDiv = renderBefore(
 										<FilteredTextPreview
@@ -876,9 +876,11 @@ export default {
 					}).then(([{ isBlocked, isBlockingViewer }]) => {
 						if (isBlockingViewer && !currentViewerBlockedContainer) {
 							watchOnce(
-								".details-actions.desktop-action, .profile-header-buttons",
+								"#profile-header-title-container-name, .details-actions.desktop-action, .profile-header-buttons",
 							).then((action) => {
 								action.parentElement?.classList.add("viewer-is-blocked");
+
+								if (currentViewerBlockedContainer) return;
 
 								currentViewerBlockedContainer = renderAfter(
 									<div className="viewer-blocked-text text">
@@ -905,6 +907,8 @@ export default {
 								container.classList.add("user-is-blocked");
 
 								setTimeout(() => {
+									if (currentBlockedContainer) return;
+
 									currentBlockedContainer = renderAppend(
 										<BlockedScreen
 											userId={profileUserId}
