@@ -211,9 +211,10 @@ export default function Server({
 		return {
 			expirationDate,
 			isRenewalActive,
-			isExpiringSoon: expirationDate
-				? differenceInDays(expirationDate, new Date()) <= 3
-				: false,
+			isExpiringSoon:
+				!isRenewalActive && expirationDate
+					? differenceInDays(expirationDate, new Date()) <= 3
+					: false,
 		};
 	}, [privateServerInventoryItem, ownerDetails, item, showServerExpiringDateEnabled]);
 
