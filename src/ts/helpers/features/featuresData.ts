@@ -1361,7 +1361,7 @@ export const sections = [
 															permissions: {
 																required: {
 																	origins: [
-																		`*://${getRoSealUrl("/*")}`,
+																		`*://${getRoSealUrl("*", "/*")}`,
 																	],
 																},
 															},
