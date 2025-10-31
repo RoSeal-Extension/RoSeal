@@ -3108,7 +3108,7 @@
 				"$context": ""
 			},
 			"description": {
-				"$message": "When enabled, adds a live stats chart to the experience details page above the statistics section. The data is fetched and stored on your machine in the current session , and updates much faster than 3rd-party site alternatives.",
+				"$message": "When enabled, adds a live stats chart to the experience details page above the statistics section. The data is fetched and stored on your machine in the current session , and updates much faster than 3rd-party site alternatives. NOTE: This is not intended to be used for historical data, it is just meant to catch highs and lows of data as they occur, accurately.",
 				"$context": ""
 			}
 		},
