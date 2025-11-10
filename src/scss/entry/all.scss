@@ -251,6 +251,10 @@
     display: none !important;
 }
 
+.list-item:has([data-item-is-blocked]) {
+    display: none !important;
+}
+
 [data-rosealfe-accountsmanager] {
     .rbx-header .rbx-navbar-right .popover:not(#notification-stream-popover):not(#settings-popover) .popover-content {
         position: revert !important;

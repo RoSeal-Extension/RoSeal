@@ -1298,7 +1298,7 @@ export default {
 							if (!card) return;
 
 							const creatorLink =
-								el.querySelector<HTMLAnchorElement>("a.creator-name")?.href;
+								card.querySelector<HTMLAnchorElement>("a.creator-name")?.href;
 							let creatorType: Agent | undefined;
 							let creatorTargetId: number | undefined;
 

@@ -155,11 +155,16 @@ export default function ItemBlockedScreen({
 		if (blockedItemsData.value) {
 			if (data) {
 				if (
-					blockedItemsData.value.creators.some(
+					allowedItemsData.value?.creators.some(
 						(creator) =>
 							creator.id === data.creator?.id && creator.type === data.creator.type,
-					) &&
-					!allowedItemsData.value?.creators.some(
+					)
+				) {
+					return { blockedType: undefined, otherCount: 0, keywords: [] };
+				}
+
+				if (
+					blockedItemsData.value.creators.some(
 						(creator) =>
 							creator.id === data.creator?.id && creator.type === data.creator.type,
 					)
