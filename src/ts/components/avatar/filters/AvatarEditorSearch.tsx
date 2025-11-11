@@ -17,16 +17,17 @@ function determineCanShow() {
 		"#avatar-react-container .rbx-tab-content > .tab-pane.active",
 	);
 
-	if (!active) return [false, false] as [boolean, boolean];
+	if (!active) return [false, false, false] as [boolean, boolean, boolean];
 
 	return [
 		active.id !== "bodyColors" && active.id !== "scale",
+		active.id !== "costumes",
 		active.id === "costumes" || active.id === "clothing",
-	] as [boolean, boolean];
+	] as [boolean, boolean, boolean];
 }
 
 export default function AvatarEditorSearch({ filters }: AvatarEditorSearchProps) {
-	const [[show, halfWidth], setShouldShow] = useState([true, false]);
+	const [[show, showCreatorSearch, halfWidth], setShouldShow] = useState([true, true, false]);
 
 	useEffect(() => {
 		setShouldShow(determineCanShow());
@@ -53,30 +54,32 @@ export default function AvatarEditorSearch({ filters }: AvatarEditorSearchProps)
 				"half-width": halfWidth,
 			})}
 		>
-			<FiltersContainer
-				filters={[
-					{
-						id: "creatorName",
-						title: getMessage("avatar.filters.creatorName.label"),
-						previewTitle: filters.value.creatorName
-							? getMessage("avatar.filters.creatorName.previewLabel", {
-									creatorName: filters.value.creatorName,
-								})
-							: getMessage("avatar.filters.creatorName.label"),
-						type: "input",
-						placeholder: getMessage("avatar.filters.creatorName.inputPlaceholder"),
-						value: filters.value.creatorName,
-						defaultLabel: getMessage("avatar.filters.creatorName.defaultLabel"),
-						defaultValue: AVATAR_EDITOR_FILTERS_INITIAL_VALUE.creatorName,
-					},
-				]}
-				applyFilterValue={(id, value) => {
-					filters.value = {
-						...filters.value,
-						[id]: value,
-					};
-				}}
-			/>
+			{showCreatorSearch && (
+				<FiltersContainer
+					filters={[
+						{
+							id: "creatorName",
+							title: getMessage("avatar.filters.creatorName.label"),
+							previewTitle: filters.value.creatorName
+								? getMessage("avatar.filters.creatorName.previewLabel", {
+										creatorName: filters.value.creatorName,
+									})
+								: getMessage("avatar.filters.creatorName.label"),
+							type: "input",
+							placeholder: getMessage("avatar.filters.creatorName.inputPlaceholder"),
+							value: filters.value.creatorName,
+							defaultLabel: getMessage("avatar.filters.creatorName.defaultLabel"),
+							defaultValue: AVATAR_EDITOR_FILTERS_INITIAL_VALUE.creatorName,
+						},
+					]}
+					applyFilterValue={(id, value) => {
+						filters.value = {
+							...filters.value,
+							[id]: value,
+						};
+					}}
+				/>
+			)}
 			<div className="input-group with-search-bar keyword-filter">
 				<TextInput
 					className="keyword-filter-input"
