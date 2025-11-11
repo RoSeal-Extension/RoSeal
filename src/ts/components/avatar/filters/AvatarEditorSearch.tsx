@@ -46,6 +46,15 @@ export default function AvatarEditorSearch({ filters }: AvatarEditorSearchProps)
 		});
 	}, []);
 
+	useEffect(() => {
+		if (!show || showCreatorSearch) return;
+
+		filters.value = {
+			...filters.value,
+			creatorName: "",
+		};
+	}, [showCreatorSearch]);
+
 	if (!show) return null;
 
 	return (
