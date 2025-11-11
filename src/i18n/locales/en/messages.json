@@ -2800,6 +2800,11 @@
 			"name": {
 				"$message": "View more types of items in the user inventory and favorites pages",
 				"$context": ""
+			},
+			"includeUnusedTypes": {
+				"name": {
+					"$message": "Include unused asset types"
+				}
 			}
 		},
 		"profilePlayerBadgesObtainedDates": {

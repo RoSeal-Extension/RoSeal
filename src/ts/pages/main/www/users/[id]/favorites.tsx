@@ -2,7 +2,11 @@ import ItemFavoritedDate from "src/ts/components/userInventory/FavoritedDate";
 import UserInventorySortOptions from "src/ts/components/userInventory/SortOptions";
 import { sendMessage } from "src/ts/helpers/communication/dom";
 import { watch, watchTextContent } from "src/ts/helpers/elements";
-import { featureValueIs, getFeatureValue } from "src/ts/helpers/features/helpers";
+import {
+	featureValueIs,
+	getFeatureValue,
+	multigetFeaturesValues,
+} from "src/ts/helpers/features/helpers";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type { MarketplaceItemType } from "src/ts/helpers/requests/services/marketplace";
@@ -28,12 +32,22 @@ export default {
 			: authenticatedUser!.userId;
 		const isCurrentUserPage = targetUserId === authenticatedUser?.userId;
 
-		featureValueIs("viewMoreInventoryFavoritesTypes", true, () =>
+		multigetFeaturesValues([
+			"viewMoreInventoryFavoritesTypes",
+			"viewMoreInventoryFavoritesTypes.includeUnusedTypes",
+		]).then((data) => {
+			if (!data.viewMoreInventoryFavoritesTypes) return;
+
 			sendMessage(
 				"user.inventory.setupCategories",
-				getInventoryFavoritesCategories(false, isCurrentUserPage),
-			),
-		);
+				getInventoryFavoritesCategories(
+					false,
+					isCurrentUserPage,
+					undefined,
+					data["viewMoreInventoryFavoritesTypes.includeUnusedTypes"],
+				),
+			);
+		});
 
 		if (isCurrentUserPage) {
 			featureValueIs("inventorySortFilters", true, () =>

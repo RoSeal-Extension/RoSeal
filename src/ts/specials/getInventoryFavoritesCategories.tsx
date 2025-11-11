@@ -2,6 +2,7 @@ import { getMessage } from "../helpers/i18n/getMessage";
 import type {
 	ListUserInventoryCategoriesResponse,
 	UserInventoryCategory,
+	UserInventoryCategoryItem,
 } from "../helpers/requests/services/inventory";
 import { getItemTypeDisplayLabel } from "../utils/itemTypesText";
 
@@ -9,6 +10,7 @@ export function getInventoryFavoritesCategories(
 	isInventory: boolean,
 	isSelf: boolean,
 	appendCategories?: UserInventoryCategory[],
+	includeUnusedAssetTypes?: boolean,
 ): ListUserInventoryCategoriesResponse {
 	const data = {
 		categories: [
@@ -725,22 +727,34 @@ export function getInventoryFavoritesCategories(
 						type: "AssetType",
 						categoryType: "AvatarAnimations",
 					},
-					{
-						name: "Pose",
-						displayName: getItemTypeDisplayLabel("Asset", "shortCategory", 56),
-						filter: null,
-						id: 56,
-						type: "AssetType",
-						categoryType: "AvatarAnimations",
-					},
-					{
-						name: "Death",
-						displayName: getItemTypeDisplayLabel("Asset", "shortCategory", 49),
-						filter: null,
-						id: 49,
-						type: "AssetType",
-						categoryType: "AvatarAnimations",
-					},
+					...(includeUnusedAssetTypes
+						? ([
+								{
+									name: "Pose",
+									displayName: getItemTypeDisplayLabel(
+										"Asset",
+										"shortCategory",
+										56,
+									),
+									filter: null,
+									id: 56,
+									type: "AssetType",
+									categoryType: "AvatarAnimations",
+								},
+								{
+									name: "Death",
+									displayName: getItemTypeDisplayLabel(
+										"Asset",
+										"shortCategory",
+										49,
+									),
+									filter: null,
+									id: 49,
+									type: "AssetType",
+									categoryType: "AvatarAnimations",
+								},
+							] satisfies UserInventoryCategoryItem[])
+						: []),
 				],
 			},
 			...(appendCategories ?? []),

@@ -67,6 +67,7 @@ export default {
 
 		multigetFeaturesValues([
 			"viewMoreInventoryFavoritesTypes",
+			"viewMoreInventoryFavoritesTypes.includeUnusedTypes",
 			"avatarItemArchiveInInventory",
 			"viewUserSharedPrivateServers",
 		]).then((data) => {
@@ -113,7 +114,12 @@ export default {
 			if (data.viewMoreInventoryFavoritesTypes) {
 				sendMessage(
 					"user.inventory.setupCategories",
-					getInventoryFavoritesCategories(true, isCurrentUserPage, categories),
+					getInventoryFavoritesCategories(
+						true,
+						isCurrentUserPage,
+						categories,
+						data["viewMoreInventoryFavoritesTypes.includeUnusedTypes"],
+					),
 				);
 			} else if (categories.length > 0) {
 				sendMessage("user.inventory.addCategories", categories);

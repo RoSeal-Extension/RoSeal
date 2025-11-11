@@ -1923,6 +1923,18 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
+						subfeatures: {
+							items: [
+								{
+									type: "Regular",
+									id: "viewMoreInventoryFavoritesTypes.includeUnusedTypes",
+									component: {
+										type: "Toggle",
+										defaultValue: false,
+									},
+								},
+							],
+						},
 					},
 					{
 						type: "Regular",
