@@ -11,9 +11,7 @@ export function getLaunchData(): Promise<RoSealLaunchData> {
 }
 
 export let launchData: RoSealLaunchData | undefined;
-export const initialLaunchDataFetch = getLaunchData()
-	.then((data) => {
-		launchData = data;
-		return data;
-	})
-	.catch(() => {});
+export const initialLaunchDataFetch = getLaunchData().then((data) => {
+	launchData = data;
+	return data;
+});
