@@ -20,23 +20,23 @@ export const launchDataCall =
 							return resolve(data[LAUNCH_DATA_STORAGE_KEY]);
 						}
 					}),
-					getRoSealLaunchData().then((data) => {
-						if (data) {
-							storage.set({ [LAUNCH_DATA_STORAGE_KEY]: data });
-							launchData = data;
+					getRoSealLaunchData()
+						.then((data) => {
+							if (data) {
+								storage.set({ [LAUNCH_DATA_STORAGE_KEY]: data });
+								launchData = data;
 
-							return resolve(data);
-						}
-					}),
-				])
-					.catch(() => {})
-					.then(() => {
-						if (!launchData) {
-							launchData = {};
-						}
+								return resolve(data);
+							}
+						})
+						.catch(() => {}),
+				]).then(() => {
+					if (!launchData) {
+						launchData = {};
+					}
 
-						resolve({});
-					});
+					resolve({});
+				});
 			})
 		: undefined;
 
