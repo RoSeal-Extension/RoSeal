@@ -28,12 +28,15 @@ export const launchDataCall =
 							return resolve(data);
 						}
 					}),
-				]).then(() => {
-					if (!launchData) {
-						launchData = {};
-					}
-					resolve({});
-				});
+				])
+					.catch(() => {})
+					.then(() => {
+						if (!launchData) {
+							launchData = {};
+						}
+
+						resolve({});
+					});
 			})
 		: undefined;
 
