@@ -53,7 +53,6 @@ import {
 	PENDING_ROBUX_SESSION_CACHE_STORAGE_KEY,
 	ROBUX_HISTORY_STORAGE_KEY,
 	type RobuxHistoryStorageValue,
-	SYNC_THEME_ENABLED_LOCALSTORAGE_KEY,
 	VOICE_CHAT_SUSPENSION_STORAGE_KEY,
 } from "src/ts/constants/misc";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
@@ -116,7 +115,6 @@ import {
 	setUserInformedOfBan,
 } from "src/ts/helpers/requests/services/voice";
 import {
-	getLocalStorage,
 	getTimedStorage,
 	onStorageValueUpdate,
 	setTimedStorage,
@@ -390,14 +388,6 @@ export default {
 			initializeCheckingFriends,
 		);
 		initializeCheckingFriends();
-
-		featureValueIs("syncBrowserThemeOption", true, async () => {
-			const isEnabled = getLocalStorage(SYNC_THEME_ENABLED_LOCALSTORAGE_KEY) === true;
-
-			if (isEnabled) {
-				syncTheme();
-			}
-		});
 
 		getFeatureValue("animalText").then((value) => {
 			if (!value?.[0]) {

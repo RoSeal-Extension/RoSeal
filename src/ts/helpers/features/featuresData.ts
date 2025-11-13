@@ -46,7 +46,6 @@ import {
 	PERSIST_TRANSACTIONS_SELECTION_LOCALSTORAGE_KEY,
 	ROBUX_HISTORY_STORAGE_KEY,
 	STARTUP_NOTIFICATIONS_FEATURE_ID,
-	SYNC_THEME_ENABLED_LOCALSTORAGE_KEY,
 } from "src/ts/constants/misc";
 import { EXPERIMENTS_DISCOVERED_STORAGE_KEY } from "src/ts/constants/robloxExperiments";
 import {
@@ -3391,17 +3390,6 @@ export const sections = [
 						},
 						storageKeys: {
 							main: [ACCOUNT_TRACKING_PREVENTION_STORAGE_KEY],
-						},
-					},
-					{
-						type: "Regular",
-						id: "syncBrowserThemeOption",
-						component: {
-							type: "Toggle",
-							defaultValue: true,
-						},
-						storageKeys: {
-							localStorage: [SYNC_THEME_ENABLED_LOCALSTORAGE_KEY],
 						},
 					},
 					{

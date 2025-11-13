@@ -164,11 +164,6 @@ export type DOMCommunicationMessageDataTypes = {
 			playlists?: CustomHomePlaylist[];
 		};
 	};
-	"settings.changeTheme": {
-		args: {
-			isSync: boolean;
-		};
-	};
 	triggerHandler: {
 		args: [string, unknown];
 	};

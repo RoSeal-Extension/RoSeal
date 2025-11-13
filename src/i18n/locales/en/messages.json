@@ -171,12 +171,6 @@
 	},
 	"robloxSettings": {
 		"$context": "Roblox settings page",
-		"theme": {
-			"syncTheme": {
-				"$message": "Sync with browser",
-				"$context": "The option under Theme in account settings to sync the theme of the website with the browser"
-			}
-		},
 		"privateServerSubscriptions": {
 			"$context": "Private server subscriptions section in account settings",
 			"title": {
@@ -3768,16 +3762,6 @@
 			},
 			"description": {
 				"$message": "When enabled, allows you to view the sales and revenue of developer products, avatar items and passes that you can manage. You cannot view the sales of items you cannot manage.",
-				"$context": ""
-			}
-		},
-		"syncBrowserThemeOption": {
-			"name": {
-				"$message": "Add an option to sync the Roblox website theme with the browser theme",
-				"$context": ""
-			},
-			"$description": {
-				"$message": "When enabled, adds an option to the Theme dropdown on the settings page to sync the Roblox website theme with the browser theme.",
 				"$context": ""
 			}
 		},

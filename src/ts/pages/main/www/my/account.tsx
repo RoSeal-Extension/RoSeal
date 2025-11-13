@@ -8,21 +8,17 @@ import BetterGroupNotifications from "src/ts/components/settings/BetterGroupNoti
 import BetterPrivateServerSubscriptions from "src/ts/components/settings/BetterPrivateServerSubscriptions";
 import RoSealSettings from "src/ts/components/settings/RoSealSettings";
 import UsernamePreviewContainer from "src/ts/components/users/UsernamePreviewContainer";
-import { SYNC_THEME_ENABLED_LOCALSTORAGE_KEY } from "src/ts/constants/misc";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
-import { addMessageListener, sendMessage } from "src/ts/helpers/communication/dom";
 import { hideEl, modifyTitle, watch, watchOnce } from "src/ts/helpers/elements";
 import { featureValueIs } from "src/ts/helpers/features/helpers";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getAbsoluteTime } from "src/ts/helpers/i18n/intlFormats";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { getUserVoiceSettings } from "src/ts/helpers/requests/services/voice";
-import { getLocalStorage, removeLocalStorage, setLocalStorage } from "src/ts/helpers/storage";
 import currentUrl from "src/ts/utils/currentUrl";
 
 import { MY_ACCOUNT_REGEX } from "src/ts/utils/regex";
 import { renderAfter, renderAppend, renderIn } from "src/ts/utils/render";
-import { syncTheme } from "src/ts/utils/theme";
 
 export default {
 	id: "account.settings",
@@ -128,31 +124,6 @@ export default {
 				}
 			}),
 		);
-
-		featureValueIs("syncBrowserThemeOption", true, () => {
-			let currentSyncListener: (() => void) | undefined;
-
-			sendMessage("settings.changeTheme", {
-				isSync: getLocalStorage(SYNC_THEME_ENABLED_LOCALSTORAGE_KEY) === true,
-			});
-
-			addMessageListener("settings.changeTheme", (data) => {
-				if (currentSyncListener) {
-					currentSyncListener();
-					currentSyncListener = undefined;
-				}
-
-				if (data.isSync) {
-					syncTheme().then((listener) => {
-						currentSyncListener = listener;
-					});
-
-					setLocalStorage(SYNC_THEME_ENABLED_LOCALSTORAGE_KEY, true);
-				} else {
-					removeLocalStorage(SYNC_THEME_ENABLED_LOCALSTORAGE_KEY);
-				}
-			});
-		});
 
 		featureValueIs("showExperienceChatUsernameColor", true, () => {
 			watch<HTMLInputElement>("#desired-username-text-box", (el) => {
