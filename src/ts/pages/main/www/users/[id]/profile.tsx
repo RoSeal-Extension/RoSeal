@@ -470,20 +470,10 @@ export default {
 				watch(
 					".desktop-action .btn-join-game, .profile-header-buttons > button, .buttons-show-on-desktop button, .buttons-show-on-mobile button",
 					async (desktop) => {
-						if (desktop.className.includes("Mui")) {
-							if (
-								desktop.querySelector("span")?.textContent !==
-								(await joinButtonLabel)
-							) {
-								return;
-							}
-						} else if (desktop.classList.contains("foundation-web-button")) {
-							if (
-								desktop.querySelector("span")?.textContent !==
-								(await joinButtonLabel)
-							) {
-								return;
-							}
+						if (
+							desktop.querySelector("span")?.textContent !== (await joinButtonLabel)
+						) {
+							return;
 						}
 
 						const mobile = document.querySelector(".mobile-action .btn-join-game");
