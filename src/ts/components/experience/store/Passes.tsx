@@ -2,6 +2,7 @@ import { useEffect, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { userOwnsItem } from "src/ts/helpers/requests/services/inventory";
 import {
+	batchGetPassOwnerships,
 	getPassProductById,
 	listUniversePasses,
 	type UniversePassDetails,
@@ -132,19 +133,20 @@ export default function Passes({ universeId, canManageUniverse }: PassesProps) {
 		if (!targetUser || !allItems.length) return;
 
 		setTargetUserOwned(null);
-		const ownedPassIds: number[] = [];
 
 		let eject = false;
-		Promise.all(
-			allItems.map((pass) =>
-				userOwnsItem({
-					userId: targetUser.id,
-					itemId: pass.id,
-					itemType: "GamePass",
-				}).then((owned) => owned && ownedPassIds.push(pass.id)),
-			),
-		).then(() => {
+		batchGetPassOwnerships({
+			ownershipIdentifiers: allItems.map((pass) => ({
+				gamePassId: pass.id,
+				userId: targetUser.id,
+			})),
+		}).then((data) => {
 			if (eject) return;
+
+			const ownedPassIds: number[] = [];
+			for (const item of data) {
+				if (item.owned) ownedPassIds.push(item.gamePassId);
+			}
 
 			setTargetUserOwned(ownedPassIds);
 		});

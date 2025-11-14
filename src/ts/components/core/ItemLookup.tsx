@@ -67,6 +67,9 @@ export default function ItemLookup<
 			)}
 			ref={ref}
 			onFocus={() => setOpen(true)}
+			onClick={(e) => {
+				e.stopPropagation();
+			}}
 		>
 			<TextInput
 				className={classNames("item-lookup-field", inputClassName)}
