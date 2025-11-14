@@ -153,7 +153,6 @@ import {
 	renderIn,
 	renderPrepend,
 } from "src/ts/utils/render";
-import { syncTheme } from "src/ts/utils/theme";
 import {
 	getHashUrl,
 	getResizeThumbnailUrl,
