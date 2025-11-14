@@ -1509,8 +1509,17 @@ export const sections = [
 									type: "Regular",
 									id: "improvedExperienceServersTab.showDebugInfo",
 									component: {
-										type: "Toggle",
-										defaultValue: true,
+										type: "DropdownWithToggle",
+										values: [
+											{
+												value: "all",
+											},
+											{
+												value: "idOnly",
+											},
+										],
+										toggleDefaultValue: true,
+										defaultValue: "idOnly",
 									},
 								},
 							],

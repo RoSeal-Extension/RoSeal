@@ -185,6 +185,8 @@ export default function Server({
 	const isInactive = item.type === "private" && !item.accessCode;
 	const isFreeServer = privateServerPrice === 0;
 
+	const canClickServerDebugInfo = showServerDebugInfo !== "idOnly" && !shouldUseStack;
+
 	const showExperienceUnderLoad =
 		!isServerOnline && canJoinServer && item.type === "private" && isExperienceUnderLoad;
 
@@ -921,10 +923,10 @@ export default function Server({
 				{isServerOnline && showServerDebugInfo && (
 					<div
 						className={classNames(`${cssKey}-server-debug-info server-debug-info`, {
-							"cursor-pointer": shouldUseStack,
+							"cursor-pointer": canClickServerDebugInfo,
 						})}
 						onClick={() => {
-							if (!shouldUseStack) {
+							if (!canClickServerDebugInfo) {
 								return;
 							}
 
@@ -944,10 +946,12 @@ export default function Server({
 							if (nextType >= types.length) {
 								nextType = 0;
 							}
+
 							setNonPrivateDebugStatType(types[nextType]);
 						}}
 					>
-						{(!shouldUseStack || nonPrivateDebugStatType === "channelName") &&
+						{showServerDebugInfo === "all" &&
+							(!shouldUseStack || nonPrivateDebugStatType === "channelName") &&
 							item.joinData?.data?.rcc &&
 							item.joinData?.data.rcc.channelName !==
 								DEFAULT_RELEASE_CHANNEL_NAME && (
@@ -957,7 +961,8 @@ export default function Server({
 									})}
 								</div>
 							)}
-						{(!shouldUseStack || nonPrivateDebugStatType === "version") &&
+						{showServerDebugInfo === "all" &&
+							(!shouldUseStack || nonPrivateDebugStatType === "version") &&
 							item.joinData?.data?.rcc && (
 								<div className="debug-stat">
 									{getMessage("experience.servers.server.debugStats.version", {
@@ -965,7 +970,9 @@ export default function Server({
 									})}
 								</div>
 							)}
-						{(!shouldUseStack || nonPrivateDebugStatType === "id") && (
+						{(!shouldUseStack ||
+							nonPrivateDebugStatType === "id" ||
+							showServerDebugInfo === "idOnly") && (
 							<div
 								className={classNames("debug-stat", {
 									"show-on-hover":

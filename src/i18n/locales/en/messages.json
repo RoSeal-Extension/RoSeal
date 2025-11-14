@@ -4388,6 +4388,14 @@
 				"name": {
 					"$message": "Show server debug info",
 					"$context": ""
+				},
+				"values": {
+					"idOnly": {
+						"$message": "ID Only"
+					},
+					"all": {
+						"$message": "All Info"
+					}
 				}
 			}
 		},
@@ -10531,7 +10539,7 @@
 		"store": {
 			"$context": "Store tab",
 			"passes": {
-				"$message": "Passes & Subscriptions",
+				"$message": "Public Store",
 				"$context": "Passes & Subscriptions dropdown selection"
 			},
 			"developerProducts": {

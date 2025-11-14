@@ -102,10 +102,10 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 		"improvedExperienceServersTab.showServerLikelyBotted",
 		false,
 	);
-	const [showServerDebugInfo] = useFeatureValue(
-		"improvedExperienceServersTab.showDebugInfo",
-		true,
-	);
+	const [showServerDebugInfo] = useFeatureValue("improvedExperienceServersTab.showDebugInfo", [
+		false,
+		"idOnly",
+	]);
 	const [showServerUpdateDelayEnabled] = useFeatureValue(
 		"improvedExperienceServersTab.showServerUpdateDelay",
 		false,
@@ -313,6 +313,7 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 			});
 	}, [calculateServerDistance]);
 
+	console.log(showServerDebugInfo?.[0] === true && showServerDebugInfo[1]);
 	return (
 		<ServersTabContext.Provider
 			value={{
@@ -335,7 +336,7 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 				latestPlaceVersion: latestPlaceVersion ?? undefined,
 				preCreatePrivateServersEnabled: preCreatePrivateServersEnabled === true,
 				regionFiltersEnabled: regionFiltersEnabled === true,
-				showServerDebugInfo: showServerDebugInfo === true,
+				showServerDebugInfo: showServerDebugInfo?.[0] === true && showServerDebugInfo[1],
 				showServerDistance: showServerDistance === true,
 				showServerLikelyBotted: showServerLikelyBotted === true,
 				showServerUpdateDelayEnabled: showServerUpdateDelayEnabled === true,

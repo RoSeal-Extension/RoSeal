@@ -40,7 +40,9 @@ export type ServersTabContextData = {
 	showServerLikelyBotted: boolean;
 	regionFiltersEnabled: boolean;
 	showServerDistance: boolean;
-	showServerDebugInfo: boolean;
+	showServerDebugInfo:
+		| boolean
+		| FeatureValue<(typeof features)["improvedExperienceServersTab.showDebugInfo"]>[1];
 	showServerUpdateDelayEnabled: boolean;
 	showServerPerformanceEnabled: boolean;
 	showServerPlaceVersionEnabled: boolean;
