@@ -1,17 +1,24 @@
-import { ROBLOX_BADGES_CONFIG } from "src/ts/constants/profile";
+import { ROBLOX_ADMINISTRATOR_BADGE_ID, ROBLOX_BADGES_CONFIG } from "src/ts/constants/profile";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
 import { getRobloxBadgesInfoLink } from "src/ts/utils/links";
 import { crossSort } from "src/ts/utils/objects";
 import usePromise from "../../hooks/usePromise";
 import { RobloxBadgeContainer } from "./RobloxBadgeContainer";
+import useFeatureValue from "../../hooks/useFeatureValue";
+import { useMemo } from "preact/hooks";
 
 export type RobloxBadgesContainerProps = {
 	userId: number;
 };
 
 export default function RobloxBadgesContainer({ userId }: RobloxBadgesContainerProps) {
-	const [badges] = usePromise(
+	const [useRoSealDefinedOrdering] = useFeatureValue(
+		"robloxBadgesObtainedDates.useRoSealOrdering",
+		false,
+	);
+
+	const [allBadges] = usePromise(
 		() =>
 			getProfileComponentsData({
 				profileType: "User",
@@ -22,24 +29,40 @@ export default function RobloxBadgesContainer({ userId }: RobloxBadgesContainerP
 					},
 				],
 			}).then((data) => {
-				const list = data.components.RobloxBadges?.robloxBadgeList;
-				if (list)
-					return crossSort(list, (a, b) => {
-						let aPriority = 99;
-						let bPriority = 99;
-						for (const item of ROBLOX_BADGES_CONFIG) {
-							if (a.type.id === item.id) {
-								aPriority = item.priority;
-							} else if (b.type.id === item.id) {
-								bPriority = item.priority;
-							}
-						}
-
-						return aPriority - bPriority;
-					});
+				return data.components.RobloxBadges?.robloxBadgeList;
 			}),
 		[userId],
 	);
+
+	const badges = useMemo(() => {
+		if (allBadges) {
+			return crossSort(allBadges, (a, b) => {
+				if (useRoSealDefinedOrdering) {
+					let aPriority = 99;
+					let bPriority = 99;
+					for (const item of ROBLOX_BADGES_CONFIG) {
+						if (a.type.id === item.id) {
+							aPriority = item.priority;
+						} else if (b.type.id === item.id) {
+							bPriority = item.priority;
+						}
+					}
+
+					return aPriority - bPriority;
+				}
+
+				if (ROBLOX_ADMINISTRATOR_BADGE_ID === b.type.id) {
+					return 1;
+				}
+
+				if (ROBLOX_ADMINISTRATOR_BADGE_ID === a.type.id) {
+					return -1;
+				}
+
+				return 0;
+			});
+		}
+	}, [allBadges, useRoSealDefinedOrdering]);
 
 	return (
 		badges &&

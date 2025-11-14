@@ -2812,6 +2812,11 @@
 				"$message": "Show obtained dates for Roblox badges on user profile on hover",
 				"$context": ""
 			},
+			"useRoSealOrdering": {
+				"name": {
+					"$message": "Sort Roblox badges by importance"
+				}
+			},
 			"showUniqueIds": {
 				"name": {
 					"$message": "Show unique ID of the badge",

@@ -1984,6 +1984,14 @@ export const sections = [
 							items: [
 								{
 									type: "Regular",
+									id: "robloxBadgesObtainedDates.useRoSealOrdering",
+									component: {
+										type: "Toggle",
+										defaultValue: true,
+									},
+								},
+								{
+									type: "Regular",
 									id: "robloxBadgesObtainedDates.showUniqueIds",
 									component: {
 										type: "Toggle",
