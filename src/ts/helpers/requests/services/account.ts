@@ -126,6 +126,7 @@ export type UserSettings = {
 	doNotDisturbTimeWindow?: DNDTimeWindow;
 	eppEnrollmentStatus?: AEPEnrollmentStatus;
 	allowSensitiveIssues?: EnabledDisabled;
+	allowFacialAgeEstimation?: EnabledDisabled;
 };
 
 export type UpdateUserSettingsRequest = {
@@ -165,6 +166,7 @@ export type UpdateUserSettingsRequest = {
 	doNotDisturbTimeWindow?: DNDTimeWindow;
 	eppEnrollmentStatus?: AEPEnrollmentStatus;
 	allowSensitiveIssues?: EnabledDisabled;
+	allowFacialAgeEstimation?: EnabledDisabled;
 };
 
 export type GetCurrentAuthenticatedUserResponse = {
