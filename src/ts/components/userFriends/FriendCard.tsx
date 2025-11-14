@@ -329,7 +329,12 @@ export default function FriendCard({
 			truncateFirstLine = true;
 		}
 	} else if (currentTab === "friend-requests") {
-		if (showFriendRequestSentAtText && friendRequest?.sentAt && profileData?.names.username) {
+		if (
+			showFriendRequestSentAtText &&
+			friendRequest?.sentAt &&
+			friendRequest?.sentAt !== "0001-01-01T05:51:00Z" &&
+			profileData?.names.username
+		) {
 			firstLineText = getMessage("friends.card.sentAt", {
 				time: asLocaleString(new Date(friendRequest.sentAt)),
 			});

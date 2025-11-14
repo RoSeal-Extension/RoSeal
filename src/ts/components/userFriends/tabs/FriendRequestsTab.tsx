@@ -340,12 +340,12 @@ export default function FriendRequestsTab({
 										item.components.followingsCount,
 										filters.minFollowingsCount,
 										filters.maxFollowingsCount,
-									)) /*&&
+									))) /*&&
 									checkValue(
 										item.components.joinedDate,
 										filters.minJoinedDate,
 										filters.maxJoinedDate,
-									)*/)
+									)*/
 						);
 					}
 				: undefined,
