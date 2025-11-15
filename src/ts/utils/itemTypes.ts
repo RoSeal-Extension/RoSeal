@@ -612,6 +612,18 @@ export const assetTypes = [
 		assetType: "CreatorExperienceConfig",
 		assetTypeId: 87,
 	},
+	{
+		assetType: "FaceMakeup",
+		assetTypeId: 88,
+	},
+	{
+		assetType: "LipMakeup",
+		assetTypeId: 89,
+	},
+	{
+		assetType: "EyeMakeup",
+		assetTypeId: 90,
+	},
 ] satisfies AssetTypeData[];
 
 export const bundleTypes = [
