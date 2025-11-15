@@ -14,7 +14,7 @@ export default function Page404() {
 			<div className="request-error-page-content roseal-error-page">
 				<div className="default-error-page section-content">
 					<img
-						src={`https://${getRobloxCDNUrl("static", "/d8ff6ab6cc7b632e0377bdb206f69490.png")}`}
+						src={`https://${getRobloxCDNUrl("images", "/db3312a56f2d4b12e4a5e55523e6320c.png")}`}
 						className="error-image"
 						alt={getMessage("errorPage.404.imageAlt")}
 					/>
