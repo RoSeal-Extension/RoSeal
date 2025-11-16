@@ -39,7 +39,9 @@ export async function getFeatureValue<
 	}
 
 	try {
-		const syncedValue = (await storage.get([FEATURE_STORAGE_KEY]))?.[FEATURE_STORAGE_KEY] ?? {};
+		const syncedValue = ((await storage.get([FEATURE_STORAGE_KEY]))?.[FEATURE_STORAGE_KEY] ??
+			// biome-ignore lint/suspicious/noExplicitAny: fine wtv
+			{}) as Record<string, any>;
 
 		if (featureId in syncedValue) {
 			const featureValue = syncedValue[featureId];
@@ -151,7 +153,7 @@ export function setFeatureValue<T extends Feature | AnyFeature["id"]>(
 
 	if (!compareFeatureValues(value as FeatureValue<AnyFeature>, defaultValue)) {
 		return storage.get(FEATURE_STORAGE_KEY).then((data) => {
-			const syncedValue = data?.[FEATURE_STORAGE_KEY] ?? {};
+			const syncedValue = (data?.[FEATURE_STORAGE_KEY] ?? {}) as Record<string, unknown>;
 			if (feature.id in syncedValue) {
 				delete syncedValue[feature.id];
 			}
@@ -163,7 +165,7 @@ export function setFeatureValue<T extends Feature | AnyFeature["id"]>(
 	}
 
 	return storage.get(FEATURE_STORAGE_KEY).then((data) => {
-		const syncedValue = data?.[FEATURE_STORAGE_KEY] ?? {};
+		const syncedValue = (data?.[FEATURE_STORAGE_KEY] ?? {}) as Record<string, unknown>;
 
 		for (const key in syncedValue) {
 			if (!(key in features)) {
@@ -191,7 +193,8 @@ export function removeFeaturesValues<T extends AnyFeature["id"]>(
 	}
 
 	return storage.get(FEATURE_STORAGE_KEY).then((data) => {
-		const syncedValue = data?.[FEATURE_STORAGE_KEY] ?? {};
+		const syncedValue = (data?.[FEATURE_STORAGE_KEY] ?? {}) as Record<string, unknown>;
+
 		for (const featureId of featureIds) {
 			if (featureId in syncedValue) {
 				delete syncedValue[featureId];

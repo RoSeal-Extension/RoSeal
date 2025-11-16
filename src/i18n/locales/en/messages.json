@@ -1883,13 +1883,33 @@
 	},
 	"settings": {
 		"$context": "RoSeal Settings pages",
-		"storageUnavailable": {
-			"$context": "Storage unavailable thing",
-			"title": {
-				"$message": "Critical: Storage unavailable"
+		"alerts": {
+			"storageUnavailable": {
+				"$context": "Storage unavailable thing",
+				"title": {
+					"$message": "Critical: Storage unavailable"
+				},
+				"message": {
+					"$message": "A fatal error caused by your browser has disabled RoSeal's storage functionality. We are not sure why this happens and we recommend you to reinstall RoSeal if reloading the page does not work."
+				}
 			},
-			"message": {
-				"$message": "A fatal error caused by your browser has disabled RoSeal's storage functionality. We are not sure why this happens and we recommend you to reinstall RoSeal if reloading the page does not work."
+			"rosealPermissionRequired": {
+				"$context": "Roseal.live no permission",
+				"title": {
+					"$message": "Critical: RoSeal website permission denied"
+				},
+				"message": {
+					"$message": "You have rejected RoSeal permission to the roseal.live domain. RoSeal requires this for multiple features and basic functionality. Please allow it in your browser's extensions permissions page for RoSeal."
+				}
+			},
+			"otherReason": {
+				"$context": "some other stupid reason",
+				"title": {
+					"$message": "Critical: Features failed to load"
+				},
+				"message": {
+					"$message": "Due to an unknown reason, the initial RoSeal launch data call has failed. This is most definitely a bug."
+				}
 			}
 		},
 		"management": {

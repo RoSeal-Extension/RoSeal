@@ -4,6 +4,7 @@ import {
 	type RoSealLaunchData,
 } from "src/ts/helpers/requests/services/roseal";
 import { storage } from "src/ts/helpers/storage";
+import { error } from "src/ts/utils/console";
 import type { BackgroundMessageListener } from "src/types/dataTypes";
 
 let launchData: RoSealLaunchData | undefined;
@@ -29,7 +30,9 @@ export const launchDataCall =
 								return resolve(data);
 							}
 						})
-						.catch(() => {}),
+						.catch((err) => {
+							error("Background launch data call failed:", err);
+						}),
 				]).then(() => {
 					if (!launchData) {
 						launchData = {};

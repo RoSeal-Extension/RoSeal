@@ -1,10 +1,14 @@
 import { invokeMessage } from "../helpers/communication/background";
 import type { RoSealLaunchData } from "../helpers/requests/services/roseal";
 import { launchDataCall } from "../pages/background-listeners/getLaunchData";
+import { error } from "./console";
 
 export function getLaunchData(): Promise<RoSealLaunchData> {
 	if (import.meta.env.ENV === "main") {
-		return invokeMessage("getLaunchData", undefined).catch(() => ({}));
+		return invokeMessage("getLaunchData", undefined).catch((err) => {
+			error("Failed to get launch data from background:", err);
+			return {};
+		});
 	}
 
 	return launchDataCall!;
