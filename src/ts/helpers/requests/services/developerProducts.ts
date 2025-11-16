@@ -132,8 +132,11 @@ export async function getDeveloperProductById({
 				"apis",
 				"/developer-products",
 			)}/v1/developer-products/${developerProductId}`,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -147,9 +150,12 @@ export async function getDeveloperProductByProductId({
 				"apis",
 				"/developer-products",
 			)}/v1/developer-products/${productId}/details`,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -164,9 +170,12 @@ export async function listUniverseDeveloperProducts({
 				"apis",
 			)}/developer-products/v2/universes/${universeId}/developerproducts`,
 			search: request,
-			errorHandling: "BEDEV2",
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
-			includeCredentials: true,
+			errorHandling: "BEDEV2",
 		})
 	).body;
 }
@@ -179,9 +188,12 @@ export async function listStorePageDeveloperProducts({
 		await httpClient.httpRequest<ListStorePageDeveloperProductsResponse>({
 			url: `${getRobloxUrl("apis")}/experience-store/v1/universes/${universeId}/store`,
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -193,9 +205,12 @@ export async function listPendingDeveloperProductTransactions(
 		await httpClient.httpRequest<PendingDeveloperProductTransaction[]>({
 			url: getRobloxUrl("apis", "/developer-products/v1/game-transactions"),
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }

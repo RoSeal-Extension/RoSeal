@@ -140,9 +140,12 @@ export async function listUserConversations(request: ListUserConversationsReques
 		await httpClient.httpRequest<ListUserConversationsResponse>({
 			url: getRobloxUrl("apis", "/platform-chat-api/v1/get-user-conversations"),
 			search: snakeizeObject(request, { deep: true }),
-			errorHandling: "BEDEV2",
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
+			errorHandling: "BEDEV2",
 		})
 	).body;
 }
@@ -151,9 +154,12 @@ export async function getChatMetadata() {
 	return (
 		await httpClient.httpRequest<GetChatMetadataResponse>({
 			url: getRobloxUrl("apis", "/platform-chat-api/v1/metadata"),
-			errorHandling: "BEDEV2",
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
+			errorHandling: "BEDEV2",
 		})
 	).body;
 }

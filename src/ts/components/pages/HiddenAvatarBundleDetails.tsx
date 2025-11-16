@@ -33,7 +33,10 @@ export default function HiddenAvatarBundleContainer({
 				httpClient.httpRequest<Document>({
 					url: getShareLink("AvatarItemDetails", data.linkId, "en"),
 					expect: "dom",
-					includeCredentials: false,
+					credentials: {
+						type: "cookies",
+						value: false,
+					},
 				}),
 			)
 			.then(async (res) => {

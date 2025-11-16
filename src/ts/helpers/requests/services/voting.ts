@@ -17,8 +17,11 @@ export async function getCurrentUserVoteCount(request: GetCurrentUserVoteCountRe
 		await httpClient.httpRequest<GetCurrentUserVoteCountResponse>({
 			url: getRobloxUrl("apis", "/voting-api/user/get-vote-count"),
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }

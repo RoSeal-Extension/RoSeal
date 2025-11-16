@@ -1,11 +1,11 @@
 import type { PlatformType } from "scripts/build/constants";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../cache";
-import { CLOUD_API_KEY_HEADER_NAME, httpClient, OAUTH_AUTHORIZATION_HEADER_NAME } from "../main";
+import { httpClient } from "../main";
 import type { Agent } from "./assets";
 import type { AvatarScales } from "./avatar";
 import type { SortOrder } from "./badges";
-import type { OpenCloudAuthType } from "./misc";
+import type { HTTPRequestCredentials } from "@roseal/http-client/src/classes/HTTPClient";
 
 export type MultigetUniversesPlayabilityStatusesRequest = {
 	overridePlatformType?: PlatformType;
@@ -583,8 +583,7 @@ export type ListAgentUniversesResponse = {
 };
 
 export type GetOpenCloudUniverseRequest = {
-	authType?: OpenCloudAuthType;
-	authCode?: string;
+	credentials: HTTPRequestCredentials;
 	universeId: number;
 };
 
@@ -816,8 +815,7 @@ export type GetExperienceEventRSVPCountersResponse = {
 };
 
 export type GetOpenCloudUniversePlaceRequest = {
-	authType?: OpenCloudAuthType;
-	authCode?: string;
+	credentials: HTTPRequestCredentials;
 	universeId: number;
 	placeId: number;
 };
@@ -876,7 +874,10 @@ export async function getGroupShoutPreferences() {
 	return (
 		await httpClient.httpRequest<GetExperienceNotificationPreferencesResponse>({
 			url: getRobloxUrl("notifications", "/v2/notifications/experience-preferences"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -899,8 +900,11 @@ export async function multigetUniversesPlayabilityStatuses({
 					search: {
 						universeIds: request.map((key) => key.universeId),
 					},
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 					overridePlatformType,
-					includeCredentials: true,
 				})
 				.then((data) => {
 					const items: Record<string, UniversePlayabilityStatus> = {};
@@ -926,8 +930,11 @@ export async function getOmniRecommendations(
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -957,8 +964,11 @@ export async function multigetOmniRecommendationsMetadata({
 							})),
 						},
 					},
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 					errorHandling: "BEDEV2",
-					includeCredentials: true,
 				})
 				.then((data) => data.body.contentMetadata.Game),
 		overrideCache,
@@ -970,7 +980,10 @@ export async function getUniverseMedia({ universeId }: GetUniverseMediaRequest) 
 	return (
 		await httpClient.httpRequest<GetUniverseMediaResponse>({
 			url: `${getRobloxUrl("games")}/v2/games/${universeId}/media`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -980,7 +993,10 @@ export async function getUniverseStartInfo(request: GetUniverseStartInfoRequest)
 		await httpClient.httpRequest<GetUniverseStartInfoResponse>({
 			url: getRobloxUrl("avatar", "/v1/game-start-info"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1000,7 +1016,10 @@ export async function multigetUniversesAgeRecommendations(
 				value: request,
 			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1023,7 +1042,10 @@ export async function getExperienceDetailedGuidelines(
 						value: request,
 					},
 					errorHandling: "BEDEV2",
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((res) => res.body),
 	});
@@ -1035,7 +1057,10 @@ export async function listExperienceSorts(request: ListExperienceSortsRequest) {
 			url: getRobloxUrl("apis", "/explore-api/v1/get-sorts"),
 			search: request,
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1045,8 +1070,11 @@ export async function listExperiencesSortContent(request: ListExperiencesSortCon
 		await httpClient.httpRequest<ExperienceSort>({
 			url: getRobloxUrl("apis", "/explore-api/v1/get-sort-content"),
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1060,8 +1088,11 @@ export async function listExperienceEvents({
 		await httpClient.httpRequest<ListExperienceEventsResponse>({
 			url: `${getRobloxUrl("apis")}/virtual-events/v2/universes/${universeId}/experience-events`,
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: includeCredentials,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials,
 		})
 	).body;
 }
@@ -1071,8 +1102,11 @@ export async function listMyExperienceEvents(request: ListMyExperienceEventsRequ
 		await httpClient.httpRequest<ListExperienceEventsResponse>({
 			url: getRobloxUrl("apis", "/virtual-events/v1/virtual-events/my-events"),
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1082,8 +1116,11 @@ export async function getExperienceEventById(request: GetExperienceEventByIdRequ
 		await httpClient.httpRequest<ExperienceEvent>({
 			url: `${getRobloxUrl("apis")}/virtual-events/v1/virtual-events/${request.eventId}`,
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1096,9 +1133,12 @@ export async function shutdownExperienceServer(request: ShutdownExperienceServer
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		errorHandling: "BEDEV2",
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -1118,7 +1158,10 @@ export function multigetUniversesByIds({
 					search: {
 						universeIds: universeIds.map((id) => id.id),
 					},
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((res) => {
 					const items: Record<string, UniverseDetail> = {};
@@ -1142,43 +1185,35 @@ export async function listAgentUniverses({
 		await httpClient.httpRequest<ListAgentUniversesResponse>({
 			url: `${getRobloxUrl("games")}/v2/${agentType.toLowerCase()}s/${agentId}/games`,
 			search: request,
-			includeCredentials: true,
-		})
-	).body;
-}
-
-export async function getOpenCloudUniverse({
-	authType,
-	authCode,
-	universeId,
-}: GetOpenCloudUniverseRequest) {
-	return (
-		await httpClient.httpRequest<OpenCloudUniverse>({
-			url: `${getRobloxUrl("apis")}/cloud/v2/universes/${universeId}`,
-			headers: {
-				[OAUTH_AUTHORIZATION_HEADER_NAME]:
-					authType === "bearer" ? `Bearer ${authCode}` : undefined,
-				[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
+			credentials: {
+				type: "cookies",
+				value: true,
 			},
 		})
 	).body;
 }
 
+export async function getOpenCloudUniverse({
+	credentials,
+	universeId,
+}: GetOpenCloudUniverseRequest) {
+	return (
+		await httpClient.httpRequest<OpenCloudUniverse>({
+			url: `${getRobloxUrl("apis")}/cloud/v2/universes/${universeId}`,
+			credentials,
+		})
+	).body;
+}
+
 export async function getOpenCloudUniversePlace({
-	authType,
-	authCode,
+	credentials,
 	universeId,
 	placeId,
 }: GetOpenCloudUniversePlaceRequest) {
 	return (
 		await httpClient.httpRequest<OpenCloudPlace>({
 			url: `${getRobloxUrl("apis")}/cloud/v2/universes/${universeId}/places/${placeId}`,
-			headers: {
-				[OAUTH_AUTHORIZATION_HEADER_NAME]:
-					authType === "bearer" ? `Bearer ${authCode}` : undefined,
-				[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
-			},
-			includeCredentials: true,
+			credentials,
 		})
 	).body;
 }
@@ -1199,7 +1234,10 @@ export function multigetDevelopUniversesByIds({ ids }: MultigetDevelopUniversesB
 				.httpRequest<MultigetDevelopUniversesByIdsResponse>({
 					url: getRobloxUrl("develop", "/v1/universes/multiget"),
 					search: search,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((res) => {
 					const items: Record<string, DevelopUniverse> = {};
@@ -1219,7 +1257,10 @@ export async function listUniversePlaces({ universeId, ...request }: ListUnivers
 		await httpClient.httpRequest<ListUniversePlacesResponse>({
 			url: `${getRobloxUrl("develop")}/v2/universes/${universeId}/places`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1236,7 +1277,10 @@ export async function queryExperienceTopItems({
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
 		})
 	).body;
@@ -1249,7 +1293,10 @@ export async function listUniverseActiveSubscriptions(
 		await httpClient.httpRequest<ListUniverseActiveSubscriptionsResponse>({
 			url: getRobloxUrl("apis", "/v1/subscriptions/active-subscription-products"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
 		})
 	).body;
@@ -1260,7 +1307,10 @@ export async function searchConfigurableUniverses(request: SearchConfigurableUni
 		await httpClient.httpRequest<SearchConfigurableUniversesResponse>({
 			url: getRobloxUrl("apis", "/universes/v1/search"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
 		})
 	).body;
@@ -1272,7 +1322,10 @@ export async function getExperienceEventRSVPCounters({
 	return (
 		await httpClient.httpRequest<GetExperienceEventRSVPCountersResponse>({
 			url: `${getRobloxUrl("apis")}/virtual-events/v1/virtual-events/${eventId}/rsvps/counters`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
 		})
 	).body;
@@ -1283,8 +1336,11 @@ export async function listExperienceTopSongs(request: ListExperienceTopSongsRequ
 		await httpClient.httpRequest<ListExperienceTopSongsResponse>({
 			url: getRobloxUrl("apis", "/music-discovery/v1/experience-songs"),
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }

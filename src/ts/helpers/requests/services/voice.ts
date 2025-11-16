@@ -47,7 +47,10 @@ export async function getUserVoiceSettings(): Promise<GetUserVoiceSettingsRespon
 			httpClient
 				.httpRequest<GetUserVoiceSettingsResponse>({
 					url: getRobloxUrl("voice", "/v1/settings"),
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((res) => res.body),
 	});
@@ -57,7 +60,10 @@ export async function getUserInformedOfBan() {
 	return (
 		await httpClient.httpRequest<UserInformedOfBan>({
 			url: getRobloxUrl("voice", "/v1/moderation/informed-of-ban"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -71,7 +77,10 @@ export async function setUserInformedOfBan(request: UserInformedOfBan) {
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -84,8 +93,11 @@ export async function setUserVoiceOptInStatus(request: UserVoiceOptInStatus): Pr
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -97,7 +109,10 @@ export async function setUserAvatarChatOptInStatus(request: UserVoiceOptInStatus
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }

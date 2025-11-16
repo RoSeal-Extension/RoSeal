@@ -114,9 +114,12 @@ export async function getPassProductById({ passId }: GetPassByIdRequest) {
 			httpClient
 				.httpRequest<PassProductInfo>({
 					url: `${getRobloxUrl("apis")}/game-passes/v1/game-passes/${passId}/product-info`,
-					errorHandling: "BEDEV2",
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 					camelizeResponse: true,
-					includeCredentials: true,
+					errorHandling: "BEDEV2",
 				})
 				.then((res) => res.body),
 	});
@@ -129,9 +132,12 @@ export async function getPassById({ passId }: GetPassByIdRequest) {
 			httpClient
 				.httpRequest<PassDetails>({
 					url: `${getRobloxUrl("apis")}/game-passes/v1/game-passes/${passId}/details`,
-					errorHandling: "BEDEV2",
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 					camelizeResponse: true,
-					includeCredentials: true,
+					errorHandling: "BEDEV2",
 				})
 				.then((res) => res.body),
 	});
@@ -142,8 +148,11 @@ export async function listUniversePasses({ universeId, ...request }: ListUnivers
 		await httpClient.httpRequest<ListUniversePassesResponse>({
 			url: `${getRobloxUrl("apis")}/game-passes/v1/universes/${universeId}/game-passes`,
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -169,8 +178,11 @@ export async function batchGetPassOwnerships(request: BatchGetPassOwnershipsRequ
 							})),
 						},
 					},
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 					camelizeResponse: true,
-					includeCredentials: true,
 				})
 				.then((data) => {
 					const finalData: Record<string, BatchPassOwnershipRequestIdentifierWithOwned> =

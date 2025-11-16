@@ -203,8 +203,11 @@ export async function checkAssetPermissions(request: CheckAssetPermissionsReques
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -213,8 +216,11 @@ export async function getCreatorBundleDetails({ bundleId }: GetCreatorBundleDeta
 	return (
 		await httpClient.httpRequest<CreatorBundleDetails>({
 			url: `${getRobloxUrl("itemconfiguration")}/v1/bundles/${bundleId}`,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -223,7 +229,10 @@ export async function listUserManagedGroups() {
 	return (
 		await httpClient.httpRequest<ListUserManagedGroupsResponse>({
 			url: `${getRobloxUrl("develop")}/v1/user/groups/canmanage`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -232,7 +241,10 @@ export async function listUserManagedItemsGroups() {
 	return (
 		await httpClient.httpRequest<ListUserManagedGroupsResponse>({
 			url: `${getRobloxUrl("develop")}/v1/user/groups/canmanagegamesoritems`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -252,7 +264,10 @@ export async function multigetUniversePermissions({
 					search: {
 						ids: request.map((id) => id.id),
 					},
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((data) => {
 					const items: Record<number, UniversePermissionData> = {};
@@ -273,7 +288,10 @@ export async function getGroupMembership({ groupId, ...request }: GetGroupMember
 				.httpRequest<GroupMembership>({
 					url: `${getRobloxUrl("groups")}/v1/groups/${groupId}/membership`,
 					search: request,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((data) => data.body),
 	});
@@ -290,7 +308,10 @@ export async function canConfigureCollectibleItem(request: CanConfigureCollectib
 						"/v1/collectibles/check-item-configuration-access",
 					),
 					search: request,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((data) => data.body),
 	});
@@ -313,7 +334,10 @@ export async function multigetCanSponsorItems(request: MultigetCanSponsorItemReq
 						campaignTargetType: request.campaignTargetType,
 						campaignTargetIds: items,
 					},
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((data) => {
 					const items: Record<string, boolean> = {};

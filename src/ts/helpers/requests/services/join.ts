@@ -152,13 +152,16 @@ export async function getUserServerData({
 		await httpClient.httpRequest<GetServerDataResponse>({
 			method: "POST",
 			url: getRobloxUrl("gamejoin", "/v1/play-with-user"),
-			overridePlatformType,
 			body: {
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+			overridePlatformType,
 			camelizeResponse: true,
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -171,13 +174,16 @@ export async function getReservedServerData({
 		await httpClient.httpRequest<GetServerDataResponse>({
 			method: "POST",
 			url: getRobloxUrl("gamejoin", "/v1/join-reserved-game"),
-			overridePlatformType,
 			body: {
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+			overridePlatformType,
 			camelizeResponse: true,
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -190,13 +196,16 @@ export async function getPrivateServerData({
 		await httpClient.httpRequest<GetServerDataResponse>({
 			method: "POST",
 			url: getRobloxUrl("gamejoin", "/v1/join-private-game"),
-			overridePlatformType,
 			body: {
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+			overridePlatformType,
 			camelizeResponse: true,
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -209,13 +218,16 @@ export async function getMatchmadeServerData({
 		await httpClient.httpRequest<GetServerDataResponse>({
 			method: "POST",
 			url: getRobloxUrl("gamejoin", "/v1/join-game"),
-			overridePlatformType,
 			body: {
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+			overridePlatformType,
 			camelizeResponse: true,
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -228,13 +240,16 @@ export async function getServerInstanceData({
 		await httpClient.httpRequest<GetServerDataResponse>({
 			method: "POST",
 			url: getRobloxUrl("gamejoin", "/v1/join-game-instance"),
-			overridePlatformType,
 			body: {
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+			overridePlatformType,
 			camelizeResponse: true,
-			includeCredentials: true,
 		})
 	).body;
 }

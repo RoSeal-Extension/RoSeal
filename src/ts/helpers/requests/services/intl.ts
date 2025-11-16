@@ -62,7 +62,10 @@ export async function listBadgeIntlIcons({ badgeId }: ListBadgeIntlIconsRequest)
 	return (
 		await httpClient.httpRequest<DataWithIntlImages>({
 			url: `${getRobloxUrl("gameinternationalization")}/v1/badges/${badgeId}/icons`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -71,7 +74,10 @@ export async function listBadgeIntlNameDescription({ badgeId }: ListBadgeIntlIco
 	return (
 		await httpClient.httpRequest<DataWithIntlNameDescriptions>({
 			url: `${getRobloxUrl("gameinternationalization")}/v1/badges/${badgeId}/name-description`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -82,7 +88,10 @@ export async function listDeveloperProductIntlIcons({
 	return (
 		await httpClient.httpRequest<DataWithIntlImages>({
 			url: `${getRobloxUrl("gameinternationalization")}/v1/developer-products/${developerProductId}/icons`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -93,7 +102,10 @@ export async function listDeveloperProductIntlNameDescription({
 	return (
 		await httpClient.httpRequest<DataWithIntlNameDescriptions>({
 			url: `${getRobloxUrl("gameinternationalization")}/v1/developer-products/${developerProductId}/name-description`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -102,7 +114,10 @@ export async function listPassIntlIcons({ passId }: ListPassIntlIconsRequest) {
 	return (
 		await httpClient.httpRequest<DataWithIntlImages>({
 			url: `${getRobloxUrl("gameinternationalization")}/v1/game-passes/${passId}/icons`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -111,7 +126,10 @@ export async function listPassIntlNameDescription({ passId }: ListPassIntlIconsR
 	return (
 		await httpClient.httpRequest<DataWithIntlNameDescriptions>({
 			url: `${getRobloxUrl("gameinternationalization")}/v1/game-passes/${passId}/name-description`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -120,7 +138,10 @@ export async function listUniverseIntlIcons({ universeId }: ListUniverseIntlIcon
 	return (
 		await httpClient.httpRequest<DataWithIntlImages>({
 			url: `${getRobloxUrl("gameinternationalization")}/v1/game-icon/games/${universeId}`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -129,7 +150,10 @@ export async function listUniverseIntlThumbnails({ universeId }: ListUniverseInt
 	return (
 		await httpClient.httpRequest<ListUniverseIntlThumbnailsResponse>({
 			url: `${getRobloxUrl("gameinternationalization")}/v1/game-thumbnails/games/${universeId}/images`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -140,7 +164,10 @@ export async function listUniverseIntlNameDescription({
 	return (
 		await httpClient.httpRequest<DataWithIntlNameDescriptions>({
 			url: `${getRobloxUrl("gameinternationalization")}/v1/name-description/games/${universeId}`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }

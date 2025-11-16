@@ -46,7 +46,10 @@ export async function listPrivateMessages(request: ListPrivateMessagesRequest) {
 		await httpClient.httpRequest<ListPrivateMessagesResponse>({
 			url: getRobloxUrl("privatemessages", "/v1/messages"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -74,7 +77,10 @@ export async function markPrivateMessagesRead(
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }

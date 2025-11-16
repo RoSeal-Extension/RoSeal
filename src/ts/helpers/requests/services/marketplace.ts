@@ -1033,7 +1033,10 @@ export async function searchItems(request: SearchItemsRequest): Promise<SearchIt
 		await httpClient.httpRequest<SearchItemsResponse>({
 			url: getRobloxUrl("catalog", "/v1/search/items"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1045,7 +1048,10 @@ export async function searchItemsDetails<T extends MarketplaceItemType>(
 		await httpClient.httpRequest<SearchItemsDetailsResponse<T>>({
 			url: getRobloxUrl("catalog", "/v1/search/items/details"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1074,7 +1080,10 @@ export async function searchItemsDetailsV2<T extends MarketplaceItemType>({
 		await httpClient.httpRequest<SearchItemsDetailsResponse<T>>({
 			url: getRobloxUrl("catalog", "/v2/search/items/details"),
 			search: searchParams,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1091,8 +1100,11 @@ export async function purchaseItem({
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			handleChallenge: renderGenericChallenge,
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1111,9 +1123,12 @@ export async function purchaseCollectibleItem({
 				type: "json",
 				value: { ...request, collectibleItemId },
 			},
-			handleChallenge: renderGenericChallenge,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
+			handleChallenge: renderGenericChallenge,
 		})
 	).body;
 }
@@ -1127,8 +1142,11 @@ export async function getCollectibleResaleData({
 			url: `${getRobloxUrl(
 				"apis",
 			)}/marketplace-sales/v1/item/${collectibleItemId}/resale-data`,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1142,8 +1160,11 @@ export async function getCollectibleResaleParameters({
 			url: `${getRobloxUrl(
 				"apis",
 			)}/marketplace-sales/v1/item/${collectibleItemId}/get-resale-parameters`,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1189,7 +1210,10 @@ export function multigetAvatarItems<T extends MarketplaceItemType>({
 							})),
 						},
 					},
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((data) => {
 					const items: Record<string, AvatarItemDetail<T>> = {};
@@ -1219,7 +1243,10 @@ export function getAvatarItem<T extends MarketplaceItemType>({
 					search: {
 						itemType,
 					},
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 			).body || undefined,
 		overrideCache,
@@ -1231,7 +1258,10 @@ export async function getItemBundles({ assetId, ...request }: GetItemBundlesRequ
 		await httpClient.httpRequest<GetItemBundlesResponse>({
 			url: `${getRobloxUrl("catalog")}/v1/assets/${assetId}/bundles`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1244,8 +1274,11 @@ export async function listCollectibleResellers({
 		await httpClient.httpRequest<ListCollectibleResellersResponse>({
 			url: `${getRobloxUrl("apis")}/marketplace-sales/v1/item/${collectibleItemId}/resellers`,
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1258,8 +1291,11 @@ export async function listCollectibleResellableInstances({
 		await httpClient.httpRequest<ListCollectibleResellableInstancesResponse>({
 			url: `${getRobloxUrl("apis")}/marketplace-sales/v1/item/${collectibleItemId}/resellable-instances`,
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1284,8 +1320,11 @@ export function multigetCollectibleItemsByIds({
 							itemIds: data.map((item) => item.id),
 						},
 					},
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 					errorHandling: "BEDEV2",
-					includeCredentials: true,
 				})
 				.then((data) => {
 					const items: Record<string, Collectible> = {};
@@ -1315,7 +1354,10 @@ export function multigetBundlesByIds({ overrideCache, ...request }: MultigetBund
 					search: {
 						bundleIds: bundleIds.map((id) => id.id),
 					},
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((data) => {
 					const items: Record<string, BundleDetail> = {};
@@ -1338,8 +1380,11 @@ export function getLookById({ lookId }: GetLookByIdRequest) {
 			(
 				await httpClient.httpRequest<GetLookByIdResponse>({
 					url: `${getRobloxUrl("apis")}/look-api/v2/looks/${lookId}`,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 					errorHandling: "BEDEV2",
-					includeCredentials: true,
 				})
 			).body || undefined,
 	});
@@ -1356,8 +1401,11 @@ export async function searchMarketplaceWidgets({
 				...request,
 				requestId: `{${requestId}}`,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1373,9 +1421,12 @@ export async function getMarketplaceWidgets({
 				...request,
 				requestId: `{${requestId}}`,
 			},
-			errorHandling: "BEDEV2",
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			overridePlatformType: "Desktop",
+			errorHandling: "BEDEV2",
 		})
 	).body;
 }
@@ -1405,8 +1456,11 @@ export async function hydrateMarketplaceWidget({
 							})),
 						},
 					},
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 					errorHandling: "BEDEV2",
-					includeCredentials: true,
 				})
 				.then((data) => {
 					const items: Record<string, HydratedWidgetItem> = {};
@@ -1435,8 +1489,11 @@ export async function queryMarketplaceAnalytics({
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1445,7 +1502,10 @@ export async function getItemCollectibleId({ itemType, itemId }: GetItemCollecti
 	return (
 		await httpClient.httpRequest<GetItemCollectibleIdResponse>({
 			url: `${getRobloxUrl("itemconfiguration")}/v1/collectibles/${itemType}/${itemId}`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1455,7 +1515,10 @@ export async function getCollectiblesMetadata() {
 		await httpClient.httpRequest<GetCollectiblesMetadataResponse>({
 			url: getRobloxUrl("itemconfiguration", "/v1/collectibles/metadata"),
 			// Do not camelize.
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1465,7 +1528,10 @@ export async function getItemConfigurationMetadata() {
 		await httpClient.httpRequest<GetItemConfigurationMetadataResponse>({
 			url: getRobloxUrl("itemconfiguration", "/v1/metadata"),
 			// Do not camelize.
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1475,7 +1541,10 @@ export async function getMarketplaceItemTags(request: GetMarketplaceItemTagsRequ
 		await httpClient.httpRequest<GetMarketplaceItemTagsResponse>({
 			url: getRobloxUrl("itemconfiguration", "/v1/item-tags"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1488,8 +1557,11 @@ export async function postSponsoredItemClick(request: PostSponsoredItemClickRequ
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -1498,7 +1570,10 @@ export async function listSponsoredItems(request: ListSponsoredItemsRequest) {
 		await httpClient.httpRequest<ListSponsoredItemsResponse>({
 			url: getRobloxUrl("catalog", "/v1/catalog/sponsored-items"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1512,9 +1587,12 @@ export async function listItemSocialConnections(request: ListItemSocialConnectio
 				type: "json",
 				value: request,
 			},
-			errorHandling: "BEDEV2",
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			overridePlatformType: "Desktop",
-			includeCredentials: true,
+			errorHandling: "BEDEV2",
 		})
 	).body;
 }
@@ -1528,8 +1606,11 @@ export async function multigetLookPurchaseDetails(request: MultigetLookPurchaseD
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1539,8 +1620,11 @@ export async function listUserLooks({ userId, ...request }: ListUserLooksRequest
 		await httpClient.httpRequest<ListUserLooksResponse>({
 			url: `${getRobloxUrl("apis")}/look-api/v1/users/${userId}/looks`,
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1549,9 +1633,12 @@ export async function deleteUserLook({ lookId }: DeleteUserLookRequest) {
 	await httpClient.httpRequest<void>({
 		method: "DELETE",
 		url: `${getRobloxUrl("apis")}/look-api/v1/looks/${lookId}`,
-		errorHandling: "BEDEV2",
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
+		errorHandling: "BEDEV2",
 	});
 }
 
@@ -1564,8 +1651,11 @@ export async function previewUserLookCreation(data: PreviewUserLookCreationReque
 				type: "json",
 				value: data,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1579,8 +1669,11 @@ export async function createUserLook(data: CreateUserLookRequest) {
 				type: "json",
 				value: data,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }

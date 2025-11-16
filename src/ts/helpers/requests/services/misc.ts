@@ -5,8 +5,6 @@ import { httpClient } from "../main";
 import type { MarketplaceItemType } from "./marketplace";
 import type { OmniLayoutData, OmniTreatmentType, OmniUniverseLayoutData } from "./universes";
 
-export type OpenCloudAuthType = "apiKey" | "bearer";
-
 export type SearchPageType = "discover" | "home" | "all";
 
 export type SearchVerticalType = "User" | "Game" | "Blended";
@@ -641,8 +639,11 @@ export async function getUserProfileDocument(): Promise<Document> {
 	return (
 		await httpClient.httpRequest<Document>({
 			url: getRobloxUrl("www", "/users/1/profile"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			expect: "dom",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -651,8 +652,11 @@ export async function getHomePageDocument(): Promise<Document> {
 	return (
 		await httpClient.httpRequest<Document>({
 			url: getRobloxUrl("www", "/home"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			expect: "dom",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -664,8 +668,11 @@ export async function search<T extends SearchVerticalType>(
 		await httpClient.httpRequest<SearchResponse<T>>({
 			url: getRobloxUrl("apis", "/search-api/omni-search"),
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -675,9 +682,12 @@ export async function getSearchLandingPage(request: GetSearchLandingPageRequest)
 		await httpClient.httpRequest<GetSearchLandingPageResponse>({
 			url: getRobloxUrl("apis", "/search-api/search-landing-page"),
 			search: request,
-			errorHandling: "BEDEV2",
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			overridePlatformType: "Desktop",
-			includeCredentials: true,
+			errorHandling: "BEDEV2",
 		})
 	).body;
 }
@@ -689,8 +699,11 @@ export async function getAvatarItemPageData({
 	return (
 		await httpClient.httpRequest<Document>({
 			url: getAvatarAssetLink(assetId, name),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			expect: "dom",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -704,8 +717,11 @@ export async function filterText({ text }: FilterTextRequest): Promise<FilterTex
 				type: "json",
 				value: text,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 
@@ -728,7 +744,10 @@ export async function getProfileComponentsData({
 				type: "json",
 				value: request,
 			},
-			includeCredentials,
+			credentials: {
+				type: "cookies",
+				value: includeCredentials,
+			},
 		})
 	).body;
 }
@@ -767,7 +786,10 @@ export async function listRobloxSupportedLocales() {
 	return (
 		await httpClient.httpRequest<ListRobloxSupportedLocalesResponse>({
 			url: getRobloxUrl("locale", "/v1/locales/supported-locales"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -781,8 +803,11 @@ export async function queryCreatorAnalytics(request: QueryCreatorAnalyticsReques
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }

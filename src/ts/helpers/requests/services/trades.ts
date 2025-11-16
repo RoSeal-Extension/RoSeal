@@ -112,7 +112,10 @@ export async function listTrades({
 		await httpClient.httpRequest<ListTradesResponse>({
 			url: `${getRobloxUrl("trades")}/v1/trades/${tradeStatusType}`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -123,7 +126,10 @@ export async function getTradesCount({
 	return (
 		await httpClient.httpRequest<GetTradesCountResponse>({
 			url: `${getRobloxUrl("trades")}/v1/trades/${tradeStatusType}/count`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -132,7 +138,10 @@ export async function getTradeById({ tradeId }: GetTradeByIdRequest): Promise<Tr
 	return (
 		await httpClient.httpRequest<TradeData>({
 			url: `${getRobloxUrl("trades")}/v2/trades/${tradeId}`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -146,7 +155,10 @@ export async function getCanTradeWithUser({
 			httpClient
 				.httpRequest<GetCanTradeWithUserResponse>({
 					url: `${getRobloxUrl("trades")}/v1/users/${userId}/can-trade-with`,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((res) => res.body),
 	});

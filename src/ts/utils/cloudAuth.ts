@@ -1,14 +1,25 @@
 import { tryAPIKeyRequest } from "./apiKey";
 import { tryOAuthRequest } from "./oauth";
+import type { HTTPRequestCredentials } from "@roseal/http-client/src/classes/HTTPClient";
 
 export function tryOpenCloudAuthRequest<T>(
 	userId: number,
 	isUserOver13: boolean,
-	fn: (type: "apiKey" | "bearer", code: string) => Promise<T>,
+	fn: (data: HTTPRequestCredentials) => Promise<T>,
 ): Promise<T> {
 	if (isUserOver13) {
-		return tryOAuthRequest(userId, (code) => fn("bearer", code));
+		return tryOAuthRequest(userId, (code) =>
+			fn({
+				type: "bearerToken",
+				value: code,
+			}),
+		);
 	}
 
-	return tryAPIKeyRequest(userId, (apiKey) => fn("apiKey", apiKey));
+	return tryAPIKeyRequest(userId, (apiKey) =>
+		fn({
+			type: "openCloudApiKey",
+			value: apiKey,
+		}),
+	);
 }

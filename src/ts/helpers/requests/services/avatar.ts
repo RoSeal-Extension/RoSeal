@@ -352,7 +352,10 @@ export async function getAvatarRules(): Promise<AvatarRestrictions> {
 			httpClient
 				.httpRequest<AvatarRestrictions>({
 					url: getRobloxUrl("avatar", "/v1/avatar-rules"),
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((res) => res.body),
 	});
@@ -362,7 +365,10 @@ export async function getAuthenticatedUserAvatar() {
 	return (
 		await httpClient.httpRequest<UserAvatar>({
 			url: getRobloxUrl("avatar", "/v2/avatar/avatar"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -372,7 +378,10 @@ export async function getUserAvatar({ userId, ...request }: GetUserAvatarRequest
 		await httpClient.httpRequest<UserAvatar>({
 			url: `${getRobloxUrl("avatar")}/v2/avatar/users/${userId}/avatar`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -381,7 +390,10 @@ export async function getLegacyAuthenticatedUserAvatar() {
 	return (
 		await httpClient.httpRequest<LegacyUserAvatar>({
 			url: getRobloxUrl("avatar", "/v1/avatar"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -390,7 +402,10 @@ export async function getUserCurrentlyWearing({ userId }: GetUserCurrentlyWearin
 	return (
 		await httpClient.httpRequest<GetUserCurrentlyWearingResponse>({
 			url: `${getRobloxUrl("avatar")}/v1/users/${userId}/currently-wearing`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -403,8 +418,11 @@ export async function setBodyColors(request: AvatarColors3s) {
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -416,8 +434,11 @@ export async function updateOutfit({ outfitId, ...request }: UpdateOutfitRequest
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -429,8 +450,11 @@ export async function createOutfit(request: PartialOutfitRequest) {
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -438,7 +462,10 @@ export async function getOutfitById({ outfitId }: GetOutfitByIdRequest) {
 	return (
 		await httpClient.httpRequest<OutfitRequest>({
 			url: `${getRobloxUrl("avatar")}/v3/outfits/${outfitId}/details`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -447,8 +474,11 @@ export async function deleteOutfit({ outfitId }: GetOutfitByIdRequest) {
 	await httpClient.httpRequest({
 		method: "DELETE",
 		url: `${getRobloxUrl("avatar")}/v3/outfits/${outfitId}`,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -463,7 +493,10 @@ export async function setWearingAssets({ assets }: SetWearingAssetsRequest) {
 					assets,
 				},
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -478,8 +511,11 @@ export async function setAvatarType({ playerAvatarType }: SetAvatarTypeRequest) 
 				playerAvatarType,
 			},
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -491,8 +527,11 @@ export async function setScales(request: AvatarScales) {
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -504,9 +543,12 @@ export async function setThumbnailCustomization(request: ThumbnailCustomization)
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		retries: import.meta.env.ENV === "background" ? 0 : undefined,
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -514,7 +556,10 @@ export async function getAvatarThumbnailCustomizations() {
 	return (
 		await httpClient.httpRequest<GetAvatarThumbnailCustomizationsResponse>({
 			url: getRobloxUrl("avatar", "/v1/avatar/thumbnail-customizations"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -524,7 +569,10 @@ export async function listUserAvatarOutfits({ userId, ...request }: ListUserAvat
 		await httpClient.httpRequest<ListUserAvatarOutfitsResponse>({
 			url: `${getRobloxUrl("avatar")}/v2/avatar/users/${userId}/outfits`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -534,7 +582,10 @@ export async function listUserAvatarItems(request: ListUserAvatarItemsRequest) {
 		await httpClient.httpRequest<ListUserAvatarItemsResponse>({
 			url: getRobloxUrl("avatar", "/v1/avatar-inventory"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -543,7 +594,10 @@ export async function getUserCurrentlyWearingOutfits({ userId }: GetUserCurrentl
 	return (
 		await httpClient.httpRequest<GetUserCurrentlyWearingOutfitsResponse>({
 			url: `${getRobloxUrl("avatar")}/v1/users/${userId}/currently-wearing-outfits`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -552,8 +606,11 @@ export async function redrawUserThumbnail() {
 	await httpClient.httpRequest({
 		method: "POST",
 		url: getRobloxUrl("avatar", "/v1/avatar/redraw-thumbnail"),
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -561,8 +618,11 @@ export async function getAvatarMetadata() {
 	return (
 		await httpClient.httpRequest<GetAvatarMetadataResponse>({
 			url: getRobloxUrl("avatar", "/v1/avatar/metadata"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -571,8 +631,11 @@ export async function fetchUserPlaceAvatar(request: FetchUserPlaceAvatarRequest)
 	return (
 		await httpClient.httpRequest<ResolvedUserPlaceAvatar>({
 			url: getRobloxUrl("avatar", "/v2/avatar/avatar-fetch"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			search: request,
-			includeCredentials: true,
 		})
 	).body;
 }

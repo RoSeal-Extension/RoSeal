@@ -549,9 +549,12 @@ export async function sendExperienceInviteNotification(
 			type: "json",
 			value: data,
 		},
-		errorHandling: "BEDEV2",
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
+		errorHandling: "BEDEV2",
 	});
 }
 
@@ -560,7 +563,10 @@ export async function listRecentStreamNotifications(request: ListRecentStreamNot
 		await httpClient.httpRequest<ListedStreamNotification[]>({
 			url: getRobloxUrl("notifications", "/v2/stream-notifications/get-recent"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }

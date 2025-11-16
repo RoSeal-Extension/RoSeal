@@ -711,7 +711,10 @@ export async function getCurrentAuthenticatedUser() {
 	return (
 		await httpClient.httpRequest<GetCurrentAuthenticatedUserResponse>({
 			url: getRobloxUrl("users", "/v1/users/authenticated/app-launch-info"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -720,7 +723,10 @@ export async function getPublicRoles() {
 	return (
 		await httpClient.httpRequest<GetPublicRolesResponse>({
 			url: getRobloxUrl("users", "/v1/users/authenticated/roles"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -729,7 +735,10 @@ export async function getBirthdate() {
 	return (
 		await httpClient.httpRequest<UserBirthdate>({
 			url: getRobloxUrl("users", "/v1/birthdate"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -739,7 +748,10 @@ export async function getVerifiedAge() {
 		await httpClient.httpRequest<UserVerifiedAge>({
 			url: getRobloxUrl("apis", "/age-verification-service/v1/age-verification/verified-age"),
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -749,7 +761,10 @@ export async function logout() {
 		method: "POST",
 		url: getRobloxUrl("auth", "/v1/logout"),
 		expect: "none",
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 	});
 }
 
@@ -758,7 +773,10 @@ export async function getUser2SVConfiguration({ userId, ...data }: GetUser2SVCon
 		await httpClient.httpRequest<User2SVConfiguration>({
 			url: `${getRobloxUrl("twostepverification")}/v1/users/${userId}/configuration`,
 			search: data,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -769,7 +787,10 @@ export async function generate2SVChallenge(): Promise<Generate2SVChallengeRespon
 			await httpClient.httpRequest<string>({
 				method: "POST",
 				url: getRobloxUrl("economy", "/v2/spend-friction/two-step-verification/generate"),
-				includeCredentials: true,
+				credentials: {
+					type: "cookies",
+					value: true,
+				},
 			})
 		).body,
 		actionType: "RobuxSpend",
@@ -781,7 +802,10 @@ export async function getUserSettings(): Promise<UserSettings> {
 		await httpClient.httpRequest<UserSettings>({
 			url: getRobloxUrl("apis", "/user-settings-api/v1/user-settings"),
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -790,7 +814,10 @@ export async function getUserSettingsAndOptions(): Promise<UserSettingsOptions> 
 	return (
 		await httpClient.httpRequest<UserSettingsOptions>({
 			url: getRobloxUrl("apis", "/user-settings-api/v1/user-settings/settings-and-options"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -800,7 +827,10 @@ export async function getUserHydratedPlayerInfo(): Promise<HydratedPlayerInfo> {
 		await httpClient.httpRequest<HydratedPlayerInfo>({
 			url: getRobloxUrl("apis", "/player-hydration-service/v1/players/signed"),
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -809,7 +839,10 @@ export async function getUserPlayStationSettings(): Promise<UserPlayStationSetti
 	return (
 		await httpClient.httpRequest<UserPlayStationSettings>({
 			url: getRobloxUrl("apis", "/user-settings-api/v1/user-settings/platform"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -819,7 +852,10 @@ export async function listUserTransactions({ userId, ...request }: ListUserTrans
 		await httpClient.httpRequest<ListUserTransactionsResponse>({
 			url: `${getRobloxUrl("apis")}/transaction-records/v1/users/${userId}/transactions`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -833,7 +869,10 @@ export async function listUserTransactionTotals({
 			url: `${getRobloxUrl("apis")}/transaction-records/v1/users/${userId}/transaction-totals`,
 			search: request,
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -846,9 +885,12 @@ export async function updateUserSettings(request: UpdateUserSettingsRequest) {
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 		errorHandling: "BEDEV2",
-		includeCredentials: true,
 	});
 }
 
@@ -856,7 +898,10 @@ export async function getUserRobuxAmount(): Promise<UserRobuxAmount> {
 	return (
 		await httpClient.httpRequest<UserRobuxAmount>({
 			url: getRobloxUrl("economy", "/v1/user/currency"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -876,8 +921,11 @@ export async function getRobuxUpsellPackage(
 					user_robux_balance: request.userRobuxBalance,
 				},
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -887,7 +935,10 @@ export async function getUserSubscriptionsDetails({ userId }: GetUserSubscriptio
 		return (
 			await httpClient.httpRequest<PremiumSubscriptionDetails>({
 				url: `${getRobloxUrl("premiumfeatures")}/v1/users/${userId}/subscriptions/details`,
-				includeCredentials: true,
+				credentials: {
+					type: "cookies",
+					value: true,
+				},
 			})
 		).body;
 	} catch (err: unknown) {
@@ -905,9 +956,12 @@ export async function userHeartbeatPulse(request: HeartbeatPulseRequest) {
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 		errorHandling: "BEDEV2",
-		includeCredentials: true,
 	});
 }
 
@@ -918,8 +972,11 @@ export async function getTopWeeklyScreentimeByUniverse() {
 				"apis",
 				"/parental-controls-api/v1/parental-controls/get-top-weekly-screentime-by-universe",
 			),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -933,8 +990,11 @@ export async function authorizeRobloxOAuth(request: AuthorizeRobloxOAuthRequest)
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -967,8 +1027,11 @@ export async function getApiKey({ apiKey }: GetAPIKeyRequest): Promise<APIKey> {
 	return (
 		await httpClient.httpRequest<APIKey>({
 			url: `${getRobloxUrl("apis")}/cloud-authentication/v1/apiKey/${apiKey}`,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -982,8 +1045,11 @@ export async function createAPIKey(data: CreateAPIKeyRequest): Promise<APIKeyWit
 				type: "json",
 				value: data,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -996,9 +1062,12 @@ export async function deleteAPIKey(data: DeleteAPIKeyRequest): Promise<void> {
 			type: "json",
 			value: data,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 		errorHandling: "BEDEV2",
-		includeCredentials: true,
 	});
 }
 
@@ -1010,9 +1079,12 @@ export async function updateAPIKey(data: UpdateAPIKeyRequest): Promise<void> {
 			type: "json",
 			value: data,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 		errorHandling: "BEDEV2",
-		includeCredentials: true,
 	});
 }
 
@@ -1022,9 +1094,12 @@ export async function regenerateAPIKey({
 	return (
 		await httpClient.httpRequest<APIKeyWithSecret>({
 			url: `${getRobloxUrl("apis")}/cloud-authentication/v1/apiKey/${cloudAuthId}/regenerate`,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			method: "POST",
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1033,8 +1108,11 @@ export async function listTestPilotPrograms(): Promise<ListTestPilotProgramsResp
 	return (
 		await httpClient.httpRequest<ListTestPilotProgramsResponse>({
 			url: getRobloxUrl("apis", "/test-pilot-api/v1/beta-programs"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1043,8 +1121,11 @@ export async function getSelectedTestPilotProgram(): Promise<GetSelectedTestPilo
 	return (
 		await httpClient.httpRequest<GetSelectedTestPilotProgramResponse>({
 			url: getRobloxUrl("apis", "/test-pilot-api/v1/opt-in"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1059,8 +1140,11 @@ export async function updateSelectedTestPilotProgram(
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -1068,7 +1152,10 @@ export async function getDeveloperExchangeMetadata() {
 	return (
 		await httpClient.httpRequest<DeveloperExchangeMetadata>({
 			url: getRobloxUrl("economy", "/v1/developer-exchange/info"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1077,7 +1164,10 @@ export async function getUserDevExableRobuxAmount() {
 	return (
 		await httpClient.httpRequest<UserDevExableRobuxAmount>({
 			url: getRobloxUrl("apis", "/creator-devex-data-service/v1/devexEligibleRobux"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }

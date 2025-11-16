@@ -1,11 +1,11 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getOrSetCache } from "../../cache.ts";
-import { CLOUD_API_KEY_HEADER_NAME, httpClient, OAUTH_AUTHORIZATION_HEADER_NAME } from "../main.ts";
+import { httpClient } from "../main.ts";
 import type { Agent } from "./assets.ts";
 import type { SortOrder } from "./badges.ts";
 import type { AssetFavoritesRequest } from "./favorites.ts";
 import type { AvatarBundleType } from "./marketplace.ts";
-import type { OpenCloudAuthType } from "./misc.ts";
+import type { HTTPRequestCredentials } from "@roseal/http-client/src/classes/HTTPClient.ts";
 
 export type InventoryItemType = "Asset" | "Bundle" | "Badge" | "GamePass";
 
@@ -141,8 +141,7 @@ export type ListUserInventoryCategoriesResponse = {
 };
 
 export type ListOpenCloudUserInventoryItemsRequest = {
-	authType: OpenCloudAuthType;
-	authCode: string;
+	credentials: HTTPRequestCredentials;
 	userId: number;
 	filter: string;
 	maxPageSize?: number;
@@ -297,7 +296,10 @@ export async function userOwnsItem({ userId, itemType, itemId }: UserOwnsItemReq
 					url: `${getRobloxUrl(
 						"inventory",
 					)}/v1/users/${userId}/items/${itemType}/${itemId}/is-owned`,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 			).body;
 		},
@@ -312,7 +314,10 @@ export async function listUserItemInstances({
 	return (
 		await httpClient.httpRequest<ListUserItemInstancesResponse>({
 			url: `${getRobloxUrl("inventory")}/v1/users/${userId}/items/${itemType}/${itemId}`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -322,7 +327,10 @@ export async function addItemToCollection({ itemType, itemId }: CollectionReques
 		method: "POST",
 		url: `${getRobloxUrl("inventory")}/v1/collections/items/${itemType}/${itemId}`,
 		expect: "none",
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 	});
 }
 
@@ -334,7 +342,10 @@ export async function removeItemFromCollection({
 		method: "DELETE",
 		url: `${getRobloxUrl("inventory")}/v1/collections/items/${itemType}/${itemId}`,
 		expect: "none",
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 	});
 }
 
@@ -342,7 +353,10 @@ export async function deleteAssetFromInventory({ assetId }: AssetFavoritesReques
 	await httpClient.httpRequest({
 		method: "DELETE",
 		url: `${getRobloxUrl("inventory")}/v2/inventory/asset/${assetId}`,
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 	});
 }
@@ -355,7 +369,10 @@ export async function listUserInventoryAssets({
 		await httpClient.httpRequest<ListUserInventoryAssetsResponse>({
 			url: `${getRobloxUrl("inventory")}/v2/users/${userId}/inventory`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -369,7 +386,10 @@ export async function listUserInventoryAssetsDetailed({
 		await httpClient.httpRequest<ListUserInventoryAssetsDetailedResponse>({
 			url: `${getRobloxUrl("inventory")}/v2/users/${userId}/inventory/${assetTypeId}`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -382,7 +402,10 @@ export async function listUserInventoryBundles({
 		await httpClient.httpRequest<ListUserInventoryBundlesResponse>({
 			url: `${getRobloxUrl("catalog")}/v1/users/${userId}/bundles`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -396,26 +419,24 @@ export async function listUserInventoryBundlesSubtype({
 		await httpClient.httpRequest<ListUserInventoryBundlesResponse>({
 			url: `${getRobloxUrl("catalog")}/v1/users/${userId}/bundles/${subtype}`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
 
 export async function listOpenCloudUserInventoryItems({
+	credentials,
 	userId,
-	authType,
-	authCode,
 	...request
 }: ListOpenCloudUserInventoryItemsRequest): Promise<ListOpenCloudUserInventoryItemsResponse> {
 	return (
 		await httpClient.httpRequest<ListOpenCloudUserInventoryItemsResponse>({
 			url: `${getRobloxUrl("apis")}/cloud/v2/users/${userId}/inventory-items`,
 			search: request,
-			headers: {
-				[OAUTH_AUTHORIZATION_HEADER_NAME]:
-					authType === "bearer" ? `Bearer ${authCode}` : undefined,
-				[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
-			},
+			credentials,
 			errorHandling: "BEDEV2",
 		})
 	).body;
@@ -429,7 +450,10 @@ export async function listUserInventoryPlaces({
 		await httpClient.httpRequest<ListUserInventoryPlacesResponse>({
 			url: `${getRobloxUrl("inventory")}/v1/users/${userId}/places/inventory`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -439,7 +463,10 @@ export async function listUserPrivateServers(request: ListUserPrivateServersRequ
 		await httpClient.httpRequest<ListUserPrivateServersResponse>({
 			url: getRobloxUrl("games", "/v1/private-servers/my-private-servers"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -449,7 +476,10 @@ export async function listUserPasses({ userId, ...request }: ListUserPassesReque
 		await httpClient.httpRequest<ListUserPassesResponse>({
 			url: `${getRobloxUrl("apis")}/game-passes/v1/users/${userId}/game-passes`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -458,9 +488,12 @@ export async function deletePassFromInventory({ passId }: DeletePassFromInventor
 	await httpClient.httpRequest<void>({
 		url: `${getRobloxUrl("apis")}/game-passes/v1/game-passes/${passId}:revokeOwnership`,
 		method: "POST",
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 		errorHandling: "BEDEV2",
-		includeCredentials: true,
 	});
 }
 
@@ -472,7 +505,10 @@ export async function listUserCollectibleAssets({
 		await httpClient.httpRequest<ListUserCollectibleAssetsResponse>({
 			url: `${getRobloxUrl("inventory")}/v1/users/${userId}/assets/collectibles`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }

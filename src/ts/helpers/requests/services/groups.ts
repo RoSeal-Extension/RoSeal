@@ -1,8 +1,8 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../cache.ts";
-import { CLOUD_API_KEY_HEADER_NAME, httpClient, OAUTH_AUTHORIZATION_HEADER_NAME } from "../main.ts";
+import { httpClient } from "../main.ts";
 import type { SortOrder } from "./badges.ts";
-import type { OpenCloudAuthType } from "./misc.ts";
+import type { HTTPRequestCredentials } from "@roseal/http-client/src/classes/HTTPClient.ts";
 
 export type GroupV2Owner = {
 	id: number;
@@ -34,8 +34,7 @@ export type GetGroupByIdRequest = {
 };
 
 export type GetOpenCloudGroupRequest = {
-	authType: OpenCloudAuthType;
-	authCode: string;
+	credentials: HTTPRequestCredentials;
 	groupId: number;
 };
 
@@ -265,8 +264,7 @@ export type ListGroupRoleMembersResponse = {
 };
 
 export type ListGroupMembersV2Request = {
-	authType: OpenCloudAuthType;
-	authCode: string;
+	credentials: HTTPRequestCredentials;
 	groupId: number;
 	maxPageSize?: number;
 	pageToken?: string;
@@ -304,7 +302,10 @@ export async function getGroupShoutNotificationPreferences() {
 	return (
 		await httpClient.httpRequest<GetGroupShoutNotificationPreferencesResponse>({
 			url: getRobloxUrl("notifications", "/v2/notifications/group-shout-preferences"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -313,24 +314,23 @@ export async function getGroupGuildedShout({ groupId }: GetGroupGuildedShoutRequ
 	return (
 		await httpClient.httpRequest<GroupGuildedShout | undefined>({
 			url: `${getRobloxUrl("apis")}/community-links/v1/groups/${groupId}/shout`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
 		})
 	).body;
 }
 
-export function getOpenCloudGroup({ authType, authCode, groupId }: GetOpenCloudGroupRequest) {
+export function getOpenCloudGroup({ credentials, groupId }: GetOpenCloudGroupRequest) {
 	return getOrSetCache({
 		key: ["groups", groupId, "openCloudDetails"],
 		fn: () =>
 			httpClient
 				.httpRequest<OpenCloudGroupDetails>({
 					url: `${getRobloxUrl("apis")}/cloud/v2/groups/${groupId}`,
-					headers: {
-						[OAUTH_AUTHORIZATION_HEADER_NAME]:
-							authType === "bearer" ? `Bearer ${authCode}` : undefined,
-						[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
-					},
+					credentials,
 					errorHandling: "BEDEV2",
 				})
 				.then((res) => res.body),
@@ -376,8 +376,11 @@ export async function setGroupNotificationSetting({
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -401,7 +404,10 @@ export async function getGroupById({ groupId }: GetGroupByIdRequest) {
 			httpClient
 				.httpRequest<GroupDetails>({
 					url: `${getRobloxUrl("groups")}/v1/groups/${groupId}`,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((res) => res.body),
 	});
@@ -420,7 +426,10 @@ export async function listUserPendingGroups() {
 	return (
 		await httpClient.httpRequest<ListUserPendingGroupsResponse>({
 			url: getRobloxUrl("groups", "/v1/user/groups/pending"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -433,8 +442,11 @@ export async function deleteUserGroupMembership(
 			request.userId
 		}`,
 		method: "DELETE",
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -446,7 +458,10 @@ export async function listUserGroupsRoles({
 		await httpClient.httpRequest<MultiGroupV1WithRole>({
 			url: `${getRobloxUrl("groups")}/v1/users/${userId}/groups/roles`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -460,7 +475,10 @@ export async function multigetGroupsPolicies(request: MultigetGroupsPoliciesRequ
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -469,7 +487,10 @@ export async function getGroupsMetadata() {
 	return (
 		await httpClient.httpRequest<GroupsMetadata>({
 			url: getRobloxUrl("groups", "/v1/groups/metadata"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -479,7 +500,10 @@ export async function multigetGroupRolesByIds(request: MultigetGroupRolesByIdsRe
 		await httpClient.httpRequest<MultigetGroupRolesByIdsResponse>({
 			url: getRobloxUrl("groups", "/v1/roles"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -492,7 +516,10 @@ export async function listGroupMembers({
 		await httpClient.httpRequest<ListGroupMembersResponse>({
 			url: `${getRobloxUrl("groups")}/v1/groups/${groupId}/users`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -501,7 +528,10 @@ export async function listGroupRoles({ groupId }: ListGroupRolesRequest) {
 	return (
 		await httpClient.httpRequest<ListGroupRolesResponse>({
 			url: `${getRobloxUrl("groups")}/v1/groups/${groupId}/roles`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -515,26 +545,24 @@ export async function listGroupRoleMembers({
 		await httpClient.httpRequest<ListGroupRoleMembersResponse>({
 			url: `${getRobloxUrl("groups")}/v1/groups/${groupId}/roles/${roleId}/users`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
 
 export async function listGroupMembersV2({
 	groupId,
-	authType,
-	authCode,
+	credentials,
 	...request
 }: ListGroupMembersV2Request) {
 	return (
 		await httpClient.httpRequest<ListGroupMembersV2Response>({
 			url: `${getRobloxUrl("apis")}/cloud/v2/groups/${groupId}/memberships`,
 			search: request,
-			headers: {
-				[OAUTH_AUTHORIZATION_HEADER_NAME]:
-					authType === "bearer" ? `Bearer ${authCode}` : undefined,
-				[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
-			},
+			credentials,
 			errorHandling: "BEDEV2",
 		})
 	).body;

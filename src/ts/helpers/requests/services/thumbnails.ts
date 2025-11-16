@@ -1,13 +1,13 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { chunk } from "src/ts/utils/objects.ts";
-import { CLOUD_API_KEY_HEADER_NAME, httpClient, OAUTH_AUTHORIZATION_HEADER_NAME } from "../main.ts";
+import { httpClient } from "../main.ts";
 import type {
 	AvatarAssetDefinition,
 	AvatarBodyColorsRender,
 	AvatarType,
 	AvatarScales,
 } from "./avatar.ts";
-import type { OpenCloudAuthType } from "./misc.ts";
+import type { HTTPRequestCredentials } from "@roseal/http-client/src/classes/HTTPClient.ts";
 
 export type ThumbnailType =
 	| "Avatar"
@@ -107,8 +107,7 @@ export type RenderAvatarResponse = {
 };
 
 export type GetCloudUserThumbnailRequest = {
-	authType?: OpenCloudAuthType;
-	authCode?: string;
+	credentials: HTTPRequestCredentials;
 	userId: number;
 };
 
@@ -140,7 +139,10 @@ export async function batchGetThumbnails(
 				type: "json",
 				value: requests,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body.data;
 }
@@ -150,7 +152,10 @@ export async function get3dThumbnail({ assetId }: GetAsset3dThumbnailRequest) {
 		await httpClient.httpRequest<Get3dThumbnailResponse>({
 			url: getRobloxUrl("thumbnails", "/v1/assets-thumbnail-3d"),
 			search: { assetId },
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -160,7 +165,10 @@ export async function getUser3dThumbnail(request: GetUser3dThumbnailRequest) {
 		await httpClient.httpRequest<Get3dThumbnailResponse>({
 			url: getRobloxUrl("thumbnails", "/v1/users/avatar-3d"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -174,7 +182,10 @@ export async function renderAvatar(request: RenderAvatarRequest): Promise<Render
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -188,14 +199,16 @@ export async function getAnimatedThumbnail({
 			search: {
 				assetId,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
 
 export async function getCloudUserThumbnail({
-	authType,
-	authCode,
+	credentials,
 	userId,
 	...request
 }: GetCloudUserThumbnailRequest): Promise<GetCloudUserThumbnailResponse> {
@@ -203,11 +216,7 @@ export async function getCloudUserThumbnail({
 		await httpClient.httpRequest<GetCloudUserThumbnailResponse>({
 			url: `${getRobloxUrl("apis")}/cloud/v2/users/${userId}:generateThumbnail`,
 			search: request,
-			headers: {
-				[OAUTH_AUTHORIZATION_HEADER_NAME]:
-					authType === "bearer" ? `Bearer ${authCode}` : undefined,
-				[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
-			},
+			credentials,
 			errorHandling: "BEDEV2",
 		})
 	).body;

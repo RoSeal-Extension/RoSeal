@@ -166,8 +166,11 @@ export async function getPrivateServerStatusByCode({
 			search: {
 				privateServerLinkCode,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			expect: "dom",
-			includeCredentials: true,
 		})
 	).body;
 
@@ -194,7 +197,10 @@ export async function listPlacePrivateServers({
 		await httpClient.httpRequest<ListPlacePrivateServersResponse>({
 			url: `${getRobloxUrl("games")}/v1/games/${placeId}/private-servers`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -205,7 +211,10 @@ export async function getPrivateServerOwnerDetailsById({
 	return (
 		await httpClient.httpRequest<PrivateServerOwnerDetails>({
 			url: `${getRobloxUrl("games")}/v1/vip-servers/${privateServerId}`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -216,13 +225,16 @@ export async function updatePrivateServer({
 }: UpdatePrivateServerRequest) {
 	return (
 		await httpClient.httpRequest<PrivateServerOwnerDetails>({
-			method: "PATCH",
 			url: `${getRobloxUrl("games")}/v1/vip-servers/${privateServerId}`,
+			method: "PATCH",
 			body: {
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -233,13 +245,16 @@ export async function updatePrivateServerSubscription({
 }: UpdatePrivateServerSubscriptionRequest) {
 	return (
 		await httpClient.httpRequest<PrivateServerSubscription>({
-			method: "PATCH",
 			url: `${getRobloxUrl("games")}/v1/vip-servers/${privateServerId}/subscription`,
+			method: "PATCH",
 			body: {
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -250,13 +265,16 @@ export async function updatePrivateServerPermissions({
 }: UpdatePrivateServerPermissionsRequest) {
 	return (
 		await httpClient.httpRequest<PrivateServerPermissions>({
-			method: "PATCH",
 			url: `${getRobloxUrl("games")}/v1/vip-servers/${privateServerId}/permissions`,
+			method: "PATCH",
 			body: {
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -264,13 +282,16 @@ export async function updatePrivateServerPermissions({
 export async function createPrivateServer({ universeId, ...request }: CreatePrivateServerRequest) {
 	return (
 		await httpClient.httpRequest<PlacePrivateServer>({
-			method: "POST",
 			url: `${getRobloxUrl("games")}/v1/games/vip-servers/${universeId}`,
+			method: "POST",
 			body: {
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -284,7 +305,10 @@ export async function getPrivateServersEnabledInUniverse({
 			httpClient
 				.httpRequest<GetPrivateServersEnabledInUniverseResponse>({
 					url: `${getRobloxUrl("games")}/v1/private-servers/enabled-in-universe/${universeId}`,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((data) => data.body.privateServersEnabled),
 	});
@@ -297,8 +321,11 @@ export async function getUniversePrivateServersSettings(
 		await httpClient.httpRequest<GetUniversePrivateServersSettingsResponse>({
 			url: getRobloxUrl("apis", "/private-servers-api/Universe-Private-Server-Settings"),
 			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }

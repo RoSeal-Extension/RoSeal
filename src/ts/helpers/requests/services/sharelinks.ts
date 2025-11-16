@@ -167,8 +167,11 @@ export async function resolveShareLink<T extends ShareLinkType>(
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -188,8 +191,11 @@ export async function createShareLink<T extends ShareLinkType>({
 					data: data && JSON.stringify(data),
 				},
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -209,8 +215,11 @@ export async function resolveOrCreateShareLink<
 					data: data && JSON.stringify(data),
 				},
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -230,8 +239,11 @@ export async function createShareLinkV2<T extends ShareLinkV2Type>({
 					customData: customData && JSON.stringify(customData),
 				},
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -247,8 +259,11 @@ export async function resolveShareLinkV2<T extends ShareLinkV2Type>(
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -264,8 +279,11 @@ export async function resolveOrCreateShareLinkV2<T extends ShareLinkV2Type>(
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }

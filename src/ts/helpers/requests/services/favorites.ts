@@ -82,7 +82,10 @@ export async function listUserFavoritedExperiences({
 		await httpClient.httpRequest<ListUserFavoritedExperiencesResponse>({
 			url: `${getRobloxUrl("games")}/v2/users/${userId}/favorite/games`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -91,7 +94,10 @@ export async function getAssetFavoritesCount({ assetId }: AssetFavoritesRequest)
 	return (
 		await httpClient.httpRequest<number>({
 			url: `${getRobloxUrl("catalog")}/v1/favorites/assets/${assetId}/count`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -105,7 +111,10 @@ export async function getUserAssetFavorite({
 			url: `${getRobloxUrl(
 				"catalog",
 			)}/v1/favorites/users/${userId}/assets/${assetId}/favorite`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -117,7 +126,10 @@ export async function addUserAssetFavorite({
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("catalog")}/v1/favorites/users/${userId}/assets/${assetId}/favorite`,
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 	});
 }
 
@@ -128,7 +140,10 @@ export async function removeUserAssetFavorite({
 	await httpClient.httpRequest<void>({
 		method: "DELETE",
 		url: `${getRobloxUrl("catalog")}/v1/favorites/users/${userId}/assets/${assetId}/favorite`,
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 	});
 }
 
@@ -138,7 +153,10 @@ export async function getBundleFavoritesCount({
 	return (
 		await httpClient.httpRequest<number>({
 			url: `${getRobloxUrl("catalog")}/v1/favorites/bundles/${bundleId}/count`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -150,7 +168,10 @@ export async function getUserBundleFavorite({
 	return (
 		await httpClient.httpRequest<GetUserBundleFavoriteResponse | null>({
 			url: `${getRobloxUrl("catalog")}/v1/favorites/users/${userId}/bundles/${bundleId}/favorite`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -161,7 +182,10 @@ export async function addUserBundleFavorite({
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("catalog")}/v1/favorites/users/${userId}/bundles/${bundleId}/favorite`,
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 	});
 }
 
@@ -172,7 +196,10 @@ export async function removeUserBundleFavorite({
 	await httpClient.httpRequest<void>({
 		method: "DELETE",
 		url: `${getRobloxUrl("catalog")}/v1/favorites/users/${userId}/bundles/${bundleId}/favorite`,
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 	});
 }
 
@@ -183,7 +210,10 @@ export async function listUserFavoritedAvatarBundles({
 	return (
 		await httpClient.httpRequest<ListUserFavoritedAvatarBundlesResponse>({
 			url: `${getRobloxUrl("catalog")}/v1/favorites/users/${userId}/favorites/${bundleTypeId}/bundles`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -195,7 +225,10 @@ export async function listUserFavoritedAvatarAssets({
 	return (
 		await httpClient.httpRequest<ListUserFavoritedAvatarAssetsResponse>({
 			url: `${getRobloxUrl("catalog")}/v1/favorites/users/${userId}/favorites/${assetTypeId}/assets`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }

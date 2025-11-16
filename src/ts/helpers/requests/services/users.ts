@@ -6,8 +6,9 @@ import type {
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../../helpers/cache.ts";
 import { renderGenericChallenge } from "../../domInvokes.ts";
-import { CLOUD_API_KEY_HEADER_NAME, httpClient, OAUTH_AUTHORIZATION_HEADER_NAME } from "../main.ts";
+import { httpClient } from "../main.ts";
 import type { SortOrder } from "./badges.ts";
+import type { HTTPRequestCredentials } from "@roseal/http-client/src/classes/HTTPClient.ts";
 
 export type GetUserByIdRequest = {
 	userId: number;
@@ -580,8 +581,7 @@ export type MultigetUsersAreTrustedFriendsResponse = {
 };
 
 export type GetOpenCloudUserRequest = {
-	authType: "bearer" | "apiKey";
-	authCode: string;
+	credentials: HTTPRequestCredentials;
 	userId: number;
 };
 
@@ -640,7 +640,10 @@ export function getUserPremiumStatus({ userId, overrideCache }: GetUserByIdReque
 			(
 				await httpClient.httpRequest<boolean>({
 					url: `${getRobloxUrl("premiumfeatures")}/v1/users/${userId}/validate-membership`,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 			).body,
 		overrideCache,
@@ -654,7 +657,10 @@ export function getUserById({ userId, overrideCache }: GetUserByIdRequest) {
 			(
 				await httpClient.httpRequest<UserDetails>({
 					url: `${getRobloxUrl("users")}/v1/users/${userId}`,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 			).body,
 		overrideCache,
@@ -665,9 +671,12 @@ export async function blockUser({ userId }: BlockUserRequest): Promise<void> {
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("apis")}/user-blocking-api/v1/users/${userId}/block-user`,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 		errorHandling: "BEDEV2",
-		includeCredentials: true,
 	});
 }
 
@@ -694,8 +703,11 @@ export async function checkUsersReciprocalBlocked({
 							userIds: data.map((id) => id.id),
 						},
 					},
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 					errorHandling: "BEDEV2",
-					includeCredentials: true,
 				})
 				.then((res) => {
 					const items: Record<number, ReciprocalUserBlockedStatus> = {};
@@ -728,8 +740,11 @@ export async function checkUsersBlocked({ userIds, overrideCache }: CheckUsersBl
 							userIds: data.map((id) => id.id),
 						},
 					},
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 					errorHandling: "BEDEV2",
-					includeCredentials: true,
 				})
 				.then((res) => {
 					const items: Record<number, UserBlockedStatus> = {};
@@ -748,9 +763,12 @@ export async function unblockUser({ userId }: BlockUserRequest): Promise<void> {
 	await httpClient.httpRequest({
 		method: "POST",
 		url: `${getRobloxUrl("apis")}/user-blocking-api/v1/users/${userId}/unblock-user`,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		errorHandling: "BEDEV2",
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -758,8 +776,11 @@ export async function getUserIsBlocked({ userId }: BlockUserRequest): Promise<bo
 	return (
 		await httpClient.httpRequest<boolean>({
 			url: `${getRobloxUrl("apis")}/user-blocking-api/v1/users/${userId}/is-blocked`,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -768,9 +789,12 @@ export async function listBlockedUsers(request: ListBlockedUsersRequest) {
 	return (
 		await httpClient.httpRequest<ListBlockedUsersResponse>({
 			url: `${getRobloxUrl("apis", "/user-blocking-api/v1/users/get-blocked-users")}`,
-			errorHandling: "BEDEV2",
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+			errorHandling: "BEDEV2",
 		})
 	).body;
 }
@@ -779,8 +803,11 @@ export async function unfriendUser({ userId }: UnfriendUserRequest): Promise<voi
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("friends")}/v1/users/${userId}/unfriend`,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -788,8 +815,11 @@ export async function removeTrustedFriend({ userId }: UnfriendUserRequest): Prom
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("friends")}/v1/users/${userId}/remove-trusted-friend`,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -804,8 +834,11 @@ export async function acceptFriendRequestWithToken({
 			type: "json",
 			value: request,
 		},
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -813,8 +846,11 @@ export async function followUser({ userId }: UnfollowUserRequest): Promise<void>
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("friends")}/v1/users/${userId}/follow`,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 		handleChallenge: renderGenericChallenge,
 	});
 }
@@ -823,8 +859,11 @@ export async function unfollowUser({ userId }: UnfollowUserRequest): Promise<voi
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("friends")}/v1/users/${userId}/unfollow`,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -832,7 +871,10 @@ export async function getUserFriendStatus({ userId }: GetUserFriendStatusRequest
 	return (
 		await httpClient.httpRequest<GetUserFriendStatusResponse>({
 			url: `${getRobloxUrl("friends")}/v1/my/friends/${userId}/status`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -841,7 +883,10 @@ export async function getUserTrustedFriendStatus({ userId }: GetUserFriendStatus
 	return (
 		await httpClient.httpRequest<GetUserTrustedFriendStatusResponse>({
 			url: `${getRobloxUrl("friends")}/v1/my/trusted-friends/${userId}/status`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -863,7 +908,10 @@ export async function multigetUsersAreTrustedFriends({
 					search: {
 						userIds: data.map((id) => id.id),
 					},
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((res) => {
 					const items: Record<number, { id: number }> = {};
@@ -899,7 +947,10 @@ export async function getUserFriendsStatus({
 					search: {
 						userIds: data.map((id) => id.id),
 					},
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((res) => {
 					const items: Record<number, UserFriendStatus> = {};
@@ -995,7 +1046,10 @@ export async function multigetUsersPresences(request: MultigetUsersPresencesRequ
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1020,7 +1074,10 @@ export async function multigetFollowingStatuses({
 							targetUserIds: userIds.map((id) => id.id),
 						},
 					},
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((data) => {
 					const items: Record<number, FollowingStatus> = {};
@@ -1044,7 +1101,10 @@ export async function multigetProfileInsights(request: MultigetProfileInsightsRe
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1067,8 +1127,11 @@ export async function multigetProfileData<T extends ProfileField, U extends Prof
 					nameFields: undefined,
 				},
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1078,7 +1141,10 @@ export async function listUserFriends({ userId, ...request }: ListUserFriendsReq
 		await httpClient.httpRequest<ListUserFriendsResponse>({
 			url: `${getRobloxUrl("friends")}/v1/users/${userId}/friends/find`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
 		})
 	).body;
@@ -1089,7 +1155,10 @@ export async function searchUserFriends({ userId, ...request }: SearchUserFriend
 		await httpClient.httpRequest<ListUserFriendsResponse>({
 			url: `${getRobloxUrl("friends")}/v1/users/${userId}/friends/search`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
 		})
 	).body;
@@ -1100,7 +1169,10 @@ export async function listUserFollowers({ userId, ...request }: ListUserFollower
 		await httpClient.httpRequest<ListUserFollowersResponse>({
 			url: `${getRobloxUrl("friends")}/v1/users/${userId}/followers`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1110,7 +1182,10 @@ export async function listUserFollowings({ userId, ...request }: ListUserFollowe
 		await httpClient.httpRequest<ListUserFollowersResponse>({
 			url: `${getRobloxUrl("friends")}/v1/users/${userId}/followings`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1122,7 +1197,10 @@ export async function listUserOnlineFriends({ userId, userSort }: LegacyListUser
 			search: {
 				userSort,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
 		})
 	).body;
@@ -1136,7 +1214,10 @@ export async function listUserUsernameHistory({
 		await httpClient.httpRequest<ListUserUsernameHistoryResponse>({
 			url: `${getRobloxUrl("users")}/v1/users/${userId}/username-history`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
 		})
 	).body;
@@ -1147,7 +1228,10 @@ export async function listUserRobloxCollections(request: ListUserRobloxCollectio
 		await httpClient.httpRequest<RobloxCollectionItem[]>({
 			url: getRobloxUrl("apis", "/showcases-api/v1/users/profile/robloxcollections-json"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1157,7 +1241,10 @@ export async function listUserPlaces(request: ListUserPlacesRequest) {
 		await httpClient.httpRequest<ListUserPlacesResponse>({
 			url: getRobloxUrl("www", "/users/profile/playergames-json"),
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			camelizeResponse: true,
 		})
 	).body;
@@ -1167,7 +1254,10 @@ export async function listUserFollowingsCount({ userId }: ListUserFriendsFollowe
 	return (
 		await httpClient.httpRequest<GetUserFriendsFollowersCountResponse>({
 			url: `${getRobloxUrl("friends")}/v1/users/${userId}/followings/count`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1176,7 +1266,10 @@ export async function listUserFriendsCount({ userId }: ListUserFriendsFollowersC
 	return (
 		await httpClient.httpRequest<GetUserFriendsFollowersCountResponse>({
 			url: `${getRobloxUrl("friends")}/v1/users/${userId}/friends/count`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1185,7 +1278,10 @@ export async function listUserFollowersCount({ userId }: ListUserFriendsFollower
 	return (
 		await httpClient.httpRequest<GetUserFriendsFollowersCountResponse>({
 			url: `${getRobloxUrl("friends")}/v1/users/${userId}/followers/count`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1194,7 +1290,10 @@ export async function listMyFriendRequestsCount() {
 	return (
 		await httpClient.httpRequest<GetUserFriendsFollowersCountResponse>({
 			url: `${getRobloxUrl("friends")}/v1/user/friend-requests/count`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1203,7 +1302,10 @@ export async function listMyFriendsCount() {
 	return (
 		await httpClient.httpRequest<GetUserFriendsFollowersCountResponse>({
 			url: `${getRobloxUrl("friends")}/v1/my/friends/count`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1213,7 +1315,10 @@ export async function listMyFriendRequests(request: ListMyFriendRequestsRequest)
 		await httpClient.httpRequest<ListMyFriendRequestsResponse>({
 			url: `${getRobloxUrl("friends")}/v1/my/friends/requests`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1222,7 +1327,10 @@ export async function listMyNewFriendRequestsCount() {
 	return (
 		await httpClient.httpRequest<GetUserFriendsFollowersCountResponse>({
 			url: `${getRobloxUrl("friends")}/v1/my/new-friend-requests/count`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1231,7 +1339,10 @@ export async function declineAllMyNewFriendRequests() {
 	await httpClient.httpRequest<void>({
 		method: "DELETE",
 		url: `${getRobloxUrl("friends")}/v1/my/new-friend-requests`,
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 	});
 }
@@ -1241,7 +1352,10 @@ export async function declineAllMyFriendRequests() {
 		await httpClient.httpRequest<DeclineAllMyFriendRequestsResponse>({
 			method: "POST",
 			url: `${getRobloxUrl("friends")}/v1/user/friend-requests/decline-all`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1250,7 +1364,10 @@ export async function declineUserFriendRequest({ userId }: AcceptUserFriendReque
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("friends")}/v1/users/${userId}/decline-friend-request`,
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 	});
 }
@@ -1259,7 +1376,10 @@ export async function ignoreUserTrustedFriendRequest({ userId }: AcceptUserFrien
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("friends")}/v1/users/${userId}/ignore-trusted-friend-request`,
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 	});
 }
@@ -1268,7 +1388,10 @@ export async function acceptUserFriendRequest({ userId }: AcceptUserFriendReques
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("friends")}/v1/users/${userId}/accept-friend-request`,
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 	});
 }
@@ -1277,7 +1400,10 @@ export async function acceptUserTrustedFriendRequest({ userId }: AcceptUserFrien
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("friends")}/v1/users/${userId}/accept-trusted-friend-request`,
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 	});
 }
@@ -1291,8 +1417,11 @@ export async function requestUserFriendship({ userId, ...request }: RequestUserF
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			handleChallenge: renderGenericChallenge,
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -1306,7 +1435,10 @@ export async function requestTrustedFriend({ userId, ...request }: RequestUserFr
 				type: "json",
 				value: request,
 			},
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1319,7 +1451,10 @@ export async function listUserFriendRecommendations({
 		await httpClient.httpRequest<ListUserFriendRecommendationsResponse>({
 			url: `${getRobloxUrl("friends")}/v1/users/${userId}/friends/recommendations`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -1330,24 +1465,22 @@ export async function listUserRobloxBadges({
 	return (
 		await httpClient.httpRequest<RobloxAssignedBadge[]>({
 			url: `${getRobloxUrl("accountinformation")}/v1/users/${userId}/roblox-badges`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
 
 export async function getOpenCloudUser({
-	authType,
-	authCode,
+	credentials,
 	userId,
 }: GetOpenCloudUserRequest): Promise<GetOpenCloudUserResponse> {
 	return (
 		await httpClient.httpRequest<GetOpenCloudUserResponse>({
 			url: `${getRobloxUrl("apis")}/cloud/v2/users/${userId}`,
-			headers: {
-				[OAUTH_AUTHORIZATION_HEADER_NAME]:
-					authType === "bearer" ? `Bearer ${authCode}` : undefined,
-				[CLOUD_API_KEY_HEADER_NAME]: authType === "apiKey" ? authCode : undefined,
-			},
+			credentials,
 			errorHandling: "BEDEV2",
 		})
 	).body;
@@ -1361,7 +1494,10 @@ export async function updateProfileCustomization(request: UpdateProfileCustomiza
 			type: "json",
 			value: request,
 		},
-		includeCredentials: true,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
 		errorHandling: "BEDEV2",
 	});

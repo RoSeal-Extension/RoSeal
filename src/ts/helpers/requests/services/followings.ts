@@ -36,7 +36,10 @@ export async function listUserUniverseFollowings({ userId }: ListUserFollowingsR
 	return (
 		await httpClient.httpRequest<ListUserFollowingsResponse>({
 			url: `${getRobloxUrl("followings")}/v2/users/${userId}/universes`,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -48,8 +51,11 @@ export async function removeUserUniverseFollowing({
 	await httpClient.httpRequest<void>({
 		method: "DELETE",
 		url: `${getRobloxUrl("followings")}/v1/users/${userId}/universes/${universeId}`,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -60,8 +66,11 @@ export async function addUserUniverseFollowing({
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("followings")}/v1/users/${userId}/universes/${universeId}`,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }
 
@@ -89,7 +98,10 @@ export async function listLastUniversesUpdates({
 						"notifications",
 					)}/v2/stream-notifications/get-latest-game-updates`,
 					search,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((data) => {
 					const items: Record<number, UniverseUpdate> = {};

@@ -96,7 +96,10 @@ export async function multigetPlacesByIds({ placeIds }: MultigetPlacesByIdsReque
 				.httpRequest<Place[]>({
 					url: getRobloxUrl("games", "/v1/games/multiget-place-details"),
 					search,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((res) => {
 					const items: Record<number, Place> = {};
@@ -120,7 +123,10 @@ export async function listPlaceServers({
 		await httpClient.httpRequest<ListPlaceServersResponse>({
 			url: `${getRobloxUrl("games")}/v1/games/${placeId}/servers/${serverType}`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -129,8 +135,11 @@ export async function getPlaceVotes({ placeId }: GetPlaceVotesRequest) {
 	const data = (
 		await httpClient.httpRequest<Document>({
 			url: `${getRobloxUrl("www")}/games/votingservice/${placeId}`,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			expect: "dom",
-			includeCredentials: true,
 		})
 	).body;
 
@@ -158,8 +167,11 @@ export async function getPlaceUniverseId({ placeId }: GetPlaceUniverseIdRequest)
 	return (
 		await httpClient.httpRequest<GetPlaceUniverseInternalResponse>({
 			url: `${getRobloxUrl("apis")}/universes/v1/places/${placeId}/universe`,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			errorHandling: "BEDEV2",
-			includeCredentials: true,
 		})
 	).body.universeId;
 }

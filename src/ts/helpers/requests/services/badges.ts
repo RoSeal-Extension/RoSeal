@@ -85,7 +85,10 @@ export function getBadgeById({ badgeId, overrideCache }: GetBadgeByIdRequest) {
 			(
 				await httpClient.httpRequest<BadgeDetails>({
 					url: `${getRobloxUrl("badges")}/v1/badges/${badgeId}`,
-					includeCredentials: true,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 			).body,
 		overrideCache,
@@ -97,7 +100,10 @@ export async function listUserBadges({ userId, ...request }: ListUserBadgesReque
 		await httpClient.httpRequest<ListUniverseBadgesResponse>({
 			url: `${getRobloxUrl("badges")}/v1/users/${userId}/badges`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -107,7 +113,10 @@ export async function listUniverseBadges({ universeId, ...request }: ListUnivers
 		await httpClient.httpRequest<ListUniverseBadgesResponse>({
 			url: `${getRobloxUrl("badges")}/v1/universes/${universeId}/badges`,
 			search: request,
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
@@ -145,9 +154,12 @@ export async function multigetBadgesAwardedDates({
 
 export async function deleteBadgeFromInventory({ badgeId }: DeleteBadgeFromInventoryRequest) {
 	await httpClient.httpRequest<void>({
-		url: `${getRobloxUrl("badges")}/v1/user/badges/${badgeId}`,
 		method: "DELETE",
+		url: `${getRobloxUrl("badges")}/v1/user/badges/${badgeId}`,
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
 		expect: "none",
-		includeCredentials: true,
 	});
 }

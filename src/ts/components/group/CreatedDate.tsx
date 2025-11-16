@@ -29,10 +29,9 @@ export default function GroupCreatedDate({ groupId }: GroupCreatedDateProps) {
 			tryOpenCloudAuthRequest(
 				authenticatedUser.userId,
 				authenticatedUser.isUnder13 === false,
-				(authType, authCode) =>
+				(credentials) =>
 					getOpenCloudGroup({
-						authType,
-						authCode,
+						credentials,
 						groupId,
 					}),
 			),
@@ -46,10 +45,9 @@ export default function GroupCreatedDate({ groupId }: GroupCreatedDateProps) {
 		return tryOpenCloudAuthRequest(
 			authenticatedUser.userId,
 			authenticatedUser.isUnder13 === false,
-			(authType, authCode) =>
+			(credentials) =>
 				listGroupMembersV2({
-					authType,
-					authCode,
+					credentials,
 					groupId,
 					maxPageSize: 1,
 				}).then((data) => data.groupMemberships[0]),

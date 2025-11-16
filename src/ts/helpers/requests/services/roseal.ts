@@ -198,8 +198,11 @@ export async function getRobloxDataCenters() {
 	return (
 		await httpClient.httpRequest<RobloxGroupedDataCenter[]>({
 			url: getRoSealAPIUrl("/v2/grouped-datacenters.json"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			bypassCORS: true,
-			includeCredentials: true,
 		})
 	).body;
 }
@@ -208,8 +211,11 @@ export async function getRoSealExperienceCountdown({ universeId }: GetExperience
 	const data = (
 		await httpClient.httpRequest<ExperienceCountdown[]>({
 			url: getRoSealAPIUrl("/v2/experience-countdowns.json"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			bypassCORS: true,
-			includeCredentials: true,
 		})
 	).body;
 
@@ -226,9 +232,11 @@ export async function getRoSealExperienceLinks({
 	const data = (
 		await httpClient.httpRequest<ExperienceLinkMetadata[]>({
 			url: getRoSealAPIUrl("/v2/experience-links.json"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			bypassCORS: true,
-
-			includeCredentials: true,
 		})
 	).body;
 
@@ -243,8 +251,11 @@ export function getRoSealLaunchData(): Promise<RoSealLaunchData> {
 	return httpClient
 		.httpRequest<RoSealLaunchData>({
 			url: getRoSealAPIUrl("/v2/launch-data.json"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			bypassCORS: true,
-			includeCredentials: true,
 		})
 		.then((res) => res.body);
 }
@@ -253,7 +264,10 @@ export function getRoSealAlerts() {
 	return httpClient
 		.httpRequest<GetRoSealAlertsResponse>({
 			url: getRoSealAPIUrl("/v2/alerts.json"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			bypassCORS: true,
 		})
 		.then((res) => res.body);
@@ -263,7 +277,10 @@ export function getRobloxExperiments(): Promise<RobloxExperimentSection[]> {
 	return httpClient
 		.httpRequest<RobloxExperimentSection[]>({
 			url: getRoSealAPIUrl("/v2/roblox-experiments.json"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			bypassCORS: true,
 		})
 		.then((res) => res.body);
@@ -275,13 +292,15 @@ export function getRobloxSharedExperiencePasses(
 	return httpClient
 		.httpRequest<RobloxSharedExperiencePass[]>({
 			url: getRoSealAPIUrl("/v2/shared-experience-passes.json"),
-			includeCredentials: true,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 			bypassCORS: true,
 		})
-		.then((res) => {
-			const passes: RobloxSharedExperiencePass[] = res.body;
-			return passes.filter((pass) =>
+		.then((res) =>
+			res.body.filter((pass) =>
 				pass.sharedUniverses.some((universe) => universe.id === request.universeId),
-			);
-		});
+			),
+		);
 }

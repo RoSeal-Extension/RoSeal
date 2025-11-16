@@ -1,12 +1,7 @@
 import { HBAClient } from "roblox-bat";
 import { ROSEAL_ACCOUNT_TOKEN_SEARCH_PARAM_NAME } from "src/ts/constants/accountsManager.ts";
 import { camelizeObject } from "src/ts/utils/objects.ts";
-import {
-	CLOUD_API_KEY_HEADER_NAME,
-	HTTPClient,
-	OAUTH_AUTHORIZATION_HEADER_NAME,
-	RESTError,
-} from "../../../../node_modules/@roseal/http-client/src/index.ts";
+import { HTTPClient, RESTError } from "../../../../node_modules/@roseal/http-client/src/index.ts";
 import {
 	type PlatformType,
 	ROSEAL_OVERRIDE_PLATFORM_TYPE_HEADER_NAME,
@@ -57,4 +52,4 @@ export const httpClient = new HTTPClient<PlatformType>({
 	isDev: import.meta.env.IS_DEV,
 });
 
-export { CLOUD_API_KEY_HEADER_NAME, OAUTH_AUTHORIZATION_HEADER_NAME, RESTError };
+export { RESTError };
