@@ -1899,7 +1899,7 @@
 					"$message": "Critical: RoSeal website permission denied"
 				},
 				"message": {
-					"$message": "You have rejected RoSeal permission to the roseal.live domain. RoSeal requires this for multiple features and basic functionality. Please allow it in your browser's extensions permissions page for RoSeal."
+					"$message": "You have denied RoSeal permission to the roseal.live domain. RoSeal requires this for multiple features and basic functionality. Please allow it in your browser's extensions permissions page for RoSeal."
 				}
 			},
 			"otherReason": {
