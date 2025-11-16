@@ -270,10 +270,9 @@ export default {
 						? tryOpenCloudAuthRequest(
 								authenticatedUser.userId,
 								authenticatedUser.isUnder13 === false,
-								(authType, authCode) =>
+								(credentials) =>
 									getOpenCloudUser({
-										authType,
-										authCode,
+										credentials,
 										userId: profileUserId,
 									}).then((data) => data.locale),
 							).catch(() => undefined)

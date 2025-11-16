@@ -251,10 +251,9 @@ export async function determineCanJoinUser(
 			const openCloudPlaceData = await tryOpenCloudAuthRequest(
 				viewerUserId,
 				viewerIsUnder13 === false,
-				(authType, authCode) =>
+				(credentials) =>
 					getOpenCloudUniversePlace({
-						authType,
-						authCode,
+						credentials,
 						universeId: presence.universeId!,
 						placeId: presence.placeId!,
 					}),
@@ -383,11 +382,10 @@ export function getUniversePlayableDevices(universeId: number, userId: number, i
 	return getOrSetCache<PlatformType[]>({
 		key: ["universes", universeId, "playableDevices"],
 		fn: () =>
-			tryOpenCloudAuthRequest(userId, isUnder13 === false, (authType, authCode) =>
+			tryOpenCloudAuthRequest(userId, isUnder13 === false, (credentials) =>
 				getOpenCloudUniverse({
+					credentials,
 					universeId,
-					authType,
-					authCode,
 				})
 					.then((data) => {
 						const PlatformTypes: PlatformType[] = [];

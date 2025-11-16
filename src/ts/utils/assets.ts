@@ -287,10 +287,9 @@ export function listAllUserInventoryItemInstances(
 					const response = await tryOpenCloudAuthRequest(
 						authedUserId,
 						isUnder13 === false,
-						(authType, authCode) =>
+						(credentials) =>
 							listOpenCloudUserInventoryItems({
-								authType,
-								authCode,
+								credentials,
 								userId,
 								filter: `assetIds=${assetId}`,
 								maxPageSize: 100,

@@ -53,10 +53,9 @@ export default function DeletedUserProfilePreview({ userId }: DeletedUserProfile
 			const data = await tryOpenCloudAuthRequest(
 				authenticatedUser.userId,
 				authenticatedUser.isUnder13 === false,
-				(authType, authCode) =>
+				(credentials) =>
 					getCloudUserThumbnail({
-						authType,
-						authCode,
+						credentials,
 						userId,
 					}),
 			);

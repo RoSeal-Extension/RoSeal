@@ -52,10 +52,9 @@ export function getUserCommunityJoinedDate(
 	return getOrSetCache({
 		key: ["communities", groupId, "members", userId, "joinTime"],
 		fn: () =>
-			tryOpenCloudAuthRequest(viewerUserId, viewerIsUnder13 === false, (authType, authCode) =>
+			tryOpenCloudAuthRequest(viewerUserId, viewerIsUnder13 === false, (credentials) =>
 				listGroupMembersV2({
-					authType,
-					authCode,
+					credentials,
 					groupId,
 					filter: `user == 'users/${userId}'`,
 				}).then((memberships) => memberships.groupMemberships[0]?.createTime),
