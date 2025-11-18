@@ -275,7 +275,8 @@ browser.storage.onChanged.addListener((changes, area) => {
 		for (const featureId in features) {
 			handleFeatureValueChange(
 				features[featureId as keyof typeof features],
-				newValue[featureId],
+				// biome-ignore lint/suspicious/noExplicitAny: fine
+				(newValue as Record<string, any>)[featureId],
 			);
 		}
 	}
@@ -285,6 +286,7 @@ storage.get(FEATURE_STORAGE_KEY).then((allValue) => {
 	const value = allValue?.[FEATURE_STORAGE_KEY] ?? {};
 	for (const featureId in features) {
 		const feature = features[featureId as AnyFeature["id"]];
-		handleFeatureValueChange(feature, value[featureId], true);
+		// biome-ignore lint/suspicious/noExplicitAny: fine
+		handleFeatureValueChange(feature, (value as Record<string, any>)[featureId], true);
 	}
 });

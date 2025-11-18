@@ -1,8 +1,9 @@
 import { getAssetById } from "src/ts/helpers/requests/services/assets";
 import usePromise from "../hooks/usePromise";
-import { placeAssetTypeId } from "src/ts/utils/itemTypes";
+import { getAssetTypeData, placeAssetTypeId } from "src/ts/utils/itemTypes";
 import {
 	getAvatarAssetLink,
+	getCreatorStoreAssetLink,
 	getExperienceLink,
 	getHomePageUrl,
 	getRobloxSupportUrl,
@@ -28,8 +29,13 @@ export default function ExperienceRestrictedScreen({ placeId }: ExperienceRestri
 				assetId: placeId,
 			})
 				.then((data) => {
+					if (getAssetTypeData(data.assetTypeId)?.isAvatarAsset) {
+						location.href = getAvatarAssetLink(placeId, data.name);
+						return;
+					}
+
 					if (data.assetTypeId !== placeAssetTypeId) {
-						location.pathname = getAvatarAssetLink(data.assetId, data.name);
+						location.href = getCreatorStoreAssetLink(data.assetId, data.name);
 						return false;
 					}
 
