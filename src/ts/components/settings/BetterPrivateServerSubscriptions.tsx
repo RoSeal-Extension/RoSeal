@@ -1,6 +1,6 @@
 import { RESTError } from "@roseal/http-client/src";
 import classNames from "classnames";
-import { useCallback, useMemo, useState } from "preact/hooks";
+import { useCallback, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	listUserPrivateServers,
@@ -16,6 +16,17 @@ import PillToggle from "../core/PillToggle";
 import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
 import usePages from "../hooks/usePages";
 import PrivateServerSubscriptionCard from "./PrivateServerSubscription";
+
+const pillItems = [
+	{
+		id: "paid",
+		label: "Paid",
+	},
+	{
+		id: "free",
+		label: "Free",
+	},
+];
 
 export default function BetterPrivateServerSubscriptions() {
 	const [activeSubscriptionOverrides, setActiveSubscriptionOverrides] = useState<
@@ -53,20 +64,6 @@ export default function BetterPrivateServerSubscriptions() {
 		},
 	});
 
-	const pillItems = useMemo(
-		() => [
-			{
-				id: "paid",
-				label: "Paid",
-			},
-			{
-				id: "free",
-				label: "Free",
-			},
-		],
-		[],
-	);
-
 	const onPillToggle = useCallback((value: string) => setIsFreeView(value === "free"), []);
 	const onCatch = useCallback((error: unknown) => {
 		warning(
@@ -77,7 +74,9 @@ export default function BetterPrivateServerSubscriptions() {
 
 	return (
 		<div id="private-server-subscriptions">
-			<h3 className="subscription-count text-description">Private Server Subscriptions</h3>
+			<h3 className="subscription-count text-description">
+				{getMessage("robloxSettings.privateServerSubscriptions.title")}
+			</h3>
 			<PillToggle
 				className="free-paid-switch"
 				items={pillItems}

@@ -6,18 +6,18 @@ import type { BuildConfig, BunPlugin } from "bun";
 import { parse as parseJSONC } from "jsonc-parser";
 import walk from "klaw";
 import kleur from "kleur";
-import { basename, dirname, parse as parsePath } from "node:path";
+import { basename, dirname, parse as parsePath } from "node:path/posix";
 import {
 	DEV_SERVER_API_PORT,
 	DEV_SERVER_WWW_PORT,
 	type Env,
+	getDomains,
 	type I18nDetail,
 	type I18nEnv,
 	type I18nFile,
 	type Manifest,
 	type Target,
 	type TargetBase,
-	getDomains,
 } from "./constants.ts";
 import rosealPlugins from "./plugins/rosealPlugins.ts";
 
@@ -597,7 +597,13 @@ export async function getBuildTimeParams(
 		fetch(`https://${ROBLOX_DOMAIN.replace("{service}", "www")}/home`),
 	]).then(([clientVersion, loginPage]) => {
 		return {
-			robloxVersion: clientVersion.version,
+			robloxVersion:
+				typeof clientVersion === "object" &&
+				clientVersion !== null &&
+				"version" in clientVersion &&
+				typeof clientVersion.version === "string"
+					? clientVersion.version
+					: "unknown",
 			cspPolicy: loginPage.headers.get(CONTENT_SECURITY_POLICY_HEADER_NAME) ?? "",
 		};
 	});
