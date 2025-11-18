@@ -1,536 +1,287 @@
-import { useSignal } from "@preact/signals";
-import { useEffect, useState } from "preact/hooks";
-import { sleep } from "src/ts/utils/misc";
-import { chunk } from "src/ts/utils/objects";
-import useCallbackSignal from "./useCallbackSignal";
+import { useCallback, useEffect, useMemo, useRef, useState } from "preact/hooks";
 import useDidMountEffect from "./useDidMountEffect";
+import useItemPipeline from "./useItemPipeline";
+import usePagedFetch, { type FetchResult } from "./usePagedFetch";
 
-/*
-this wholeeee thing needs to be redone a thousand times.
-please....
+/**
+ * Configuration for paging behavior
+ */
+export type PagingConfig =
+	| { method: "pagination"; itemsPerPage: number }
+	| { method: "loadMore"; initialCount: number; incrementCount: number }
+	| { method: "infinite" };
 
-*/
-
-export type PaginationMethodData = { method: "pagination"; itemsPerPage: number };
-export type LoadMoreMethodData = {
-	method: "loadMore";
-	initialCount: number;
-	incrementCount: number;
-};
-export type FullListMethodData = { method: "fullList" };
-export type PagesPaging = (PaginationMethodData | LoadMoreMethodData | FullListMethodData) & {
-	immediatelyLoadAllData?: boolean;
-};
-export type PagesItems<T, U = T> = {
-	replacementItems?: T[] | null;
-	prefixItems?: T[] | null;
-	suffixItems?: T[] | null;
-	shouldAlwaysUpdate?: boolean;
-
-	transformItem?: (item: T, index: number, arr: T[]) => MaybePromise<U>;
-	filterItem?: (item: U, index: number, arr: U[]) => MaybePromise<boolean>;
-	sortItems?: (items: U[]) => MaybePromise<U[]>;
-};
-export type PagesDependencies = {
-	/**
-	 * `refreshPage` is just dependencies for refreshing the current page.
-	 */
-	refreshPage?: unknown[];
-	/**
-	 * `refreshToFirstPage` is just dependencies for refreshing to the first page.
-	 */
-	refreshToFirstPage?: unknown[];
-	/**
-	 * `reset` resets the whole thing, clears data and retries whatever the fuck.
-	 */
-	reset?: unknown[];
+/**
+ * Dependency arrays for different reset behaviors
+ */
+export type ProcessingDependencies = {
+	/** Dependencies that trigger reprocessing only */
+	processingDeps?: readonly unknown[];
+	/** Dependencies that trigger refetch from page 1 */
+	fetchDeps?: readonly unknown[];
+	/** Dependencies that trigger full reset (clear cache, reset pagination) */
+	resetDeps?: readonly unknown[];
 };
 
-export type PagesRetry = {
-	count: number;
-	timeout: number;
-};
+export interface UsePagesResult<T, U> {
+	readonly items: U[];
+	readonly loading: boolean;
+	readonly fetchingMore: boolean;
+	readonly processing: boolean;
+	readonly error: unknown;
+	readonly page: number;
+	readonly totalPages: number;
+	readonly hasMore: boolean;
+	readonly setPage: (newPage: number) => void;
+	readonly loadMore: () => void;
+	readonly loadAll: () => Promise<void>;
+	readonly reset: () => void;
+	readonly refetch: () => void;
+	readonly reprocess: () => void;
+	readonly allItems: readonly T[];
+	readonly processedItems: readonly U[];
+	readonly filtersEnabled: boolean;
+	readonly shouldBeDisabled: boolean;
 
-export type UsePagesProps<T extends PageData<U, V, X>, U, V, X = U> = {
-	paging: PagesPaging;
-	items?: PagesItems<U, X>;
-	dependencies?: PagesDependencies;
+	// Backward compatibility
+	readonly pageNumber: number;
+	readonly maxPageNumber: number;
+	readonly hasAnyItems: boolean;
+	readonly fetchedAllPages: boolean;
+}
+
+/**
+ * Props for usePages hook
+ *
+ * Combines paged fetching with item processing pipeline and pagination controls
+ */
+export type UsePagesProps<T, U, Cursor> = {
+	/** Function to fetch a page of data */
+	fetchPage: (cursor?: Cursor, signal?: AbortSignal) => Promise<FetchResult<T, Cursor>>;
+	/** Processing pipeline (transform, sort, filter) */
+	pipeline?: {
+		/** Transform function applied to each item */
+		transform?: (item: T, index: number, all: T[]) => U | Promise<U>;
+		/** Sort function for final ordering */
+		sort?: (items: U[]) => U[] | Promise<U[]>;
+		/** Filter function to include/exclude items */
+		filter?: (item: U, index: number, all: U[]) => boolean | Promise<boolean>;
+	};
+	/** Paging configuration */
+	paging: PagingConfig;
+	/** Dependency arrays for different reset behaviors */
+	dependencies?: ProcessingDependencies;
+	/** Automatically fetch more when filtered results are insufficient */
+	autoFetchMore?: boolean;
+	/** Stream results (show all items during pagination) */
+	streamResults?: boolean;
+	/** Disable all functionality */
 	disabled?: boolean;
-
-	retry?: PagesRetry;
-	getNextPage: (data: T) => MaybePromise<T>;
+	/** Retry configuration for failed requests */
+	retry?: { count: number; timeout: number };
 };
 
-export type PageData<T, U, X = T> = {
-	items: T[];
-	transformedItems: Map<T, MaybePromise<X>>;
-	pageNumber: number;
-	prefixItems?: T[] | null;
-	suffixItems?: T[] | null;
-	nextCursor?: U;
-	hasNextPage?: boolean;
-};
-
-export default function usePages<T, U, V = unknown, X = T>({
+export default function usePages<T, U = T, Cursor = string>({
+	fetchPage,
+	pipeline,
 	paging,
-	items: itemsConfig,
 	dependencies,
+	autoFetchMore = true,
+	streamResults = false,
 	disabled,
 	retry,
-	getNextPage,
-}: UsePagesProps<PageData<T, U, X>, T, U, X>) {
-	const [error, setError] = useState<V>();
-	const [displayItems, setDisplayItems] = useState<X[]>([]);
-	const [hasAnyItems, setHasAnyItems] = useState(false);
-	const [maxPageNumber, setMaxPageNumber] = useState<number>(1);
+}: UsePagesProps<T, U, Cursor>): UsePagesResult<T, U> {
+	const [page, setPage] = useState(1);
 
-	const [loading, setLoading] = useState(true);
-	const requestInProgress = useSignal(false);
-	const [shouldBeDisabled, setShouldBeDisabled] = useState(true);
+	// Fetch data from API
+	const {
+		allItems,
+		hasMore,
+		loading: fetchLoading,
+		error: fetchError,
+		fetchMore,
+		refetch,
+		reset: resetFetch,
+	} = usePagedFetch({ fetchPage, disabled, retry });
 
-	const pageData = useSignal<PageData<T, U, X>>({
-		items: [],
-		transformedItems: new Map(),
-		pageNumber: 1,
+	// Process items through transform/sort/filter pipeline
+	const {
+		processedItems,
+		processing,
+		error: processError,
+		reprocess,
+		clearCache,
+	} = useItemPipeline({
+		items: allItems,
+		transform: pipeline?.transform,
+		sort: pipeline?.sort,
+		filter: pipeline?.filter,
+		disabled,
 	});
 
-	const updateQueued = useSignal(false);
-	const refreshToStartQueued = useSignal(false);
-	const resetNowQueued = useSignal(false);
-	const loadAll = useSignal(false);
-	const loadAllQueued = useSignal(false);
+	// Track when additional pages are being fetched
+	const [fetchingMore, setFetchingMore] = useState(false);
+	// Track when initial load is complete
+	const initialLoadCompleteRef = useRef(false);
 
-	const getItems = async (
-		_items: X[],
-		pageNumber?: number,
-		prefixItems?: X[],
-		suffixItems?: X[],
-		includeSuffixItems = false,
-	) => {
-		let newArr = [..._items];
-		if (prefixItems?.length) {
-			newArr.unshift(...prefixItems);
-		}
-		if (suffixItems?.length && (!pageData.value.hasNextPage || includeSuffixItems)) {
-			newArr.push(...suffixItems);
-		}
-		if (itemsConfig?.sortItems) {
-			newArr = await itemsConfig.sortItems(newArr);
-		}
-
-		setHasAnyItems(newArr.length > 0);
-
-		if (itemsConfig?.filterItem) {
-			const results = await Promise.all(
-				newArr.map((item, index, arr) => itemsConfig.filterItem!(item, index, arr)),
-			);
-			newArr = newArr.filter((_, i) => results[i]);
-		}
-
-		if (pageNumber) {
-			switch (paging.method) {
-				case "pagination": {
-					const start = (pageNumber - 1) * paging.itemsPerPage;
-					const end = pageNumber * paging.itemsPerPage;
-
-					const newSlice = newArr.slice(start, end);
-					setMaxPageNumber(
-						Math.ceil(newArr.length / paging.itemsPerPage) +
-							(pageData.value.hasNextPage && newSlice.length === paging.itemsPerPage
-								? 1
-								: 0),
-					);
-					newArr = newSlice;
-					break;
-				}
-				case "loadMore": {
-					const end = (pageNumber - 1) * paging.incrementCount + paging.initialCount;
-
-					const newSlice = newArr.slice(0, end);
-					setMaxPageNumber(
-						Math.ceil(
-							(newArr.length - paging.initialCount) / paging.incrementCount +
-								(pageData.value.hasNextPage && newSlice.length === end ? 1 : 0),
-						) + 1,
-					);
-					newArr = newSlice;
-					break;
-				}
-			}
-		}
-
-		return newArr;
-	};
-
-	// Enhanced handleItems: includes transformation
-	const handleItems = async (data: PageData<T, U, X>) => {
-		if (disabled) return;
-
-		requestInProgress.value = true;
-		setLoading(true);
-		try {
-			const newItems =
-				itemsConfig?.replacementItems === null
-					? []
-					: (itemsConfig?.replacementItems ?? data.items);
-
-			const getTransformedItems = async (items: T[]) => {
-				if (!itemsConfig?.transformItem) return items as unknown as X[];
-
-				const newItems: MaybePromise<X>[] = [];
-
-				for (const aChunk of chunk(items, 100)) {
-					const promises: Promise<void>[] = [];
-
-					for (let i = 0; i < aChunk.length; i++) {
-						const item = aChunk[i];
-
-						const cached = data.transformedItems.get(item);
-						if (cached) {
-							newItems.push(cached);
-							continue;
-						}
-
-						const promise = itemsConfig.transformItem!(item, i, aChunk);
-						newItems.push(promise);
-
-						data.transformedItems.set(item, promise);
-						if (promise instanceof Promise) {
-							promises.push(
-								promise.then((promiseData) => {
-									data.transformedItems.set(item, promiseData);
-								}),
-							);
-						}
-					}
-
-					await Promise.all(promises);
-				}
-
-				return Promise.all(newItems);
-			};
-
-			// Transform items here
-			const transformedItems = await getTransformedItems(newItems);
-
-			const prefixItemsTransformed = data.prefixItems?.length
-				? await getTransformedItems(data.prefixItems)
-				: undefined;
-
-			const suffixItemsTransformed = data.suffixItems?.length
-				? await getTransformedItems(data.suffixItems)
-				: undefined;
-
-			if (
-				itemsConfig?.replacementItems === null ||
-				data.prefixItems === null ||
-				data.suffixItems === null
-			) {
-				setDisplayItems(
-					await getItems(
-						transformedItems,
-						data.pageNumber,
-						prefixItemsTransformed,
-						suffixItemsTransformed,
-						!data.hasNextPage,
-					),
-				);
-				return;
-			}
-
-			if (itemsConfig?.replacementItems) {
-				setDisplayItems(
-					await getItems(
-						transformedItems,
-						data.pageNumber,
-						prefixItemsTransformed,
-						suffixItemsTransformed,
-						!data.hasNextPage,
-					),
-				);
-				requestInProgress.value = false;
-				setLoading(false);
-				return;
-			}
-
-			pageData.value = { ...data, items: newItems };
-			let currPageData = { ...data, items: newItems };
-
-			const targetLength =
-				paging.method === "pagination"
-					? paging.itemsPerPage * data.pageNumber
-					: paging.method === "loadMore"
-						? paging.incrementCount * (data.pageNumber - 1) + paging.initialCount
-						: null;
-
-			let retryCount = 0;
-			while (
-				currPageData.hasNextPage !== false &&
-				(loadAll.value ||
-					!targetLength ||
-					(
-						await getItems(
-							transformedItems,
-							undefined,
-							prefixItemsTransformed,
-							suffixItemsTransformed,
-						)
-					).length < targetLength ||
-					paging.immediatelyLoadAllData) &&
-				!updateQueued.value &&
-				!refreshToStartQueued.value &&
-				!resetNowQueued.value &&
-				(!retry || retry.count >= retryCount)
-			) {
-				try {
-					const nextPageData = await getNextPage(currPageData);
-
-					const nextTransformedItems = await getTransformedItems(nextPageData.items);
-
-					currPageData = {
-						...nextPageData,
-						items: [...currPageData.items, ...nextPageData.items],
-					};
-					transformedItems.push(...nextTransformedItems);
-					if (itemsConfig?.shouldAlwaysUpdate) {
-						pageData.value = currPageData;
-						setDisplayItems(
-							await getItems(
-								transformedItems,
-								currPageData.pageNumber,
-								prefixItemsTransformed,
-								suffixItemsTransformed,
-							),
-						);
-					}
-
-					if (retryCount) retryCount = 0;
-				} catch (err) {
-					if (!retry || retry.count === retryCount) throw err;
-
-					retryCount++;
-					await sleep(retry.timeout);
-				}
-			}
-
-			pageData.value = currPageData;
-			if (!updateQueued.value && !refreshToStartQueued.value && !resetNowQueued.value) {
-				setDisplayItems(
-					await getItems(
-						transformedItems,
-						currPageData.pageNumber,
-						prefixItemsTransformed,
-						suffixItemsTransformed,
-					),
-				);
-			}
-		} catch (err) {
-			setError(err as V);
-		} finally {
-			if (
-				!updateQueued.value &&
-				!refreshToStartQueued.value &&
-				!resetNowQueued.value &&
-				itemsConfig?.replacementItems !== null &&
-				itemsConfig?.prefixItems !== null &&
-				itemsConfig?.suffixItems !== null
-			) {
-				setLoading(false);
-			}
-
-			if (!pageData.value.hasNextPage) {
-				loadAll.value = false;
-			}
-
-			requestInProgress.value = false;
-		}
-	};
-
-	// Initial load
+	// Mark initial load as complete when first items arrive
 	useEffect(() => {
-		if (!requestInProgress.value) {
-			handleItems({
-				...pageData.value,
-				pageNumber: 1,
-				prefixItems: itemsConfig?.prefixItems,
-				suffixItems: itemsConfig?.suffixItems,
-			});
-		} else {
-			refreshToStartQueued.value = true;
+		if (!fetchLoading && allItems.length > 0) {
+			initialLoadCompleteRef.current = true;
+		}
+	}, [fetchLoading, allItems.length]);
+
+	// Calculate visible items and total pages based on paging method
+	const { items, totalPages } = useMemo(() => {
+		let displayItems = processedItems;
+		let total = 1;
+
+		switch (paging.method) {
+			case "pagination": {
+				const start = (page - 1) * paging.itemsPerPage;
+				const end = page * paging.itemsPerPage;
+				displayItems = processedItems.slice(start, end);
+				total = Math.ceil(processedItems.length / paging.itemsPerPage);
+				// Account for potential next page
+				if (hasMore && displayItems.length === paging.itemsPerPage) {
+					total += 1;
+				}
+				break;
+			}
+			case "loadMore": {
+				const end = (page - 1) * paging.incrementCount + paging.initialCount;
+				displayItems = processedItems.slice(0, end);
+				total =
+					Math.ceil(
+						(processedItems.length - paging.initialCount) / paging.incrementCount,
+					) + 1;
+				// Account for potential next page
+				if (hasMore && displayItems.length === end) {
+					total += 1;
+				}
+				break;
+			}
+			case "infinite":
+				// Infinite mode always has at least one page, two if more available
+				total = hasMore ? 2 : 1;
+				break;
+		}
+
+		return { items: displayItems, totalPages: total };
+	}, [processedItems, page, paging, hasMore]);
+
+	// Automatically fetch more data when filtered results are insufficient
+	useEffect(() => {
+		if (!autoFetchMore || disabled || fetchLoading || fetchingMore || !hasMore) return;
+
+		// Calculate target length based on current page and paging method
+		const targetLength =
+			paging.method === "pagination"
+				? paging.itemsPerPage * page
+				: paging.method === "loadMore"
+					? paging.incrementCount * (page - 1) + paging.initialCount
+					: null;
+
+		// Fetch more if we don't have enough items to fill current page
+		if (targetLength && processedItems.length < targetLength) {
+			setFetchingMore(true);
+			fetchMore().finally(() => setFetchingMore(false));
 		}
 	}, [
-		...(dependencies?.refreshToFirstPage ?? []),
-		paging.method,
-		paging.method === "pagination" && paging.itemsPerPage,
-		paging.method === "loadMore" && paging.incrementCount,
+		processedItems.length,
+		page,
+		paging,
+		hasMore,
 		disabled,
+		fetchLoading,
+		fetchingMore,
+		autoFetchMore,
+		fetchMore,
 	]);
 
-	// Reset effect
+	// Reprocess items when processing dependencies change
 	useDidMountEffect(() => {
-		if (!requestInProgress.value) {
-			handleItems({
-				items: [],
-				transformedItems: new Map(),
-				pageNumber: 1,
-				prefixItems: itemsConfig?.prefixItems,
-				suffixItems: itemsConfig?.suffixItems,
-			});
-		} else {
-			resetNowQueued.value = true;
-		}
-	}, [...(dependencies?.reset ?? [])]);
+		reprocess();
+	}, dependencies?.processingDeps ?? []);
 
-	// Refresh page effect
+	// Refetch from first page when fetch dependencies change
 	useDidMountEffect(() => {
-		if (!requestInProgress.value) {
-			handleItems({
-				...pageData.value,
-				prefixItems: itemsConfig?.prefixItems,
-				suffixItems: itemsConfig?.suffixItems,
-			});
-		} else {
-			updateQueued.value = true;
+		setPage(1);
+		refetch();
+	}, dependencies?.fetchDeps ?? []);
+
+	// Reset pagination, cache, and fetch from first page when reset dependencies change
+	useDidMountEffect(() => {
+		setPage(1);
+		clearCache();
+		resetFetch();
+	}, dependencies?.resetDeps ?? []);
+
+	const handleLoadMore = useCallback(() => {
+		if (page < totalPages) setPage(page + 1);
+	}, [page, totalPages]);
+
+	// Load all available pages
+	const handleLoadAll = useCallback(async () => {
+		while (hasMore && !disabled) {
+			await fetchMore();
 		}
-	}, [
-		...(dependencies?.refreshPage ?? []),
-		paging.method === "loadMore" && paging.initialCount,
-		paging.method === "loadMore" && paging.incrementCount,
-		paging.immediatelyLoadAllData,
-		disabled,
-	]);
+	}, [hasMore, disabled, fetchMore]);
 
-	// Queue processing
-	useEffect(() => {
-		if (!requestInProgress.value) {
-			const isUpdateQueued = updateQueued.value;
-			const isRefreshToFirstPageQueued = refreshToStartQueued.value;
+	// Reset to initial state
+	const handleReset = useCallback(() => {
+		setPage(1);
+		clearCache();
+		resetFetch();
+	}, [clearCache, resetFetch]);
 
-			const isResetQueued = resetNowQueued.value;
-			const isLoadAllQueued = loadAllQueued.value;
-			updateQueued.value = false;
-			refreshToStartQueued.value = false;
-			resetNowQueued.value = false;
-			loadAllQueued.value = false;
+	// Refetch from first page
+	const handleRefetch = useCallback(() => {
+		setPage(1);
+		refetch();
+	}, [refetch]);
 
-			if (isResetQueued) {
-				handleItems({
-					items: [],
-					transformedItems: new Map(),
-					pageNumber: 1,
-					prefixItems: itemsConfig?.prefixItems,
-					suffixItems: itemsConfig?.suffixItems,
-				});
-			} else if (isRefreshToFirstPageQueued) {
-				handleItems({
-					...pageData.value,
-					pageNumber: 1,
-					prefixItems: itemsConfig?.prefixItems,
-					suffixItems: itemsConfig?.suffixItems,
-				});
-			} else if (isUpdateQueued) {
-				handleItems({
-					...pageData.value,
-					pageNumber: 1,
-					prefixItems: itemsConfig?.prefixItems,
-					suffixItems: itemsConfig?.suffixItems,
-				});
-			} else if (isLoadAllQueued) {
-				loadAll.value = true;
-
-				handleItems({
-					...pageData.value,
-				});
-			}
-		}
-	}, [requestInProgress.value]);
-
-	// Update shouldBeDisabled
-	useEffect(() => {
-		setShouldBeDisabled(loading && pageData.value.items.length === 0);
-	}, [loading, pageData.value.pageNumber, pageData.value.items]);
+	// Reprocess current items
+	const handleReprocess = useCallback(() => {
+		reprocess();
+	}, [reprocess]);
 
 	return {
-		items: displayItems,
-		pageNumber: pageData.value.pageNumber,
-		loading,
-		error,
-		hasAnyItems,
-		maxPageNumber,
-		allItems: pageData.value.items,
-		shouldBeDisabled,
-		fetchedAllPages:
-			Array.isArray(itemsConfig?.replacementItems) || pageData.value.hasNextPage === false,
-		pageData,
-		queueReset: useCallbackSignal(() => {
-			if (
-				!requestInProgress.value &&
-				(pageData.value.pageNumber === 1 || paging.method === "loadMore")
-			) {
-				return handleItems({
-					items: [],
-					transformedItems: new Map(),
-					pageNumber: 1,
-					prefixItems: itemsConfig?.prefixItems,
-					suffixItems: itemsConfig?.suffixItems,
-				});
-			}
+		// Visible items (streamed or paginated)
+		items: streamResults ? processedItems : items,
 
-			resetNowQueued.value = true;
-		}, [requestInProgress.value]),
-		removeItem: useCallbackSignal(
-			(item: T) => {
-				let targetValue = item;
-				if (itemsConfig?.transformItem) {
-					for (const [key, value] of pageData.value.transformedItems) {
-						if (value === item) {
-							targetValue = key;
-							break;
-						}
-					}
-				}
+		// Loading states
+		loading: fetchLoading && !initialLoadCompleteRef.current,
+		fetchingMore,
+		processing,
+		// Combined error from fetch or processing
+		error: fetchError || processError,
 
-				handleItems({
-					...pageData.value,
-					items: pageData.value.items.filter((i) => i !== targetValue),
-				});
-			},
-			[pageData.value],
-		),
-		reset: () => {
-			if (!requestInProgress.value) {
-				return handleItems({
-					items: [],
-					transformedItems: new Map(),
-					pageNumber: 1,
-					prefixItems: itemsConfig?.prefixItems,
-					suffixItems: itemsConfig?.suffixItems,
-				});
-			}
+		// Pagination state
+		page,
+		totalPages,
+		hasMore,
 
-			resetNowQueued.value = true;
-		},
-		setPageNumber: useCallbackSignal(
-			(pageNumber: number) => {
-				handleItems({
-					...pageData.value,
-					pageNumber,
-				});
-			},
-			[pageData.value],
-		),
-		loadAllItems: useCallbackSignal(() => {
-			if (!pageData.value.hasNextPage) return;
+		// Action handlers
+		setPage,
+		loadMore: handleLoadMore,
+		loadAll: handleLoadAll,
+		reset: handleReset,
+		refetch: handleRefetch,
+		reprocess: handleReprocess,
 
-			if (!requestInProgress.value) {
-				loadAll.value = true;
+		// Raw data access
+		allItems,
+		processedItems,
 
-				handleItems({
-					...pageData.value,
-				});
-			} else {
-				loadAllQueued.value = true;
-			}
-		}, [requestInProgress.value, pageData.value, itemsConfig]),
+		// Utility flags
+		filtersEnabled: initialLoadCompleteRef.current,
+		shouldBeDisabled: fetchLoading && allItems.length === 0,
+
+		// Backward compatibility
+		pageNumber: page,
+		maxPageNumber: totalPages,
+		hasAnyItems: processedItems.length > 0,
+		fetchedAllPages: !hasMore,
 	};
 }
