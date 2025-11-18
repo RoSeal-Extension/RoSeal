@@ -40,5 +40,11 @@
 		"indentWidth": 4,
 		"lineWidth": 100,
 		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"]
+	},
+	"vcs": {
+		"clientKind": "git",
+		"defaultBranch": "main",
+		"enabled": true,
+		"useIgnoreFile": true
 	}
 }

@@ -14,9 +14,9 @@ export function filterObject<T extends Record<string, unknown>>(obj: T): FilterO
 	return newObj;
 }
 
-export function chunk<T>(arr: T[], len?: number): T[][] {
+export function chunk<T>(arr: readonly T[], len?: number): T[][] {
 	if (!len) {
-		return [arr];
+		return [[...arr]];
 	}
 	const chunks = [];
 
@@ -63,8 +63,7 @@ function camelCaseString(str: string): string {
 }
 
 // Ported from "https://github.com/sindresorhus/camelcase-keys/blob/main/index.js"
-// biome-ignore lint/complexity/noBannedTypes: No other way.
-function isObject(value: unknown): value is Object {
+function isObject(value: unknown): value is object {
 	return (
 		typeof value === "object" &&
 		value !== null &&
