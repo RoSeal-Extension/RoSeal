@@ -63,8 +63,7 @@ function camelCaseString(str: string): string {
 }
 
 // Ported from "https://github.com/sindresorhus/camelcase-keys/blob/main/index.js"
-// biome-ignore lint/complexity/noBannedTypes: No other way.
-function isObject(value: unknown): value is Object {
+function isObject(value: unknown): value is object {
 	return (
 		typeof value === "object" &&
 		value !== null &&

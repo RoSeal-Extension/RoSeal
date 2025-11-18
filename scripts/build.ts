@@ -4,7 +4,7 @@ import { minify as minifyHTML } from "html-minifier-terser";
 import { parse as parseJSONC } from "jsonc-parser";
 import walk from "klaw";
 import kleur from "kleur";
-import { basename, extname, join, parse as parsePath } from "node:path";
+import { basename, extname, join, parse as parsePath } from "node:path/posix";
 import { parseArgs } from "node:util";
 import * as sass from "sass-embedded";
 import {
