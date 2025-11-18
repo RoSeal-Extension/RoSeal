@@ -6,11 +6,11 @@ import Thumbnail from "src/ts/components/core/Thumbnail";
 import usePages from "src/ts/components/hooks/usePages";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { RESTError } from "src/ts/helpers/requests/main";
-import { updatePrivateServer } from "src/ts/helpers/requests/services/privateServers";
 import {
-	type PrivateServerInventoryItem,
 	listUserPrivateServers,
+	type PrivateServerInventoryItem,
 } from "src/ts/helpers/requests/services/inventory";
+import { updatePrivateServer } from "src/ts/helpers/requests/services/privateServers";
 import { getConfigurePrivateServerLink, getExperienceLink } from "src/ts/utils/links";
 
 export type FreePrivateServersListProps = {
@@ -20,23 +20,26 @@ export type FreePrivateServersListProps = {
 export default function FreePrivateServersList({
 	setEnableCreateButton,
 }: FreePrivateServersListProps) {
-	const [disabledIds, setDisabledIds] = useState<number[]>([]);
-	const { items, loading } = usePages<PrivateServerInventoryItem, string>({
+	const [disabledIds, setDisabledIds] = useState<readonly number[]>([]);
+	const { items, loading } = usePages<
+		PrivateServerInventoryItem,
+		PrivateServerInventoryItem,
+		string
+	>({
 		paging: {
-			method: "fullList",
+			method: "infinite",
 		},
-		items: {
-			filterItem: (item) => item.active === true && item.priceInRobux === null,
+		pipeline: {
+			filter: (item) => item.active === true && item.priceInRobux === null,
 		},
-		getNextPage: (pageData) =>
+		fetchPage: (cursor) =>
 			listUserPrivateServers({
 				privateServersTab: "MyPrivateServers",
 				itemsPerPage: 100,
-				cursor: pageData.nextCursor,
+				cursor,
 			}).then((data) => ({
-				...pageData,
-				hasNextPage: !!data.nextPageCursor,
-				nextCursor: data.nextPageCursor || undefined,
+				hasMore: !!data.nextPageCursor,
+				nextCursor: data.nextPageCursor ?? undefined,
 				items: data.data,
 			})),
 	});
