@@ -25,6 +25,8 @@ import {
 	type SkinnyUserFriend,
 	type UserPresence,
 } from "src/ts/helpers/requests/services/users";
+import { getUserFriendshipsCreationDates, sortOnlineFriends } from "src/ts/utils/friends";
+import { crossSort } from "src/ts/utils/objects";
 import { useDebounceValue } from "usehooks-ts";
 import AvatarCardList from "../../core/avatarCard/List";
 import Dropdown from "../../core/Dropdown";
@@ -37,15 +39,13 @@ import useFeatureValue from "../../hooks/useFeatureValue";
 import usePages from "../../hooks/usePages";
 import useProfilesData from "../../hooks/useProfilesData";
 import usePromise from "../../hooks/usePromise";
+import useStorage from "../../hooks/useStorage";
 import CreateFriendLinkButton from "../CreateFriendLinkButton";
 import FriendCard, { type FriendCardPageData } from "../FriendCard";
+import CreateUpdateConnectionTypeModal from "../modals/CreateUpdateTypeModal";
 import type { SourceUniverseData } from "../Page";
 import FriendsPageTitle from "../PageTitle";
-import { getUserFriendshipsCreationDates, sortOnlineFriends } from "src/ts/utils/friends";
-import useStorage from "../../hooks/useStorage";
 import { getConnectionTypeDisplayName } from "../utils/types";
-import CreateUpdateConnectionTypeModal from "../modals/CreateUpdateTypeModal";
-import { crossSort } from "src/ts/utils/objects";
 
 export type FriendsTabProps = {
 	isMyProfile: boolean;
@@ -301,12 +301,12 @@ export default function FriendsTab({
 		pageNumber,
 		maxPageNumber,
 		hasAnyItems,
-		pageData,
-		queueReset,
-		setPageNumber,
+		setPage: setPageNumber,
 		reset,
-		removeItem,
 	} = usePages<
+		SkinnyUserFriend & {
+			pageData?: FriendCardPageData;
+		},
 		SkinnyUserFriend & {
 			pageData?: FriendCardPageData;
 		},
@@ -316,8 +316,15 @@ export default function FriendsTab({
 			method: "pagination",
 			itemsPerPage: pageSize || 18,
 		},
-		getNextPage: (pageData) => {
-			const cursor = pageData.nextCursor;
+		fetchPage: (cursor) => {
+			// If replacementItems is set, return those instead of fetching
+			if (replacementItems) {
+				return Promise.resolve({
+					items: replacementItems,
+					nextCursor: undefined,
+					hasMore: false,
+				});
+			}
 
 			return (
 				search
@@ -339,6 +346,18 @@ export default function FriendsTab({
 					pageData?: FriendCardPageData;
 				})[] = [];
 
+				// Add prefix items if applicable
+				const shouldUsePrefixItems =
+					!search &&
+					statusFilter === "All" &&
+					typeFilter === DEFAULT_ALL_CONNECTION_TYPE.id &&
+					statusPrefixItems &&
+					!cursor;
+
+				if (shouldUsePrefixItems) {
+					transformedItems.push(...statusPrefixItems);
+				}
+
 				for (let i = 0; i < data.pageItems.length; i++) {
 					const item = data.pageItems[i];
 					if (item.id < 0) continue;
@@ -350,23 +369,14 @@ export default function FriendsTab({
 				}
 
 				return {
-					...pageData,
 					items: transformedItems,
-					nextCursor: data.nextCursor || undefined,
-					hasNextPage: !!data.nextCursor,
+					nextCursor: data.nextCursor ?? undefined,
+					hasMore: !!data.nextCursor,
 				};
 			});
 		},
-		items: {
-			replacementItems,
-			prefixItems:
-				search ||
-				(statusFilter !== "All" && statusFilter !== "Offline") ||
-				(typeFilter !== DEFAULT_ALL_CONNECTION_TYPE.id &&
-					typeFilter !== DEFAULT_NONE_CONNECTION_TYPE.id)
-					? undefined
-					: statusPrefixItems,
-			filterItem: (item, index, arr) => {
+		pipeline: {
+			filter: (item, index, arr) => {
 				if (typeFilter === DEFAULT_NONE_CONNECTION_TYPE.id) {
 					if (typesStorageValue.users[item.id]) return false;
 				} else if (typeFilter !== DEFAULT_ALL_CONNECTION_TYPE.id) {
@@ -445,8 +455,8 @@ export default function FriendsTab({
 			},
 		},
 		dependencies: {
-			reset: [search, statusFilter, typeFilter],
-			refreshPage: [
+			resetDeps: [search, statusFilter, typeFilter],
+			processingDeps: [
 				onlineFriendsMemoized,
 				onlineFriendsProfileData,
 				typeFilter !== DEFAULT_ALL_CONNECTION_TYPE.id && taggedFriendsProfileData,
@@ -528,18 +538,7 @@ export default function FriendsTab({
 		return onNotificationType("FriendshipNotifications", (data) => {
 			if (data.Type !== "FriendshipRequested") {
 				refreshFriendsCount();
-				queueReset();
-
-				if (data.Type === "FriendshipDestroyed") {
-					for (const item of pageData.value.items) {
-						if (
-							item.id === data.EventArgs.UserId1 ||
-							item.id === data.EventArgs.UserId2
-						) {
-							removeItem(item);
-						}
-					}
-				}
+				reset();
 			}
 		});
 	}, [authenticatedUser?.userId, userId]);
@@ -754,12 +753,7 @@ export default function FriendsTab({
 										: undefined
 								}
 								removeCard={() => {
-									for (const item of pageData.value.items) {
-										if (item.id === friend.id) {
-											removeItem(item);
-										}
-									}
-
+									reset();
 									refreshFriendsCount();
 								}}
 								friendPresence={onlineFriend}
