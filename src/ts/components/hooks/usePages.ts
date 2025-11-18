@@ -1,9 +1,9 @@
 import { useSignal } from "@preact/signals";
 import { useEffect, useState } from "preact/hooks";
 import { sleep } from "src/ts/utils/misc";
+import { chunk } from "src/ts/utils/objects";
 import useCallbackSignal from "./useCallbackSignal";
 import useDidMountEffect from "./useDidMountEffect";
-import { chunk } from "src/ts/utils/objects";
 
 /*
 this wholeeee thing needs to be redone a thousand times.
@@ -32,8 +32,17 @@ export type PagesItems<T, U = T> = {
 	sortItems?: (items: U[]) => MaybePromise<U[]>;
 };
 export type PagesDependencies = {
+	/**
+	 * `refreshPage` is just dependencies for refreshing the current page.
+	 */
 	refreshPage?: unknown[];
+	/**
+	 * `refreshToFirstPage` is just dependencies for refreshing to the first page.
+	 */
 	refreshToFirstPage?: unknown[];
+	/**
+	 * `reset` resets the whole thing, clears data and retries whatever the fuck.
+	 */
 	reset?: unknown[];
 };
 
