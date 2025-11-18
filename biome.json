@@ -1,7 +1,12 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.3.2/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.3.6/schema.json",
+	"files": {
+		"includes": ["**"],
+		"ignoreUnknown": false
+	},
 	"linter": {
 		"enabled": true,
+		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"],
 		"rules": {
 			"suspicious": {
 				"noConfusingVoidType": "off"
@@ -33,10 +38,10 @@
 			"performance": {
 				"noDelete": "off"
 			}
-		},
-		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"]
+		}
 	},
 	"formatter": {
+		"enabled": true,
 		"indentWidth": 4,
 		"lineWidth": 100,
 		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"]
