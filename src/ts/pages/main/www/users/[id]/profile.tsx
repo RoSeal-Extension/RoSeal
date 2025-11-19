@@ -99,7 +99,7 @@ export default {
 
 		featureValueIs("robloxBadgesObtainedDates", true, () =>
 			watch(
-				".profile-platform-container #roblox-badges-container, .btr-profile-left .placeholder-robloxbadges, .btr-profile-left #roblox-badges-container",
+				".profile-platform-container #roblox-badges-container, .btr-profile-left .placeholder-robloxbadges, .btr-profile-left #roblox-badges-container, .btr-profile-robloxbadges",
 				(container) => {
 					renderAsContainer(<RobloxBadgesContainer userId={profileUserId} />, container);
 				},

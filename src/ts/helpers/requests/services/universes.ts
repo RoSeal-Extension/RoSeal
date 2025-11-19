@@ -134,6 +134,8 @@ export type OmniLayoutData = {
 	endTimestamp?: string;
 	countdownString?: string;
 	backgroundImageAssetId?: string;
+	enableExplicitFeedback?: "false" | "true";
+	hideTileMetadata?: "false" | "true";
 };
 export type OmniSort = {
 	nextPageTokenForTopic: string | null;
