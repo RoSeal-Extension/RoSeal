@@ -11587,7 +11587,7 @@
 						"$context": ""
 					},
 					"fetchDetails": {
-						"$message": "Failed to fetch asset details, please try again later.",
+						"$message": "Failed to fetch item details, please try again later.",
 						"$context": ""
 					},
 					"invalidAssetId": {
@@ -11595,15 +11595,15 @@
 						"$context": ""
 					},
 					"assetNotFound": {
-						"$message": "Could not find an asset with that ID.",
+						"$message": "Could not find an item with that ID.",
 						"$context": ""
 					},
 					"assetNotOwned": {
-						"$message": "You do not own this emote asset.",
+						"$message": "You do not own this item.",
 						"$context": ""
 					},
 					"assetNotEmote": {
-						"$message": "This asset is not an emote.",
+						"$message": "This item is not an emote or animation.",
 						"$context": ""
 					},
 					"loadConfigs": {
@@ -11633,7 +11633,7 @@
 					}
 				},
 				"emote": {
-					"$message": "Emote",
+					"$message": "Emote or Animation",
 					"$context": ""
 				},
 				"fieldOfViewDeg": {

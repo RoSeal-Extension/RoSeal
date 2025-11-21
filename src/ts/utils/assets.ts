@@ -16,7 +16,7 @@ import { getAvatarItem, type MarketplaceItemType } from "../helpers/requests/ser
 import { get3dThumbnail, getUser3dThumbnail } from "../helpers/requests/services/thumbnails";
 import { getCorrectBundledItems } from "./bundledItems";
 import { tryOpenCloudAuthRequest } from "./cloudAuth";
-import { assetTypes, emoteAssetTypeName } from "./itemTypes";
+import { assetTypes } from "./itemTypes";
 import { sleep } from "./misc";
 import { chunk, crossSort } from "./objects";
 
@@ -189,10 +189,16 @@ export function listAllUserWearableInventoryAssets(userId: number) {
 	});
 }
 
-export function listAllUserEmoteAssets(userId: number) {
+export function listAllUserAnimatedAssets(userId: number) {
+	const types: string[] = [];
+	for (const type of assetTypes) {
+		if (type.isAnimated) {
+			types.push(type.assetType);
+		}
+	}
 	return getOrSetCache({
 		key: ["users", userId, "emotes"],
-		fn: () => listAllUserInventoryAssets(userId, [emoteAssetTypeName]),
+		fn: () => listAllUserInventoryAssets(userId, types),
 	});
 }
 

@@ -10,7 +10,7 @@ import {
 } from "src/ts/helpers/requests/services/avatar";
 import { userOwnsItem } from "src/ts/helpers/requests/services/inventory";
 import { multigetAvatarItems } from "src/ts/helpers/requests/services/marketplace";
-import { listAllUserEmoteAssets } from "src/ts/utils/assets";
+import { listAllUserAnimatedAssets } from "src/ts/utils/assets";
 import { onWindowRefocus } from "src/ts/utils/dom";
 import { getAvatarAssetLink } from "src/ts/utils/links";
 import Icon from "../../core/Icon";
@@ -23,6 +23,7 @@ import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 import usePromise from "../../hooks/usePromise";
 import type { AdvancedAvatarViewType } from "../AdvancedCustomizationButton";
 import ThumbnailConfigItem from "./ThumbnailConfigItem";
+import { getAssetTypeData } from "src/ts/utils/itemTypes";
 
 export type ThumbnailsCustomizationProps = {
 	incrementRefreshId: () => void;
@@ -37,7 +38,7 @@ export default function ThumbnailsCustomization({
 }: ThumbnailsCustomizationProps) {
 	const [authenticatedUser] = useAuthenticatedUser();
 	const [emotes] = usePromise(
-		() => authenticatedUser && listAllUserEmoteAssets(authenticatedUser.userId),
+		() => authenticatedUser && listAllUserAnimatedAssets(authenticatedUser.userId),
 		[authenticatedUser?.userId],
 	);
 	const [emoteKeyword, setEmoteKeyword] = useState("");
@@ -307,7 +308,8 @@ export default function ThumbnailsCustomization({
 													return;
 												}
 
-												if (item.assetType !== 61) {
+												const assetType = getAssetTypeData(item.assetType);
+												if (!assetType?.isAnimated) {
 													setEmoteErrorMessage(
 														getMessage(
 															"avatar.advanced.thumbnails.errors.assetNotEmote",
