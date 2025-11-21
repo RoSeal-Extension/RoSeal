@@ -24,19 +24,18 @@ export default function MutualsTab({ userId }: MutualsTabProps) {
 		pageNumber,
 		maxPageNumber,
 		hasAnyItems,
-		setPageNumber,
+		setPage: setPageNumber,
 		reset,
-		removeItem,
-	} = usePages<MutualFriendData, string>({
+	} = usePages<MutualFriendData, MutualFriendData, string>({
 		paging: {
 			method: "pagination",
 			itemsPerPage: pageSize || 18,
 		},
-		getNextPage: (pageData) =>
+		fetchPage: () =>
 			getMutualFriends(userId, true).then((data) => ({
-				...pageData,
 				items: data,
-				hasNextPage: false,
+				nextCursor: undefined,
+				hasMore: false,
 			})),
 	});
 
@@ -75,9 +74,7 @@ export default function MutualsTab({ userId }: MutualsTabProps) {
 							isMyProfile={false}
 							key={item.id}
 							currentTab="mutuals"
-							removeCard={() => {
-								removeItem(item);
-							}}
+							removeCard={reset}
 						/>
 					))}
 				</AvatarCardList>

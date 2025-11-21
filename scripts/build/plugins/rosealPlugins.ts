@@ -1,5 +1,5 @@
-import { join } from "node:path/posix";
 import type { BunPlugin } from "bun";
+import { join } from "node:path/posix";
 import type { Env, Manifest, Target, TargetBase } from "../constants.ts";
 import { buildPages, getI18nExport } from "../utils.ts";
 

@@ -1,0 +1,8 @@
+[test]
+coverage = true
+coverageThreshold = 0.95
+randomize = true
+root = "./src"
+
+[run]
+bun = true

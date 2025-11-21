@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { type UniversePlace, listUniversePlaces } from "src/ts/helpers/requests/services/universes";
+import { listUniversePlaces, type UniversePlace } from "src/ts/helpers/requests/services/universes";
 import Loading from "../../core/Loading";
 import Pagination from "../../core/Pagination";
-import usePages from "../../hooks/usePages";
 import useOnlineFriends from "../../hooks/useOnlineFriends";
+import usePages from "../../hooks/usePages";
 import PlacesTabItem from "./PlaceItem";
 
 export type PlacesTabProps = {
@@ -15,28 +15,31 @@ export type PlacesTabProps = {
 export default function PlacesTabContent({ universeId, currentPlaceId }: PlacesTabProps) {
 	const [onlineFriends] = useOnlineFriends();
 
-	const { items, loading, pageNumber, maxPageNumber, error, setPageNumber } = usePages<
-		UniversePlace,
-		string
-	>({
-		getNextPage: (state) =>
+	const {
+		items,
+		loading,
+		pageNumber,
+		maxPageNumber,
+		error,
+		setPage: setPageNumber,
+	} = usePages<UniversePlace, UniversePlace, string>({
+		fetchPage: (cursor) =>
 			listUniversePlaces({
 				universeId,
-				cursor: state.nextCursor,
+				cursor,
 				limit: 50,
 				extendedSettings: true,
 			}).then((data) => ({
-				...state,
 				items: data.data,
 				nextCursor: data.nextPageCursor ?? undefined,
-				hasNextPage: !!data.nextPageCursor,
+				hasMore: !!data.nextPageCursor,
 			})),
 		paging: {
 			method: "pagination",
 			itemsPerPage: 50,
 		},
 		dependencies: {
-			reset: [universeId],
+			resetDeps: [universeId],
 		},
 	});
 

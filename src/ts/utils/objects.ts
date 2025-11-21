@@ -14,9 +14,9 @@ export function filterObject<T extends Record<string, unknown>>(obj: T): FilterO
 	return newObj;
 }
 
-export function chunk<T>(arr: T[], len?: number): T[][] {
+export function chunk<T>(arr: readonly T[], len?: number): T[][] {
 	if (!len) {
-		return [arr];
+		return [[...arr]];
 	}
 	const chunks = [];
 
