@@ -325,10 +325,9 @@ export default {
 					const minimal = features[FRIENDS_LAST_SEEN_FEATURE_ID]
 						? onRobloxPresenceUpdate(async (data) => {
 								const currentDate = Math.floor(Date.now() / 1_000);
-								const currentStorageValue: Record<string, number> =
-									(await storage.get(FRIENDS_LAST_SEEN_STORAGE_KEY))?.[
-										FRIENDS_LAST_SEEN_STORAGE_KEY
-									] ?? {};
+								const currentStorageValue = ((
+									await storage.get(FRIENDS_LAST_SEEN_STORAGE_KEY)
+								)?.[FRIENDS_LAST_SEEN_STORAGE_KEY] ?? {}) as Record<string, number>;
 
 								for (const userId of data) {
 									currentStorageValue[userId] = currentDate;
@@ -755,7 +754,7 @@ export default {
 		getRoSealAlerts()
 			.then((alertInfo) => {
 				storage.get(AGREEMENTS_STORAGE_KEY).then((value) => {
-					const data: number | undefined = value[AGREEMENTS_STORAGE_KEY];
+					const data = value[AGREEMENTS_STORAGE_KEY] as number | undefined;
 					const updateLastAccept = () => {
 						storage.set({
 							[AGREEMENTS_STORAGE_KEY]: Date.now(),
@@ -773,7 +772,9 @@ export default {
 
 				if (alertInfo.alerts?.length)
 					storage.get(DISMISSED_ALERTS_STORAGE_KEY).then((value) => {
-						const data: { id: number }[] = value[DISMISSED_ALERTS_STORAGE_KEY] ?? [];
+						const data = (value[DISMISSED_ALERTS_STORAGE_KEY] ?? []) as {
+							id: number;
+						}[];
 
 						const currentDate = Date.now();
 						const shownAlerts = alertInfo.alerts!.filter(
@@ -836,10 +837,9 @@ export default {
 			const authenticatedUser = await getAuthenticatedUser();
 			if (!authenticatedUser) return;
 
-			const suspension =
-				(await storage.get(VOICE_CHAT_SUSPENSION_STORAGE_KEY))[
-					VOICE_CHAT_SUSPENSION_STORAGE_KEY
-				] ?? {};
+			const suspension = ((await storage.get(VOICE_CHAT_SUSPENSION_STORAGE_KEY))[
+				VOICE_CHAT_SUSPENSION_STORAGE_KEY
+			] ?? {}) as Record<string, number>;
 			const { informedOfBan } = await getUserInformedOfBan();
 
 			const lastId = suspension[authenticatedUser.userId];

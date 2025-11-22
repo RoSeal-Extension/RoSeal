@@ -28,19 +28,24 @@ import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type { UserProfileResponse } from "src/ts/helpers/processors/profileProcessor";
 import type {
+	ListTransactionTotalsResponse,
+	UserRobuxAmount,
+} from "src/ts/helpers/requests/services/account";
+import type {
 	MarketplaceItemType,
 	MultigetAvatarItemsResponse,
 	SearchItemsDetailsResponse,
 } from "src/ts/helpers/requests/services/marketplace";
 import type {
 	GetSearchLandingPageResponse,
+	ListExperienceRecommendationsResponse,
 	ListExperiencesAutocompleteSuggestionsResponse,
 	ListMarketplaceAutocompleteSuggestionsInternalResponse,
 	SearchResponse,
 	SearchVerticalType,
-	UniverseRecommendationDetail,
 } from "src/ts/helpers/requests/services/misc";
 import type { ListedStreamNotification } from "src/ts/helpers/requests/services/notifications";
+import type { BatchThumbnailRequest } from "src/ts/helpers/requests/services/thumbnails";
 import type {
 	ExperienceSort,
 	GetOmniRecommendationsResponse,
@@ -131,7 +136,7 @@ export default {
 						.clone()
 						.json()
 						.then((data) => {
-							for (const item of data) {
+							for (const item of data as BatchThumbnailRequest[]) {
 								if (item.type === "AvatarHeadShot") {
 									item.type = value[1];
 								}
@@ -202,7 +207,7 @@ export default {
 					const match = ECONOMY_CURRENCY_URL_REGEX.exec(url.pathname);
 					if (match) {
 						const userId = Number.parseInt(match[1], 10);
-						const { robux } = await res.clone().json();
+						const { robux } = (await res.clone().json()) as UserRobuxAmount;
 
 						sendMessage("recordRobuxHistory", {
 							userId,
@@ -266,7 +271,7 @@ export default {
 					);
 					if (match) {
 						const userId = Number.parseInt(match[1], 10);
-						const data = await res.clone().json();
+						const data = (await res.clone().json()) as ListTransactionTotalsResponse;
 
 						sendMessage("updatePendingRobux", {
 							robux: data.pendingRobuxTotal,
@@ -840,13 +845,13 @@ export default {
 							url.pathname.startsWith("/v1/games/recommendations/game/") &&
 							hasExperienceConfig
 						) {
-							const data = await res.clone().json();
-
-							const games = data.games as UniverseRecommendationDetail[];
+							const data = (await res
+								.clone()
+								.json()) as ListExperienceRecommendationsResponse;
 
 							const checkUniverseIds: number[] = [];
 							if (shouldExperienceRequest)
-								for (const item of games) {
+								for (const item of data.games) {
 									checkUniverseIds.push(item.universeId);
 								}
 
@@ -856,8 +861,8 @@ export default {
 									})
 								: undefined;
 
-							for (let i = 0; i < games.length; i++) {
-								const game = games[i];
+							for (let i = 0; i < data.games.length; i++) {
+								const game = data.games[i];
 								if (
 									isExperienceBlocked(
 										game.universeId,
@@ -868,7 +873,7 @@ export default {
 										checkUniverseData,
 									)
 								) {
-									games.splice(i, 1);
+									data.games.splice(i, 1);
 									i--;
 								}
 							}

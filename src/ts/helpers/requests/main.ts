@@ -13,6 +13,10 @@ import { bypassCORSFetch } from "./utils/bypassCORSFetch.ts";
 export const BYPASS_CORS_ENVS = ["popup", "background"];
 export const HBA_ENVS = ["main", "inject"];
 
+export const ROBLOX_PLACE_ID_HEADER_NAME = "roblox-place-id";
+export const CHANNEL_TOKEN_HEADER_NAME = "roblox-channel-token";
+export const ROBLOX_BROWSER_ASSET_REQUEST_HEADER_NAME = "roblox-browser-asset-request";
+
 export let hbaClient: HBAClient | undefined;
 if (HBA_ENVS.includes(import.meta.env.ENV)) {
 	hbaClient = new HBAClient({

@@ -1,6 +1,10 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../cache.ts";
-import { httpClient } from "../main.ts";
+import {
+	httpClient,
+	ROBLOX_BROWSER_ASSET_REQUEST_HEADER_NAME,
+	ROBLOX_PLACE_ID_HEADER_NAME,
+} from "../main.ts";
 import type { AvatarItemSaleLocationTypeId } from "./marketplace.ts";
 import type { SortOrder } from "./badges.ts";
 
@@ -675,8 +679,8 @@ export async function batchGetAssetsContents({
 				value: requests,
 			},
 			headers: {
-				"roblox-place-id": robloxPlaceId,
-				"roblox-browser-asset-request": inBrowserRequest ? "true" : undefined,
+				[ROBLOX_PLACE_ID_HEADER_NAME]: robloxPlaceId,
+				[ROBLOX_BROWSER_ASSET_REQUEST_HEADER_NAME]: inBrowserRequest ? "true" : undefined,
 			},
 			credentials: {
 				type: "cookies",

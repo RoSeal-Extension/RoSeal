@@ -67,7 +67,11 @@ export default {
 		let setState: ((value: unknown) => void) | undefined;
 
 		hijackState({
-			matches: (value) => Array.isArray(value) && value[0]?.transactionType,
+			matches: (value) =>
+				Array.isArray(value) &&
+				typeof value[0] === "object" &&
+				value[0] !== null &&
+				"transactionType" in value[0],
 			setState: ({ value, publicSetState }) => {
 				setState = publicSetState;
 				oldState = value.current as Transaction<"Purchase">[];

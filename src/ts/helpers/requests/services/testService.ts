@@ -1,5 +1,5 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
-import { httpClient } from "../main.ts";
+import { CHANNEL_TOKEN_HEADER_NAME, httpClient } from "../main.ts";
 import type { APPLICATION_BINARY_TYPES } from "src/ts/constants/misc.ts";
 
 export type GetLayersValuesParameters<T extends string> = {
@@ -109,8 +109,6 @@ export type GetClientVersionResponse = {
 	nextClientVersionUpload?: string;
 	nextClientVersion?: string;
 };
-
-export const CHANNEL_TOKEN_HEADER_NAME = "roblox-channel-token";
 
 export function getLayersValues<T extends string>({
 	projectId = 1,
