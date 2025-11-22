@@ -18,10 +18,8 @@ export default function ExperienceAvatarType({
 			case PlaceAvatarSupportType.NoSupport: {
 				return "Custom";
 			}
+			case PlaceAvatarSupportType.FullSupport:
 			case PlaceAvatarSupportType.UnknownSupport: {
-				return "Unknown";
-			}
-			case PlaceAvatarSupportType.FullSupport: {
 				if (universeStartInfo.gameAvatarType === "MorphToR15") {
 					if (universeStartInfo.universeAvatarMaxScales.bodyType === 1) {
 						if (universeStartInfo.universeAvatarMinScales.bodyType === 1) {

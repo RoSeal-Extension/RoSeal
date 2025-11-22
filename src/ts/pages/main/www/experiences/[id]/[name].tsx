@@ -534,7 +534,7 @@ export default {
 				1,
 			);
 
-			if (avatarSupport.experienceAvatarSupportType === PlaceAvatarSupportType.FullSupport)
+			if (avatarSupport.experienceAvatarSupportType !== PlaceAvatarSupportType.NoSupport)
 				featureValueIs("viewExperienceAvatarType.showAvatarRestricted", true, async () => {
 					const userAvatar = await getAuthenticatedUserAvatar();
 
