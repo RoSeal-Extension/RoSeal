@@ -65,7 +65,11 @@ export default function UserLastSeen({ userId, useV2 }: UserLastSeenProps) {
 		return (
 			<SocialHeaderV2
 				className="roseal-user-last-seen-v2"
-				title={getMessage("user.stats.lastSeen.title")}
+				title={
+					!useV2 || isOnline || lastSeenDate
+						? getMessage("user.stats.lastSeen.title")
+						: undefined
+				}
 				alt={getMessage("user.stats.lastSeen.title")}
 				value={inner}
 				enabled

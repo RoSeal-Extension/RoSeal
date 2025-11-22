@@ -31,7 +31,8 @@ export default function SocialHeaderV2({
 		>
 			<div className="absolute inset-[0] transition-colors group-hover/interactable:bg-[var(--color-state-hover)] group-active/interactable:bg-[var(--color-state-press)] group-disabled/interactable:bg-none" />
 			<span className="text-no-wrap text-truncate-end" title={alt}>
-				{value} {title}
+				{value}
+				{title && ` ${title}`}
 			</span>
 		</button>
 	);

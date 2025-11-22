@@ -2,7 +2,7 @@ import classNames from "classnames";
 import type { ComponentChild } from "preact";
 
 export type SocialHeaderProps = {
-	title: string;
+	title?: string;
 	value: ComponentChild;
 	alt: string;
 	link?: string;
