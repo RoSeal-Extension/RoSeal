@@ -794,13 +794,13 @@ export default {
 			const groupIdToJoinedDate = signal<Record<string, string>>({});
 
 			watch<HTMLAnchorElement>(
-				"groups-showcase-grid .list-item .card-item, .btr-profile-groups .game-card .game-card-container a",
+				"groups-showcase-grid .list-item .card-item, .btr-profile-groups .game-card .game-card-container a, .profile-communities .base-tile-metadata",
 				(card) => {
 					if (card.parentElement?.querySelector(".group-joined-date")) {
 						return;
 					}
 
-					const link = card.href;
+					const link = card.closest("a")?.href;
 					if (!link) {
 						return;
 					}

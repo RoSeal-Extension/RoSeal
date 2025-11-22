@@ -31,7 +31,9 @@ export default function UserCommunityJoinedDateGrid({
 	const onTimeClick = isClickSwitchEnabled
 		? () => handleTimeSwitch(timeType, setTimeType)
 		: undefined;
-	const onClick = () => {
+	const onClick = (e?: MouseEvent) => {
+		e?.preventDefault();
+
 		if (joinedDate) {
 			return onTimeClick?.();
 		}
