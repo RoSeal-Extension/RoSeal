@@ -1,5 +1,5 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
-import { httpClient } from "../main";
+import { httpClient, ROBLOX_PLACE_ID_HEADER_NAME } from "../main";
 import { getOrSetCache } from "../../cache";
 
 export type GetUserCurrentlyWearingRequest = {
@@ -357,6 +357,28 @@ export type ResolvedUserPlaceAvatar = {
 	emotes: AvatarEmote[];
 };
 
+export type GetPlaceAvatarSupportRequest = {
+	placeId: number;
+};
+
+export enum PlaceAvatarType {
+	Unknown = 0,
+	R6 = 1,
+	R15 = 2,
+	PlayerChoice = 3,
+}
+
+export enum PlaceAvatarSupportType {
+	NoSupport = 0,
+	UnknownSupport = 1,
+	FullSupport = 2,
+}
+
+export type GetPlaceAvatarSupportResponse = {
+	experienceAvatarSupportType: PlaceAvatarSupportType;
+	experienceAvatarType: PlaceAvatarType;
+};
+
 export async function getAvatarRules(): Promise<AvatarRestrictions> {
 	return getOrSetCache({
 		key: ["avatar", "rules"],
@@ -643,11 +665,27 @@ export async function fetchUserPlaceAvatar(request: FetchUserPlaceAvatarRequest)
 	return (
 		await httpClient.httpRequest<ResolvedUserPlaceAvatar>({
 			url: getRobloxUrl("avatar", "/v2/avatar/avatar-fetch"),
+			search: request,
 			credentials: {
 				type: "cookies",
 				value: true,
 			},
-			search: request,
+		})
+	).body;
+}
+
+export async function getPlaceAvatarSupport({ placeId }: GetPlaceAvatarSupportRequest) {
+	return (
+		await httpClient.httpRequest<GetPlaceAvatarSupportResponse>({
+			url: getRobloxUrl("avatar", "/v2/avatar/experience/get-experience-avatar-support"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+			headers: {
+				[ROBLOX_PLACE_ID_HEADER_NAME]: placeId,
+			},
+			bypassCORS: true,
 		})
 	).body;
 }

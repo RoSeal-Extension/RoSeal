@@ -56,7 +56,11 @@ import {
 } from "src/ts/helpers/i18n/intlFormats";
 import { modifyItemStats } from "src/ts/helpers/modifyItemStats";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
-import { getAuthenticatedUserAvatar } from "src/ts/helpers/requests/services/avatar";
+import {
+	getAuthenticatedUserAvatar,
+	getPlaceAvatarSupport,
+	PlaceAvatarSupportType,
+} from "src/ts/helpers/requests/services/avatar";
 import { listUserGroupsRoles } from "src/ts/helpers/requests/services/groups";
 import { search } from "src/ts/helpers/requests/services/misc";
 import { getPlaceVotes } from "src/ts/helpers/requests/services/places";
@@ -512,29 +516,38 @@ export default {
 		});
 
 		featureValueIs("viewExperienceAvatarType", true, async () => {
-			const startInfo = await getUniverseStartInfo({
-				universeId,
-			});
+			const [startInfo, avatarSupport] = await Promise.all([
+				getUniverseStartInfo({
+					universeId,
+				}),
+				getPlaceAvatarSupport({
+					placeId,
+				}),
+			]);
 
 			modifyItemStats(
 				"Experience",
-				<ExperienceAvatarType universeStartInfo={startInfo} />,
+				<ExperienceAvatarType
+					universeStartInfo={startInfo}
+					avatarSupportType={avatarSupport.experienceAvatarSupportType}
+				/>,
 				1,
 			);
 
-			featureValueIs("viewExperienceAvatarType.showAvatarRestricted", true, async () => {
-				const userAvatar = await getAuthenticatedUserAvatar();
+			if (avatarSupport.experienceAvatarSupportType === PlaceAvatarSupportType.FullSupport)
+				featureValueIs("viewExperienceAvatarType.showAvatarRestricted", true, async () => {
+					const userAvatar = await getAuthenticatedUserAvatar();
 
-				watchOnce("#game-details-play-button-container").then((el) => {
-					renderBefore(
-						<ExperienceAvatarRestriction
-							userAvatar={userAvatar}
-							universeStartInfo={startInfo}
-						/>,
-						el,
-					);
+					watchOnce("#game-details-play-button-container").then((el) => {
+						renderBefore(
+							<ExperienceAvatarRestriction
+								userAvatar={userAvatar}
+								universeStartInfo={startInfo}
+							/>,
+							el,
+						);
+					});
 				});
-			});
 		});
 
 		multigetFeaturesValues(["viewUniverseId", "viewPlaceLatestVersions"]).then(async (data) => {

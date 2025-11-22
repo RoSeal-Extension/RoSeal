@@ -10712,6 +10712,14 @@
 				"ForcedRthro": {
 					"$message": "Rthro",
 					"$context": "Only Rthro"
+				},
+				"Custom": {
+					"$message": "Custom",
+					"$context": "Avatar types defined by the creator"
+				},
+				"Unknown": {
+					"$message": "Unknown",
+					"$context": "Unknown avatar type support"
 				}
 			},
 			"$context": "Avatar Type field in experience statistics"
