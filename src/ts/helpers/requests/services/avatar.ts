@@ -27,6 +27,7 @@ export type AvatarAssetMeta = {
 export type AvatarAssetDefinition = {
 	id: number;
 	meta?: AvatarAssetMeta;
+	isSwappable?: boolean;
 };
 
 export type AvatarAssetDefinitionWithTypes = AvatarAssetDefinition & {
@@ -276,12 +277,23 @@ export type ListedUserAvatarItemCategory = {
 	itemSubType: number;
 };
 
+export type ListedUserAvatarItemAvailability = "Available";
+
+export type ListedUserAvatarItemOutfitDetail = {
+	playerAvatarType: AvatarType;
+	bodyColor3s: AvatarColors3s;
+	scales: AvatarScales;
+	assets: AvatarAssetDefinition[];
+};
+
 export type ListedUserAvatarItem = {
 	itemId: number;
 	itemName: string;
 	itemCategory?: ListedUserAvatarItemCategory;
+	availabilityStatus: ListedUserAvatarItemAvailability;
 	lastEquipTime?: string | null;
 	acquisitionTime?: string;
+	outfitDetail?: ListedUserAvatarItemOutfitDetail;
 };
 
 export type ListUserAvatarItemsResponse = {

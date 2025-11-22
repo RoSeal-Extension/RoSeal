@@ -389,6 +389,7 @@ export default {
 								},
 								itemId: item.assetId,
 								itemName: item.assetName,
+								availabilityStatus: "Available",
 								acquisitionTime: item.created,
 							})),
 							nextPageToken: data.nextPageCursor,
@@ -594,8 +595,10 @@ export default {
 
 				res?.clone()
 					.json()
-					.then((data: MultigetAvatarItemsResponse<MarketplaceItemType>) => {
-						for (const item of data.data) {
+					.then((data) => {
+						for (const item of (
+							data as MultigetAvatarItemsResponse<MarketplaceItemType>
+						).data) {
 							cachedItems[`${item.itemType}${item.id}`] = item;
 						}
 					});
@@ -907,6 +910,7 @@ export default {
 									itemId: item.id,
 									// hydrated by roblox's frontend
 									itemName: " ",
+									availabilityStatus: "Available",
 									acquisitionTime: nullDate,
 								});
 							}
@@ -929,7 +933,16 @@ export default {
 								},
 								itemId: item.id,
 								itemName: outfit?.name ?? "",
+								availabilityStatus: "Available",
 								acquisitionTime: nullDate,
+								outfitDetail: outfit
+									? {
+											playerAvatarType: outfit.playerAvatarType,
+											assets: outfit.assets,
+											bodyColor3s: outfit.bodyColor3s,
+											scales: outfit.scale,
+										}
+									: undefined,
 							});
 						}
 					}
