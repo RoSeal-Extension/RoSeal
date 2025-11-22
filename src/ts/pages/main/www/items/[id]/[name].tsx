@@ -4,6 +4,7 @@ import { useMemo } from "preact/hooks";
 import AddToProfileButton from "src/ts/components/avatarItem/AddToProfileButton";
 import ArchiveInInventoryButton from "src/ts/components/avatarItem/ArchiveInInventoryButton";
 import BundleRecolorableField from "src/ts/components/avatarItem/BundleRecolorable";
+import ItemCreatedExperience from "src/ts/components/avatarItem/CreatedExperience";
 import DynamicFloorTooltip from "src/ts/components/avatarItem/DynamicFloorTooltip";
 import ItemBundles from "src/ts/components/avatarItem/ItemBundles";
 import AvatarItemOwnedPopover from "src/ts/components/avatarItem/ItemOwnedPopover";
@@ -97,6 +98,22 @@ export default {
 			pageType.value === "bundles" ? "Bundle" : "Asset",
 		);
 		const itemId = signal(Number.parseInt(regexMatches![0]![2], 10));
+
+		checks.push(
+			featureValueIs("viewAvatarItemExperienceCreation", true, () =>
+				watch(".item-details-creator-container", (el) => {
+					renderAfter(
+						() => (
+							<ItemCreatedExperience
+								itemType={itemType.value}
+								itemId={itemId.value}
+							/>
+						),
+						el,
+					);
+				}),
+			),
+		);
 
 		checks.push(
 			featureValueIs("viewAvatarItemHeldPeriod", true, () =>

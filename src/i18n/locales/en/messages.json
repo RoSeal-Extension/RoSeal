@@ -2783,6 +2783,11 @@
 				"$message": "Show how long each Limited item instance you own has been in holding period for"
 			}
 		},
+		"viewAvatarItemExperienceCreation": {
+			"name": {
+				"$message": "Show which experience an item may have been created in"
+			}
+		},
 		"viewAvatarItemRAPAfterPurchase": {
 			"name": {
 				"$message": "Show a tooltip on the price of each Limited resell of what the new RAP will be after purchasing"
@@ -6256,6 +6261,10 @@
 				"$context": "Dependencies tab",
 				"$message": "Dependencies"
 			}
+		},
+		"createdIn": {
+			"$context": "Created in text",
+			"$message": "Created in {experienceName}"
 		},
 		"connectionsOwned": {
 			"$context": "Button to show how many connections own an item",

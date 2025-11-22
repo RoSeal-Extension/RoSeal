@@ -2442,6 +2442,14 @@ export const sections = [
 					},
 					{
 						type: "Regular",
+						id: "viewAvatarItemExperienceCreation",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
+					},
+					{
+						type: "Regular",
 						id: "viewAvatarItemResellerMoreInfo",
 						component: {
 							type: "Toggle",

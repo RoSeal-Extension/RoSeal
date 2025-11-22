@@ -438,3 +438,17 @@
         margin-right: 6px;
     }
 }
+
+.item-created-experience-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 5px;
+    margin-top: 2px;
+
+    .created-experience-thumb {
+        border-radius: 4px;
+        width: 28px;
+        height: 28px;
+    }
+}
