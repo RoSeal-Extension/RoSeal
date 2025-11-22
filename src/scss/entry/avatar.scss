@@ -517,6 +517,7 @@ span.icon-roseal-hidden-label::after {
     #avatar-web-app[data-has-item-lists] #horizontal-tabs {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(min(100%/7), 1fr));
+        margin: 0;
 
         &::before {
             display: none;
