@@ -72,8 +72,6 @@ export default function FastUserSearch({ search, menu, container }: FastUserSear
 		return items;
 	}, [search.value]);
 	const [exactUserSearch] = usePromise(() => {
-		if (!search.value.match(USERNAME_REGEX)) return null;
-
 		if (onlineFriends)
 			for (const item of onlineFriendsProfileData) {
 				if (item?.names.username.toLowerCase() === search.value.toLowerCase()) {
@@ -141,7 +139,7 @@ export default function FastUserSearch({ search, menu, container }: FastUserSear
 		const items: FastUserSearchDetail[] = [];
 		const addedUserIds = new Set<number>();
 
-		if (exactUserSearch !== null) {
+		if (USERNAME_REGEX.test(search.value) ? exactUserSearch !== null : exactUserSearch) {
 			if (exactUserSearch) {
 				addedUserIds.add(exactUserSearch.id);
 			}
