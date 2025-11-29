@@ -229,7 +229,7 @@
 }
 
 [data-rosealfe-imageresolutionoverride] {
-    .thumbnail-2d-container:not(.group-event-thumbnail-container) {
+    .thumbnail-2d-container:not(.group-event-thumbnail-container):not(.announcement-thumbnail) {
         height: 100%;
         aspect-ratio: 1 / 1;
     }

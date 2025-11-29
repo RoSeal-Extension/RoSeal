@@ -2029,6 +2029,8 @@ end of legacy code
                     .channel-name-text {
                         font-family: "Builder Mono";
                         font-size: 14px;
+                        overflow: hidden;
+                        word-wrap: break-word;
                     }
 
                     .program-platforms-container {

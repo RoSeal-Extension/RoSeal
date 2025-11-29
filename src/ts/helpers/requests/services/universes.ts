@@ -537,6 +537,7 @@ export type UniverseDetail = {
 	isFavoritedByUser: boolean;
 	genre_l1?: string;
 	genre_l2?: string;
+	untranslated_genre_l1?: string;
 	favoritedCount: number;
 	licenseDescription?: string;
 	refundLink?: string;
