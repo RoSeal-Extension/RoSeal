@@ -183,25 +183,32 @@ export default function AvatarAssetContainer({ assetId }: AvatarAssetContainerPr
 			};
 		}
 
-		return (
-			data.creator.creatorType === "Group"
-				? multigetGroupsByIds({
-						groupIds: [data.creator.creatorTargetId],
-					}).then((data) => data[0])
-				: getUserById({
-						userId: data.creator.creatorTargetId,
-					})
-		).then(
-			(creator) =>
-				creator && {
-					creatorTargetId: data.creator.creatorTargetId,
-					creatorType: data.creator.creatorType,
-					id: 0,
-					hasVerifiedBadge: creator.hasVerifiedBadge,
-					name: creator.name,
-					type: data.creator.creatorType!,
-				},
-		);
+		return data.creator.creatorType === "Group"
+			? multigetGroupsByIds({
+					groupIds: [data.creator.creatorTargetId],
+				})
+					.then((data) => data[0])
+					.then((creator) => ({
+						creatorTargetId: data.creator.creatorTargetId,
+						creatorType: data.creator.creatorType,
+						id: 0,
+						hasVerifiedBadge: creator.hasVerifiedBadge,
+						name: creator.name,
+						type: data.creator.creatorType!,
+					}))
+			: getUserById({
+					userId: data.creator.creatorTargetId,
+				}).then(
+					(creator) =>
+						creator && {
+							creatorTargetId: data.creator.creatorTargetId,
+							creatorType: data.creator.creatorType,
+							id: 0,
+							hasVerifiedBadge: creator.hasVerifiedBadge,
+							name: creator.name,
+							type: data.creator.creatorType!,
+						},
+				);
 	}, [!data, data && "name" in data.creator]);
 	const [canConfigure] = usePromise(
 		() =>

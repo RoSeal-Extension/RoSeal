@@ -2574,6 +2574,14 @@ export const sections = [
 										defaultValue: true,
 									},
 								},
+								{
+									type: "Regular",
+									id: "avatarItemCreatedUpdated.showThumbnailUpdated",
+									component: {
+										type: "Toggle",
+										defaultValue: false,
+									},
+								},
 							],
 						},
 					},

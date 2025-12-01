@@ -3729,6 +3729,12 @@
 					"$message": "Show the user/community that created or updated the item",
 					"$context": ""
 				}
+			},
+			"showThumbnailUpdated": {
+				"name": {
+					"$context": "",
+					"$message": "Show when the item thumbnail was last updated"
+				}
 			}
 		},
 		"avatarItemToggleAvatar": {
@@ -6247,6 +6253,15 @@
 	},
 	"avatarItem": {
 		"$context": "Avatar item page, including bundles and avatar assets",
+		"thumbnailUpdated": {
+			"$context": "Thumbnail updated field",
+			"title": {
+				"$message": "Thumbnail Updated"
+			},
+			"content": {
+				"$message": "{time} (Updating {nextTime})"
+			}
+		},
 		"tabs": {
 			"$context": "Tabs to switch between",
 			"resellers": {

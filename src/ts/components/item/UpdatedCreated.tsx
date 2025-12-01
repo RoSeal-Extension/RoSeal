@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import type { TimeTarget } from "src/ts/helpers/features/featuresData";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { asLocaleLowerCase } from "src/ts/helpers/i18n/intlFormats";
+import { asLocaleLowerCase, getShortRelativeTime } from "src/ts/helpers/i18n/intlFormats";
 import { getAssetById, multigetDevelopAssetsByIds } from "src/ts/helpers/requests/services/assets";
 import { getBadgeById } from "src/ts/helpers/requests/services/badges";
 import { getDeveloperProductById } from "src/ts/helpers/requests/services/developerProducts";
@@ -25,6 +25,9 @@ import usePromise from "../hooks/usePromise";
 import useTime from "../hooks/useTime";
 import { handleTimeSwitch } from "../utils/handleTimeSwitch";
 import { escapeRegExp } from "src/ts/utils/regex";
+import { thumbnailProcessor } from "src/ts/helpers/processors/thumbnailProcessor";
+import { httpClient } from "src/ts/helpers/requests/main";
+import { getHashUrl, parseResizeThumbnailUrl } from "src/ts/utils/thumbnails";
 
 export type ItemUpdatedCreatedProps = {
 	itemType: LiterallyAnyItemType;
@@ -46,8 +49,13 @@ export default function ItemUpdatedCreated({
 	const [isClickSwitchEnabled] = useFeatureValue("times.clickSwitch", false);
 	const [showActors] = useFeatureValue("avatarItemCreatedUpdated.showActors", false);
 	const [switchCreatedUpdated] = useFeatureValue("times.switchCreatedUpdated", false);
+	const [showThumbnailUpdatedField] = useFeatureValue(
+		"avatarItemCreatedUpdated.showThumbnailUpdated",
+		false,
+	);
 	const [getTime, timeType, setTimeType] = useTime(target, "time");
 	const [getTooltipTime, tooltipTimeType] = useTime(target, "tooltip");
+
 	const [data] = usePromise(() => {
 		if (itemType === "Bundle") {
 			return getAvatarItem({
@@ -201,6 +209,80 @@ export default function ItemUpdatedCreated({
 			}));
 		}
 	}, [itemType, itemId]);
+	const [thumbnailUpdated] = usePromise(() => {
+		if (!showThumbnailUpdatedField) return;
+
+		if ((itemType === "Asset" || itemType === "Bundle") && target === "avatarItems") {
+			return thumbnailProcessor
+				.request({
+					type: itemType === "Bundle" ? "BundleThumbnail" : "Asset",
+					size: "420x420",
+					targetId: itemId,
+				})
+				.then((data) => {
+					if (data.imageUrl) {
+						const hash = parseResizeThumbnailUrl(data.imageUrl)?.hash;
+						if (hash)
+							return httpClient
+								.httpRequest({
+									url: getHashUrl(hash),
+									expect: "none",
+									bypassCORS: true,
+								})
+								.then((data) => {
+									const lastModifiedStr = data.headers.get("last-modified");
+									if (!lastModifiedStr) return;
+
+									const lastModified = new Date(lastModifiedStr);
+									const rollingPeriodMatch = hash.match(/^(\d+?)([a-z]+?)-/i);
+
+									let nextUpdate: Date | undefined;
+									if (rollingPeriodMatch) {
+										const [, lengthStr, unit] = rollingPeriodMatch;
+										const length = Number.parseInt(lengthStr, 10);
+
+										nextUpdate = new Date(lastModified);
+
+										switch (unit.toUpperCase()) {
+											case "DAY":
+												nextUpdate.setDate(lastModified.getDate() + length);
+												break;
+
+											case "HOUR":
+												nextUpdate.setHours(
+													lastModified.getHours() + length,
+												);
+												break;
+
+											case "MINUTE":
+												nextUpdate.setMinutes(
+													lastModified.getMinutes() + length,
+												);
+												break;
+
+											case "SECOND":
+												nextUpdate.setSeconds(
+													lastModified.getSeconds() + length,
+												);
+												break;
+
+											case "MONTH":
+												nextUpdate.setMonth(
+													lastModified.getMonth() + length,
+												);
+												break;
+										}
+									}
+
+									return {
+										lastModified,
+										nextUpdate,
+									};
+								});
+					}
+				});
+		}
+	}, [itemType, itemId, showThumbnailUpdatedField]);
 	const [creator] = usePromise(async () => {
 		if (!showActors || itemType !== "Asset") {
 			return;
@@ -235,6 +317,18 @@ export default function ItemUpdatedCreated({
 		});
 	}, [itemType, itemId, !!updatedBy, showActors]);
 
+	const thumbnailUpdatedTooltipTime = thumbnailUpdated
+		? getTooltipTime(thumbnailUpdated.lastModified)
+		: "...";
+	const thumbnailUpdatedTime = thumbnailUpdated ? getTime(thumbnailUpdated.lastModified) : "...";
+
+	const thumbnailUpdatedNextTooltipTime = thumbnailUpdated?.nextUpdate
+		? getTooltipTime(thumbnailUpdated.nextUpdate)
+		: "...";
+	const thumbnailUpdatedNextTime = thumbnailUpdated?.nextUpdate
+		? getShortRelativeTime(thumbnailUpdated.nextUpdate)
+		: "...";
+
 	const createdTooltipTime = data?.created ? getTooltipTime(data.created) : "...";
 	const createdTime = data?.created ? getTime(data.created) : "...";
 
@@ -247,6 +341,23 @@ export default function ItemUpdatedCreated({
 	const onClick = isClickSwitchEnabled
 		? () => handleTimeSwitch(timeType, setTimeType)
 		: undefined;
+
+	const thumbnailUpdatedDate =
+		tooltipTimeType !== undefined ? (
+			<Tooltip
+				includeContainerClassName={false}
+				id="thumbnail-updated-field"
+				button={<span onClick={onClick}>{thumbnailUpdatedTime}</span>}
+				containerClassName={innerClass}
+				title={thumbnailUpdatedTooltipTime}
+			>
+				{thumbnailUpdatedTooltipTime}
+			</Tooltip>
+		) : (
+			<span id="thumbnail-updated-field" onClick={onClick} className={innerClass}>
+				{thumbnailUpdatedTime}
+			</span>
+		);
 
 	const createdDate =
 		tooltipTimeType !== undefined ? (
@@ -353,6 +464,35 @@ export default function ItemUpdatedCreated({
 			{!switchCreatedUpdated && createdField}
 			{updatedField}
 			{switchCreatedUpdated && createdField}
+			{showThumbnailUpdatedField && target === "avatarItems" && (
+				<ItemField
+					id="item-thumbnial-updated-field"
+					title={getMessage("avatarItem.thumbnailUpdated.title")}
+					useNewClasses
+				>
+					<span className="font-body text">
+						{getMessage("avatarItem.thumbnailUpdated.content", {
+							time: thumbnailUpdatedDate,
+							nextTime: (
+								<Tooltip
+									includeContainerClassName={false}
+									button={
+										<span
+											id="thumbnail-updated-next-field"
+											className="date"
+											title={thumbnailUpdatedNextTooltipTime}
+										>
+											{thumbnailUpdatedNextTime}
+										</span>
+									}
+								>
+									{thumbnailUpdatedNextTooltipTime}
+								</Tooltip>
+							),
+						})}
+					</span>
+				</ItemField>
+			)}
 		</>
 	);
 }
