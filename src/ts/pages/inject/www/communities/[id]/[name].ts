@@ -131,6 +131,8 @@ export default {
 					linkedCommunityInfo?: unknown;
 					updateGroup?: (groupId: number) => void;
 					loadProfilePlatform?: (groupId: number) => void;
+					loadGroupMembership?: (groupId: number) => void;
+					loadGroupDetailPolicies?: (groupId: number) => void;
 					groupAnnouncement?: unknown;
 				}
 			>();
@@ -145,8 +147,9 @@ export default {
 					scope.groupAnnouncement = {};
 				}
 
-				scope.loadProfilePlatform?.(data.groupId);
+				scope.loadGroupDetailPolicies?.(data.groupId);
 				scope.updateGroup?.(data.groupId);
+				scope.loadGroupMembership?.(data.groupId);
 			}
 			document.body?.querySelector(".dismissable-announcement-upsell-banner")?.remove();
 			const storeScope = dependencies!.angular

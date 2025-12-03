@@ -25,7 +25,7 @@ export function getLocalStorage<T>(key: string): T | undefined {
 	const value = globalThis.localStorage.getItem(prefixedKey);
 	if (value) {
 		try {
-			return JSON.parse(value);
+			return JSON.parse(value) as T;
 		} catch {
 			return value as T;
 		}
@@ -55,7 +55,7 @@ export function getLocalSessionStorage<T>(key: string): T | undefined {
 	const value = globalThis.sessionStorage?.getItem(prefixedKey);
 	if (value) {
 		try {
-			return JSON.parse(value);
+			return JSON.parse(value) as T;
 		} catch {
 			return value as T;
 		}
@@ -120,7 +120,7 @@ export function onStorageValueUpdate<T = unknown>(
 
 export function getExtensionSessionStorage<T>(key: string): Promise<T | undefined> {
 	if (import.meta.env.TARGET_BASE !== "firefox" || import.meta.env.ENV === "background") {
-		return browser.storage.session.get(key).then((data) => data[key]);
+		return browser.storage.session.get(key).then((data) => data[key] as T);
 	}
 
 	return invokeMessage("getSessionStorage", key).then((data) => data[key] as T | undefined);
