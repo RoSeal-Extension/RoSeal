@@ -108,7 +108,7 @@ export default function useItemPipeline<T, U = T>({
 
 			return Promise.all(promises);
 		}
-	}, [items, transform, sort, filter, disabled]);
+	}, [items, transform !== undefined, sort !== undefined, filter !== undefined, disabled]);
 
 	const clearCache = useCallback(() => {
 		transformCacheRef.current.clear();
