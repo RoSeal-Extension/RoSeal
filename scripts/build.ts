@@ -4,7 +4,7 @@ import { minify as minifyHTML } from "html-minifier-terser";
 import { parse as parseJSONC } from "jsonc-parser";
 import walk from "klaw";
 import kleur from "kleur";
-import { basename, extname, join, parse as parsePath } from "node:path/posix";
+import { basename, extname, join, parse as parsePath, relative } from "node:path";
 import { parseArgs } from "node:util";
 import * as sass from "sass-embedded";
 import {
@@ -71,48 +71,35 @@ export async function compileSCSSFile(
 	const isDisabled = path.includes("_disabled");
 
 	if (!isDisabled && (!isDevSheet || isDev)) {
-		const file = parsePath(path);
-		const data = (
-			await sass.compileAsync(path, {
-				style: isDev ? "expanded" : "compressed",
-				functions: {
-					"env($name)": (args) => {
-						const name = args[0].assertString().toString();
-						const value = env[name];
-						if (env === undefined) {
-							throw new Error(`Environment variable ${name} is not set.`);
-						}
-
-						if (typeof value === "string") {
-							return new sass.SassString(value);
-						}
-
-						if (typeof value === "boolean") {
-							return value ? sass.sassTrue : sass.sassFalse;
-						}
-
-						if (typeof value === "number") {
-							return new sass.SassNumber(value);
-						}
-
-						return sass.sassNull;
-					},
+		const result = await sass.compileAsync(path, {
+			style: isDev ? "expanded" : "compressed",
+			functions: {
+				"env($name)": (args) => {
+					const name = args[0].assertString().text;
+					const value = env[name];
+					if (value === undefined) {
+						throw new Error(`Environment variable ${name} is not set.`);
+					}
+					if (typeof value === "string") {
+						return new sass.SassString(value);
+					}
+					if (typeof value === "boolean") {
+						return value ? sass.sassTrue : sass.sassFalse;
+					}
+					if (typeof value === "number") {
+						return new sass.SassNumber(value);
+					}
+					return sass.sassNull;
 				},
-			})
-		).css;
+			},
+		});
+		const outputPath = join(
+			outDir,
+			"css",
+			relative(SCSS_ENTRYPOINT, path).replace(/\.(scss|sass)$/i, ".css"),
+		);
 
-		if (typeof data === "string") {
-			await Bun.write(
-				join(
-					file.dir.replace(
-						SCSS_ENTRYPOINT.substring(2, SCSS_ENTRYPOINT.length - 1),
-						`${outDir}/css/`,
-					),
-					`${file.name}.css`,
-				),
-				`${COMMON_COMMENT_BANNER}\n${data}`,
-			);
-		}
+		await Bun.write(outputPath, `${COMMON_COMMENT_BANNER}\n${result.css}`);
 	}
 }
 
@@ -152,13 +139,14 @@ export function compileSCSS({
 				for (const path of paths) {
 					promises.push(compileSCSSFile(outDir, path, env, isDev));
 				}
-			} else
+			} else {
 				for await (const entry of walk(SCSS_ENTRYPOINT)) {
 					if (!entry.stats.isFile()) continue;
 					promises.push(compileSCSSFile(outDir, entry.path, env, isDev));
 				}
+			}
 
-			return Promise.all(promises);
+			await Promise.all(promises);
 		})(),
 		"SASS compilation",
 	);
@@ -223,7 +211,7 @@ export function writeDNRRules({
 
 	return updateLog(
 		Bun.write(
-			`${outDir}/dnr_rules.json`,
+			join(outDir, "dnr_rules.json"),
 			replaceTextVariable(
 				target,
 				JSON.stringify([
@@ -318,7 +306,7 @@ export function writeManifest({
 		(async () => {
 			const manifest = _manifest ?? (await getManifest());
 			await Bun.write(
-				`${outDir}/manifest.json`,
+				join(outDir, "manifest.json"),
 				replaceTextVariable(
 					target,
 					JSON.stringify(
@@ -362,11 +350,7 @@ export function buildJS({
 			const manifest = _manifest ?? (await getManifest());
 			const pagesPlugin = buildPagesPlugin(
 				[
-					{
-						dir: "src/ts/pages/main",
-						index: "pages",
-						importName: "main",
-					},
+					{ dir: "src/ts/pages/main", index: "pages", importName: "main" },
 					{
 						dir: "src/ts/pages/background-listeners",
 						index: "messageListeners",
@@ -382,21 +366,16 @@ export function buildJS({
 						index: "messageListeners",
 						importName: "main-listeners",
 					},
-					{
-						dir: "src/ts/pages/inject",
-						index: "pages",
-						importName: "inject",
-					},
+					{ dir: "src/ts/pages/inject", index: "pages", importName: "inject" },
 				],
 				isDev,
 			);
-			const svgr = svgrPlugin({
-				svgProps: {
-					fill: "currentColor",
-				},
-			});
+			const svgr = svgrPlugin({ svgProps: { fill: "currentColor" } });
+
+			const entrypoints = paths ?? (await readdir(TS_ENTRYPOINT));
+
 			await Promise.all(
-				(paths ?? (await readdir(TS_ENTRYPOINT))).map(async (name) =>
+				entrypoints.map((name) =>
 					Bun.build(
 						getBuildOptions({
 							banner: COMMON_COMMENT_BANNER,
@@ -406,7 +385,7 @@ export function buildJS({
 							devServers,
 							manifest,
 							outDir,
-							entrypoint: `${TS_ENTRYPOINT}/${name}`,
+							entrypoint: join(TS_ENTRYPOINT, name),
 							// @ts-expect-error: Fine, compatible interface
 							plugins: [pagesPlugin, svgr],
 						}),
@@ -414,11 +393,9 @@ export function buildJS({
 				),
 			);
 
-			// For some reason, SOME thing is adding .DS_Store and zip -x is not working correctly ??? What the FRICK bun
-			for await (const file of walk(`${outDir}/js`)) {
+			for await (const file of walk(join(outDir, "js"))) {
 				if (!file.stats.isFile()) continue;
-
-				if (file.path.endsWith(".DS_Store")) {
+				if (basename(file.path) === ".DS_Store") {
 					await remove(file.path);
 				}
 			}
@@ -439,17 +416,17 @@ export function copyAssets({ outDir, isDev, manifest: _manifest }: CopyAssetsPro
 			const manifest = _manifest ?? (await getManifest());
 
 			if (await exists("LICENSE")) {
-				await copy("LICENSE", `${outDir}/LICENSE`);
+				await copy("LICENSE", join(outDir, "LICENSE"));
 			}
 
 			if (await exists("./src/img")) {
 				await Promise.all([
-					copy("./src/img/", `${outDir}/img/`),
-					copy("./src/fonts", `${outDir}/fonts/`),
+					copy("./src/img/", join(outDir, "img/")),
+					copy("./src/fonts", join(outDir, "fonts/")),
 				]);
 
 				const files: walk.Item[] = [];
-				for await (const file of walk(`${outDir}/img/`)) {
+				for await (const file of walk(join(outDir, "img/"))) {
 					if (!file.stats.isFile()) continue;
 					files.push(file);
 				}
@@ -461,16 +438,14 @@ export function copyAssets({ outDir, isDev, manifest: _manifest }: CopyAssetsPro
 					if (ext) {
 						if (isDev || manifest.beta) {
 							const distFile = file.path.replace(
-								extname(file.path),
-								`${isDev ? "_dev" : "_beta"}${extname(file.path)}`,
+								ext,
+								`${isDev ? "_dev" : "_beta"}${ext}`,
 							);
-
 							if (await exists(distFile)) {
 								await remove(file.path);
 								await move(distFile, file.path);
 							}
 						}
-
 						if (
 							basename(file.path).includes("_dev") ||
 							basename(file.path).includes("_beta")
@@ -485,9 +460,7 @@ export function copyAssets({ outDir, isDev, manifest: _manifest }: CopyAssetsPro
 	);
 }
 
-export type WriteI18nProps = {
-	outDir: string;
-};
+export type WriteI18nProps = { outDir: string };
 
 export function writeI18n({ outDir }: WriteI18nProps) {
 	return updateLog(
@@ -501,12 +474,13 @@ export function writeI18n({ outDir }: WriteI18nProps) {
 
 				const data = parseJSONC(await Bun.file(file.path).text()) as I18nFile;
 
-				const filePath = `${outDir}/_locales/${file.path
-					.split("src/i18n/locales/")[1]
-					.replaceAll("-", "_")}`;
+				const filePath = join(
+					outDir,
+					"_locales",
+					file.path.split("src/i18n/locales/")[1].replace(/-/g, "_"),
+				);
 
-				await ensureDir(parsePath(filePath).dir).catch(() => {});
-
+				await ensureDir(parsePath(filePath).dir);
 				await Bun.write(filePath, JSON.stringify(handleI18NNamespace(data, ["manifest"])));
 			}
 			await writeTypes;
@@ -531,7 +505,7 @@ export function writeHTMLFiles({ outDir, target, isDev }: WriteHTMLFilesProps) {
 				const data = replaceTextVariable(target, await Bun.file(file.path).text(), isDev);
 
 				await Bun.write(
-					`${outDir}/html/${parsedPath.name}${parsedPath.ext}`,
+					join(outDir, "html", `${parsedPath.name}${parsedPath.ext}`),
 					`${HTML_COMMENT_BANNER}\n${
 						isDev
 							? data
@@ -549,7 +523,8 @@ export function writeHTMLFiles({ outDir, target, isDev }: WriteHTMLFilesProps) {
 	);
 }
 
-export function convertToSafariExtension(outDir: string) {
+export async function convertToSafariExtension(outDir: string) {
+	if (process.platform !== "darwin") return;
 	return updateLog(
 		Bun.$`xcrun safari-web-extension-converter --copy-resources --project-location ./dist-safari/ --macos-only --no-open --app-name RoSeal --no-prompt --bundle-identifier com.roseal.roseal ${outDir}`.then(
 			async () => {
@@ -587,22 +562,13 @@ export async function build({
 		)}`,
 	);
 
-	// Empties dist
 	await emptyDir(outDir);
-	await mkdir(`${outDir}/js/`);
+	await mkdir(join(outDir, "js"));
 
 	const manifest = await getManifest();
 
-	// Tasks such as esbuild and moving directories
 	const tasks: (Promise<unknown> | unknown)[] = [
-		buildJS({
-			outDir,
-			target,
-			targetBase,
-			manifest,
-			isDev,
-			devServers,
-		}),
+		buildJS({ outDir, target, targetBase, manifest, isDev, devServers }),
 		writeManifest({ target, outDir, targetBase, manifest, isDev, devServers }),
 		copyAssets({ outDir, isDev }),
 		writeDNRRules({
@@ -615,19 +581,8 @@ export async function build({
 			cspPolicy,
 		}),
 		writeI18n({ outDir }),
-		writeHTMLFiles({
-			outDir,
-			target,
-			isDev,
-		}),
-		compileSCSS({
-			outDir,
-			target,
-			targetBase,
-			manifest,
-			isDev,
-			devServers,
-		}),
+		writeHTMLFiles({ outDir, target, isDev }),
+		compileSCSS({ outDir, target, targetBase, manifest, isDev, devServers }),
 	];
 
 	const result = await Promise.allSettled(tasks);
@@ -641,24 +596,17 @@ export async function build({
 }
 
 export function getBuildArgs() {
-	const args = parseArgs({
+	const { values } = parseArgs({
 		args: Bun.argv,
 		options: {
-			target: {
-				type: "string",
-				default: "chrome",
-			},
-			release: {
-				type: "boolean",
-				default: false,
-			},
+			target: { type: "string", default: "chrome" },
+			release: { type: "boolean", default: false },
 		},
-		strict: true,
 		allowPositionals: true,
-	}).values;
-	const isDev = args.release !== true;
+	});
 
-	const target = args.target?.toLowerCase() as Target;
+	const isDev = values.release !== true;
+	const target = values.target?.toLowerCase() as Target;
 
 	if (!TARGETS.includes(target)) {
 		throw `--target must be one of: ${TARGETS.join(", ")}`;
