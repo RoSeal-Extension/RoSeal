@@ -32,7 +32,6 @@ import {
 	getI18nTypesFile,
 	getTargetBaseFromTarget,
 	handleI18NNamespace,
-	normalizePath,
 	transformManifest,
 	updateLog,
 } from "./build/utils.ts";
@@ -106,7 +105,7 @@ export async function compileSCSSFile(
 			await Bun.write(
 				join(
 					file.dir.replace(
-						normalizePath(SCSS_ENTRYPOINT.substring(2, SCSS_ENTRYPOINT.length - 1)),
+						SCSS_ENTRYPOINT.substring(2, SCSS_ENTRYPOINT.length - 1),
 						`${outDir}/css/`,
 					),
 					`${file.name}.css`,
