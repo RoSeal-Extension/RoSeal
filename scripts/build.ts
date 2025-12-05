@@ -532,7 +532,7 @@ export function writeHTMLFiles({ outDir, target, isDev }: WriteHTMLFilesProps) {
 				const data = replaceTextVariable(target, await Bun.file(file.path).text(), isDev);
 
 				await Bun.write(
-					`${outDir}/html/${parsedPath.name}${parsedPath.ext}`,
+					`${outDir}/html/${normalizePath(parsedPath.name)}${parsedPath.ext}`,
 					`${HTML_COMMENT_BANNER}\n${
 						isDev
 							? data
