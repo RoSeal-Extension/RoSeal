@@ -86,8 +86,10 @@ if (String(Object.defineProperty).includes("[native code]")) {
 			const oldDescriptor = Object.getOwnPropertyDescriptor(o, p);
 			const newAttributes: typeof attributes = {};
 
+			const shouldRespectOld = p !== "onClick" && p !== "onClickCapture";
+
 			for (const [key, fn] of Object.entries(attributes)) {
-				if (typeof fn === "function") {
+				if (typeof fn === "function" && shouldRespectOld) {
 					const oldFn = oldDescriptor?.[key as keyof PropertyDescriptor];
 					if (oldFn && typeof oldFn === "function") {
 						newAttributes[key as keyof typeof attributes] = function (
