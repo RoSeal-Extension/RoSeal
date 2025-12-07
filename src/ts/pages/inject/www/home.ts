@@ -317,10 +317,47 @@ export default {
 					);
 					// Due to an issue with live updating from Carousel to SortlessGrid,
 					// we need to force "refresh" by removing SortlessGrid and then re-adding
-					updateState({
-						...currentState.current!,
-						sorts: sorts.filter((sort) => sort.treatmentType !== "SortlessGrid"),
-					});
+					let shouldDoubleUpdate = false;
+
+					if (currentState.current?.sorts) {
+						for (const sort of sorts) {
+							for (const sort2 of currentState.current.sorts) {
+								if (
+									sort2.topicId === sort.topicId &&
+									sort2.treatmentType === "SortlessGrid" &&
+									sort.treatmentType !== "SortlessGrid"
+								) {
+									shouldDoubleUpdate = true;
+									break;
+								}
+							}
+
+							if (shouldDoubleUpdate) break;
+						}
+
+						if (!shouldDoubleUpdate)
+							for (const sort of currentState.current.sorts) {
+								for (const sort2 of sorts) {
+									if (
+										sort2.topicId === sort.topicId &&
+										sort2.treatmentType === "SortlessGrid" &&
+										sort.treatmentType !== "SortlessGrid"
+									) {
+										shouldDoubleUpdate = true;
+										break;
+									}
+								}
+
+								if (shouldDoubleUpdate) break;
+							}
+					}
+
+					if (shouldDoubleUpdate) {
+						updateState({
+							...currentState.current!,
+							sorts: sorts.filter((sort) => sort.treatmentType !== "SortlessGrid"),
+						});
+					}
 					updateState({
 						...currentState.current!,
 						sorts,
@@ -407,13 +444,13 @@ export default {
 						}
 					},
 					setState: ({ value, publicSetState }) => {
-						sendMessage("home.sortsUpdated", value.current.sorts);
 						currentState = value;
 						updateState = publicSetState;
 
 						if (!internalState) {
 							internalState = value.current;
 						}
+
 						const data = currentLayout
 							? {
 									...value.current,
@@ -424,6 +461,10 @@ export default {
 									),
 								}
 							: value.current;
+
+						queueMicrotask(() => {
+							sendMessage("home.sortsUpdated", value.current.sorts);
+						});
 
 						return data;
 					},
