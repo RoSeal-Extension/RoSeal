@@ -223,9 +223,15 @@ export function getRobloxRoutingDataSync(el?: HTMLDivElement): RobloxRoutingData
 		document.querySelector<HTMLDivElement>(ROBLOX_ROUTING_DATA_SELECTOR)?.dataset;
 	if (!dataset) return;
 
-	const pathToComponent = JSON.parse(dataset.pathtocomponent ?? "{}");
-	const pathRegexToComponent = JSON.parse(dataset.pathregextocomponent ?? "{}");
-	const componentData = JSON.parse(dataset.staticcomponentdata ?? "{}");
+	const pathToComponent = JSON.parse(dataset.pathtocomponent ?? "{}") as Record<string, string>;
+	const pathRegexToComponent = JSON.parse(dataset.pathregextocomponent ?? "{}") as Record<
+		string,
+		string
+	>;
+	const componentData = JSON.parse(dataset.staticcomponentdata ?? "{}") as Record<
+		string,
+		RobloxRoutingDataStaticComponent[]
+	>;
 
 	return {
 		pathToComponent,

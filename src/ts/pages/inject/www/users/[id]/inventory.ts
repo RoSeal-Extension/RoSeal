@@ -10,6 +10,7 @@ import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type {
 	ListUserInventoryAssetsDetailedResponse,
 	ListUserInventoryCategoriesResponse,
+	ListUserInventoryPlacesResponse,
 	ListUserPrivateServersResponse,
 } from "src/ts/helpers/requests/services/inventory";
 import {
@@ -524,13 +525,14 @@ export default {
 					}
 
 					const userIdStr = match[1];
-					const data = await res.clone().json();
+					const data = (await res.clone().json()) as ListUserInventoryPlacesResponse;
 
 					for (let i = data.data.length - 1; i >= 0; i--) {
 						const item = data.data[i];
 						if (
 							!item.priceInRobux ||
-							(item.creator.type === 1 && item.creator.id.toString() === userIdStr)
+							(item.creator.type === "User" &&
+								item.creator.id.toString() === userIdStr)
 						) {
 							data.data.splice(i, 1);
 						}
@@ -557,11 +559,11 @@ export default {
 
 					res.clone()
 						.json()
-						.then((data: ListUserInventoryAssetsDetailedResponse) => {
+						.then((data) => {
 							sendMessage("user.inventory.addAssets", {
 								userId,
 								assetTypeId,
-								items: data.data,
+								items: (data as ListUserInventoryAssetsDetailedResponse).data,
 							});
 						});
 				}
