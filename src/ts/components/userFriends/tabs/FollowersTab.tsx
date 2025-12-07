@@ -36,28 +36,30 @@ export default function FollowersTab({ userId, isMyProfile }: FriendsTabProps) {
 		pageNumber,
 		maxPageNumber,
 		hasAnyItems,
-		setPage: setPageNumber,
+		setPageNumber,
 		reset,
-	} = usePages<UserFriendFollowerDetail, UserFriendFollowerDetail, string>({
+		removeItem,
+	} = usePages<UserFriendFollowerDetail, string>({
 		paging: {
 			method: "pagination",
 			itemsPerPage: pageSize || 18,
 		},
-		fetchPage: (cursor) =>
+		getNextPage: (pageData) =>
 			listUserFollowers({
 				userId,
 				limit: 100,
-				cursor,
+				cursor: pageData.nextCursor,
 				sortOrder,
 			}).then((data) => {
 				return {
+					...pageData,
 					items: data.data,
-					nextCursor: data.nextPageCursor ?? undefined,
-					hasMore: data.nextPageCursor !== null,
+					nextCursor: data.nextPageCursor || undefined,
+					hasNextPage: data.nextPageCursor !== null,
 				};
 			}),
 		dependencies: {
-			resetDeps: [userId, sortOrder],
+			reset: [userId, sortOrder],
 		},
 	});
 
@@ -100,7 +102,7 @@ export default function FollowersTab({ userId, isMyProfile }: FriendsTabProps) {
 							key={item.id}
 							currentTab="followers"
 							removeCard={() => {
-								reset();
+								removeItem(item);
 							}}
 						/>
 					))}

@@ -23,7 +23,7 @@ import FriendsPageTitle from "../PageTitle";
 
 export type TrustedFriendsTabProps = {
 	userId: number;
-	onlineFriends?: readonly UserPresence[] | null;
+	onlineFriends?: UserPresence[] | null;
 };
 
 export default function TrustedFriendsTab({ userId, onlineFriends }: TrustedFriendsTabProps) {
@@ -40,30 +40,34 @@ export default function TrustedFriendsTab({ userId, onlineFriends }: TrustedFrie
 		pageNumber,
 		maxPageNumber,
 		hasAnyItems,
-		setPage: setPageNumber,
+		setPageNumber,
 		reset,
-	} = usePages<SkinnyUserFriend, SkinnyUserFriend, string>({
+		removeItem,
+	} = usePages<SkinnyUserFriend, string>({
 		paging: {
 			method: "pagination",
 			itemsPerPage: pageSize || 18,
 		},
-		fetchPage: (cursor) => {
+		items: {
+			shouldAlwaysUpdate: true,
+		},
+		getNextPage: (pageData) => {
 			return listUserFriends({
 				userId,
 				limit: 50,
-				cursor,
+				cursor: pageData.nextCursor,
 			}).then(async (data) => {
 				return {
+					...pageData,
 					items: await multigetUsersAreTrustedFriends({
 						targetUserId: userId,
 						userIds: data.pageItems.map((item) => item.id),
 					}),
-					nextCursor: data.nextCursor ?? undefined,
-					hasMore: !!data.nextCursor,
+					nextCursor: data.nextCursor || undefined,
+					hasNextPage: !!data.nextCursor,
 				};
 			});
 		},
-		streamResults: true,
 	});
 
 	const [friendsSince, setFriendsSince] = useState<Record<number, Date>>({});
@@ -162,7 +166,7 @@ export default function TrustedFriendsTab({ userId, onlineFriends }: TrustedFrie
 										: undefined
 								}
 								removeCard={() => {
-									reset();
+									removeItem(friend);
 								}}
 								friendPresence={onlineFriend}
 								setFriendSince={(data) => {

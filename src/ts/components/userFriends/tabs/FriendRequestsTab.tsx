@@ -71,35 +71,27 @@ export type FriendRequestsFilters = {
 	sortBy: (typeof FRIEND_REQUESTS_FILTER_SORTS)[number];
 };
 
-function checkValue(value: number | undefined, min?: number, max?: number): boolean;
-function checkValue(value: boolean | undefined, min?: boolean): boolean;
-function checkValue<T>(value: readonly T[] | undefined, min?: readonly T[] | undefined): boolean;
-function checkValue(
-	value: number | boolean | readonly unknown[] | undefined,
-	min?: number | boolean | readonly unknown[] | undefined,
-	max?: number | undefined,
-): boolean {
+function checkValue<T>(value: T, min?: NoInfer<T>, max?: NoInfer<T>) {
 	if (value === undefined && min === undefined && max === undefined) {
 		return true;
 	}
 
 	if (typeof value === "number") {
-		const minNum = typeof min === "number" ? min : undefined;
-		const maxNum = typeof max === "number" ? max : undefined;
 		return (
-			(minNum === undefined || value >= minNum) && (maxNum === undefined || value <= maxNum)
+			(min === undefined || value >= (min as number)) &&
+			(max === undefined || value <= (max as number))
 		);
 	}
 
 	if (typeof value === "boolean") {
-		const minBool = typeof min === "boolean" ? min : undefined;
-		return minBool === undefined || minBool === value;
+		return min === undefined || min === value;
 	}
 
 	if (Array.isArray(value)) {
-		const minArr = Array.isArray(min) ? min : undefined;
-		if (!minArr || minArr.length === 0) return true;
-		return minArr.every((item) => value.includes(item));
+		return (
+			!(min as unknown[] | undefined)?.length ||
+			(min as unknown[]).every((item) => value.includes(item))
+		);
 	}
 
 	return false;
@@ -183,16 +175,19 @@ export default function FriendRequestsTab({
 		allItems,
 		fetchedAllPages,
 		shouldBeDisabled,
-		loadAll,
-		setPage: setPageNumber,
+		loadAllItems,
+		setPageNumber,
 		reset,
-	} = usePages<UserFriendRequest, UserFriendRequestWithComponents, string>({
+		removeItem,
+	} = usePages<UserFriendRequestWithComponents, string>({
 		paging: {
 			method: "pagination",
 			itemsPerPage: pageSize || 18,
+			immediatelyLoadAllData: filters.sortBy !== "sentDate",
 		},
-		pipeline: {
-			transform: (request) =>
+		items: {
+			shouldAlwaysUpdate: true,
+			transformItem: (request) =>
 				getProfileComponentsData({
 					profileType: "User",
 					profileId: request.id.toString(),
@@ -242,7 +237,7 @@ export default function FriendRequestsTab({
 						},
 					};
 				}),
-			sort:
+			sortItems:
 				advancedFilteringEnabled && filters.sortBy !== "sentDate"
 					? (arr) =>
 							crossSort(arr, (a, b) => {
@@ -306,7 +301,7 @@ export default function FriendRequestsTab({
 								}
 							})
 					: undefined,
-			filter: advancedFilteringEnabled
+			filterItem: advancedFilteringEnabled
 				? (item) => {
 						if (!item.components && shouldRequestProfilePlatform) {
 							return false;
@@ -355,35 +350,35 @@ export default function FriendRequestsTab({
 					}
 				: undefined,
 		},
-		fetchPage: (cursor) =>
+		getNextPage: (pageData) =>
 			listMyFriendRequests({
 				limit: 100,
-				cursor,
+				cursor: pageData.nextCursor,
 				sortOrder,
 			}).then((data) => {
 				return {
+					...pageData,
 					items: data.data,
-					nextCursor: data.nextPageCursor ?? undefined,
-					hasMore: data.nextPageCursor !== null,
+					nextCursor: data.nextPageCursor || undefined,
+					hasNextPage: data.nextPageCursor !== null,
 				};
 			}),
 		dependencies: {
-			resetDeps: [userId, sortOrder],
-			processingDeps: [
+			reset: [userId, sortOrder],
+			refreshToFirstPage: [
 				advancedFilteringEnabled,
 				filters,
 				hasSetFilters,
 				shouldRequestProfilePlatform,
 			],
 		},
-		streamResults: true,
 	});
 
 	useEffect(() => {
 		if (filters.sortBy === "sentDate") return;
 
-		loadAll();
-	}, [filters.sortBy, loadAll]);
+		loadAllItems();
+	}, [filters.sortBy]);
 
 	const [universeData, setUniverseData] = useState<Record<number, SourceUniverseData>>({});
 	const friendRequestsCount = fetchedAllPages
@@ -522,7 +517,7 @@ export default function FriendRequestsTab({
 							currentTab="friend-requests"
 							removeCard={() => {
 								refreshNewFriendRequestsCount();
-								reset();
+								removeItem(item);
 							}}
 							sourceUniverse={
 								item.friendRequest?.sourceUniverseId

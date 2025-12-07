@@ -27,10 +27,6 @@ import {
 } from "src/ts/helpers/processors/thumbnailProcessor";
 import type { SortOrder } from "src/ts/helpers/requests/services/badges";
 import {
-	listUserPrivateServers,
-	type PrivateServerInventoryItem,
-} from "src/ts/helpers/requests/services/inventory";
-import {
 	getPrivateServerData,
 	getServerInstanceData,
 	getUserServerData,
@@ -40,14 +36,16 @@ import {
 	listPlacePrivateServers,
 	type PlacePrivateServer,
 } from "src/ts/helpers/requests/services/privateServers";
-import { sendJoinGameInstance, sendJoinMultiplayerGame } from "src/ts/utils/gameLauncher";
+import {
+	type PrivateServerInventoryItem,
+	listUserPrivateServers,
+} from "src/ts/helpers/requests/services/inventory";
 import { type MinimalServerJoinData, tryGetServerJoinData } from "src/ts/utils/joinData";
 import { getRobloxPrivateServerInfoLink } from "src/ts/utils/links";
 import { parseResizeThumbnailUrl } from "src/ts/utils/thumbnails";
 import CountryFlag from "../../core/CountryFlag";
 import ServerGlobeMap from "./map/ServerMap";
 import CreatePrivateServerModal from "./privateServers/CreatePrivateServerModal";
-import DeactivatePrivateServersModal from "./privateServers/DeactivatePrivateServersModal";
 import ServersPromptGeolocation from "./PromptGeolocation";
 import Server, { type ServerListType } from "./Server";
 import {
@@ -56,6 +54,8 @@ import {
 	useServersTabContext,
 } from "./ServersTabProvider";
 import { getLocalizedRegionName } from "./utils";
+import DeactivatePrivateServersModal from "./privateServers/DeactivatePrivateServersModal";
+import { sendJoinGameInstance, sendJoinMultiplayerGame } from "src/ts/utils/gameLauncher";
 
 export type ServerWithJoinData = {
 	joinData?: MinimalServerJoinData;
@@ -134,12 +134,14 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 		pageNumber,
 		shouldBeDisabled,
 		fetchedAllPages,
-		loadAll,
+		loadAllItems,
 		reset,
-		setPage: setPageNumber,
-	} = usePages<ServerWithJoinData, ServerWithJoinData, string>({
-		pipeline: {
-			filter: (item) => {
+		setPageNumber,
+	} = usePages<ServerWithJoinData, string>({
+		disabled: !canViewServers,
+		items: {
+			shouldAlwaysUpdate: true,
+			filterItem: (item) => {
 				if (selectedDataCenter && regionFiltersEnabled) {
 					const dataCenterId = item.joinData?.data?.datacenter.id;
 					if (!dataCenterId || !selectedDataCenter.dataCenterIds.includes(dataCenterId)) {
@@ -166,20 +168,28 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 				? {
 						method: "pagination",
 						itemsPerPage: pageSize,
+						immediatelyLoadAllData: selectedDataCenter !== undefined,
 					}
 				: {
 						method: "loadMore",
 						initialCount: !shouldUseStack ? 10 : type === "public" ? pageSize : 8,
 						incrementCount: !shouldUseStack ? 10 : type === "public" ? pageSize : 8,
+						immediatelyLoadAllData: selectedDataCenter !== undefined,
 					},
 		retry: {
 			count: 10,
 			timeout: 1_500,
 		},
 		dependencies: {
-			processingDeps: [selectedDataCenter, regionFiltersEnabled, excludeUnjoinableServers],
-			fetchDeps: [pageSize, pagingType, shouldUseStack],
-			resetDeps: [
+			refreshToFirstPage: [
+				pageSize,
+				pagingType,
+				excludeUnjoinableServers,
+				selectedDataCenter,
+				regionFiltersEnabled,
+				shouldUseStack,
+			],
+			reset: [
 				universeId,
 				placeId,
 				type,
@@ -188,33 +198,42 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 				tryGetServerInfoEnabled,
 			],
 		},
-		fetchPage: async (cursor, signal) => {
+		getNextPage: async (state) => {
 			const data = await (type === "private"
 				? listPlacePrivateServers({
 						placeId,
 						limit: 100,
-						cursor,
+						cursor: state.nextCursor,
 						sortOrder: "Desc",
 					})
 				: listPlaceServers({
 						placeId,
 						serverType: type === "friends" ? "Friend" : "Public",
 						limit: 100,
-						cursor,
+						cursor: state.nextCursor,
 						sortOrder: sortPlayers,
 						excludeFullGames: excludeFullServers,
 					}));
-
-			// Check if aborted
-			if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
-
 			if ("gameJoinRestricted" in data) {
 				setIsExperienceUnderLoad(data.gameJoinRestricted === true);
 			}
 
 			const servers: MaybePromise<ServerWithJoinData>[] = [];
 
+			// ... remove duplicate servers
 			for (const server of data.data) {
+				if (server.id) {
+					let isDuplicate = false;
+					for (let i = 0; i < state.items.length; i++) {
+						if (state.items[i].id === server.id) {
+							isDuplicate = true;
+							break;
+						}
+					}
+
+					if (isDuplicate) continue;
+				}
+
 				if (
 					tryGetServerInfoEnabled !== false &&
 					server.id &&
@@ -286,13 +305,12 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 			}
 
 			return {
+				...state,
 				items: await Promise.all(servers),
-				nextCursor: data.nextPageCursor ?? undefined,
-				hasMore: data.data.length !== 0 && !!data.nextPageCursor,
+				nextCursor: (data.data.length === 0 && data.nextPageCursor) || undefined,
+				hasNextPage: data.data.length !== 0 && !!data.nextPageCursor,
 			};
 		},
-		streamResults: true,
-		disabled: !canViewServers,
 	});
 
 	const [hasThreeOrMorePlayers, hasFourOrMorePlayers, hasFiveOrMorePlayers] = useMemo(() => {
@@ -334,10 +352,10 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 	const totalServersByUser = useMemo(() => {
 		if (type !== "private" || shouldBeDisabled) return;
 
-		return items.filter(
-			(item) => item.type === "private" && item.owner.id === authenticatedUser?.userId,
+		return (items as PlacePrivateServer[]).filter(
+			(item) => item.owner.id === authenticatedUser?.userId,
 		).length;
-	}, [items, type, shouldBeDisabled, authenticatedUser?.userId]);
+	}, [items, shouldBeDisabled, authenticatedUser?.userId]);
 
 	const dataCentersWithServerCounts = useMemo(() => {
 		if (!dataCenters || type !== "public") return;
@@ -410,7 +428,7 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 				joinAttemptId: crypto.randomUUID(),
 			});
 		} else if (!fetchedAllPages) {
-			loadAll();
+			loadAllItems();
 			return;
 		} else {
 			sendJoinMultiplayerGame({
@@ -726,7 +744,7 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 								className="btn-generic-more-sm region-selector-btn"
 								onClick={() => {
 									setShowServerGlobeMap(true);
-									loadAll();
+									loadAllItems();
 								}}
 								disabled={shouldBeDisabled}
 							>

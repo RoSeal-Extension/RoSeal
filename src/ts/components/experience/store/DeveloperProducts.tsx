@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useEffect, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleLowerCase, localeCompare } from "src/ts/helpers/i18n/intlFormats";
 import {
@@ -10,7 +10,6 @@ import {
 	type PendingDeveloperProductTransaction,
 } from "src/ts/helpers/requests/services/developerProducts";
 import { crossSort } from "src/ts/utils/objects";
-import FiltersContainer from "../../core/filters/FiltersContainer";
 import Icon from "../../core/Icon";
 import Loading from "../../core/Loading";
 import Pagination from "../../core/Pagination";
@@ -20,6 +19,7 @@ import useFeatureValue from "../../hooks/useFeatureValue";
 import usePages from "../../hooks/usePages";
 import usePromise from "../../hooks/usePromise";
 import DeveloperProduct, { type DeveloperProductPropsDetails } from "./DeveloperProduct";
+import FiltersContainer from "../../core/filters/FiltersContainer";
 
 export type DeveloperProductsProps = {
 	universeId: number;
@@ -54,126 +54,127 @@ export default function DeveloperProducts({
 	});
 
 	const [storeFilteringEnabled] = useFeatureValue("experienceStoreFiltering", false);
-	const {
-		items,
-		loading,
-		pageNumber,
-		maxPageNumber,
-		hasAnyItems,
-		error,
-		setPage: setPageNumber,
-		loadAll,
-	} = usePages<DeveloperProductPropsDetails, DeveloperProductPropsDetails, string>({
-		fetchPage: (cursor) => {
-			if (filters.pregameSaleDisabled) {
-				return listUniverseDeveloperProducts({
-					universeId,
-					limit: 400,
-					cursor,
-				}).then((allData) => ({
-					items: allData.developerProducts,
-					nextCursor: allData.nextPageCursor ?? undefined,
-					hasMore: !!allData.nextPageCursor,
-				}));
-			}
-
-			return listStorePageDeveloperProducts({
-				universeId,
-				limit: 400,
-				cursor,
-			}).then((data) =>
-				Promise.all(
-					data.developerProducts.map((item) =>
-						getDeveloperProductById({
-							developerProductId: item.developerProductId,
-						}).then((data) => ({
-							...item,
-							...data,
-						})),
-					),
-				).then((allData) => ({
-					items: allData,
-					nextCursor: data.nextPageCursor ?? undefined,
-					hasMore: !!data.nextPageCursor,
-				})),
-			);
-		},
-		paging: {
-			method: "pagination",
-			itemsPerPage: 50,
-		},
-		pipeline: {
-			filter: (item) => {
-				if (!storeFilteringEnabled) {
-					return true;
+	const { items, loading, pageNumber, maxPageNumber, hasAnyItems, error, setPageNumber } =
+		usePages<DeveloperProductPropsDetails, string>({
+			getNextPage: (state) => {
+				if (filters.pregameSaleDisabled) {
+					return listUniverseDeveloperProducts({
+						universeId,
+						limit: 400,
+						cursor: state.nextCursor,
+					}).then((allData) => ({
+						...state,
+						items: allData.developerProducts,
+						nextCursor: allData.nextPageCursor ?? undefined,
+						hasNextPage: !!allData.nextPageCursor,
+					}));
 				}
 
-				return (
-					(item.isForSale ? filters.includeOnSale : filters.includeOffSale) &&
-					(!filters.keyword ||
-						asLocaleLowerCase(item.displayName).includes(
-							asLocaleLowerCase(filters.keyword),
-						))
+				return listStorePageDeveloperProducts({
+					universeId,
+					limit: 400,
+					cursor: state.nextCursor,
+				}).then((data) =>
+					Promise.all(
+						data.developerProducts.map((item) =>
+							getDeveloperProductById({
+								developerProductId: item.developerProductId,
+							}).then((data) => ({
+								...item,
+								...data,
+							})),
+						),
+					).then((allData) => ({
+						...state,
+						items: allData,
+						nextCursor: data.nextPageCursor ?? undefined,
+						hasNextPage: !!data.nextPageCursor,
+					})),
 				);
 			},
-			sort: (items) =>
-				crossSort(items, (a, b) => {
-					const direction = filters.sortDirection === "descending" ? -1 : 1;
-					switch (filters.sortBy) {
-						case "created": {
-							return (new Date(a.created) > new Date(b.created) ? 1 : -1) * direction;
-						}
-						case "updated": {
-							return (new Date(a.updated) > new Date(b.updated) ? 1 : -1) * direction;
-						}
-						case "price": {
-							return (
-								((a.priceInRobux || 0) > (b.priceInRobux || 0) ? 1 : -1) * direction
-							);
-						}
-						case "name": {
-							return localeCompare(a.displayName, b.displayName) * direction;
-						}
-						case "pendingTransactions": {
-							if (!pendingTransactions) {
-								return 0;
+			paging: {
+				method: "pagination",
+				immediatelyLoadAllData: true,
+				itemsPerPage: 50,
+			},
+			items: {
+				filterItem: (item) => {
+					if (!storeFilteringEnabled) {
+						return true;
+					}
+
+					return (
+						(item.isForSale ? filters.includeOnSale : filters.includeOffSale) &&
+						(!filters.keyword ||
+							asLocaleLowerCase(item.displayName).includes(
+								asLocaleLowerCase(filters.keyword),
+							))
+					);
+				},
+				sortItems: (items) =>
+					crossSort(items, (a, b) => {
+						const direction = filters.sortDirection === "descending" ? -1 : 1;
+						switch (filters.sortBy) {
+							case "created": {
+								return (
+									(new Date(a.created) > new Date(b.created) ? 1 : -1) * direction
+								);
 							}
-							const aTransactions: PendingDeveloperProductTransaction[] = [];
-							const bTransactions: PendingDeveloperProductTransaction[] = [];
+							case "updated": {
+								return (
+									(new Date(a.updated) > new Date(b.updated) ? 1 : -1) * direction
+								);
+							}
+							case "price": {
+								return (
+									((a.priceInRobux || 0) > (b.priceInRobux || 0) ? 1 : -1) *
+									direction
+								);
+							}
+							case "name": {
+								return localeCompare(a.displayName, b.displayName) * direction;
+							}
+							case "pendingTransactions": {
+								if (!pendingTransactions) {
+									return 0;
+								}
+								const aTransactions: PendingDeveloperProductTransaction[] = [];
+								const bTransactions: PendingDeveloperProductTransaction[] = [];
 
-							for (const transaction of pendingTransactions) {
-								for (const arg of transaction.actionArgs) {
-									if (arg.key === "productId") {
-										if (arg.value === a.productId?.toString()) {
-											aTransactions.push(transaction);
-										} else if (arg.value === b.productId?.toString()) {
-											bTransactions.push(transaction);
+								for (const transaction of pendingTransactions) {
+									for (const arg of transaction.actionArgs) {
+										if (arg.key === "productId") {
+											if (arg.value === a.productId?.toString()) {
+												aTransactions.push(transaction);
+											} else if (arg.value === b.productId?.toString()) {
+												bTransactions.push(transaction);
+											}
+
+											break;
 										}
-
-										break;
 									}
 								}
-							}
 
-							return (
-								(aTransactions.length > bTransactions.length ? 1 : -1) * direction
-							);
+								return (
+									(aTransactions.length > bTransactions.length ? 1 : -1) *
+									direction
+								);
+							}
 						}
-					}
-				}),
-		},
-		dependencies: {
-			processingDeps: [
-				filters.includeOffSale,
-				filters.includeOnSale,
-				filters.keyword,
-				filters.sortBy,
-				filters.sortDirection,
-				storeFilteringEnabled,
-			],
-			resetDeps: [universeId, filters.pregameSaleDisabled],
-		},
-	});
+					}),
+			},
+			dependencies: {
+				refreshPage: [
+					filters.includeOffSale,
+					filters.includeOnSale,
+					filters.keyword,
+					filters.sortBy,
+					filters.sortDirection,
+					storeFilteringEnabled,
+				],
+				reset: [universeId, filters.pregameSaleDisabled],
+			},
+		});
 
 	const [pendingTransactions] = usePromise(() => {
 		if (!authenticatedUser) {
@@ -187,11 +188,6 @@ export default function DeveloperProducts({
 			status: "pending",
 		});
 	}, [authenticatedUser?.userId, placeId]);
-
-	// Load all items on mount (replaces immediatelyLoadAllData)
-	useEffect(() => {
-		loadAll();
-	}, [loadAll]);
 
 	return (
 		<div id="roseal-developer-products" className="container-list game-dev-store">

@@ -18,7 +18,6 @@ import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
 import { crossSort } from "src/ts/utils/objects";
 import Button from "../../core/Button";
 import CheckboxField from "../../core/CheckboxField";
-import FiltersContainer from "../../core/filters/FiltersContainer";
 import Icon from "../../core/Icon";
 import AgentMentionContainer from "../../core/items/AgentMentionContainer";
 import Loading from "../../core/Loading";
@@ -29,6 +28,7 @@ import useFeatureValue from "../../hooks/useFeatureValue";
 import usePages from "../../hooks/usePages";
 import BadgesGrid from "./Grid";
 import BadgesList from "./List";
+import FiltersContainer from "../../core/filters/FiltersContainer";
 
 export type Filters = {
 	showActive: boolean;
@@ -220,23 +220,24 @@ export default function BadgesTabContent({ universeId }: BadgesTabContentProps) 
 
 	const [parsingHash, setParsingHash] = useState(false);
 
-	const { items, allItems, loading, error } = usePages<BadgeDetails, BadgeDetails, string>({
+	const { items, allItems, loading, error } = usePages<BadgeDetails, string>({
 		paging: {
-			method: "infinite",
+			method: "fullList",
 		},
-		fetchPage: (cursor) =>
+		getNextPage: (state) =>
 			listUniverseBadges({
 				universeId,
 				limit: 100,
 				sortBy: "Rank",
-				cursor,
+				cursor: state.nextCursor,
 			}).then((data) => ({
+				...state,
 				items: data.data,
-				nextCursor: data.nextPageCursor ?? undefined,
-				hasMore: !!data.nextPageCursor,
+				nextCursor: data.nextPageCursor,
+				hasNextPage: !!data.nextPageCursor,
 			})),
-		pipeline: {
-			filter: (item) => {
+		items: {
+			filterItem: (item) => {
 				if (filtersSortsEnabled) {
 					const obtained =
 						user1AwardedDates?.some((date) => date.badgeId === item.id) ||
@@ -250,7 +251,7 @@ export default function BadgesTabContent({ universeId }: BadgesTabContentProps) 
 
 				return item.enabled;
 			},
-			sort: filtersSortsEnabled
+			sortItems: filtersSortsEnabled
 				? (items) => {
 						const results = crossSort([...items], (a, b) => {
 							let aCompare: string | number | Date | undefined;
@@ -385,8 +386,8 @@ export default function BadgesTabContent({ universeId }: BadgesTabContentProps) 
 				: undefined,
 		},
 		dependencies: {
-			processingDeps: [filtersSortsEnabled, filters, sorts, user1AwardedDates],
-			resetDeps: [universeId],
+			refreshPage: [filtersSortsEnabled, filters, sorts, user1AwardedDates],
+			reset: [universeId],
 		},
 	});
 

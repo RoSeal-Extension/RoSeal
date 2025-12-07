@@ -1,21 +1,21 @@
-import { RESTError } from "@roseal/http-client/src";
-import classNames from "classnames";
-import { useCallback, useState } from "preact/hooks";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import {
-	listUserPrivateServers,
-	type PrivateServerInventoryItem,
-} from "src/ts/helpers/requests/services/inventory";
 import {
 	updatePrivateServer,
 	updatePrivateServerSubscription,
 } from "src/ts/helpers/requests/services/privateServers";
-import Loading from "../core/Loading";
+import {
+	type PrivateServerInventoryItem,
+	listUserPrivateServers,
+} from "src/ts/helpers/requests/services/inventory";
+import usePages from "../hooks/usePages";
 import Pagination from "../core/Pagination";
+import classNames from "classnames";
+import PrivateServerSubscriptionCard from "./PrivateServerSubscription";
+import { useCallback, useState } from "preact/hooks";
 import PillToggle from "../core/PillToggle";
 import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
-import usePages from "../hooks/usePages";
-import PrivateServerSubscriptionCard from "./PrivateServerSubscription";
+import Loading from "../core/Loading";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { RESTError } from "src/ts/helpers/requests/main";
 
 const pillItems = [
 	{
@@ -29,48 +29,36 @@ const pillItems = [
 ];
 
 export default function BetterPrivateServerSubscriptions() {
-	const [activeSubscriptionOverrides, setActiveSubscriptionOverrides] = useState<
+	const [activeSubscriptionOverrides, setActiveSubscriptionOverides] = useState<
 		Record<number, boolean>
 	>({});
 	const [isFreeView, setIsFreeView] = useState(false);
-	const {
-		items,
-		hasAnyItems,
-		loading,
-		error,
-		pageNumber,
-		maxPageNumber,
-		setPage: setPageNumber,
-	} = usePages<PrivateServerInventoryItem, PrivateServerInventoryItem, string>({
-		paging: {
-			method: "pagination",
-			itemsPerPage: 10,
-		},
-		pipeline: {
-			filter: (item) => isFreeView === (item.priceInRobux === null),
-		},
-		fetchPage: (cursor) =>
-			listUserPrivateServers({
-				itemsPerPage: 50,
-				privateServersTab: "MyPrivateServers",
-				cursor,
-			}).then((data) => ({
-				items: data.data.filter((item) => item.active),
-				nextCursor: data.nextPageCursor ?? undefined,
-				hasMore: !!data.nextPageCursor,
-			})),
-		dependencies: {
-			processingDeps: [isFreeView],
-		},
-	});
+	const { items, hasAnyItems, loading, error, pageNumber, maxPageNumber, setPageNumber } =
+		usePages<PrivateServerInventoryItem, string>({
+			paging: {
+				method: "pagination",
+				itemsPerPage: 10,
+			},
+			items: {
+				filterItem: (item) => isFreeView === (item.priceInRobux === null),
+			},
+			getNextPage: (state) =>
+				listUserPrivateServers({
+					itemsPerPage: 50,
+					privateServersTab: "MyPrivateServers",
+					cursor: state.nextCursor,
+				}).then((data) => ({
+					...state,
+					items: data.data.filter((item) => item.active),
+					nextCursor: data.nextPageCursor ?? undefined,
+					hasNextPage: !!data.nextPageCursor,
+				})),
+			dependencies: {
+				refreshToFirstPage: [isFreeView],
+			},
+		});
 
 	const onPillToggle = useCallback((value: string) => setIsFreeView(value === "free"), []);
-	const onCatch = useCallback((error: unknown) => {
-		warning(
-			(error instanceof RESTError && error.errors?.[0]?.userFacingMessage) ||
-				getMessage("robloxSettings.privateServerSubscriptions.systemFeedback.error"),
-		);
-	}, []);
 
 	return (
 		<div id="private-server-subscriptions">
@@ -99,44 +87,48 @@ export default function BetterPrivateServerSubscriptions() {
 						"roseal-disabled": loading,
 					})}
 				>
-					{items.map((item) => {
-						return (
-							<PrivateServerSubscriptionCard
-								key={item.privateServerId}
-								{...item}
-								active={
-									activeSubscriptionOverrides[item.privateServerId] ??
-									(item.priceInRobux === null ? item.active : item.willRenew)
-								}
-								setActive={(active) => {
-									function onThen(): void {
-										setActiveSubscriptionOverrides((value) => ({
-											...value,
-											[item.privateServerId]: active,
-										}));
-									}
+					{items.map((item) => (
+						<PrivateServerSubscriptionCard
+							key={item.privateServerId}
+							{...item}
+							active={
+								activeSubscriptionOverrides[item.privateServerId] ??
+								(item.priceInRobux === null ? item.active : item.willRenew)
+							}
+							setActive={(active) => {
+								const then = () =>
+									setActiveSubscriptionOverides((value) => ({
+										...value,
+										[item.privateServerId]: active,
+									}));
+								const catchErr = (err: unknown) =>
+									warning(
+										(err instanceof RESTError &&
+											err.errors?.[0]?.userFacingMessage) ||
+											getMessage(
+												"robloxSettings.privateServerSubscriptions.systemFeedback.error",
+											),
+									);
 
-									if (item.priceInRobux) {
-										updatePrivateServerSubscription({
-											active,
-											privateServerId: item.privateServerId,
-											price: item.priceInRobux,
-										})
-											.then(onThen)
-											.catch(onCatch);
-										return;
-									}
-
+								if (item.priceInRobux) {
+									updatePrivateServerSubscription({
+										active,
+										privateServerId: item.privateServerId,
+										price: item.priceInRobux,
+									})
+										.then(then)
+										.catch(catchErr);
+								} else {
 									updatePrivateServer({
 										active,
 										privateServerId: item.privateServerId,
 									})
-										.then(onThen)
-										.catch(onCatch);
-								}}
-							/>
-						);
-					})}
+										.then(then)
+										.catch(catchErr);
+								}
+							}}
+						/>
+					))}
 				</div>
 			)}
 			{(maxPageNumber > 1 || pageNumber > 1) && (

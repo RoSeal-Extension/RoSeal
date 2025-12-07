@@ -33,34 +33,28 @@ export default function AssetOwnersList({
 	const [collapsed, setCollapsed] = useState(true);
 	const [sortOrder, setSortOrder] = useState<SortOrder>("Asc");
 
-	const {
-		items,
-		loading,
-		pageNumber,
-		maxPageNumber,
-		hasAnyItems,
-		error,
-		setPage: setPageNumber,
-	} = usePages<ListedAssetOwnerInstance, ListedAssetOwnerInstance, string>({
-		fetchPage: (cursor) =>
-			listAssetOwners({
-				assetId,
-				cursor,
-				limit: 100,
-				sortOrder,
-			}).then((data) => ({
-				items: data.data,
-				nextCursor: data.nextPageCursor ?? undefined,
-				hasMore: !!data.nextPageCursor,
-			})),
-		paging: {
-			method: "pagination",
-			itemsPerPage: 10,
-		},
-		dependencies: {
-			resetDeps: [assetId, sortOrder],
-		},
-	});
+	const { items, loading, pageNumber, maxPageNumber, hasAnyItems, error, setPageNumber } =
+		usePages<ListedAssetOwnerInstance, string>({
+			getNextPage: (state) =>
+				listAssetOwners({
+					assetId,
+					cursor: state.nextCursor,
+					limit: 100,
+					sortOrder,
+				}).then((data) => ({
+					...state,
+					items: data.data,
+					nextCursor: data.nextPageCursor ?? undefined,
+					hasNextPage: !!data.nextPageCursor,
+				})),
+			paging: {
+				method: "pagination",
+				itemsPerPage: 10,
+			},
+			dependencies: {
+				reset: [assetId, sortOrder],
+			},
+		});
 
 	return (
 		<div id="asset-owners">

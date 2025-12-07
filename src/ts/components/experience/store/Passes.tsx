@@ -13,13 +13,13 @@ import {
 } from "src/ts/helpers/requests/services/roseal";
 import type { RequestedUser } from "src/ts/helpers/requests/services/users";
 import { getManagePassesLink } from "src/ts/utils/links";
-import FiltersContainer from "../../core/filters/FiltersContainer";
 import Loading from "../../core/Loading";
 import Pagination from "../../core/Pagination";
 import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 import usePages from "../../hooks/usePages";
 import usePromise from "../../hooks/usePromise";
 import Pass from "./Pass";
+import FiltersContainer from "../../core/filters/FiltersContainer";
 
 export type PassesProps = {
 	universeId: number;
@@ -88,34 +88,27 @@ export default function Passes({ universeId, canManageUniverse }: PassesProps) {
 		hasAnyItems,
 		error,
 		allItems,
-		setPage: setPageNumber,
-	} = usePages<UniversePassDetailsWithSharedInfo, UniversePassDetailsWithSharedInfo, string>({
-		fetchPage: (cursor) =>
+		setPageNumber,
+	} = usePages<UniversePassDetailsWithSharedInfo, string>({
+		getNextPage: (state) =>
 			listUniversePasses({
 				universeId,
 				pageSize: 50,
 				passView: "Full",
-				pageToken: cursor,
-			}).then((data) => {
-				const items = [...data.gamePasses];
-
-				// Add prefix items on first page
-				if (!cursor && sharedExperiencePasses) {
-					items.unshift(...sharedExperiencePasses);
-				}
-
-				return {
-					items,
-					nextCursor: data.nextPageToken ?? undefined,
-					hasMore: !!data.nextPageToken,
-				};
-			}),
+				pageToken: state.nextCursor,
+			}).then((data) => ({
+				...state,
+				items: data.gamePasses,
+				nextCursor: data.nextPageToken ?? undefined,
+				hasNextPage: !!data.nextPageToken,
+			})),
 		paging: {
 			method: "pagination",
 			itemsPerPage: 50,
 		},
-		pipeline: {
-			filter: (item) => {
+		items: {
+			prefixItems: sharedExperiencePasses === undefined ? null : sharedExperiencePasses,
+			filterItem: (item) => {
 				const owned = targetUser ? targetUserOwned?.includes(item.id) : item.isOwned;
 
 				return (
@@ -125,7 +118,7 @@ export default function Passes({ universeId, canManageUniverse }: PassesProps) {
 			},
 		},
 		dependencies: {
-			processingDeps: [
+			refreshPage: [
 				filters.includeOffSale,
 				filters.includeOnSale,
 				filters.includeOwned,
@@ -359,7 +352,9 @@ export default function Passes({ universeId, canManageUniverse }: PassesProps) {
 				<Pagination
 					current={pageNumber}
 					hasNext={maxPageNumber > pageNumber}
-					onChange={setPageNumber}
+					onChange={(current) => {
+						setPageNumber(current);
+					}}
 					disabled={loading}
 				/>
 			)}

@@ -1,23 +1,23 @@
-import { RESTError } from "@roseal/http-client/src";
+import { getEditAvatarLink } from "src/ts/utils/links";
+import Button from "../core/Button";
+import useProfileData from "../hooks/useProfileData";
+import usePages from "../hooks/usePages";
 import { useEffect, useRef, useState } from "preact/hooks";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	deleteUserLook,
 	type HydratedWidgetLook,
 	hydrateMarketplaceWidget,
 	listUserLooks,
 } from "src/ts/helpers/requests/services/marketplace";
-import { getEditAvatarLink } from "src/ts/utils/links";
-import Button from "../core/Button";
-import ItemContextMenu from "../core/ItemContextMenu";
+import { RESTError } from "@roseal/http-client/src";
 import Loading from "../core/Loading";
-import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
-import useFeatureValue from "../hooks/useFeatureValue";
 import { useIntersection } from "../hooks/useIntersection";
-import usePages from "../hooks/usePages";
-import useProfileData from "../hooks/useProfileData";
 import MarketplaceCard from "../marketplace/Card";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import ItemContextMenu from "../core/ItemContextMenu";
+import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
+import useFeatureValue from "../hooks/useFeatureValue";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export type UserPublishedAvatarsProps = {
 	userId: number;
@@ -42,13 +42,13 @@ export default function UserPublishedAvatars({ userId }: UserPublishedAvatarsPro
 		fetchedAllPages,
 		maxPageNumber,
 		pageNumber,
-		setPage: setPageNumber,
-		reset,
-	} = usePages<HydratedWidgetLook, HydratedWidgetLook, string>({
-		fetchPage: (cursor) =>
+		setPageNumber,
+		removeItem,
+	} = usePages<HydratedWidgetLook, string>({
+		getNextPage: (state) =>
 			listUserLooks({
 				userId,
-				cursor,
+				cursor: state.nextCursor,
 				limit: 50,
 			})
 				.then((data) =>
@@ -58,9 +58,10 @@ export default function UserPublishedAvatars({ userId }: UserPublishedAvatarsPro
 							id: item.lookId,
 						})),
 					}).then((hydrated) => ({
+						...state,
 						items: hydrated as HydratedWidgetLook[],
 						nextCursor: data.nextCursor ?? undefined,
-						hasMore: !!data.nextCursor,
+						hasNextPage: !!data.nextCursor,
 					})),
 				)
 				.catch((err) => {
@@ -73,9 +74,8 @@ export default function UserPublishedAvatars({ userId }: UserPublishedAvatarsPro
 					}
 
 					return {
-						items: [],
-						nextCursor: undefined,
-						hasMore: false,
+						...state,
+						hasNextPage: false,
 					};
 				}),
 		paging: {
@@ -84,7 +84,7 @@ export default function UserPublishedAvatars({ userId }: UserPublishedAvatarsPro
 			incrementCount: 50,
 		},
 		dependencies: {
-			resetDeps: [userId],
+			reset: [userId],
 		},
 	});
 
@@ -156,7 +156,7 @@ export default function UserPublishedAvatars({ userId }: UserPublishedAvatarsPro
 												deleteUserLook({
 													lookId: look.id,
 												})
-													.then(() => reset())
+													.then(() => removeItem(look))
 													.catch(() => {
 														warning(
 															getMessage(
