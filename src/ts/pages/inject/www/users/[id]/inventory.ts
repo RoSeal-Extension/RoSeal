@@ -495,7 +495,6 @@ export default {
 					get: () => {
 						const isPrivateServersTab =
 							scope.$ctrl.currentData.categoryName === "private-servers";
-						console.log(scope.$ctrl.currentData);
 
 						sendMessage("user.inventory.canViewInventory", {
 							canViewInventory,

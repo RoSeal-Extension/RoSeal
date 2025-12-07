@@ -215,7 +215,6 @@ export async function injectRobloxRoutingData(
 		"data-staticcomponentdata",
 		JSON.stringify(routingData.componentData),
 	);
-	console.log(routingData);
 }
 
 export function getRobloxRoutingDataSync(el?: HTMLDivElement): RobloxRoutingData | undefined {

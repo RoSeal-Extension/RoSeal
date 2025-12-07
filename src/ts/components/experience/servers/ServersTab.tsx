@@ -313,7 +313,6 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 			});
 	}, [calculateServerDistance]);
 
-	console.log(showServerDebugInfo?.[0] === true && showServerDebugInfo[1]);
 	return (
 		<ServersTabContext.Provider
 			value={{
