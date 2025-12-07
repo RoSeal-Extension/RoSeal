@@ -87,7 +87,7 @@ export const initialLocalesFetch =
 	import.meta.env.ENV === "background"
 		? storage.get(PREFERRED_LOCALES_STORAGE_KEY).then((data) => {
 				if (data[PREFERRED_LOCALES_STORAGE_KEY]) {
-					locales.unshift(...data[PREFERRED_LOCALES_STORAGE_KEY]);
+					locales.unshift(...(data[PREFERRED_LOCALES_STORAGE_KEY] as string[]));
 				}
 			})
 		: undefined;

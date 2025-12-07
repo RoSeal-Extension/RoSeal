@@ -353,47 +353,6 @@
     }
 }
 
-.has-background-color {
-    background: var(--profile-background-color);
-
-    .section-content:not(.remove-panel),
-    .layer,
-    .slide-switcher.groups,
-    .slide-item-container-right,
-    .profile-statistics .MuiPaper-root {
-        background:
-            linear-gradient(
-                rgba(from var(--profile-background-color) r g b / 0.15),
-                rgba(from var(--profile-background-color) r g b / 0.15)
-            ),
-            var(--RS_BACKGROUND-2-COLOR);
-    }
-
-    .slide-item-container-left,
-    .profile-avatar-right {
-        background:
-            linear-gradient(
-                rgba(from var(--profile-background-color) r g b / 0.15),
-                rgba(from var(--profile-background-color) r g b / 0.15)
-            ),
-            var(--RS_BACKGROUND-3-COLOR) !important;
-    }
-
-    .content {
-        min-height: 100vh;
-        background:
-            linear-gradient(
-                rgba(from var(--profile-background-color) r g b / 0.15),
-                rgba(from var(--profile-background-color) r g b / 0.15)
-            ),
-            var(--RS_BACKGROUND-1-COLOR);
-        @media (min-width: 1000px) {
-            max-width: 1000px;
-            padding: 15px;
-        }
-    }
-}
-
 .customize-profile-container {
     padding: 1em;
     max-width: fit-content;
@@ -544,4 +503,28 @@
 
 .profile-communities .group-joined-date {
     font-size: 14px;
+}
+
+.has-background-color {
+    .avatar-toggle-button {
+        .foundation-web-button {
+            background-color: black;
+        }
+    }
+
+    .profile-avatar-gradient {
+        background-image: linear-gradient(
+            91deg,
+            rgba(0, 0, 0, 0.5) 5.83%,
+            /* Increased opacity for contrast */ rgba(255, 255, 255, 0.5) 47.76%,
+            rgba(0, 0, 0, 0.5) 93.93%
+        );
+
+        background-color: var(--profile-background-color);
+
+        background-blend-mode: overlay;
+    }
+    #treatment-redesigned-header .avatar-card-image {
+        background-color: rgba(from var(--profile-background-color) r g b / 0.08) !important;
+    }
 }

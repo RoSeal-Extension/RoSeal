@@ -64,7 +64,7 @@ import { getAuthenticatedUser, isAuthenticated } from "src/ts/utils/authenticate
 import { tryOpenCloudAuthRequest } from "src/ts/utils/cloudAuth";
 import { getDeviceMeta } from "src/ts/utils/context";
 import { renderMentions } from "src/ts/utils/description";
-import { isFocusedOnInput } from "src/ts/utils/dom";
+import { isFocusedOnInput, onDOMReady } from "src/ts/utils/dom";
 import { sealRain } from "src/ts/utils/fun/sealRain";
 import { clearFollowUserJoinData, determineCanJoinUser } from "src/ts/utils/joinData";
 import { crossSort } from "src/ts/utils/objects";
@@ -539,37 +539,55 @@ export default {
 		);
 
 		featureValueIs("userProfileEasterEggs", true, () => {
-			if (profileUserId === ROBLOX_USERS.parryGripp) {
-				watch(
-					".profile-header-main, #treatment-redesigned-header .user-profile-header-info",
-					(desktopActions) => {
-						const btn = (
-							<TacoButton audioAssetId={ROBLOX_AUDIO_ASSETS.parryGrippTacoSong} />
-						);
-						renderAfter(btn, desktopActions);
-					},
-				);
-			} else if (profileUserId === ROBLOX_USERS.sayerSooth) {
-				const birthdate = new Date(USER_BIRTHDAYS.sayerSooth);
-				const date = new Date();
+			console.log(profileUserId);
 
-				if (isSameDay(date, setYear(birthdate, date.getFullYear()))) {
-					sealRain(randomInt(10_000, 50_000), undefined, false);
-				}
-			} else if (profileUserId === ROBLOX_USERS.notValra) {
-				watchOnce(".profile-platform-container").then((content) => {
-					renderAfter(
-						<Thumbnail
-							containerClassName="roseal-valra"
-							request={{
-								type: "Asset",
-								targetId: ROBLOX_IMAGE_ASSETS.gilbertDecal,
-								size: "420x420",
-							}}
-						/>,
-						content,
+			switch (profileUserId) {
+				case ROBLOX_USERS.parryGripp: {
+					watch(
+						".profile-header-main, #treatment-redesigned-header .user-profile-header-info",
+						(desktopActions) => {
+							const btn = (
+								<TacoButton audioAssetId={ROBLOX_AUDIO_ASSETS.parryGrippTacoSong} />
+							);
+							renderAfter(btn, desktopActions);
+						},
 					);
-				});
+					break;
+				}
+				case ROBLOX_USERS.sayerSooth: {
+					const birthdate = new Date(USER_BIRTHDAYS.sayerSooth);
+					const date = new Date();
+
+					if (isSameDay(date, setYear(birthdate, date.getFullYear()))) {
+						sealRain(randomInt(10_000, 50_000), undefined, false);
+					}
+					break;
+				}
+				case ROBLOX_USERS.notValra: {
+					watchOnce(".profile-platform-container").then((content) => {
+						renderAfter(
+							<Thumbnail
+								containerClassName="roseal-valra"
+								request={{
+									type: "Asset",
+									targetId: ROBLOX_IMAGE_ASSETS.gilbertDecal,
+									size: "420x420",
+								}}
+							/>,
+							content,
+						);
+					});
+					break;
+				}
+				case ROBLOX_USERS.aliceeeNight: {
+					watchOnce("#container-main").then((container) => {
+						onDOMReady(() => {
+							container.classList.add("has-background-color");
+							container.style.setProperty("--profile-background-color", "#432f4e");
+						});
+					});
+					break;
+				}
 			}
 		});
 
