@@ -319,38 +319,37 @@ export default {
 					// we need to force "refresh" by removing SortlessGrid and then re-adding
 					let shouldDoubleUpdate = false;
 
-					if (currentState.current?.sorts) {
-						for (const sort of sorts) {
-							for (const sort2 of currentState.current.sorts) {
+					const currentSorts = currentState.current?.sorts;
+
+					if (currentSorts)
+						for (let i = 0; i < sorts.length; i++) {
+							const newSort = sorts[i];
+							const oldSort = currentSorts[i];
+
+							// 1. Check if the old sort exists at this index (safety)
+							// 2. Check if the Topic IDs match (as requested)
+							if (oldSort && newSort.topicId === oldSort.topicId) {
+								// Logic Block 1: Changed FROM SortlessGrid
+								// (Old was Sortless, New is NOT)
 								if (
-									sort2.topicId === sort.topicId &&
-									sort2.treatmentType === "SortlessGrid" &&
-									sort.treatmentType !== "SortlessGrid"
+									oldSort.treatmentType === "SortlessGrid" &&
+									newSort.treatmentType !== "SortlessGrid"
+								) {
+									shouldDoubleUpdate = true;
+									break;
+								}
+
+								// Logic Block 2: Changed TO SortlessGrid
+								// (New is Sortless, Old is NOT)
+								if (
+									newSort.treatmentType === "SortlessGrid" &&
+									oldSort.treatmentType !== "SortlessGrid"
 								) {
 									shouldDoubleUpdate = true;
 									break;
 								}
 							}
-
-							if (shouldDoubleUpdate) break;
 						}
-
-						if (!shouldDoubleUpdate)
-							for (const sort of currentState.current.sorts) {
-								for (const sort2 of sorts) {
-									if (
-										sort2.topicId === sort.topicId &&
-										sort2.treatmentType === "SortlessGrid" &&
-										sort.treatmentType !== "SortlessGrid"
-									) {
-										shouldDoubleUpdate = true;
-										break;
-									}
-								}
-
-								if (shouldDoubleUpdate) break;
-							}
-					}
 
 					if (shouldDoubleUpdate) {
 						updateState({
