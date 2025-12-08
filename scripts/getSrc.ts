@@ -14,10 +14,18 @@ const buildTimeParams = await getBuildTimeParams();
 const cachedBuildTime = Bun.file("cachedBuildTime.json");
 await cachedBuildTime.write(JSON.stringify(buildTimeParams));
 
-console.assert(
-	(
-		await Bun.$`zip -r ./builds-dist/RoSeal-${manifest.version}-src.zip "./cachedBuildTime.json" "./src/"  "./.npmrc" "./scripts/" "./package.json" "./biome.json" "./tsconfig.json" "./bun.lock" "./README.md" -x "**/.DS_Store" -x "**/__MACOSX" -x "**/*_secret*" -x "**/*_dev*" -x ".git" -9 > /dev/null`
-	).exitCode === 0,
-);
+if (process.platform === "win32") {
+	console.assert(
+		(
+			await Bun.$`zip -r ./builds-dist/RoSeal-${manifest.version}-src.zip "./cachedBuildTime.json" "./src/"  "./.npmrc" "./scripts/" "./package.json" "./biome.json" "./tsconfig.json" "./bun.lock" "./README.md" -x "**/.DS_Store" -x "**/__MACOSX" -x "**/*_secret*" -x "**/*_dev*" -x ".git" -9 > /dev/null`
+		).exitCode === 0,
+	);
+} else {
+	console.assert(
+		(
+			await Bun.$`tar -a -c -f ./builds-dist/RoSeal-${manifest.version}-src.zip --exclude ".DS_Store" --exclude "__MACOSX" --exclude "*_secret*" --exclude "*_dev*" --exclude ".git" "./cachedBuildTime.json" "./src/" "./.npmrc" "./scripts/" "./package.json" "./biome.json" "./tsconfig.json" "./bun.lock" "./README.md" > NUL`
+		).exitCode === 0,
+	);
+}
 
 await cachedBuildTime.delete();

@@ -35,11 +35,19 @@ await updateLog(
 				cspPolicy,
 			});
 
-			console.assert(
-				(
-					await Bun.$`cd ${parentFolder}/${folder} && zip -r ../${folder}.zip . -x "**/.DS_Store" -x "**/__MACOSX" -9 > /dev/null`
-				).exitCode === 0,
-			);
+			if (process.platform === "win32") {
+				console.assert(
+					(
+						await Bun.$`cd ${parentFolder}/${folder} && tar -a -c -f ../${folder}.zip . --exclude ".DS_Store" --exclude "__MACOSX"`
+					).exitCode === 0,
+				);
+			} else {
+				console.assert(
+					(
+						await Bun.$`cd ${parentFolder}/${folder} && zip -r ../${folder}.zip . -x "**/.DS_Store" -x "**/__MACOSX" -9 > /dev/null`
+					).exitCode === 0,
+				);
+			}
 
 			if (import.meta.env.UPLOAD_TO_AMO === "true" && target === "firefox") {
 				try {
