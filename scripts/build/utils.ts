@@ -39,8 +39,8 @@ export function updateLog<T extends Promise<unknown>>(
 			);
 			return res;
 		})
-		.catch(() => {
-			console.error(`${kleur.red("✘ error")} ${failText ?? text}`);
+		.catch((err) => {
+			console.error(`${kleur.red("✘ error")} ${failText ?? text}`, err);
 		});
 
 	return promise;
@@ -99,7 +99,7 @@ export async function buildPages({
 
 		if ((!isDevPage || isDev) && !isDisabled) {
 			const imported = `file${fileNumber++}`;
-			imports += `\nimport ${imported} from "${fileName}";`;
+			imports += `\nimport ${imported} from "${fileName.replaceAll(/\\/g, "/")}";`;
 			exports += `\n    ${imported},`;
 		}
 	}
@@ -592,7 +592,7 @@ export async function getBuildTimeParams(
 
 	return Promise.all([
 		fetch(
-			`https://${ROBLOX_DOMAIN.replace("{service}", "clientsettingscdn")}/v2/client-version/WindowsPlayer`,
+			`https://${ROBLOX_DOMAIN.replace("{service}", "clientsettings")}/v2/client-version/WindowsPlayer`,
 		).then((res) => res.json()),
 		fetch(`https://${ROBLOX_DOMAIN.replace("{service}", "www")}/home`),
 	]).then(([clientVersion, loginPage]) => {
