@@ -99,7 +99,7 @@ export async function buildPages({
 
 		if ((!isDevPage || isDev) && !isDisabled) {
 			const imported = `file${fileNumber++}`;
-			imports += `\nimport ${imported} from "${fileName.replaceAll(/\\/g, "/")}";`;
+			imports += `\nimport ${imported} from "${normalizePath(fileName, true)}";`;
 			exports += `\n    ${imported},`;
 		}
 	}
@@ -609,7 +609,10 @@ export async function getBuildTimeParams(
 	});
 }
 
-export function normalizePath(path: string) {
+export function normalizePath(path: string, posix?: boolean) {
+	if (posix) {
+		return path.replaceAll(/\\/g, "/");
+	}
 	if (process.platform === "win32") {
 		return path.replaceAll(/\//g, "\\");
 	}
