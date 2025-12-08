@@ -38,7 +38,7 @@ await updateLog(
 			if (process.platform === "win32") {
 				console.assert(
 					(
-						await Bun.$`cd ${parentFolder}/${folder} && tar -a -c -f ../${folder}.zip . --exclude ".DS_Store" --exclude "__MACOSX"`
+						await Bun.$`cd ${parentFolder}/${folder} && tar -a -c --exclude ".DS_Store" --exclude "__MACOSX" -f ../${folder}.zip .`
 					).exitCode === 0,
 				);
 			} else {

@@ -17,7 +17,7 @@ await cachedBuildTime.write(JSON.stringify(buildTimeParams));
 if (process.platform === "win32") {
 	console.assert(
 		(
-			await Bun.$`tar -a -c -f ./builds-dist/RoSeal-${manifest.version}-src.zip --exclude ".DS_Store" --exclude "__MACOSX" --exclude "*_secret*" --exclude "*_dev*" --exclude ".git" "./cachedBuildTime.json" "./src/" "./.npmrc" "./scripts/" "./package.json" "./biome.json" "./tsconfig.json" "./bun.lock" "./README.md" > NUL`
+			await Bun.$`tar -a -c --exclude ".DS_Store" --exclude "__MACOSX" --exclude "*_secret*" --exclude "*_dev*" --exclude ".git" -f ./builds-dist/RoSeal-${manifest.version}-src.zip "./cachedBuildTime.json" "./src" "./.npmrc" "./scripts" "./package.json" "./biome.json" "./tsconfig.json" "./bun.lock" "./README.md"`
 		).exitCode === 0,
 	);
 } else {
