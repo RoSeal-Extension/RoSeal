@@ -608,3 +608,11 @@ export async function getBuildTimeParams(
 		};
 	});
 }
+
+export function normalizePath(path: string) {
+	if (process.platform === "win32") {
+		return path.replaceAll(/\//g, "\\");
+	}
+
+	return path;
+}

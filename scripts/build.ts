@@ -32,6 +32,7 @@ import {
 	getI18nTypesFile,
 	getTargetBaseFromTarget,
 	handleI18NNamespace,
+	normalizePath,
 	transformManifest,
 	updateLog,
 } from "./build/utils.ts";
@@ -477,7 +478,7 @@ export function writeI18n({ outDir }: WriteI18nProps) {
 				const filePath = join(
 					outDir,
 					"_locales",
-					file.path.split("src/i18n/locales/")[1].replace(/-/g, "_"),
+					file.path.split(normalizePath("src/i18n/locales/"))[1].replace(/-/g, "_"),
 				);
 
 				await ensureDir(parsePath(filePath).dir);
