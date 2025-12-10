@@ -508,7 +508,7 @@
 .has-background-color {
     .avatar-toggle-button {
         .foundation-web-button {
-            background-color: black;
+            background-color: var(--RS_SECONDARY-BACKGROUND-COLOR);
         }
     }
 
@@ -524,7 +524,8 @@
 
         background-blend-mode: overlay;
     }
-    #treatment-redesigned-header .avatar-card-image {
+
+    .profile-avatar-image .avatar-card-image {
         background-color: rgba(from var(--profile-background-color) r g b / 0.08) !important;
     }
 }
