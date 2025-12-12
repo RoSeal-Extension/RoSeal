@@ -1175,7 +1175,7 @@ export function multigetUniversesByIds({
 					return items;
 				}),
 		overrideCache,
-		batchLimit: 25,
+		batchLimit: 10,
 	});
 }
 
