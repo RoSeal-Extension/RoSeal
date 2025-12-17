@@ -169,9 +169,11 @@ export default function CustomizeLayoutButton({ state }: CustomizeLayoutButtonPr
 		});
 	}, [storageValue, playlistsEnabled, showModal]);
 
+	const [firstState, setFirstState] = useState(false);
 	useDidMountEffect(() => {
 		if (authenticatedUser?.userId && storageFetched) {
 			if (!layout.sorts.length && state.value) {
+				setFirstState(false);
 				updateLayout(
 					{
 						sorts: getTreeLayout(state.value).map((item) => {
@@ -188,11 +190,14 @@ export default function CustomizeLayoutButton({ state }: CustomizeLayoutButtonPr
 					},
 					true,
 				);
-			} else if (layout.sorts.length) {
-				sendMessage("home.updateSortsLayout", {
-					layout,
-					playlists: playlistsEnabled ? storageRef.current._custom : undefined,
-				});
+			} else if (layout.sorts.length && state.value) {
+				if (firstState)
+					sendMessage("home.updateSortsLayout", {
+						layout,
+						playlists: playlistsEnabled ? storageRef.current._custom : undefined,
+					});
+
+				setFirstState(true);
 			}
 		}
 	}, [state.value, storageFetched, authenticatedUser?.userId]);

@@ -539,8 +539,6 @@ export default {
 		);
 
 		featureValueIs("userProfileEasterEggs", true, () => {
-			console.log(profileUserId);
-
 			switch (profileUserId) {
 				case ROBLOX_USERS.parryGripp: {
 					watch(
