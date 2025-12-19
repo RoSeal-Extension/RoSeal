@@ -283,8 +283,8 @@ export default function FriendsListCard({
 											<div className="friend-tile-game-card-container">
 												<Thumbnail
 													request={{
-														type: "PlaceIcon",
-														targetId: presenceData.placeId!,
+														type: "GameIcon",
+														targetId: presenceData.universeId!,
 														size: "256x256",
 													}}
 													imgClassName="game-card-thumb"
