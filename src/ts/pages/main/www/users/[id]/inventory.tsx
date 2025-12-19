@@ -174,8 +174,9 @@ export default {
 				assetTypeId: 0,
 				items: [],
 			};
+
 			addMessageListener("user.inventory.addAssets", (data) => {
-				if (data.assetTypeId !== assets.assetTypeId) {
+				if (data.assetTypeId !== assets.assetTypeId || data.clearItems) {
 					assets.assetTypeId = data.assetTypeId;
 					assets.items = data.items;
 				} else {

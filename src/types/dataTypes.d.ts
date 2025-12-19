@@ -79,6 +79,7 @@ export type DOMCommunicationMessageDataTypes = {
 			userId: number;
 			assetTypeId: number;
 			items: ListedUserInventoryAssetDetailed[];
+			clearItems: boolean;
 		};
 	};
 	"user.inventory.categoryChanged": {

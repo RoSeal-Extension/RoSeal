@@ -556,6 +556,7 @@ export default {
 
 					const userId = Number.parseInt(match[1], 10);
 					const assetTypeId = Number.parseInt(match[2], 10);
+					const clearItems = !url.searchParams.get("cursor");
 
 					res.clone()
 						.json()
@@ -564,6 +565,7 @@ export default {
 								userId,
 								assetTypeId,
 								items: (data as ListUserInventoryAssetsDetailedResponse).data,
+								clearItems,
 							});
 						});
 				}
