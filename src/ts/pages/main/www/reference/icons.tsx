@@ -65,7 +65,7 @@ function IconsReference() {
 					{icons.map((icon) => (
 						<div className="icon-container border-bottom" key={icon}>
 							<span
-								className={`${icon.replaceAll(".", " ").trim()} icon`}
+								className={`${icon.replaceAll(".", " ").trim()}`}
 								ref={(ref) => {
 									if (ref) {
 										if (!ref.offsetHeight) {

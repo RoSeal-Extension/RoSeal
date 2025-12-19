@@ -507,7 +507,7 @@ export default function UserInventorySortOptions({
 		let stopped = false;
 		const promises: Promise<void>[] = [];
 
-		const ids = new Set<number>();
+		const ids = new Set<number | string>();
 		const sortOrders: SortOrder[] =
 			itemType === "Asset" || itemType === "Badge" ? ["Asc", "Desc"] : ["Desc"];
 		let attempts = 20;
@@ -532,10 +532,14 @@ export default function UserInventorySortOptions({
 
 								let shouldExit = false;
 								for (const item of data.data) {
-									if (ids.has(item.assetId)) {
+									if (
+										item.userAssetId
+											? ids.has(item.userAssetId)
+											: ids.has(item.assetId)
+									) {
 										shouldExit = true;
 									} else {
-										ids.add(item.assetId);
+										ids.add(item.userAssetId ? item.userAssetId : item.assetId);
 									}
 								}
 
