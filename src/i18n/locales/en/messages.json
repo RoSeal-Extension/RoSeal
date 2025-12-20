@@ -10866,13 +10866,13 @@
 			}
 		},
 		"serverSniping": {
-			"$context": "Server sniping section",
+			"$context": "Avatar anonymizer",
 			"title": {
-				"$message": "Server Sniping Prevention",
+				"$message": "Avatar Anonymizer",
 				"$context": "Title"
 			},
 			"description": {
-				"$message": "You can enable this feature to mostly prevent \"server sniping\". This works by constantly changing your avatar thumbnail in the background. This may sometimes conflict with Accounts Manager when changing accounts. This only works while the brower is open and RoSeal is enabled.{lineBreak}{lineBreak}If you intend for no one to join you, including connections, please set your Join Privacy to No One in your <privacySettingsLink>Privacy Settings</privacySettingsLink>. It will also stop server snipers from joining your experience.{lineBreak}{lineBreak}Server sniping is the act of bypasing privacy restrictions to find and join someone else's server.",
+				"$message": "You can enable this feature to mostly prevent your avatar from loading anywhere. This works by constantly changing your avatar thumbnail in the background. This may sometimes conflict with Accounts Manager when changing accounts. This only works while the browser is open and RoSeal is enabled.{lineBreak}{lineBreak}If you intend for no one to join you, including connections, please set your Join Privacy to No One in your <privacySettingsLink>Privacy Settings</privacySettingsLink>. It will also stop server snipers from joining your experience.{lineBreak}{lineBreak}Server sniping is the act of bypasing privacy restrictions to find and join someone else's server.",
 				"$context": "Description"
 			}
 		}
