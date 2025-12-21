@@ -1,9 +1,10 @@
 import type { ComponentType, VNode } from "preact";
 import type { PropsWithChildren } from "preact/compat";
 import { addMessageListener, invokeMessage } from "src/ts/helpers/communication/dom";
-import { watchOnce } from "src/ts/helpers/elements";
+import { watch, watchOnce } from "src/ts/helpers/elements";
 import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
 import { hijackComponent, hijackCreateElement } from "src/ts/helpers/hijack/react";
+import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type { ExperienceEvent } from "src/ts/helpers/requests/services/universes";
 import { EXPERIENCE_DEEPLINK_REGEX, EXPERIENCE_DETAILS_REGEX } from "src/ts/utils/regex";
@@ -80,17 +81,20 @@ export default {
 		);
 
 		featureValueIsInject("disableExperienceCarouselVideoAutoplay", true, () => {
-			hijackCreateElement(
-				(_, props) =>
-					!!props && "onReady" in props && !!props.className?.includes("carousel-video"),
-				(_, _2, props) => {
-					const propsType = props as {
-						onReady?: () => void;
-						ref?: React.RefObject<HTMLVideoElement>;
-					};
-					delete propsType.onReady;
-					delete propsType.ref;
-				},
+			onSet(window, "React").then((react) =>
+				hijackFunction(
+					react,
+					(target, thisArg, args) => {
+						try {
+							if (String(args[0]).includes("GamePreviewVideoAutoPlayError")) {
+								return;
+							}
+						} catch {}
+
+						return target.apply(thisArg, args);
+					},
+					"useEffect",
+				),
 			);
 		});
 
