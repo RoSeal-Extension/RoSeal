@@ -1,7 +1,7 @@
 import type { ComponentType, VNode } from "preact";
 import type { PropsWithChildren } from "preact/compat";
 import { addMessageListener, invokeMessage } from "src/ts/helpers/communication/dom";
-import { watch, watchOnce } from "src/ts/helpers/elements";
+import { watchOnce } from "src/ts/helpers/elements";
 import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
 import { hijackComponent, hijackCreateElement } from "src/ts/helpers/hijack/react";
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
@@ -87,7 +87,7 @@ export default {
 					(target, thisArg, args) => {
 						try {
 							if (String(args[0]).includes("GamePreviewVideoAutoPlayError")) {
-								return;
+								return target.apply(target, [() => {}]);
 							}
 						} catch {}
 
