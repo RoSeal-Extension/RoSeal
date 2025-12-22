@@ -14,7 +14,7 @@ export default function InExperienceBadgeToggle() {
 		[],
 		false,
 	);
-	if (authenticatedUser?.hasVerifiedBadge || !settings?.isSettingsEnabled) return null;
+	if (!authenticatedUser?.hasVerifiedBadge || !settings?.isSettingsEnabled) return null;
 
 	const onToggle = () =>
 		updateInExperienceProfileSettings({
