@@ -633,6 +633,21 @@ export type UpdateProfileCustomizationRequest = {
 	profileCustomization: Partial<ProfileCustomizationConfiguration>;
 };
 
+export type InExperienceProfileSettingsInner = {
+	isInExperienceNameEnabled: boolean;
+};
+
+export type InExperienceProfileSettings = {
+	isSettingsEnabled: boolean;
+	userProfileSettings: InExperienceProfileSettingsInner;
+	inExperienceName: string | null;
+	expirationTime: string | null;
+};
+
+export type UpdateInExperienceProfileSettings = {
+	userProfileSettings: InExperienceProfileSettingsInner;
+};
+
 export function getUserPremiumStatus({ userId, overrideCache }: GetUserByIdRequest) {
 	return getOrSetCache({
 		key: ["users", userId, "premiumStatus"],
@@ -1497,6 +1512,38 @@ export async function updateProfileCustomization(request: UpdateProfileCustomiza
 		credentials: {
 			type: "cookies",
 			value: true,
+		},
+		expect: "none",
+		errorHandling: "BEDEV2",
+	});
+}
+
+export async function getInExperienceProfileSettings() {
+	return (
+		await httpClient.httpRequest<InExperienceProfileSettings>({
+			url: getRobloxUrl("apis", "/user-profile-api/v1/user/profiles/settings"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+			errorHandling: "BEDEV2",
+		})
+	).body;
+}
+
+export async function updateInExperienceProfileSettings(
+	request: UpdateInExperienceProfileSettings,
+) {
+	await httpClient.httpRequest({
+		method: "POST",
+		url: getRobloxUrl("apis", "/user-profile-api/v1/user/profiles/settings"),
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
+		body: {
+			type: "json",
+			value: request,
 		},
 		expect: "none",
 		errorHandling: "BEDEV2",

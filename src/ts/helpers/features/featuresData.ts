@@ -204,11 +204,12 @@ export type FeaturesIntoRecord<T extends Section[]> = {
 
 export type ExtractDropdownValues<
 	T extends DropdownValue<string | number | boolean> | DropdownGroup<string | number | boolean>,
-> = T extends DropdownValue<string | number | boolean>
-	? T["value"]
-	: T extends DropdownGroup<string | number>
-		? T["values"][number]["value"]
-		: never;
+> =
+	T extends DropdownValue<string | number | boolean>
+		? T["value"]
+		: T extends DropdownGroup<string | number>
+			? T["values"][number]["value"]
+			: never;
 
 export type FeatureValue<T extends Feature> = T extends { component: infer U }
 	? U extends FeatureComponentTypeToggle
@@ -3399,6 +3400,14 @@ export const sections = [
 			{
 				id: "misc",
 				features: [
+					{
+						type: "Regular",
+						id: "inExperienceBadgeVisibilityToggle",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
+					},
 					/*
 					disabled due to constraints
 					{

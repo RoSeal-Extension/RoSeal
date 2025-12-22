@@ -171,6 +171,14 @@
 	},
 	"robloxSettings": {
 		"$context": "Roblox settings page",
+		"privacy": {
+			"$context": "Privacy tab",
+			"inExperienceBadgeVisibility": {
+				"title": {
+					"$message": "Hide your verified badge while in experience"
+				}
+			}
+		},
 		"privateServerSubscriptions": {
 			"$context": "Private server subscriptions section in account settings",
 			"title": {
@@ -5951,6 +5959,11 @@
 			"name": {
 				"$message": "Showcase upcoming and ongoing followed experience events in the left navigation",
 				"$context": ""
+			}
+		},
+		"inExperienceBadgeVisibilityToggle": {
+			"name": {
+				"$message": "In experience verified badge visibility toggle"
 			}
 		},
 		"betterPrivateServersSubscriptions": {

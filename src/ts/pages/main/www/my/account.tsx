@@ -3,6 +3,7 @@ import { createPortal } from "preact/compat";
 import Divider from "src/ts/components/core/Divider";
 import Option from "src/ts/components/core/verticalMenu/Option";
 import OptionContent from "src/ts/components/core/verticalMenu/OptionContent";
+import InExperienceBadgeToggle from "src/ts/components/robloxSettings/InExperienceBadgeToggle";
 import BetterExperienceNotifications from "src/ts/components/settings/BetterExperienceNotifications";
 import BetterGroupNotifications from "src/ts/components/settings/BetterGroupNotifications";
 import BetterPrivateServerSubscriptions from "src/ts/components/settings/BetterPrivateServerSubscriptions";
@@ -100,6 +101,12 @@ export default {
 				);
 			}
 		});
+
+		featureValueIs("inExperienceBadgeVisibilityToggle", true, () =>
+			watch("#show-current-experience-privacy", (el) => {
+				renderAfter(<InExperienceBadgeToggle />, el);
+			}),
+		);
 
 		featureValueIs("betterPrivateServersSubscriptions", true, () =>
 			watch(".subscription-management-container .subscription-count", (el) => {
