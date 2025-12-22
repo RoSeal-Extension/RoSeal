@@ -8941,7 +8941,7 @@
 						"$message": "{sealEmoji} Select a Region"
 					},
 					"subtitle": {
-						"$message": "Click a dot on the globe to view all servers in that region. Some server information may still be loading."
+						"$message": "Click a dot on the globe to view all servers in that region. Some server information may still be loading.\n\nAs of December 2025, Roblox has recently put heavy limits on accessing Public Servers. This feature may no longer work well for huge experiences."
 					},
 					"dataCenter": {
 						"$context": "Datacenter item shown as a dot",
