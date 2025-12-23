@@ -5,7 +5,7 @@ import type { Agent } from "./assets.ts";
 import type { SortOrder } from "./badges.ts";
 import type { AssetFavoritesRequest } from "./favorites.ts";
 import type { AvatarBundleType } from "./marketplace.ts";
-import type { HTTPRequestCredentials } from "@roseal/http-client/src/classes/HTTPClient.ts";
+import type { HTTPRequestCredentials } from "@roseal/http-client";
 
 export type InventoryItemType = "Asset" | "Bundle" | "Badge" | "GamePass";
 

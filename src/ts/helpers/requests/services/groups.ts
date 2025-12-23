@@ -2,7 +2,7 @@ import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../cache.ts";
 import { httpClient } from "../main.ts";
 import type { SortOrder } from "./badges.ts";
-import type { HTTPRequestCredentials } from "@roseal/http-client/src/classes/HTTPClient.ts";
+import type { HTTPRequestCredentials } from "@roseal/http-client";
 
 export type GroupV2Owner = {
 	id: number;

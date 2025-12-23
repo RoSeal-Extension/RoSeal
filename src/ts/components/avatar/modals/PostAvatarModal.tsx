@@ -5,7 +5,7 @@ import {
 	createUserLook,
 	type CreateUserLookResponse,
 } from "src/ts/helpers/requests/services/marketplace";
-import { RESTError } from "@roseal/http-client/src";
+import { RESTError } from "@roseal/http-client";
 import TextInput from "../../core/TextInput";
 import { getAvatarLookLink } from "src/ts/utils/links";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";

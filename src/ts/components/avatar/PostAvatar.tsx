@@ -3,7 +3,7 @@ import type { ReactAvatarEditorPageAvatar } from "src/ts/pages/inject/www/my/ava
 import usePromise from "../hooks/usePromise";
 import { previewUserLookCreation } from "src/ts/helpers/requests/services/marketplace";
 import { addMessageListener } from "src/ts/helpers/communication/dom";
-import { RESTError } from "@roseal/http-client/src";
+import { RESTError } from "@roseal/http-client";
 import Button from "../core/Button";
 import Tooltip from "../core/Tooltip";
 import classNames from "classnames";

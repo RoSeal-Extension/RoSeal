@@ -1,7 +1,7 @@
 import { HBAClient } from "roblox-bat";
 import { ROSEAL_ACCOUNT_TOKEN_SEARCH_PARAM_NAME } from "src/ts/constants/accountsManager.ts";
 import { camelizeObject } from "src/ts/utils/objects.ts";
-import { HTTPClient, RESTError } from "../../../../node_modules/@roseal/http-client/src/index.ts";
+import { HTTPClient, RESTError } from "@roseal/http-client";
 import {
 	type PlatformType,
 	ROSEAL_OVERRIDE_PLATFORM_TYPE_HEADER_NAME,

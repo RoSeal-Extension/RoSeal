@@ -8,7 +8,7 @@ import { getOrSetCache, getOrSetCaches } from "../../../helpers/cache.ts";
 import { renderGenericChallenge } from "../../domInvokes.ts";
 import { httpClient } from "../main.ts";
 import type { SortOrder } from "./badges.ts";
-import type { HTTPRequestCredentials } from "@roseal/http-client/src/classes/HTTPClient.ts";
+import type { HTTPRequestCredentials } from "@roseal/http-client";
 
 export type GetUserByIdRequest = {
 	userId: number;

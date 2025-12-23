@@ -5,7 +5,7 @@ import { httpClient } from "../main";
 import type { Agent } from "./assets";
 import type { AvatarScales } from "./avatar";
 import type { SortOrder } from "./badges";
-import type { HTTPRequestCredentials } from "@roseal/http-client/src/classes/HTTPClient";
+import type { HTTPRequestCredentials } from "@roseal/http-client";
 
 export type MultigetUniversesPlayabilityStatusesRequest = {
 	overridePlatformType?: PlatformType;

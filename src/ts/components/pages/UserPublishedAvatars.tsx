@@ -9,7 +9,7 @@ import {
 	hydrateMarketplaceWidget,
 	listUserLooks,
 } from "src/ts/helpers/requests/services/marketplace";
-import { RESTError } from "@roseal/http-client/src";
+import { RESTError } from "@roseal/http-client";
 import Loading from "../core/Loading";
 import { useIntersection } from "../hooks/useIntersection";
 import MarketplaceCard from "../marketplace/Card";

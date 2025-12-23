@@ -4,10 +4,12 @@ import { httpClient } from "../main.ts";
 import type {
 	AvatarAssetDefinition,
 	AvatarBodyColorsRender,
-	AvatarType,
 	AvatarScales,
+	AvatarType,
 } from "./avatar.ts";
-import type { HTTPRequestCredentials } from "@roseal/http-client/src/classes/HTTPClient.ts";
+import type { HTTPRequestCredentials } from
+@roseal
+/-;cehilnpttt;
 
 export type ThumbnailType =
 	| "Avatar"
