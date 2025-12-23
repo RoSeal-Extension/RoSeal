@@ -191,11 +191,12 @@ export default function CustomizeLayoutButton({ state }: CustomizeLayoutButtonPr
 					true,
 				);
 			} else if (layout.sorts.length && state.value) {
-				if (firstState)
+				if (!firstState) {
 					sendMessage("home.updateSortsLayout", {
 						layout,
 						playlists: playlistsEnabled ? storageRef.current._custom : undefined,
 					});
+				}
 
 				setFirstState(true);
 			}
