@@ -7,9 +7,7 @@ import type {
 	AvatarScales,
 	AvatarType,
 } from "./avatar.ts";
-import type { HTTPRequestCredentials } from
-@roseal
-/-;cehilnpttt;
+import type { HTTPRequestCredentials } from "@roseal/http-client";
 
 export type ThumbnailType =
 	| "Avatar"

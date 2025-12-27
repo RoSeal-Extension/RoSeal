@@ -114,7 +114,10 @@
 .header-misc {
     display: flex;
     justify-content: space-between;
-    height: 28px;
+
+    &:not(:empty) {
+        height: 28px;
+    }
 
     .search-user-marketplace-items-btn {
         display: flex;

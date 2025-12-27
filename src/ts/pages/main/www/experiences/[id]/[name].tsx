@@ -1159,8 +1159,12 @@ export default {
 
 					for (const item of media) {
 						// Filter out unapproved videos - they do not show on the site
-						if (item.assetTypeId !== 33 || item.approved) {
-							mediaIds.push(item.imageId);
+						if ((item.assetTypeId !== 33 && item.assetTypeId !== 86) || item.approved) {
+							if (item.videoId) {
+								mediaIds.push(Number.parseInt(item.videoId, 10));
+							} else {
+								mediaIds.push(item.imageId);
+							}
 						}
 					}
 

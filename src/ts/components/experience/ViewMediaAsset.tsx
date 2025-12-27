@@ -15,10 +15,12 @@ export default function ViewMediaAsset({ carouselContainer, mediaIds }: ViewMedi
 	const [show, setShow] = useState(false);
 
 	useEffect(() => {
-		const runSetAlt = () => {
+		const runSetId = () => {
 			let index = 0;
 			for (const item of carouselContainer.querySelectorAll(".carousel-item")) {
 				if (item.matches(".carousel-item-active")) {
+					console.log(item, mediaIds, index);
+
 					setShow(true);
 					setCurrentId(mediaIds[index]!);
 					return;
@@ -30,8 +32,8 @@ export default function ViewMediaAsset({ carouselContainer, mediaIds }: ViewMedi
 			setShow(false);
 		};
 
-		runSetAlt();
-		return watchAttributes(carouselContainer, runSetAlt, ["class"], undefined, true);
+		runSetId();
+		return watchAttributes(carouselContainer, runSetId, ["class"], undefined, true);
 	}, []);
 
 	return (

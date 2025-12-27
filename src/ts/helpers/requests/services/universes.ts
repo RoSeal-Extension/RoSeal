@@ -200,6 +200,7 @@ export type UniverseMedia = {
 	approved: boolean;
 	altText: string | null;
 	wideVideoAssetId?: number;
+	videoId?: string | null;
 };
 
 export type GetUniverseMediaResponse = {

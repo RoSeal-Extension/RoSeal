@@ -1730,8 +1730,9 @@ roseal-font {
     background: #a8a8a8;
     outline: 3px #4b5563 solid;
     outline-offset: -3px;
-    top: 5px;
-    position: relative;
+    top: -20px;
+    position: absolute;
+    left: -25px;
 }
 
 [data-rosealfe-removewhitebackgroundfriendcarouselsdarktheme]
