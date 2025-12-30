@@ -24,13 +24,13 @@ export default function InExperienceBadgeToggle() {
 		}).finally(refetchSettings);
 
 	return (
-		<div class="section-content">
-			<div class="inline-user-input">
-				<div class="label font-body">
+		<div className="section-content">
+			<div className="inline-user-input">
+				<div className="label font-body">
 					{getMessage("robloxSettings.privacy.inExperienceBadgeVisibility.title")}
 				</div>
 				<div>
-					<div id="share-activity-updates-toggle" class="parental-consent-toggle">
+					<div id="in-experience-badge-toggle" className="parental-consent-toggle">
 						<Toggle
 							isOn={settings.userProfileSettings.isInExperienceNameEnabled}
 							onToggle={onToggle}
