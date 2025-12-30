@@ -50,6 +50,8 @@ export default function ThumbnailConfigItem<
 	const min = customizationLimit.lowerBounds[name];
 	const max = customizationLimit.upperBounds[name];
 
+	const step = name === "distanceScale" ? 0.001 : 1;
+
 	return (
 		<div
 			className={classNames("config-section", {
@@ -91,7 +93,7 @@ export default function ThumbnailConfigItem<
 			<Slider
 				min={min}
 				max={max}
-				step={1}
+				step={step}
 				value={value}
 				onUpdate={(value) => {
 					updateThumbnailConfigurationLocally({
