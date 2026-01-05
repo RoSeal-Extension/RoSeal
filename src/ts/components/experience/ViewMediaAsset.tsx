@@ -19,8 +19,6 @@ export default function ViewMediaAsset({ carouselContainer, mediaIds }: ViewMedi
 			let index = 0;
 			for (const item of carouselContainer.querySelectorAll(".carousel-item")) {
 				if (item.matches(".carousel-item-active")) {
-					console.log(item, mediaIds, index);
-
 					setShow(true);
 					setCurrentId(mediaIds[index]!);
 					return;

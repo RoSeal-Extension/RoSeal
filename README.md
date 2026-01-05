@@ -1,5 +1,5 @@
 # The RoSeal Extension
-* Copyright (C) 2022-2025 roseal.live
+* Copyright (C) 2022-2026 roseal.live
 * Licensed under the [AGPL-3.0](LICENSE) license
 
 <a href="https://www.roseal.live/download/chrome" title="Download on the Chrome Web Store">
