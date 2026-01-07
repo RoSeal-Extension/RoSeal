@@ -288,8 +288,8 @@ export default function CustomizeLayoutButton({ state }: CustomizeLayoutButtonPr
 														if (playlist.id === data.playlistId) {
 															for (
 																let i2 = 0;
-																i < playlist.items.length;
-																i++
+																i2 < playlist.items.length;
+																i2++
 															) {
 																if (
 																	playlist.items[i2].id ===
@@ -301,11 +301,12 @@ export default function CustomizeLayoutButton({ state }: CustomizeLayoutButtonPr
 																		playlist.items.length === 0
 																	) {
 																		newCustom.splice(i, 1);
-																		i--;
 																	}
+
 																	break;
 																}
 															}
+
 															break;
 														}
 													}
