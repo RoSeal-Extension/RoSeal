@@ -7666,6 +7666,10 @@
 			"$message": "Bundle",
 			"$context": ""
 		},
+		"Look": {
+			"$message": "Avatars",
+			"$context": ""
+		},
 		"Unknown": {
 			"$message": "Unknown Type",
 			"$context": ""

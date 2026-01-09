@@ -212,10 +212,13 @@ export default function ItemUpdatedCreated({
 	const [thumbnailUpdated] = usePromise(() => {
 		if (!showThumbnailUpdatedField) return;
 
-		if ((itemType === "Asset" || itemType === "Bundle") && target === "avatarItems") {
+		if (
+			(itemType === "Asset" || itemType === "Bundle" || itemType === "Look") &&
+			target === "avatarItems"
+		) {
 			return thumbnailProcessor
 				.request({
-					type: itemType === "Bundle" ? "BundleThumbnail" : "Asset",
+					type: itemType === "Bundle" ? "BundleThumbnail" : itemType,
 					size: "420x420",
 					targetId: itemId,
 				})
