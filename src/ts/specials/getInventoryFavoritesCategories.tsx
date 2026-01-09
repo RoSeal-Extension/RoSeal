@@ -499,6 +499,26 @@ export function getInventoryFavoritesCategories(
 					},
 				],
 			},
+			...(isInventory
+				? []
+				: ([
+						{
+							name: "Avatars",
+							displayName: getItemTypeDisplayLabel("Look", "shortCategory"),
+							categoryType: "Avatars",
+							items: [
+								{
+									name: "Avatars",
+									displayName: getItemTypeDisplayLabel("Look", "shortCategory"),
+									filter: null,
+									id: 16,
+									type: "AssetType",
+									categoryType: "Avatars",
+								},
+							],
+						},
+					] satisfies UserInventoryCategory[])),
+
 			{
 				name: "Tops",
 				displayName: getMessage("userInventory.categories.tops"),
