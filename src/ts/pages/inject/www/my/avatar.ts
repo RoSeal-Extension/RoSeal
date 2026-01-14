@@ -19,7 +19,7 @@ import {
 	type AvatarColors3s,
 	getOutfitById,
 	type AvatarAssetDefinitionWithTypes,
-	type AvatarBodyColorsLegacy,
+	type AvatarBodyColorsLegacy as _AvatarBodyColorsLegacy,
 	type AvatarRestrictions,
 	type AvatarScales,
 	type AvatarType,
@@ -37,7 +37,6 @@ import type {
 import { handleArchivedItems } from "src/ts/specials/handleArchivedItems";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
-import { getClosestHexColor, normalizeColor } from "src/ts/utils/colors";
 import { error } from "src/ts/utils/console";
 import { onWindowRefocus } from "src/ts/utils/dom";
 import {
@@ -47,7 +46,8 @@ import {
 } from "src/ts/utils/itemTypes";
 import { MY_AVATAR_REGEX } from "src/ts/utils/regex";
 import { overrideRobloxMessages } from "src/ts/utils/robloxI18n";
-import tinycolor from "tinycolor2";
+
+export type AvatarBodyColorsLegacy = Record<keyof _AvatarBodyColorsLegacy, string>;
 
 type MenuAvatarInventoryRequest = {
 	sortOption: string | number;
@@ -1068,19 +1068,6 @@ export default {
 		let scales: ReactScales | undefined;
 		let setScales: ((scales: ReactScales) => void) | undefined;
 
-		const getColors = () =>
-			avatarRules?.bodyColorsPalette.map((color) => ({
-				rgb: tinycolor(color.hexColor).toRgb(),
-				...color,
-			})) ?? [];
-		const getHexFromColorId = (colorId: number) => {
-			const color = avatarRules?.bodyColorsPalette.find(
-				(color) => color.brickColorId === colorId,
-			);
-
-			return normalizeColor(color?.hexColor ?? "000000", true);
-		};
-
 		// when we update body colors internally but do not want to alert content script (because it already knows...)
 		let hasSetBodyColorsManually = false;
 		let hasSetupHijack = false;
@@ -1131,16 +1118,15 @@ export default {
 			addMessageListener("avatar.refreshCharacters", () => refreshOutfits?.());
 			addMessageListener("avatar.updateBodyColors", (data) => {
 				bodyColors = data;
-				const colors = getColors();
 
 				hasSetBodyColorsManually = true;
 				setBodyColors?.({
-					headColorId: getClosestHexColor(colors, data.headColor3).brickColorId,
-					torsoColorId: getClosestHexColor(colors, data.torsoColor3).brickColorId,
-					leftArmColorId: getClosestHexColor(colors, data.leftArmColor3).brickColorId,
-					rightArmColorId: getClosestHexColor(colors, data.rightArmColor3).brickColorId,
-					leftLegColorId: getClosestHexColor(colors, data.leftLegColor3).brickColorId,
-					rightLegColorId: getClosestHexColor(colors, data.rightLegColor3).brickColorId,
+					headColorId: data.headColor3,
+					torsoColorId: data.torsoColor3,
+					leftArmColorId: data.leftArmColor3,
+					rightArmColorId: data.rightArmColor3,
+					leftLegColorId: data.leftLegColor3,
+					rightLegColorId: data.rightLegColor3,
 				});
 			});
 
@@ -1155,20 +1141,12 @@ export default {
 							const colors = value.current;
 
 							const data = {
-								headColor3: normalizeColor(getHexFromColorId(colors.headColorId)),
-								leftArmColor3: normalizeColor(
-									getHexFromColorId(colors.leftArmColorId),
-								),
-								rightArmColor3: normalizeColor(
-									getHexFromColorId(colors.rightArmColorId),
-								),
-								leftLegColor3: normalizeColor(
-									getHexFromColorId(colors.leftLegColorId),
-								),
-								rightLegColor3: normalizeColor(
-									getHexFromColorId(colors.rightLegColorId),
-								),
-								torsoColor3: normalizeColor(getHexFromColorId(colors.torsoColorId)),
+								headColor3: colors.headColorId,
+								torsoColor3: colors.torsoColorId,
+								leftArmColor3: colors.leftArmColorId,
+								rightArmColor3: colors.rightArmColorId,
+								leftLegColor3: colors.leftArmColorId,
+								rightLegColor3: colors.rightLegColorId,
 							};
 
 							bodyColors = data;
@@ -1303,7 +1281,6 @@ export default {
 									invokeMessage("avatar.wearCharacter", {
 										characterId: item.id,
 									}).then((data) => {
-										const colors = getColors();
 										setAvatarType?.(data.playerAvatarType);
 										setCurrentlyWornAssets?.(data.assets);
 
@@ -1320,30 +1297,12 @@ export default {
 
 										hasSetBodyColorsManually = true;
 										setBodyColors?.({
-											headColorId: getClosestHexColor(
-												colors,
-												data.bodyColor3s.headColor3,
-											).brickColorId,
-											leftArmColorId: getClosestHexColor(
-												colors,
-												data.bodyColor3s.leftArmColor3,
-											).brickColorId,
-											rightArmColorId: getClosestHexColor(
-												colors,
-												data.bodyColor3s.rightArmColor3,
-											).brickColorId,
-											leftLegColorId: getClosestHexColor(
-												colors,
-												data.bodyColor3s.leftLegColor3,
-											).brickColorId,
-											rightLegColorId: getClosestHexColor(
-												colors,
-												data.bodyColor3s.rightLegColor3,
-											).brickColorId,
-											torsoColorId: getClosestHexColor(
-												colors,
-												data.bodyColor3s.torsoColor3,
-											).brickColorId,
+											headColorId: data.bodyColor3s.headColor3,
+											torsoColorId: data.bodyColor3s.torsoColor3,
+											leftArmColorId: data.bodyColor3s.leftArmColor3,
+											rightArmColorId: data.bodyColor3s.rightArmColor3,
+											leftLegColorId: data.bodyColor3s.leftLegColor3,
+											rightLegColorId: data.bodyColor3s.rightLegColor3,
 										});
 										setAvatarCardsLoading?.(false);
 									});

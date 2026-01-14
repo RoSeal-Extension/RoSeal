@@ -2834,6 +2834,7 @@ export const sections = [
 					{
 						type: "Regular",
 						id: "hexBodyColors",
+						variant: 2,
 						component: {
 							type: "Toggle",
 							defaultValue: true,

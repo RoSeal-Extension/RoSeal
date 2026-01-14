@@ -10,7 +10,7 @@
 			"@types/react": ["./node_modules/preact/compat/"]
 		},
 		"esModuleInterop": true,
-		"lib": ["dom", "dom.iterable", "es2024"],
+		"lib": ["DOM", "DOM.Iterable", "ESNext"],
 		"allowImportingTsExtensions": true,
 		"noEmit": true,
 		"moduleResolution": "Bundler",
