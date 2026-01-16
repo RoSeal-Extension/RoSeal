@@ -4977,7 +4977,7 @@
 		},
 		"hexBodyColors": {
 			"name": {
-				"$message": "Allow setting custom body colors",
+				"$message": "",
 				"$context": ""
 			}
 		},

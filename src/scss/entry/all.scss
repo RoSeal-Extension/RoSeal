@@ -1509,7 +1509,7 @@ roseal-font {
 }
 
 .foundation-web-menu .roseal-menu-item {
-    outline-offset: 0px;
+    outline-offset: 0;
     overflow: hidden;
     display: flex;
     border-radius: var(--radius-medium);
@@ -1559,6 +1559,10 @@ roseal-font {
         line-height: 1.4em;
         color: var(--color-content-emphasis);
         text-align: left;
+
+        [data-internal-page-name="Profile"] & {
+            font-size: unset;
+        }
     }
 }
 
