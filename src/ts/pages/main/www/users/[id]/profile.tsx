@@ -401,6 +401,7 @@ export default {
 
 		featureValueIs("cancelFriendRequests", true, async () => {
 			let label: HTMLElement | undefined;
+			let label2: HTMLElement | undefined;
 
 			const pendingText = (await getLangNamespace("Feature.Profile"))["Action.Pending"];
 
@@ -415,6 +416,15 @@ export default {
 					label.removeEventListener("click", cancelFriendRequest, {
 						capture: true,
 					});
+
+					if (label2) {
+						label2.textContent = cancelledText;
+						label2.classList.add("disabled", "Mui-disabled", "opacity-[0.5]");
+						label2.setAttribute("disabled", "");
+						label2.removeEventListener("click", cancelFriendRequest, {
+							capture: true,
+						});
+					}
 				});
 
 			const handleChange = (el: HTMLElement) => {
@@ -427,7 +437,12 @@ export default {
 				el.removeAttribute("disabled");
 				el.textContent = getMessage("user.cancelFriendRequest");
 
-				label = el;
+				if (label) {
+					label2 = el;
+				} else {
+					label = el;
+				}
+
 				el.addEventListener("click", cancelFriendRequest, {
 					capture: true,
 				});
