@@ -14,7 +14,11 @@ export function onNotificationType<
 }
 
 export function onRobloxPresenceUpdateDetails(fn: (data: UserPresence[]) => void) {
-	const listener = (data: CustomEvent<UserPresence[]>) => fn(data.detail);
+	const listener = (data: CustomEvent<Map<number, UserPresence>>) => {
+		const items = Array.from(data.detail.values());
+
+		return fn(items);
+	};
 
 	// @ts-expect-error: fine
 	document.addEventListener("Roblox.Presence.Update", listener);

@@ -251,9 +251,14 @@ export default {
 					}).then((data) => {
 						if (isFocusedOnInput()) return;
 
+						const mappedData = new Map();
+						for (const item of data.userPresences) {
+							mappedData.set(item.userId, item);
+						}
+
 						document.dispatchEvent(
 							new CustomEvent("Roblox.Presence.Update", {
-								detail: data.userPresences,
+								detail: mappedData,
 							}),
 						);
 					});
