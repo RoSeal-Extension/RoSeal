@@ -20,6 +20,12 @@ span.icon-roseal-hidden-label::after {
     }
 }
 
+.modal-body:has(.bodycolors-list-v2) {
+    .hex-color-input-section {
+        display: none;
+    }
+}
+
 .bodycolors-list-v2 {
     margin-bottom: 5px;
 

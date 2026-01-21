@@ -1045,10 +1045,7 @@ export default {
 			globalThis.addEventListener("hashchange", onHashChange);
 		});
 
-		let prevCreateOutfitDialogOpen = false;
 		let refreshOutfits: (() => void) | undefined;
-
-		let prevOutfitToUpdateId: number | undefined;
 
 		let setAvatarCardsLoading: ((loading: boolean) => void) | undefined;
 
@@ -1072,11 +1069,10 @@ export default {
 		let hasSetBodyColorsManually = false;
 		let hasSetupHijack = false;
 
-		const setupReactHijack = async () => {
+		const setupReactHijack = () => {
 			if (hasSetupHijack) return;
 
 			hasSetupHijack = true;
-			const enableHexColors = await getFeatureValueInject("hexBodyColors");
 			onWindowRefocus(10_000, () => {
 				hasSetBodyColorsManually = false;
 			});
@@ -1239,82 +1235,7 @@ export default {
 								};
 						  };
 
-					if ("outfit" in propsType) {
-						if (!enableHexColors) return;
-						if (propsType.outfit?.id !== prevOutfitToUpdateId) {
-							prevOutfitToUpdateId = propsType.outfit?.id;
-
-							if (prevOutfitToUpdateId) {
-								propsType.handleClose();
-								sendMessage("avatar.updateCharacter", {
-									characterId: prevOutfitToUpdateId,
-								});
-							}
-						}
-
-						return null;
-					}
-
-					if ("refreshOutfits" in propsType) {
-						if (!enableHexColors) return;
-						if (propsType.open !== prevCreateOutfitDialogOpen) {
-							prevCreateOutfitDialogOpen = propsType.open;
-							if (prevCreateOutfitDialogOpen) {
-								sendMessage("avatar.createCharacter", undefined);
-								propsType.closeDialog();
-							}
-						}
-						refreshOutfits = propsType.refreshOutfits;
-
-						return null;
-					}
-
-					if ("onItemClicked" in propsType) {
-						if (!enableHexColors) return;
-
-						hijackFunction(
-							propsType,
-							(target, thisArg, args) => {
-								const item = args[0];
-								if (item.type === "Outfit" && item.isEditable) {
-									setAvatarCardsLoading?.(true);
-									invokeMessage("avatar.wearCharacter", {
-										characterId: item.id,
-									}).then((data) => {
-										setAvatarType?.(data.playerAvatarType);
-										setCurrentlyWornAssets?.(data.assets);
-
-										if (scales) {
-											const newScales = { ...scales };
-											for (const key in newScales) {
-												newScales[key as keyof typeof newScales].value =
-													data.scale[key as keyof typeof data.scale] *
-													100;
-											}
-
-											setScales?.(newScales);
-										}
-
-										hasSetBodyColorsManually = true;
-										setBodyColors?.({
-											headColorId: data.bodyColor3s.headColor3,
-											torsoColorId: data.bodyColor3s.torsoColor3,
-											leftArmColorId: data.bodyColor3s.leftArmColor3,
-											rightArmColorId: data.bodyColor3s.rightArmColor3,
-											leftLegColorId: data.bodyColor3s.leftLegColor3,
-											rightLegColorId: data.bodyColor3s.rightLegColor3,
-										});
-										setAvatarCardsLoading?.(false);
-									});
-
-									return;
-								}
-
-								return target.apply(thisArg, args);
-							},
-							"onItemClicked",
-						);
-					} else if ("value" in propsType) {
+					if ("value" in propsType) {
 						if ("avatarCallLimiterItemCardsDisabled" in propsType.value) {
 							setAvatarCardsLoading =
 								propsType.value.setAvatarCallLimiterItemCardsDisabled;

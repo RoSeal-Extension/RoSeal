@@ -4977,7 +4977,7 @@
 		},
 		"hexBodyColors": {
 			"name": {
-				"$message": "",
+				"$message": "Add more hex body color selection inputs and a color wheel",
 				"$context": ""
 			}
 		},
@@ -11763,107 +11763,6 @@
 				"$context": ""
 			},
 			"$context": "Body Colors V2 section"
-		},
-		"wearCharacter": {
-			"$context": "Wear character button actions",
-			"errors": {
-				"invalidAssets": {
-					"$message": "Number of items that you don't own in this character: {count}",
-					"$context": ""
-				},
-				"genericError": {
-					"$message": "An error occurred while trying to wear this character.",
-					"$context": ""
-				}
-			},
-			"success": {
-				"$message": "Successfully worn this character.",
-				"$context": ""
-			}
-		},
-		"createCharacter": {
-			"$context": "Create character button actions",
-			"modal": {
-				"$context": "Create character modal",
-				"title": {
-					"$message": "{sealEmoji} Create New Character",
-					"$context": ""
-				},
-				"placeholder": {
-					"$message": "Name your character",
-					"$context": ""
-				},
-				"body": {
-					"$message": "A character will be created from your avatar's current appearance.",
-					"$context": ""
-				},
-				"note": {
-					"$message": "The name can only contain letters, numbers, and spaces.",
-					"$context": ""
-				},
-				"action": {
-					"$message": "Create",
-					"$context": ""
-				},
-				"neutral": {
-					"$message": "Cancel",
-					"$context": ""
-				}
-			},
-			"success": {
-				"$message": "Successfully created character.",
-				"$context": ""
-			},
-			"errors": {
-				"invalidName": {
-					"$message": "The character name is invalid.",
-					"$context": ""
-				},
-				"maxCharacters": {
-					"$message": "You have the maximum amount of characters.",
-					"$context": ""
-				},
-				"genericError": {
-					"$message": "An error occurred while creating the character.",
-					"$context": ""
-				}
-			}
-		},
-		"updateCharacter": {
-			"$context": "Update character button actions",
-			"modal": {
-				"$context": "Update character modal",
-				"title": {
-					"$message": "{sealEmoji} Update Character",
-					"$context": ""
-				},
-				"body": {
-					"$message": "Do you want to update this character? This will overwrite the character with your avatar's current appearance.",
-					"$context": ""
-				},
-				"action": {
-					"$message": "Update",
-					"$context": ""
-				},
-				"neutral": {
-					"$message": "Cancel",
-					"$context": ""
-				}
-			},
-			"success": {
-				"$message": "Successfully updated character.",
-				"$context": ""
-			},
-			"errors": {
-				"invalidCharacter": {
-					"$message": "This character no longer exists.",
-					"$context": ""
-				},
-				"genericError": {
-					"$message": "An error occurred while updating the character.",
-					"$context": ""
-				}
-			}
 		}
 	},
 	"navigation": {

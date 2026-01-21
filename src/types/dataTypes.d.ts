@@ -168,9 +168,6 @@ export type DOMCommunicationMessageDataTypes = {
 	triggerHandler: {
 		args: [string, unknown];
 	};
-	"avatar.createCharacter": {
-		args: void;
-	};
 	recordRobuxHistory: {
 		args: {
 			userId: number;
@@ -203,11 +200,6 @@ export type DOMCommunicationMessageDataTypes = {
 	};
 	"avatar.setItemLists": {
 		args: AvatarItemListsStorageValue;
-	};
-	"avatar.updateCharacter": {
-		args: {
-			characterId: number;
-		};
 	};
 	onlineFriendsFetched: {
 		args: ListUserOnlineFriendsResponse;
@@ -345,15 +337,6 @@ export type DOMCommunicationInvokeDataTypes = {
 				disabled: boolean;
 				message?: string;
 			};
-			reason: DefaultError;
-		};
-	};
-	"avatar.wearCharacter": {
-		args: {
-			characterId: number;
-		};
-		res: {
-			data: OutfitRequest;
 			reason: DefaultError;
 		};
 	};

@@ -5,15 +5,12 @@ import { AVATAR_EDITOR_FILTERS_INITIAL_VALUE } from "src/ts/components/avatar/co
 import AvatarEditorCurrentlyWearing from "src/ts/components/avatar/CurrentlyWearing";
 import EditItemListsButton from "src/ts/components/avatar/EditItemListsButton";
 import AvatarEditorSearch from "src/ts/components/avatar/filters/AvatarEditorSearch";
-import CreateCharacterModal from "src/ts/components/avatar/modals/CreateCharacterModal";
 import EditItemListsModal from "src/ts/components/avatar/modals/EditItemListsModal";
-import UpdateCharacterModal from "src/ts/components/avatar/modals/UpdateCharacterModal";
 import PostAvatarButton from "src/ts/components/avatar/PostAvatar";
 import SetBodyColor from "src/ts/components/avatar/SetBodyColor";
 import SetBodyColors from "src/ts/components/avatar/SetBodyColors";
 import AddToAvatarListButton from "src/ts/components/avatarItem/lists/AddToListButton";
 import CheckboxField from "src/ts/components/core/CheckboxField";
-import { warning } from "src/ts/components/core/systemFeedback/helpers/globalSystemFeedback";
 import storageSignal from "src/ts/components/hooks/storageSignal";
 import {
 	AVATAR_ITEM_LISTS_STORAGE_KEY,
@@ -22,24 +19,15 @@ import {
 	BYPASS_R6_RESTRICTION_MODAL_LOCALSTORAGE_KEY,
 } from "src/ts/constants/avatar";
 import { ARCHIVED_ITEMS_STORAGE_KEY, type ArchivedItemsStorageValue } from "src/ts/constants/misc";
-import {
-	addMessageListener,
-	sendMessage,
-	setInvokeListener,
-} from "src/ts/helpers/communication/dom";
+import { addMessageListener, sendMessage } from "src/ts/helpers/communication/dom";
 import { getLangNamespace } from "src/ts/helpers/domInvokes";
 import { watch, watchAttributes, watchOnce } from "src/ts/helpers/elements";
 import { featureValueIs, multigetFeaturesValues } from "src/ts/helpers/features/helpers";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import {
 	type AvatarColors3s,
 	getAuthenticatedUserAvatar,
-	getOutfitById,
-	setAvatarType,
 	setBodyColors,
-	setScales,
-	setWearingAssets,
 } from "src/ts/helpers/requests/services/avatar";
 import {
 	getLocalStorage,
@@ -48,7 +36,6 @@ import {
 	storage,
 } from "src/ts/helpers/storage";
 import { onWindowRefocus } from "src/ts/utils/dom";
-import { sleep } from "src/ts/utils/misc";
 import { AVATAR_ITEM_REGEX, MY_AVATAR_REGEX } from "src/ts/utils/regex";
 import { renderAfter, renderAppend, renderAppendBody } from "src/ts/utils/render";
 
@@ -174,8 +161,9 @@ export default {
 			renderAppendBody(<EditItemListsModal show={showModal} />);
 
 			storage.get([AVATAR_ITEM_LISTS_STORAGE_KEY]).then((data) => {
-				const value: AvatarItemListsStorageValue | undefined =
-					data[AVATAR_ITEM_LISTS_STORAGE_KEY];
+				const value = (data as Record<string, AvatarItemListsStorageValue | undefined>)[
+					AVATAR_ITEM_LISTS_STORAGE_KEY
+				];
 
 				watchOnce("#avatar-web-app").then((el) => {
 					if (value?.lists?.length) {
@@ -354,44 +342,6 @@ export default {
 				});
 			});
 
-			setInvokeListener("avatar.wearCharacter", (data) => {
-				return getOutfitById({
-					outfitId: data.characterId,
-				}).then(async (details) => {
-					initialColors = details.bodyColor3s;
-					bodyColors.value = details.bodyColor3s;
-					try {
-						await setBodyColors(details.bodyColor3s);
-						await setAvatarType({
-							playerAvatarType: details.playerAvatarType,
-						});
-						await setScales(details.scale);
-						await sleep(100);
-
-						const wornAssets = await setWearingAssets({
-							assets: details.assets,
-						});
-						sendMessage("avatar.updateDetailsFromOutfit", details);
-
-						if (wornAssets?.invalidAssets?.length) {
-							warning(
-								getMessage("avatar.wearCharacter.errors.invalidAssets", {
-									count: asLocaleString(wornAssets.invalidAssets.length),
-								}),
-							);
-						}
-					} catch {
-						warning(getMessage("avatar.wearCharacter.errors.genericError"));
-					}
-
-					return details;
-				});
-			});
-
-			addMessageListener("avatar.updateCharacter", (data) => {
-				renderAppendBody(<UpdateCharacterModal characterId={data.characterId} />);
-			});
-
 			watch(".bodycolors-list-sm", (el) => {
 				if (el.querySelector(".bodycolors-list-v2")) {
 					return;
@@ -421,10 +371,6 @@ export default {
 					renderAfter(<SetBodyColors bodyColors={bodyColors} />, el);
 				},
 			);
-
-			addMessageListener("avatar.createCharacter", () => {
-				renderAppendBody(<CreateCharacterModal />);
-			});
 		});
 	},
 };
