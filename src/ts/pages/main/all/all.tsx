@@ -43,7 +43,8 @@ export default {
 				return storage
 					.get(EXPERIMENTS_STORAGE_KEY)
 					.then((storage) => storage[EXPERIMENTS_STORAGE_KEY])
-					.then((data: ExperimentsStorageValue) => {
+					.then((_data) => {
+						const data = _data as ExperimentsStorageValue | undefined;
 						if (!data) {
 							return;
 						}
@@ -77,7 +78,12 @@ export default {
 			});
 
 			storage.get(EXPERIMENTS_STORAGE_KEY).then(async (data) => {
-				const value: ExperimentsStorageValue = data[EXPERIMENTS_STORAGE_KEY] ?? {
+				const value = (
+					data as Record<
+						typeof EXPERIMENTS_STORAGE_KEY,
+						ExperimentsStorageValue | undefined
+					>
+				)[EXPERIMENTS_STORAGE_KEY] ?? {
 					operations: [],
 					settings: {},
 				};
