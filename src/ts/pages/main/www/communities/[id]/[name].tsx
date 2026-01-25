@@ -1,5 +1,6 @@
 import { signal } from "@preact/signals";
 import { render } from "preact";
+import ItemContextMenu from "src/ts/components/core/ItemContextMenu";
 import GroupAgentId from "src/ts/components/group/AgentId";
 import CommunityShoutNotificationsToggle from "src/ts/components/group/CommunityShoutNotificationsToggle";
 import GroupCreated from "src/ts/components/group/CreatedDate";
@@ -352,8 +353,18 @@ export default {
 			));
 		});
 
-		featureValueIs("blockedItems", true, () =>
-			modifyItemContextMenu(() => <BlockCreatorButton type="Group" id={groupId.value} />),
-		);
+		featureValueIs("blockedItems", true, () => {
+			watch(`[ng-bind="'Label.GroupLocked' | translate"]`, (el) =>
+				renderAfter(
+					() => (
+						<ItemContextMenu containerClassName="deleted-community-context-menu">
+							<BlockCreatorButton type="Group" id={groupId.value} />
+						</ItemContextMenu>
+					),
+					el,
+				),
+			);
+			modifyItemContextMenu(() => <BlockCreatorButton type="Group" id={groupId.value} />);
+		});
 	},
 } satisfies Page;

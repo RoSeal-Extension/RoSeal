@@ -286,3 +286,7 @@ group-wall:not(:has([group-comments])) #group-wall-paginator {
         content: "|";
     }
 }
+
+.deleted-community-context-menu {
+    float: right;
+}

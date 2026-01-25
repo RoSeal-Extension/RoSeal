@@ -17,6 +17,9 @@ import useFlag from "../hooks/useFlag";
 import usePromise from "../hooks/usePromise";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import { tryOpenCloudAuthRequest } from "src/ts/utils/cloudAuth";
+import useFeatureValue from "../hooks/useFeatureValue";
+import ItemContextMenu from "../core/ItemContextMenu";
+import BlockCreatorButton from "../item/BlockCreatorButton";
 
 export type DeletedUserProfilePreviewProps = {
 	userId: number;
@@ -24,6 +27,7 @@ export type DeletedUserProfilePreviewProps = {
 
 export default function DeletedUserProfilePreview({ userId }: DeletedUserProfilePreviewProps) {
 	const [authenticatedUser] = useAuthenticatedUser();
+	const [blockedItemsEnabled] = useFeatureValue("blockedItems", false);
 	const [data, , error] = usePromise(
 		() =>
 			getUserById({
@@ -148,6 +152,11 @@ export default function DeletedUserProfilePreview({ userId }: DeletedUserProfile
 							})}
 						</h2>
 					</div>
+					{blockedItemsEnabled && (
+						<ItemContextMenu containerClassName="deleted-user-context-menu">
+							<BlockCreatorButton type="User" id={userId} />
+						</ItemContextMenu>
+					)}
 				</div>
 				<h2 className="deleted-title">{getMessage("deletedUser.title")}</h2>
 				<span className="text deleted-preview-text">

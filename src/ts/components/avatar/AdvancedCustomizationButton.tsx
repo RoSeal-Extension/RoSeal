@@ -178,57 +178,66 @@ export function AdvancedCustomizationModal({ show, setShow }: AdvancedCustomizat
 					</TabNavs>
 				</TabsContainer>
 			)}
-			{authenticatedUser && (
-				<ThumbnailNavigation
-					userId={authenticatedUser.userId}
-					currentPage={currentPage}
-					setCurrentPage={setCurrentPage}
-				/>
-			)}
-			<div
-				className={classNames("page-container", {
-					"max-size": currentPage.type !== "asset",
-				})}
-			>
-				{currentPage.type === "thumbnails" && (
-					<ThumbnailsCustomization
-						incrementRefreshId={incrementRefreshId}
-						viewType={
-							currentPage.viewType as Exclude<AdvancedAvatarViewType, "AvatarBust">
-						}
-					/>
-				)}
-				{currentPage.type === "asset" && avatar && (
-					<AssetConfiguration
-						asset={currentPage.data}
-						updatePageData={(data) => {
-							setCurrentPage({
-								...currentPage,
-								data,
-							});
-						}}
-						incrementRefreshId={incrementRefreshId}
-						avatar={avatar}
-						setAvatar={setAvatar}
-						avatarRules={avatarRules}
-					/>
-				)}
-				{currentPage.type === "assets" && (
-					<AssetsList
-						incrementRefreshId={incrementRefreshId}
-						setAssetData={(data) => {
-							setCurrentPage({
-								...currentPage,
-								type: "asset",
-								data,
-							});
-						}}
-						avatar={avatar}
-						avatarHasError={!!avatarError}
-						setAvatar={setAvatar}
-						avatarRules={avatarRules}
-					/>
-				)}
+			<div className="advanced-customization-content">
+				<div className="advanced-customization-left">
+					{authenticatedUser && (
+						<ThumbnailNavigation
+							userId={authenticatedUser.userId}
+							currentPage={currentPage}
+							setCurrentPage={setCurrentPage}
+						/>
+					)}
+				</div>
+				<div className="advanced-customization-right">
+					<div
+						className={classNames("page-container", {
+							"max-size": currentPage.type !== "asset",
+						})}
+					>
+						{currentPage.type === "thumbnails" && (
+							<ThumbnailsCustomization
+								incrementRefreshId={incrementRefreshId}
+								viewType={
+									currentPage.viewType as Exclude<
+										AdvancedAvatarViewType,
+										"AvatarBust"
+									>
+								}
+							/>
+						)}
+						{currentPage.type === "asset" && avatar && (
+							<AssetConfiguration
+								asset={currentPage.data}
+								updatePageData={(data) => {
+									setCurrentPage({
+										...currentPage,
+										data,
+									});
+								}}
+								incrementRefreshId={incrementRefreshId}
+								avatar={avatar}
+								setAvatar={setAvatar}
+								avatarRules={avatarRules}
+							/>
+						)}
+						{currentPage.type === "assets" && (
+							<AssetsList
+								incrementRefreshId={incrementRefreshId}
+								setAssetData={(data) => {
+									setCurrentPage({
+										...currentPage,
+										type: "asset",
+										data,
+									});
+								}}
+								avatar={avatar}
+								avatarHasError={!!avatarError}
+								setAvatar={setAvatar}
+								avatarRules={avatarRules}
+							/>
+						)}
+					</div>
+				</div>
 			</div>
 		</SimpleModal>
 	);

@@ -21,7 +21,7 @@ export default function ThumbnailNavigation({
 	const hideBust = currentPage.type === "thumbnails";
 
 	return (
-		<div className="thumbnail-navigation-container border-bottom">
+		<div className="thumbnail-navigation-container">
 			<div
 				className={classNames("thumbnail-preview-container avatar-back", {
 					"thumbnail-2d-preview-container": currentPage.viewDimensionType === "2D",

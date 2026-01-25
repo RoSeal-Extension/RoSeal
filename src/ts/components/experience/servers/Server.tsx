@@ -40,6 +40,7 @@ import {
 import {
 	getPrivateServerOwnerDetailsById,
 	updatePrivateServer,
+	updatePrivateServerPermissions,
 } from "src/ts/helpers/requests/services/privateServers";
 import type { PrivateServerInventoryItem } from "src/ts/helpers/requests/services/inventory";
 import { shutdownExperienceServer } from "src/ts/helpers/requests/services/universes";
@@ -138,7 +139,7 @@ export default function Server({
 			}
 		}
 	}, [item.joinData?.data?.datacenter.id, dataCenters, showRegion, showServerLocationEnabled]);
-	const [ownerDetails] = usePromise(() => {
+	const [ownerDetails, , , refetchOwnerDetails] = usePromise(() => {
 		if (!canManageServer) return;
 
 		return getPrivateServerOwnerDetailsById({
@@ -267,6 +268,15 @@ export default function Server({
 			privateServerId: canManageServer ? item.vipServerId : undefined,
 		});
 	};
+	const setConnectionsPrivateServerAccess = () => {
+		if (item.type !== "private") return;
+
+		updatePrivateServerPermissions({
+			privateServerId: item.vipServerId,
+			friendsAllowed: !ownerDetails?.permissions.friendsAllowed,
+		}).then(refetchOwnerDetails);
+	};
+
 	const joinServer = () => {
 		const joinAttemptOrigin =
 			`${item.type === "friends" ? "friend" : item.type}ServerListJoin` as const;
@@ -827,6 +837,17 @@ export default function Server({
 							>
 								{getMessage(
 									`experience.servers.server.contextMenu.${isFreeServer ? "deactivate" : "cancel"}`,
+								)}
+							</button>
+						)}
+						{canJoinServer && canManageServer && (
+							<button
+								type="button"
+								className={`${cssKey}-server-toggle-connection-joinability`}
+								onClick={setConnectionsPrivateServerAccess}
+							>
+								{getMessage(
+									`experience.servers.server.contextMenu.${ownerDetails?.permissions.friendsAllowed ? "revoke" : "allow"}AllConnections`,
 								)}
 							</button>
 						)}

@@ -9547,6 +9547,14 @@
 					"shutdown": {
 						"$message": "Shutdown",
 						"$context": "Shutdown server button"
+					},
+					"allowAllConnections": {
+						"$message": "Allow All Connections",
+						"$context": "Toggle connection joinability button"
+					},
+					"revokeAllConnections": {
+						"$message": "Revoke All Connections",
+						"$context": "Toggle connection joinability button"
 					}
 				},
 				"buttons": {
