@@ -38,7 +38,7 @@ export default function ServerGlobeMap({
 	initialLatLong,
 	onSelect,
 }: ServerGlobeMapProps) {
-	const [worldMap] = usePromise(getMapWorldData, []);
+	const [worldMap, , worldMapErr] = usePromise(getMapWorldData, []);
 	const [lakes] = usePromise(getMapLakesWorldData, []);
 
 	const ref = useRef<HTMLDivElement>(null);
@@ -199,6 +199,11 @@ export default function ServerGlobeMap({
 						{dataCenterMarkers}
 					</ComposableMap>
 				</div>
+			)}
+			{worldMapErr && (
+				<span className="text-error">
+					{getMessage("experience.servers.regionSelector.modal.errors.mapLoadError")}
+				</span>
 			)}
 		</SimpleModal>
 	);
