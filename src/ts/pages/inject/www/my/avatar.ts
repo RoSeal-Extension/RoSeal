@@ -5,12 +5,11 @@ import type { AvatarItemListItem, AvatarItemListsStorageValue } from "src/ts/con
 import type { ArchivedItemsItem } from "src/ts/constants/misc";
 import {
 	addMessageListener,
-	invokeMessage,
 	sendMessage,
 	setInvokeListener,
 } from "src/ts/helpers/communication/dom";
 import { getMessagesInject } from "src/ts/helpers/domInvokes";
-import { featureValueIsInject, getFeatureValueInject } from "src/ts/helpers/features/helpersInject";
+import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
 import { hijackRequest, hijackResponse } from "src/ts/helpers/hijack/fetch";
 import { hijackCreateElement, hijackState } from "src/ts/helpers/hijack/react";
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
@@ -337,9 +336,8 @@ export default {
 			}
 		};
 
+		const currentArchivedItems = signal<ArchivedItemsItem[]>([]);
 		addMessageListener("avatar.setupArchive", () => {
-			const currentArchivedItems = signal<ArchivedItemsItem[]>([]);
-
 			addMessageListener("avatar.setArchivedItems", (data) => {
 				currentArchivedItems.value = data;
 			});
@@ -380,9 +378,20 @@ export default {
 						limit: 100,
 					});
 
-					return new Response(
-						JSON.stringify({
-							avatarInventoryItems: data.data.map((item) => ({
+					const items: ListedUserAvatarItem[] = [];
+					for (const item of data.data) {
+						let archived = false;
+
+						if (currentArchivedItems.value.length)
+							for (const archivedItem of currentArchivedItems.value) {
+								if (archivedItem.id === item.assetId) {
+									archived = true;
+									break;
+								}
+							}
+
+						if (!archived) {
+							items.push({
 								itemCategory: {
 									itemType: 1,
 									itemSubType: assetTypeId,
@@ -391,7 +400,13 @@ export default {
 								itemName: item.assetName,
 								availabilityStatus: "Available",
 								acquisitionTime: item.created,
-							})),
+							});
+						}
+					}
+
+					return new Response(
+						JSON.stringify({
+							avatarInventoryItems: items,
 							nextPageToken: data.nextPageCursor,
 						}),
 						{
@@ -1047,7 +1062,7 @@ export default {
 
 		let refreshOutfits: (() => void) | undefined;
 
-		let setAvatarCardsLoading: ((loading: boolean) => void) | undefined;
+		let _setAvatarCardsLoading: ((loading: boolean) => void) | undefined;
 
 		let avatarRules: AvatarRestrictions | undefined;
 
@@ -1055,7 +1070,7 @@ export default {
 		let setBodyColors: ((colors: AvatarBodyColorsLegacy) => void) | undefined;
 
 		let avatarType: AvatarType | undefined;
-		let setAvatarType: ((type: AvatarType) => void) | undefined;
+		let _setAvatarType: ((type: AvatarType) => void) | undefined;
 
 		let currentlyWornAssets: AvatarAssetDefinitionWithTypes[] | undefined;
 		let setCurrentlyWornAssets:
@@ -1063,7 +1078,7 @@ export default {
 			| undefined;
 
 		let scales: ReactScales | undefined;
-		let setScales: ((scales: ReactScales) => void) | undefined;
+		let _setScales: ((scales: ReactScales) => void) | undefined;
 
 		// when we update body colors internally but do not want to alert content script (because it already knows...)
 		let hasSetBodyColorsManually = false;
@@ -1166,7 +1181,7 @@ export default {
 					"value" in state.head &&
 					"increment" in state.head,
 				setState: ({ value, publicSetState, originFromSetState }) => {
-					setScales = publicSetState;
+					_setScales = publicSetState;
 					scales = value.current;
 
 					if (originFromSetState) {
@@ -1237,14 +1252,14 @@ export default {
 
 					if ("value" in propsType) {
 						if ("avatarCallLimiterItemCardsDisabled" in propsType.value) {
-							setAvatarCardsLoading =
+							_setAvatarCardsLoading =
 								propsType.value.setAvatarCallLimiterItemCardsDisabled;
 						} else if ("setCurrentlyWornAssets" in propsType.value) {
 							currentlyWornAssets = propsType.value.currentlyWornAssetsList;
 							setCurrentlyWornAssets = propsType.value.setCurrentlyWornAssets;
 						} else if ("setAvatarType" in propsType.value) {
 							avatarType = propsType.value.avatarType;
-							setAvatarType = propsType.value.setAvatarType;
+							_setAvatarType = propsType.value.setAvatarType;
 							if (!avatarRules && propsType.value.avatarRules) {
 								sendMessage("avatar.setAvatarRules", propsType.value.avatarRules);
 							}
