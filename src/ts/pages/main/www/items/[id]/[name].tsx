@@ -5,7 +5,6 @@ import AddToProfileButton from "src/ts/components/avatarItem/AddToProfileButton"
 import ArchiveInInventoryButton from "src/ts/components/avatarItem/ArchiveInInventoryButton";
 import BundleRecolorableField from "src/ts/components/avatarItem/BundleRecolorable";
 import ItemCreatedExperience from "src/ts/components/avatarItem/CreatedExperience";
-import DynamicFloorTooltip from "src/ts/components/avatarItem/DynamicFloorTooltip";
 import ItemBundles from "src/ts/components/avatarItem/ItemBundles";
 import AvatarItemOwnedPopover from "src/ts/components/avatarItem/ItemOwnedPopover";
 import ItemTags from "src/ts/components/avatarItem/ItemTags";
@@ -512,68 +511,6 @@ export default {
 						);
 					}, container);
 				}),
-			),
-		);
-
-		checks.push(
-			featureValueIs("viewAvatarItemPriceFloor", true, () =>
-				watch(
-					".price-container-text .item-info-row-container:not(.roseal-price-info) .text-robux-lg",
-					(el) => {
-						renderAfter(() => {
-							const [data] = usePromise(
-								() =>
-									getAvatarItem({
-										itemId: itemId.value,
-										itemType: itemType.value,
-									}),
-								[itemId.value, itemType.value],
-							);
-							const [assetOrBundleType, assetOrBundleTypeId, alternativeTypes] =
-								useMemo(() => {
-									if (!data) {
-										return [];
-									}
-									if (itemType.value === "Asset") {
-										const type = getAssetTypeData(data.assetType);
-
-										return [
-											type?.assetType,
-											type?.assetTypeId,
-											type?.alternativeTypes,
-										];
-									}
-
-									const type = getBundleTypeData(data.bundleType);
-									return [
-										type?.bundleType,
-										type?.bundleTypeId,
-										type?.alternativeTypes,
-									];
-								}, [data]);
-
-							return (
-								<>
-									{data &&
-										!data.itemRestrictions.includes("Collectible") &&
-										!data.itemRestrictions.includes("Limited") &&
-										!data.itemRestrictions.includes("LimitedUnique") &&
-										!data.isOffSale &&
-										assetOrBundleType &&
-										assetOrBundleTypeId && (
-											<DynamicFloorTooltip
-												price={data.price}
-												itemType={itemType.value}
-												assetOrBundleType={assetOrBundleType}
-												assetOrBundleTypeId={assetOrBundleTypeId}
-												alternativeTypes={alternativeTypes}
-											/>
-										)}
-								</>
-							);
-						}, el);
-					},
-				),
 			),
 		);
 

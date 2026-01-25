@@ -763,19 +763,30 @@ export type GetCollectiblesMetadataResponse = {
 	isCollectiblesPublishingEnabled: boolean;
 	isCollectiblesPublishingLocationTypeEnabled: boolean;
 	allowedCollectibleSaleLocations: number[];
-	AllowedCollectiblesAssetTypes: Record<string, AllowedCollectibleType>;
 	IsCollectibleFreeItemPublishingAvailable: boolean;
 	isCollectibleGroupPublishingAvailable: boolean;
 	isCollectibleResaleRestrictionsEnabled: boolean;
 	isCollectiblePublishMinQuantityEnabled: boolean;
-	unlimitedItemPriceFloors: Record<string, ItemPriceFloor>;
-	limitedItemPriceFloors: Record<string, ItemPriceFloor>;
-	AllowedCollectiblesBundleTypes: Record<string, AllowedCollectibleType>;
 	IsUgc4AllUIEnabled: boolean;
 	LimitedMaxQuantity: number;
 	IsLimitedCollectibleBundlesPublishingEnabled: boolean;
 	IsResellabilityEnabled: boolean;
 	IsNewBundleUIEnabled: boolean;
+	MaxCollectiblePrice: number;
+	IsCollectible2DPublishingEnabled: boolean;
+	IsAvatarCreationTokensUIEnabled: boolean;
+	IsScheduledPublishingEnabled: boolean;
+	ScheduledPublishingSettings: {
+		scheduledPublishMaxTimeInAdvanceTimeSpan: string;
+		scheduledPublishMinDurationTimeSpan: string;
+	};
+	isGetPriceFloorEnabled: boolean;
+	isRegionalPricingEnabled: boolean;
+	isRevenueSplitEnabled: boolean;
+	revenueSplitTiersForPurchase: null | unknown;
+	isContentMetadataAppealEnabled: boolean;
+	bodysuitEligibleAssetTypes: number[];
+	unifyConfigureUI: boolean;
 };
 
 export type AllowedAssetTypeUpload = {

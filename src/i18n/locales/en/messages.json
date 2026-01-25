@@ -3770,16 +3770,6 @@
 				"$context": ""
 			}
 		},
-		"viewAvatarItemPriceFloor": {
-			"name": {
-				"$message": "Show the price floor of the avatar item type",
-				"$context": ""
-			},
-			"description": {
-				"$message": "When enabled, shows the price floor of the type of the avatar item. This also enables the Marketplace Item Pricing page at \"/marketplace-item-pricing\".",
-				"$context": ""
-			}
-		},
 		"avatarItemMorePriceChartData": {
 			"name": {
 				"$message": "Show more price chart data on avatar items",
@@ -6182,53 +6172,6 @@
 			}
 		}
 	},
-	"itemPricing": {
-		"$context": "Marketplace item pricing page at /marketplace-item-pricing",
-		"title": {
-			"$message": "Marketplace Item Pricing",
-			"$context": "Page title"
-		},
-		"body": {
-			"$message": "All item types have a price floor and ceiling. Accessories have a dynamic floor price that fluctuates usually every day between {startTime} and {endTime} (local time).\n\nCreators can set the price of their items to an amount matching or above the price floor of the item's type. For more information, view the Creator Documentation article on <docsLink>Publishing to Marketplace</docsLink>.",
-			"$context": "Page body"
-		},
-		"assets": {
-			"$message": "Assets",
-			"type": {
-				"$message": "Asset Type",
-				"$context": "Type of the asset item"
-			},
-			"floor": {
-				"$message": "Floor Price",
-				"$context": "Floor price field"
-			},
-			"ceiling": {
-				"$message": "Ceiling Price",
-				"$context": "Ceiling price field"
-			},
-			"$context": "Assets section"
-		},
-		"bundles": {
-			"$message": "Bundles",
-			"type": {
-				"$message": "Bundle Type",
-				"$context": "Type of the bundle item"
-			},
-			"floor": {
-				"$message": "Floor Price",
-				"$context": "Floor price field"
-			},
-			"ceiling": {
-				"$message": "Ceiling Price",
-				"$context": "Ceiling price field"
-			},
-			"$context": "Bundles section"
-		},
-		"dynamicFloor": {
-			"$message": "(Dynamic)",
-			"$context": "Shown when the price is dynamic and fluctuates"
-		}
-	},
 	"hiddenAvatarBundle": {
 		"$context": "Hidden avatar bundle page at /hidden-bundles/ID/NAME",
 		"title": {
@@ -6409,10 +6352,6 @@
 				"$context": "The text shown under the currently off sale text",
 				"$message": "Last on sale {time} ago{hasPrice, select, true { for {price}} other {}}"
 			}
-		},
-		"dynamicFloorPrice.tooltip": {
-			"$message": "The current dynamic floor price for \"{displayType}\" is {floorPrice}.{isOverFloorPrice, select, true {{lineBreak}This item is {overFloorPrice} over the floor price.} other {} }{lineBreak}{lineBreak}Click for more information about item pricing.",
-			"$context": "Tooltip shown when hovering over the question mark next to the price of the item"
 		},
 		"hiddenBanner": {
 			"$context": "Banner shown on hidden avatar assets",

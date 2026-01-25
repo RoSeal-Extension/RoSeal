@@ -2729,14 +2729,6 @@ export const sections = [
 					},
 					{
 						type: "Regular",
-						id: "viewAvatarItemPriceFloor",
-						component: {
-							type: "Toggle",
-							defaultValue: true,
-						},
-					},
-					{
-						type: "Regular",
 						id: "marketplaceCreatorTypeFilter",
 						component: {
 							type: "Toggle",
