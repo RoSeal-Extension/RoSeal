@@ -9,6 +9,7 @@ import Download3DAvatarButton from "src/ts/components/users/userProfile/avatar/D
 import BlockedScreen from "src/ts/components/users/userProfile/BlockedScreen";
 import UserCommunityJoinedDateCarousel from "src/ts/components/users/userProfile/communities/JoinedDateCarousel";
 import UserCommunityJoinedDateGrid from "src/ts/components/users/userProfile/communities/JoinedDateGrid";
+import UserCommunityRoleGrid from "src/ts/components/users/userProfile/communities/RoleGrid";
 import CustomizeProfileButton from "src/ts/components/users/userProfile/CustomizeProfileButton";
 import FilteredTextPreview from "src/ts/components/users/userProfile/FilteredTextPreview";
 import UserJoinDate from "src/ts/components/users/userProfile/JoinDate";
@@ -49,6 +50,7 @@ import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { modifyItemStats } from "src/ts/helpers/modifyItemStats";
 import { onRobloxPresenceUpdateDetails } from "src/ts/helpers/notifications";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
+import { listUserGroupsRoles } from "src/ts/helpers/requests/services/groups";
 import { filterText, getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
 import {
 	checkUsersReciprocalBlocked,
@@ -852,6 +854,31 @@ export default {
 				);
 			});
 		});
+
+		featureValueIs("showUserCommunitiesRoles", true, () =>
+			listUserGroupsRoles({
+				userId: profileUserId,
+			}).then((data) => {
+				watch(".profile-communities .base-tile-metadata", (card) => {
+					const link = card.closest("a")?.href;
+					if (!link) {
+						return;
+					}
+
+					const path = new URL(link).pathname;
+					const idStr = GROUP_DETAILS_REGEX.exec(path)?.[2];
+					if (!idStr) {
+						return;
+					}
+
+					const id = Number.parseInt(idStr, 10);
+					const roleName = data.data.find((item) => item.group.id === id)?.role?.name;
+					if (!roleName || !card.parentElement) return;
+
+					renderAppend(<UserCommunityRoleGrid roleName={roleName} />, card.parentElement);
+				});
+			}),
+		);
 
 		if (profileUserId !== authenticatedUser?.userId) {
 			featureValueIs("userBlockedScreen", true, () => {

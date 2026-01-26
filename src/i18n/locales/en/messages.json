@@ -3254,6 +3254,11 @@
 				"$context": ""
 			}
 		},
+		"showUserCommunitiesRoles": {
+			"name": {
+				"$message": "Show roles for each community that a user is in"
+			}
+		},
 		"experienceVerticalStats": {
 			"name": {
 				"$message": "Show experience stats in a vertical layout",

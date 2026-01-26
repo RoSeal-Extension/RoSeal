@@ -2201,6 +2201,14 @@ export const sections = [
 					},
 					{
 						type: "Regular",
+						id: "showUserCommunitiesRoles",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
+					},
+					{
+						type: "Regular",
 						id: "desktopPastUsernamesButton",
 						component: {
 							type: "Toggle",
