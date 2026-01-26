@@ -130,16 +130,6 @@
     }
 }
 
-[data-rosealfe-linkusermarketplaceshop] {
-    #profile-header-container .header-caption {
-        @media (min-width: 768px) {
-            height: unset;
-            min-height: 128px;
-            max-height: 150px;
-        }
-    }
-}
-
 [data-rosealfe-imageresolutionoverride] {
     groups-showcase-grid .thumbnail-2d-container {
         width: inherit;

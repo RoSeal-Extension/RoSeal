@@ -3039,16 +3039,6 @@
 				}
 			}
 		},
-		"linkUserMarketplaceShop": {
-			"name": {
-				"$message": "Link to a user's Marketplace items on the user's profile",
-				"$context": ""
-			},
-			"description": {
-				"$message": "Adds a link under a player's username on their profile to go to their marketplace items.  This won't show if they don't have any on-sale items.",
-				"$context": ""
-			}
-		},
 		"searchGroupStore": {
 			"name": {
 				"$message": "Search bar for community store items",

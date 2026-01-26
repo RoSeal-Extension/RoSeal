@@ -2055,16 +2055,6 @@ export const sections = [
 					},
 					{
 						type: "Regular",
-						id: "linkUserMarketplaceShop",
-						component: {
-							type: "Toggle",
-							defaultValue: true,
-						},
-						hasCSS: true,
-						deprecated: true,
-					},
-					{
-						type: "Regular",
 						id: "cancelFriendRequests",
 						component: {
 							type: "Toggle",
@@ -2078,7 +2068,6 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
-						deprecated: true,
 					},
 					{
 						type: "Regular",

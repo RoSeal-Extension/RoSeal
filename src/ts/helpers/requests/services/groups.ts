@@ -100,6 +100,7 @@ export type GroupV1 = {
 	publicEntryAllowed: boolean;
 	isLocked: boolean;
 	hasVerifiedBadge: boolean;
+	hasSocialModules?: boolean;
 };
 
 export type ListUserPendingGroupsResponse = {
@@ -117,11 +118,18 @@ export type GroupRoleV1 = {
 	rank: number;
 };
 
+export type GroupV1NotificationPreference = {
+	type: GroupNotificationSettingType;
+	enabled: boolean;
+	name: string;
+	description: string;
+};
+
 export type GroupV1WithRole = {
 	group: GroupV1;
 	role: GroupRoleV1;
 	isPrimaryGroup?: boolean;
-	isNotificationsEnabled: boolean;
+	notificationPreferences?: GroupV1NotificationPreference[];
 };
 
 export type ListUserGroupsRolesRequest = {
@@ -147,8 +155,14 @@ export type MultigetGroupsPoliciesResponse = {
 	groups: GroupPolicy[];
 };
 
+export type GroupNotificationSettingType =
+	| "AnnouncementCreatedNotification"
+	| "ForumCommentCreatedNotification"
+	| "ForumCommentReplyCreatedNotification";
+
 export type SetGroupNotificationSettingRequest = {
 	groupId: number;
+	type: GroupNotificationSettingType;
 	notificationsEnabled: boolean;
 };
 

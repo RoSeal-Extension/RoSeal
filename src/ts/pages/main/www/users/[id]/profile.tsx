@@ -20,7 +20,6 @@ import UserPortraitView from "src/ts/components/users/userProfile/PortraitView";
 import UserProfilePublishedAvatars from "src/ts/components/users/userProfile/publishedAvatars/Carousel";
 import RemoveFollowerButton from "src/ts/components/users/userProfile/RemoveFollowerButton";
 import RobloxBadgesContainer from "src/ts/components/users/userProfile/RobloxBadgesContainer";
-import SearchMarketplaceItemsButton from "src/ts/components/users/userProfile/SearchMarketplaceItemsButton";
 import TacoButton from "src/ts/components/users/userProfile/TacoButton";
 import TrackConnectionActivityButton from "src/ts/components/users/userProfile/TrackConnectionActivity";
 import UserProfileLocale from "src/ts/components/users/userProfile/UserLocale";
@@ -220,6 +219,30 @@ export default {
 			featureValueIs("copyShareLinks", true, () =>
 				modifyItemContextMenu(() => <CopyShareLinkButton type="User" id={profileUserId} />),
 			);
+
+			featureValueIs("viewUserProfileLocale", true, () => {
+				const localePromise = tryOpenCloudAuthRequest(
+					authenticatedUser.userId,
+					authenticatedUser.isUnder13 === false,
+					(credentials) =>
+						getOpenCloudUser({
+							credentials,
+							userId: profileUserId,
+						}).then((data) => data.locale),
+				).catch(() => undefined);
+
+				watchOnce(
+					"#treatment-redesigned-header .user-profile-header-details-avatar-container",
+				).then((el) => {
+					const afterEl = el.nextElementSibling?.lastElementChild;
+					if (afterEl) {
+						renderAfter(
+							<UserProfileLocale userId={profileUserId} promise={localePromise} />,
+							afterEl as HTMLElement,
+						);
+					}
+				});
+			});
 		} else {
 			featureValueIs(FRIENDS_PRESENCE_NOTIFICATIONS_FEATURE_ID, true, () =>
 				getUserFriendStatus({
@@ -266,64 +289,6 @@ export default {
 			});
 		}
 
-		multigetFeaturesValues(["viewUserProfileLocale", "linkUserMarketplaceShop"]).then(
-			(data) => {
-				if (!data.linkUserMarketplaceShop && !data.viewUserProfileLocale) return;
-
-				const localePromise =
-					data.viewUserProfileLocale && !isMyProfile
-						? tryOpenCloudAuthRequest(
-								authenticatedUser.userId,
-								authenticatedUser.isUnder13 === false,
-								(credentials) =>
-									getOpenCloudUser({
-										credentials,
-										userId: profileUserId,
-									}).then((data) => data.locale),
-							).catch(() => undefined)
-						: undefined;
-				if (localePromise) {
-					watchOnce(
-						"#treatment-redesigned-header .user-profile-header-details-avatar-container",
-					).then((el) => {
-						const afterEl = el.nextElementSibling?.lastElementChild;
-						if (afterEl) {
-							renderAfter(
-								<UserProfileLocale
-									userId={profileUserId}
-									promise={localePromise}
-								/>,
-								afterEl as HTMLElement,
-							);
-						}
-					});
-				}
-
-				watchOnce("#profile-header-container .header-names, .profile-header-names").then(
-					(details) => {
-						const div = document.createElement("div");
-						div.classList.add("header-misc");
-						details.after(div);
-
-						renderIn(
-							<>
-								{data.viewUserProfileLocale && !isMyProfile && localePromise && (
-									<UserProfileLocale
-										userId={profileUserId}
-										promise={localePromise}
-									/>
-								)}
-								{data.linkUserMarketplaceShop && (
-									<SearchMarketplaceItemsButton userId={profileUserId} />
-								)}
-							</>,
-							div,
-						);
-					},
-				);
-			},
-		);
-
 		featureValueIs("desktopPastUsernamesButton", true, () => {
 			watch(".modal-title > h4", async (h4) => {
 				if (
@@ -342,8 +307,6 @@ export default {
 		});
 
 		featureValueIs("confirmRemoveConnection", true, async () => {
-			let label: HTMLElement | undefined;
-
 			const removeText = (await getLangNamespace("Feature.Profile"))[
 				"Label.RemoveConnection"
 			];
@@ -368,7 +331,9 @@ export default {
 
 				show.value = false;
 
-				label?.click();
+				unfriendUser({
+					userId: profileUserId,
+				});
 			};
 
 			renderAppendBody(
@@ -386,13 +351,12 @@ export default {
 					return;
 				}
 
-				label = el;
 				el.addEventListener("click", onClickUnfriend, {
 					capture: true,
 				});
 			};
 
-			watch(".profile-header-buttons button", (el) => {
+			watch(".foundation-web-portal-zindex button", (el) => {
 				if (stop) return;
 
 				handleChange(el);

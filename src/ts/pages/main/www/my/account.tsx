@@ -52,6 +52,7 @@ export default {
 		};
 
 		watchOnce("#user-account #settings-container").then(async (settingsContainer) => {
+			/*
 			const mobile = settingsContainer.querySelector<HTMLElement>(
 				".mobile-navigation-dropdown select",
 			);
@@ -79,7 +80,7 @@ export default {
 						capture: true,
 					},
 				);
-			}
+			}*/
 
 			const desktop = settingsContainer.querySelector<HTMLElement>(
 				".settings-left-navigation ul",
@@ -181,11 +182,11 @@ export default {
 
 		featureValueIs("betterNotificationPreferences", true, () =>
 			watch(".group-wrapper:not(.better-notification-group)", (wrapper) => {
-				if (wrapper.querySelector(".icon-play")) {
+				if (wrapper.querySelector(".icon-regular-circle-play")) {
 					hideEl(wrapper);
 					renderAfter(<BetterExperienceNotifications />, wrapper);
 				}
-				if (wrapper.querySelector(".icon-menu-groups")) {
+				if (wrapper.querySelector(".icon-regular-three-people")) {
 					hideEl(wrapper);
 					renderAfter(<BetterGroupNotifications />, wrapper);
 				}
