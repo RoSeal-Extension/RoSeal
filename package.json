@@ -32,7 +32,7 @@
 		"classnames": "2.5.1",
 		"client-zip": "2.5.0",
 		"colorthief": "2.6.0",
-		"country-flag-icons": "1.6.8",
+		"country-flag-icons": "1.6.9",
 		"d3-color": "3.1.0",
 		"d3-drag": "3.0.0",
 		"d3-geo": "3.1.1",
@@ -68,7 +68,7 @@
 		"zod": "4.3.6"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.3.12",
+		"@biomejs/biome": "2.3.13",
 		"@formatjs/icu-messageformat-parser": "3.5.0",
 		"@total-typescript/ts-reset": "0.6.1",
 		"@types/angular": "1.8.9",

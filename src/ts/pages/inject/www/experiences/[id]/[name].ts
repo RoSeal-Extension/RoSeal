@@ -102,11 +102,10 @@ export default {
 			hijackCreateElement(
 				(_, props) => !!props && "eventList" in props,
 				(createElement, type, props) => {
-					return createElement(
-						PortaledEvents,
-						props as PortaledEventsProps,
-						createElement(type as ComponentType, props!),
-					);
+					return createElement(PortaledEvents, {
+						...props,
+						children: createElement(type as ComponentType, props!), // crackhead technology? i do not understand why it doesnt accept it in children argument
+					} as PortaledEventsProps);
 				},
 			);
 		});
