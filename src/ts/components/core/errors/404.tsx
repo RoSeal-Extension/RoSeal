@@ -7,12 +7,12 @@ import { useTheme } from "../../hooks/useTheme.ts";
 
 export default function Page404() {
 	const [theme] = useTheme();
-	const url = `https://${getRobloxCDNUrl(
-		"images",
+
+	const url = `https://${getRobloxCDNUrl("images")}${
 		theme === "light"
 			? "/db3312a56f2d4b12e4a5e55523e6320c.png"
-			: "/d8ff6ab6cc7b632e0377bdb206f69490.png",
-	)}`;
+			: "/d8ff6ab6cc7b632e0377bdb206f69490.png"
+	}`;
 
 	return (
 		<>
