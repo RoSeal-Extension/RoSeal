@@ -1,4 +1,3 @@
-import { useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	getGroupGuildedShout,
@@ -9,13 +8,11 @@ import { getGroupProfileLink } from "src/ts/utils/links";
 import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePromise from "../hooks/usePromise";
-import BetterNotificationGroup from "./BetterNotificationGroup";
+import BetterNotificationGroup, { type BetterNotificationItem } from "./BetterNotificationGroup";
 
 export default function BetterGroupNotifications() {
-	const [followedGroupIds, setFollowedGroupIds] = useState<number[]>([]);
-
 	const [authenticatedUser] = useAuthenticatedUser();
-	const [groups] = usePromise(() => {
+	const [groups, , , , setGroups] = usePromise(() => {
 		if (!authenticatedUser) {
 			return;
 		}
@@ -27,15 +24,6 @@ export default function BetterGroupNotifications() {
 			if (!data.length) {
 				return [];
 			}
-
-			const newGroupIds: number[] = [];
-			for (const group of data) {
-				if (group.isNotificationsEnabled) {
-					newGroupIds.push(group.group.id);
-				}
-			}
-
-			setFollowedGroupIds(newGroupIds);
 
 			return Promise.all(
 				data.map((item) =>
@@ -54,6 +42,7 @@ export default function BetterGroupNotifications() {
 						thumbnailType: "GroupIcon" as const,
 						link: getGroupProfileLink(item.group.id),
 						lastUpdated: shout?.updatedAt,
+						preferences: item.notificationPreferences,
 					})),
 				),
 			);
@@ -66,25 +55,18 @@ export default function BetterGroupNotifications() {
 			iconName="menu-groups"
 			description={getMessage("robloxSettings.notifications.groups.description")}
 			offDescription={getMessage("robloxSettings.notifications.groups.descriptionOff")}
-			toggleFollowing={(id) => {
-				const shouldEnable = !followedGroupIds.includes(id);
+			toggleFollowing={(enabled, id, type) =>
 				setGroupNotificationSetting({
 					groupId: id,
-					notificationsEnabled: shouldEnable,
+					type: type!,
+					notificationsEnabled: enabled,
+				}).catch((err) => {
+					warning(getMessage("robloxSettings.notifications.groups.error"));
+					throw err;
 				})
-					.then(() => {
-						if (!shouldEnable) {
-							setFollowedGroupIds(followedGroupIds.filter((item) => item !== id));
-						} else {
-							setFollowedGroupIds([...followedGroupIds, id]);
-						}
-					})
-					.catch(() => warning(getMessage("robloxSettings.notifications.groups.error")));
-			}}
-			items={groups?.map((group) => ({
-				...group,
-				isFollowing: followedGroupIds.includes(group.id),
-			}))}
+			}
+			items={groups}
+			setItems={setGroups as (data: BetterNotificationItem[]) => void}
 		/>
 	);
 }

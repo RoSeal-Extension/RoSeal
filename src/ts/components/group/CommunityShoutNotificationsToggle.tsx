@@ -27,7 +27,13 @@ export default function CommunityShoutNotificationsToggle({
 		}).then((data) => {
 			for (const item of data.data) {
 				if (item.group.id === communityId) {
-					return item.isNotificationsEnabled === true;
+					if (item.notificationPreferences) {
+						for (const item2 of item.notificationPreferences) {
+							if (item2.type === "AnnouncementCreatedNotification") {
+								return item2.enabled;
+							}
+						}
+					}
 				}
 			}
 		});
@@ -35,6 +41,7 @@ export default function CommunityShoutNotificationsToggle({
 
 	const onClick = useCallback(() => {
 		setGroupNotificationSetting({
+			type: "AnnouncementCreatedNotification",
 			groupId: communityId,
 			notificationsEnabled: !isNotified,
 		}).then(refreshIsNotified);

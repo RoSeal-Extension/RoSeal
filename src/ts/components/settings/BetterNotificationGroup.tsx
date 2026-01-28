@@ -11,6 +11,10 @@ import Toggle from "../core/Toggle";
 import VerifiedBadge from "../icons/VerifiedBadge";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import Tooltip from "../core/Tooltip";
+import type {
+	GroupNotificationSettingType,
+	GroupV1NotificationPreference,
+} from "src/ts/helpers/requests/services/groups";
 
 export type BetterNotificationItem = {
 	id: number;
@@ -19,22 +23,27 @@ export type BetterNotificationItem = {
 	lastUpdated?: string;
 	name: string;
 	thumbnailType: ThumbnailType;
-	isFollowing: boolean;
 	creator?: AgentMentionContainerProps | null;
 	hasVerifiedBadge?: boolean;
+	preferences?: GroupV1NotificationPreference[];
 };
 
 export type BetterNotificationGroupProps = {
 	title: string;
 	iconName: string;
 	description: string;
-	offDescription: string;
-	toggleFollowing: (id: number) => void;
+	offDescription?: string;
 	items?: BetterNotificationItem[] | null;
+	toggleFollowing: (
+		enabled: boolean,
+		id: number,
+		type?: GroupNotificationSettingType,
+	) => MaybePromise<void>;
+	setItems?: (data: BetterNotificationItem[]) => void;
 };
 
 export type FollowedItemProps = BetterNotificationItem & {
-	toggleFollowing: () => void;
+	toggleFollowing: (enabled: boolean, type?: GroupNotificationSettingType) => void;
 	index: number;
 };
 
@@ -47,9 +56,9 @@ export function FollowedItem({
 	lastUpdated,
 	name,
 	thumbnailType,
-	isFollowing,
 	creator,
 	hasVerifiedBadge,
+	preferences,
 }: FollowedItemProps) {
 	return (
 		<div
@@ -115,10 +124,40 @@ export function FollowedItem({
 						)}
 					</div>
 				)}
-				<div className="toggle-button-container">
-					<Toggle isOn={isFollowing} onToggle={toggleFollowing} />
-				</div>
+				{preferences?.length === 1 && (
+					<div className="toggle-button-container">
+						<Toggle
+							isOn={preferences[0].enabled}
+							onToggle={(data) => toggleFollowing(data, preferences[0].type)}
+						/>
+					</div>
+				)}
 			</div>
+			{preferences?.length && preferences.length > 1 && (
+				<div className="preference-selectors">
+					{preferences.map((preference) => (
+						<div class="preference-selector" key={preference.type}>
+							<div class="preference-selector-header">
+								<div class="notification-type-info">
+									<div class="notification-type heading text text-emphasis">
+										{preference.name}
+									</div>
+									<div class="notification-type-descriptor small text text-content">
+										{preference.description}
+									</div>
+								</div>
+								<div class="toggle-button-container">
+									<Toggle
+										className="receiver-destination-type-toggle"
+										isOn={preference.enabled}
+										onToggle={(data) => toggleFollowing(data, preference.type)}
+									/>
+								</div>
+							</div>
+						</div>
+					))}
+				</div>
+			)}
 		</div>
 	);
 }
@@ -127,9 +166,10 @@ export default function BetterNotificationGroup({
 	title,
 	iconName,
 	description,
-	toggleFollowing,
 	offDescription,
 	items,
+	toggleFollowing,
+	setItems,
 }: BetterNotificationGroupProps) {
 	const [open, setOpen] = useState(false);
 
@@ -164,8 +204,21 @@ export default function BetterNotificationGroup({
 									<FollowedItem
 										key={item.id}
 										{...item}
-										toggleFollowing={() => toggleFollowing(item.id)}
 										index={index}
+										toggleFollowing={async (enabled, type) => {
+											try {
+												await toggleFollowing(enabled, item.id, type);
+
+												if (item.preferences && setItems)
+													for (const preference of item.preferences) {
+														if (type === preference.type) {
+															preference.enabled = enabled;
+															setItems([...items]);
+															return;
+														}
+													}
+											} catch {}
+										}}
 									/>
 								))}
 							</div>

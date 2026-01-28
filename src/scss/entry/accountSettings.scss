@@ -185,6 +185,12 @@
 
 .better-notification-group {
     .preference-button-wrapper {
+        flex-wrap: wrap;
+        .preference-selectors {
+            flex: 1;
+            margin-bottom: 1em;
+        }
+
         .creator-name {
             gap: 5px;
         }

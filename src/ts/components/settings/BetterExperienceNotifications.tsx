@@ -1,4 +1,3 @@
-import { useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	addUserUniverseFollowing,
@@ -11,12 +10,12 @@ import { getExperienceLink } from "src/ts/utils/links";
 import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePromise from "../hooks/usePromise";
-import BetterNotificationGroup from "./BetterNotificationGroup";
+import BetterNotificationGroup, { type BetterNotificationItem } from "./BetterNotificationGroup";
+import type { GroupNotificationSettingType } from "src/ts/helpers/requests/services/groups";
 
 export default function BetterExperienceNotifications() {
 	const [authenticatedUser] = useAuthenticatedUser();
-	const [followedUniverseIds, setFollowedUniverseIds] = useState<number[]>([]);
-	const [universes] = usePromise(() => {
+	const [universes, , , , setUniverses] = usePromise(() => {
 		if (!authenticatedUser) {
 			return;
 		}
@@ -28,10 +27,11 @@ export default function BetterExperienceNotifications() {
 				return [];
 			}
 
-			const universeIds = Object.keys(data.followedSources).map((item) =>
-				Number.parseInt(item, 10),
-			);
-			setFollowedUniverseIds(universeIds);
+			const universeIds: number[] = [];
+			for (const key in data.followedSources) {
+				universeIds.push(Number.parseInt(key, 10));
+			}
+
 			return multigetUniversesByIds({
 				universeIds,
 			})
@@ -48,6 +48,14 @@ export default function BetterExperienceNotifications() {
 						thumbnailType: "GameIcon" as const,
 						link: getExperienceLink(universe.rootPlaceId, universe.name),
 						followingSince: data.followedSources[universe.id]!,
+						preferences: [
+							{
+								name: "",
+								description: "",
+								type: "" as GroupNotificationSettingType,
+								enabled: true,
+							},
+						],
 					})),
 				)
 				.then((data) =>
@@ -68,32 +76,20 @@ export default function BetterExperienceNotifications() {
 	return (
 		<BetterNotificationGroup
 			title={getMessage("robloxSettings.notifications.experiences.title")}
-			iconName="play"
+			iconName="regular-circle-play icon size-[var(--icon-size-large)]"
 			description={getMessage("robloxSettings.notifications.experiences.description")}
 			offDescription={getMessage("robloxSettings.notifications.experiences.descriptionOff")}
-			toggleFollowing={(id) => {
-				const shouldEnable = !followedUniverseIds.includes(id);
-				(shouldEnable ? addUserUniverseFollowing : removeUserUniverseFollowing)({
+			toggleFollowing={(enabled, id) =>
+				(enabled ? addUserUniverseFollowing : removeUserUniverseFollowing)({
 					userId: authenticatedUser!.userId,
 					universeId: id,
+				}).catch((err) => {
+					warning(getMessage("robloxSettings.notifications.experiences.error"));
+					throw err;
 				})
-					.then(() => {
-						if (shouldEnable) {
-							setFollowedUniverseIds([...followedUniverseIds, id]);
-						} else {
-							setFollowedUniverseIds(
-								followedUniverseIds.filter((universeId) => universeId !== id),
-							);
-						}
-					})
-					.catch(() => {
-						warning(getMessage("robloxSettings.notifications.experiences.error"));
-					});
-			}}
-			items={universes?.map((universe) => ({
-				...universe,
-				isFollowing: followedUniverseIds.includes(universe.id),
-			}))}
+			}
+			items={universes}
+			setItems={setUniverses as (data: BetterNotificationItem[]) => void}
 		/>
 	);
 }
