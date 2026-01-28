@@ -111,7 +111,7 @@ export default function AvatarAssetContainer({ assetId }: AvatarAssetContainerPr
 
 						return {
 							name: item.name,
-							description: "Cool item data\n\n\nTrue bestie\n\nMeow",
+							description: item.name,,
 							assetTypeId: item.typeId,
 							assetId: item.id,
 							collectibleItemId: null,
@@ -149,8 +149,6 @@ export default function AvatarAssetContainer({ assetId }: AvatarAssetContainerPr
 						return;
 					}
 
-					data.description =
-						"how did they hit every angle\n\nInspired by Touhou - Nitori Get Down\n\nYEAHHHHHHHHHHHHHHHHHHHHHHHH";
 					modifyTitle(data.name);
 					if (data.assetTypeId === placeAssetTypeId) {
 						location.href = getExperienceLink(assetId, data.name);
