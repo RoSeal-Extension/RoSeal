@@ -57,7 +57,7 @@ export default function RippleEffect(props: RippleEffectProps) {
 		ripples.map((ripple, index) => (
 			<span
 				key={ripple.index}
-				class="roseal-ripple-effect"
+				className="roseal-ripple-effect"
 				style={{
 					height: `${ripple.heightWidth}px`,
 					width: `${ripple.heightWidth}px`,

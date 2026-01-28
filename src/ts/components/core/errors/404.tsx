@@ -3,8 +3,17 @@ import Button from "../Button.tsx";
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { getRobloxCDNUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getHomePageUrl } from "src/ts/utils/links.ts";
+import { useTheme } from "../../hooks/useTheme.ts";
 
 export default function Page404() {
+	const [theme] = useTheme();
+	const url = `https://${getRobloxCDNUrl(
+		"images",
+		theme === "light"
+			? "/db3312a56f2d4b12e4a5e55523e6320c.png"
+			: "/d8ff6ab6cc7b632e0377bdb206f69490.png",
+	)}`;
+
 	return (
 		<>
 			<link
@@ -14,7 +23,7 @@ export default function Page404() {
 			<div className="request-error-page-content roseal-error-page">
 				<div className="default-error-page section-content">
 					<img
-						src={`https://${getRobloxCDNUrl("images", "/db3312a56f2d4b12e4a5e55523e6320c.png")}`}
+						src={url}
 						className="error-image"
 						alt={getMessage("errorPage.404.imageAlt")}
 					/>

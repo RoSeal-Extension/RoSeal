@@ -136,17 +136,17 @@ export function FollowedItem({
 			{preferences?.length && preferences.length > 1 && (
 				<div className="preference-selectors">
 					{preferences.map((preference) => (
-						<div class="preference-selector" key={preference.type}>
-							<div class="preference-selector-header">
-								<div class="notification-type-info">
-									<div class="notification-type heading text text-emphasis">
+						<div className="preference-selector" key={preference.type}>
+							<div className="preference-selector-header">
+								<div className="notification-type-info">
+									<div className="notification-type heading text text-emphasis">
 										{preference.name}
 									</div>
-									<div class="notification-type-descriptor small text text-content">
+									<div className="notification-type-descriptor small text text-content">
 										{preference.description}
 									</div>
 								</div>
-								<div class="toggle-button-container">
+								<div className="toggle-button-container">
 									<Toggle
 										className="receiver-destination-type-toggle"
 										isOn={preference.enabled}

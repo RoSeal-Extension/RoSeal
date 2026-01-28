@@ -174,7 +174,7 @@ export default function Filter<T extends FilterData>({
 								})}
 								onClick={() => setValue(filter.defaultValue)}
 							>
-								<span class="filter-option-name">{filter.defaultLabel}</span>
+								<span className="filter-option-name">{filter.defaultLabel}</span>
 								<Icon
 									className="selection-icon"
 									name={
@@ -334,7 +334,7 @@ export default function Filter<T extends FilterData>({
 								})}
 								onClick={() => setValue(filter.defaultValue)}
 							>
-								<span class="filter-option-name">{filter.defaultLabel}</span>
+								<span className="filter-option-name">{filter.defaultLabel}</span>
 								<Icon
 									className="selection-icon"
 									name={
@@ -381,7 +381,7 @@ export default function Filter<T extends FilterData>({
 								})}
 								onClick={() => setValue(filter.defaultValue)}
 							>
-								<span class="filter-option-name">{filter.defaultLabel}</span>
+								<span className="filter-option-name">{filter.defaultLabel}</span>
 								<Icon
 									className="selection-icon"
 									name={
