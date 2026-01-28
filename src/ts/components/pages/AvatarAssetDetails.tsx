@@ -111,7 +111,7 @@ export default function AvatarAssetContainer({ assetId }: AvatarAssetContainerPr
 
 						return {
 							name: item.name,
-							description: item.name,,
+							description: item.name,
 							assetTypeId: item.typeId,
 							assetId: item.id,
 							collectibleItemId: null,
