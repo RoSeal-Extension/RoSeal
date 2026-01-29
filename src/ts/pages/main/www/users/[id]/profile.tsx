@@ -169,23 +169,6 @@ export default {
 					)
 				: undefined;
 
-			watchOnce(".profile-header-social-counts").then((el) =>
-				renderAppend(
-					<>
-						{features["improvedUserFriendsPage.mutualsTab"] && !isMyProfile && (
-							<MutualFriendsHeader userId={profileUserId} />
-						)}
-						{collectiblesPromise && (
-							<UserRAPHeader
-								userId={profileUserId}
-								allCollectiblesPromise={collectiblesPromise}
-							/>
-						)}
-					</>,
-					el,
-				),
-			);
-
 			const showLastSeen = signal(false);
 			if (!isMyProfile && features[FRIENDS_LAST_SEEN_FEATURE_ID])
 				getUserFriendStatus({
@@ -193,27 +176,28 @@ export default {
 				}).then((data) => {
 					showLastSeen.value = data.status === "Friends";
 				});
-			watchOnce(
-				"#treatment-redesigned-header .user-profile-header > .flex-nowrap:not(.user-profile-header-info)",
-			).then((el) =>
-				renderAppend(
-					() => (
-						<>
-							{features["improvedUserFriendsPage.mutualsTab"] && !isMyProfile && (
-								<MutualFriendsHeader userId={profileUserId} useV2 />
-							)}
-							{collectiblesPromise && (
-								<UserRAPHeader
-									userId={profileUserId}
-									allCollectiblesPromise={collectiblesPromise}
-									useV2
-								/>
-							)}
-							{showLastSeen.value && <UserLastSeen userId={profileUserId} useV2 />}
-						</>
+			watchOnce(".user-profile-header > .flex-nowrap:not(.user-profile-header-info)").then(
+				(el) =>
+					renderAppend(
+						() => (
+							<>
+								{features["improvedUserFriendsPage.mutualsTab"] && !isMyProfile && (
+									<MutualFriendsHeader userId={profileUserId} useV2 />
+								)}
+								{collectiblesPromise && (
+									<UserRAPHeader
+										userId={profileUserId}
+										allCollectiblesPromise={collectiblesPromise}
+										useV2
+									/>
+								)}
+								{showLastSeen.value && (
+									<UserLastSeen userId={profileUserId} useV2 />
+								)}
+							</>
+						),
+						el,
 					),
-					el,
-				),
 			);
 		});
 
@@ -221,7 +205,7 @@ export default {
 			featureValueIs("copyShareLinks", true, () =>
 				modifyItemContextMenu(() => <CopyShareLinkButton type="User" id={profileUserId} />),
 			);
-
+		} else {
 			featureValueIs("viewUserProfileLocale", true, () => {
 				const localePromise = tryOpenCloudAuthRequest(
 					authenticatedUser.userId,
@@ -233,9 +217,7 @@ export default {
 						}).then((data) => data.locale),
 				).catch(() => undefined);
 
-				watchOnce(
-					"#treatment-redesigned-header .user-profile-header-details-avatar-container",
-				).then((el) => {
+				watchOnce(".user-profile-header-details-avatar-container").then((el) => {
 					const afterEl = el.nextElementSibling?.lastElementChild;
 					if (afterEl) {
 						renderAfter(
@@ -245,7 +227,7 @@ export default {
 					}
 				});
 			});
-		} else {
+
 			featureValueIs(FRIENDS_PRESENCE_NOTIFICATIONS_FEATURE_ID, true, () =>
 				getUserFriendStatus({
 					userId: profileUserId,
@@ -527,15 +509,12 @@ export default {
 		featureValueIs("userProfileEasterEggs", true, () => {
 			switch (profileUserId) {
 				case ROBLOX_USERS.parryGripp: {
-					watch(
-						".profile-header-main, #treatment-redesigned-header .user-profile-header-info",
-						(desktopActions) => {
-							const btn = (
-								<TacoButton audioAssetId={ROBLOX_AUDIO_ASSETS.parryGrippTacoSong} />
-							);
-							renderAfter(btn, desktopActions);
-						},
-					);
+					watch(".user-profile-header-info", (desktopActions) => {
+						const btn = (
+							<TacoButton audioAssetId={ROBLOX_AUDIO_ASSETS.parryGrippTacoSong} />
+						);
+						renderAfter(btn, desktopActions);
+					});
 					break;
 				}
 				case ROBLOX_USERS.sayerSooth: {

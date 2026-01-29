@@ -71,9 +71,6 @@
         }
     }
 
-    #treatment-redesigned-header .user-profile-header > .flex-nowrap:not(.user-profile-header-info) button[disabled] {
-        opacity: 0.5;
-    }
     .profile-header-main {
         .profile-avatar-image {
             flex-shrink: 0;
@@ -331,10 +328,6 @@
     display: flex;
     gap: 4px;
     align-items: center;
-
-    #treatment-redesigned-header & {
-        margin-top: 3px;
-    }
 
     .locale-icon-container {
         .roseal-icon,
