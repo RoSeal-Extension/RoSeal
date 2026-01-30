@@ -16,9 +16,13 @@ export default function SettingsAlerts() {
 				.catch(() => false),
 		[],
 	);
-	const rosealSiteAccessible = useHasPermissions({
-		origins: [`*://${getRoSealUrl("*", "/*")}`],
-	});
+	const rosealSiteAccessible = useHasPermissions(
+		{
+			origins: [`*://${getRoSealUrl("*", "/*")}`],
+		},
+		true,
+	);
+
 	const [featuresLoaded, setFeaturesLoaded] = useState<boolean | undefined>(undefined);
 
 	useEffect(() => {
