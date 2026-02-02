@@ -9,19 +9,26 @@ export default function MarketplaceLanding() {
 		let isPrevLanding = false;
 		const parseUrl = () => {
 			const searchParams = new URLSearchParams(window.location.search);
-			if (searchParams.has("Landing")) {
-				isPrevLanding = true;
-				return;
-			}
+			const hasLandingParam = searchParams.has("Landing");
 
-			const isActuallyOnLanding =
+			const currentLanding =
 				isPrevLanding &&
 				searchParams.size === 2 &&
 				searchParams.get("taxonomy") === "tZsUsd2BqGViQrJ9Vs3Wah" &&
 				searchParams.get("salesTypeFilter") === "1";
 
+			if (!hasLandingParam && currentLanding) {
+				const newUrl = new URL(window.location.href);
+				searchParams.set("Landing", "true");
+				newUrl.search = searchParams.toString();
+
+				window.history.replaceState(null, "", newUrl.toString());
+			}
+
+			const isActuallyOnLanding = hasLandingParam || currentLanding;
+
 			setShow(isActuallyOnLanding);
-			isPrevLanding = false;
+			isPrevLanding = hasLandingParam;
 		};
 		parseUrl();
 
