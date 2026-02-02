@@ -6,24 +6,22 @@ export default function MarketplaceLanding() {
 	const [show, setShow] = useState(false);
 
 	useEffect(() => {
+		let isPrevLanding = false;
 		const parseUrl = () => {
 			const searchParams = new URLSearchParams(window.location.search);
-			const isLandingParam = searchParams.has("Landing");
+			if (searchParams.has("Landing")) {
+				isPrevLanding = true;
+				return;
+			}
+
 			const isActuallyOnLanding =
-				isLandingParam &&
-				(searchParams.size === 1 ||
-					(searchParams.size === 3 &&
-						searchParams.get("Category") === "1" &&
-						searchParams.get("salesTypeFilter") === "1"));
+				isPrevLanding &&
+				searchParams.size === 2 &&
+				searchParams.get("taxonomy") === "tZsUsd2BqGViQrJ9Vs3Wah" &&
+				searchParams.get("salesTypeFilter") === "1";
 
 			setShow(isActuallyOnLanding);
-			if (!isActuallyOnLanding && isLandingParam) {
-				const newUrl = new URL(window.location.href);
-				searchParams.delete("Landing");
-				newUrl.search = searchParams.toString();
-
-				window.history.replaceState(null, "", newUrl.toString());
-			}
+			isPrevLanding = false;
 		};
 		parseUrl();
 
