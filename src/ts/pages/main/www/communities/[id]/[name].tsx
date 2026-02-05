@@ -16,7 +16,14 @@ import { ROBLOX_COMMUNITIES } from "src/ts/constants/robloxCommunities";
 import { invokeMessage } from "src/ts/helpers/communication/dom";
 import { modifyItemContextMenu } from "src/ts/helpers/contextMenus";
 import { getLangNamespace } from "src/ts/helpers/domInvokes";
-import { hideEl, modifyTitle, showEl, watch, watchOnce } from "src/ts/helpers/elements";
+import {
+	hideEl,
+	modifyTitle,
+	showEl,
+	watch,
+	watchOnce,
+	watchTextContent,
+} from "src/ts/helpers/elements";
 import { featureValueIs, getFeatureValue } from "src/ts/helpers/features/helpers";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { modifyItemStats } from "src/ts/helpers/modifyItemStats";
@@ -224,12 +231,19 @@ export default {
 			});
 		});
 
-		featureValueIs("formatItemMentions", true, () =>
+		featureValueIs("formatItemMentions", true, () => {
+			const handleEl = (el: HTMLElement) => {
+				if (!el.textContent) {
+					watchTextContent(el, () => handleEl(el), true);
+				} else {
+					renderMentions(el);
+				}
+			};
 			watch(
 				".group-description-content-text, .description-container .description-content, .group-description-dialog-body-content:not(.block)",
-				(el) => renderMentions(el),
-			),
-		);
+				handleEl,
+			);
+		});
 		featureValueIs("showGroupCreatedDate", true, () => {
 			modifyItemStats("Group", () => <GroupCreated groupId={groupId.value} />);
 		});
