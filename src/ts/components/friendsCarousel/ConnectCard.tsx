@@ -18,7 +18,7 @@ export default function ConnectCard({ count }: ConnectCardProps) {
 					<LazyLink
 						href={
 							authenticatedUser
-								? getUserFriendsLink(authenticatedUser.userId)
+								? getUserFriendsLink(authenticatedUser.userId, "friend-requests")
 								: undefined
 						}
 					>
