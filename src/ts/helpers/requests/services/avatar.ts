@@ -28,6 +28,7 @@ export type AvatarAssetDefinition = {
 	id: number;
 	meta?: AvatarAssetMeta;
 	isSwappable?: boolean;
+	headShape?: unknown;
 };
 
 export type AvatarAssetDefinitionWithTypes = AvatarAssetDefinition & {
@@ -37,6 +38,9 @@ export type AvatarAssetDefinitionWithTypes = AvatarAssetDefinition & {
 		name?: string;
 	};
 	currentVersionId?: number;
+	availabilityStatus?: string;
+	expirationTime?: string;
+	supportsHeadShapes?: string;
 };
 
 export type AvatarBodyColorsRender = {

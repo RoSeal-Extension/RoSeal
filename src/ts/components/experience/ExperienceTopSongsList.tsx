@@ -97,7 +97,7 @@ export default function ExperienceTopSongsList({
 					</button>
 				)}
 				<div
-					className="game-carousel horizontal-scroller expand-home-content-disabled"
+					className="game-carousel horizontal-scroller dynamic-layout-sizing-disabled"
 					ref={(el) => {
 						ref.current = el;
 						if (el) {
