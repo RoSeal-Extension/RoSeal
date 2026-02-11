@@ -3084,6 +3084,7 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: false,
 						},
+						deprecated: true,
 					},
 					{
 						type: "Regular",
