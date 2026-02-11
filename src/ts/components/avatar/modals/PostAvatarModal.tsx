@@ -47,7 +47,11 @@ export default function PostAvatarModal({ show, avatar, setShow }: PostAvatarMod
 		createUserLook({
 			name,
 			description,
-			assets: avatar.assets,
+			assets: avatar.assets.map((asset) => ({
+				id: asset.id,
+				meta: asset.meta,
+				headShape: "Invalid",
+			})),
 			avatarProperties: {
 				playerAvatarType: avatar.avatarType,
 				bodyColor3s: avatar.bodyColors,
