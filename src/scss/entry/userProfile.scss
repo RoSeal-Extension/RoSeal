@@ -432,8 +432,54 @@
     }
 }
 
-.button-container .roseal-customize-profile-btn {
-    flex-shrink: 0;
+.roseal-user-profile-btn {
+    text-decoration: none;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--gap-small);
+    min-width: var(--size-0);
+    padding-top: var(--padding-xsmall);
+    padding-bottom: var(--padding-xsmall);
+    border-radius: var(--radius-medium);
+    border-style: solid;
+    border-width: var(--stroke-none);
+    box-sizing: border-box;
+    height: var(--size-1000);
+    background-color: var(--color-action-standard-background);
+    position: relative;
+    white-space: nowrap;
+    font: var(--typography-label-medium-font);
+    letter-spacing: var(--typography-label-medium-letter-spacing);
+    color: var(--color-action-standard-foreground);
+
+    &,
+    span {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    &::before {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        content: "";
+        transition-property:
+            color,
+            background-color,
+            border-color,
+            -webkit-text-decoration-color,
+            text-decoration-color,
+            fill,
+            stroke;
+        transition-timing-function: var(--ease-linear);
+        transition-duration: var(--time-100);
+    }
+
+    &:hover::before {
+        background-color: var(--color-state-hover);
+    }
 }
 
 .profile-communities .group-joined-date,

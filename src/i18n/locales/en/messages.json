@@ -8464,7 +8464,7 @@
 		},
 		"customize": {
 			"buttonText": {
-				"$message": "Change Background"
+				"$message": "Edit Background"
 			}
 		},
 		"avatar": {

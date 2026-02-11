@@ -33,6 +33,7 @@ export default function PostAvatarModal({ show, avatar, setShow }: PostAvatarMod
 		}
 	}, [show]);
 
+	console.log(avatar.assets);
 	const onClickAction = useCallback(() => {
 		if (createdLook) {
 			window.open(getAvatarLookLink(createdLook.id, name), "_blank");

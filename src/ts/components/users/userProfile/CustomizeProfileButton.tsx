@@ -48,9 +48,9 @@ export default function CustomizeProfileButton({
 		<Popover
 			trigger="click"
 			button={
-				<Button type="control" className="roseal-customize-profile-btn">
-					{getMessage("user.customize.buttonText")}
-				</Button>
+				<button type="button" className="roseal-user-profile-btn">
+					<span>{getMessage("user.customize.buttonText")}</span>
+				</button>
 			}
 			className="customize-profile-container"
 			container={container}
