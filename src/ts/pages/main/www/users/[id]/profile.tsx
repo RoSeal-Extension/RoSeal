@@ -472,23 +472,6 @@ export default {
 			}),
 		);
 
-		featureValueIs("showAdministratorBadgeUserHeader", true, () =>
-			watchOnce(
-				"#roseal-roblox-badges-container .icon-badge-administrator, #roblox-badges-container .icon-badge-administrator",
-			).then((icon) => {
-				const badge = icon.closest("a");
-				if (!badge) return;
-
-				const clone = badge.cloneNode(true) as HTMLDivElement;
-				clone.classList.add("roseal-admin-badge");
-				clone.querySelector(".user-profile-pop-up-text")?.remove();
-
-				watchOnce(".profile-header-title-container > span").then((span) => {
-					span.after(clone);
-				});
-			}),
-		);
-
 		featureValueIs("formatItemMentions", true, () =>
 			// use ng-binding to ensure that it is angular.
 			watch(

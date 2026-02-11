@@ -2018,15 +2018,6 @@ export const sections = [
 					},
 					{
 						type: "Regular",
-						id: "showAdministratorBadgeUserHeader",
-						component: {
-							type: "Toggle",
-							defaultValue: true,
-						},
-						deprecated: true,
-					},
-					{
-						type: "Regular",
 						id: "cancelFriendRequests",
 						component: {
 							type: "Toggle",

@@ -2846,12 +2846,6 @@
 				"$context": ""
 			}
 		},
-		"showAdministratorBadgeUserHeader": {
-			"name": {
-				"$message": "Show the Roblox administrator badge on user headers",
-				"$context": ""
-			}
-		},
 		"viewInventoryItemObtainedDate": {
 			"name": {
 				"$message": "Show the date of when an inventory item was first obtained",

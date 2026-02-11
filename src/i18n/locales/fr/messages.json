@@ -1829,12 +1829,6 @@
 				"$context": ""
 			}
 		},
-		"showAdministratorBadgeUserHeader": {
-			"name": {
-				"$message": "Show the Roblox administrator badge on user headers",
-				"$context": ""
-			}
-		},
 		"viewInventoryItemObtainedDate": {
 			"name": {
 				"$message": "Afficher la date à laquelle un article de l'inventaire a été obtenu pour la première fois",
