@@ -98,15 +98,6 @@ export default {
 		const profileUserId = Number.parseInt(regexMatches![0]?.[1], 10);
 		const isMyProfile = authenticatedUser?.userId === profileUserId;
 
-		featureValueIs("robloxBadgesObtainedDates", true, () =>
-			watch(
-				".profile-platform-container #roblox-badges-container, .btr-profile-left .placeholder-robloxbadges, .btr-profile-left #roblox-badges-container, .btr-profile-robloxbadges",
-				(container) => {
-					renderAsContainer(<RobloxBadgesContainer userId={profileUserId} />, container);
-				},
-			),
-		);
-
 		featureValueIs("profilePlayerBadgesObtainedDates", true, () =>
 			watch(".profile-platform-container #player-badges-container", (container) => {
 				renderAsContainer(<PlayerBadgesContainer userId={profileUserId} />, container);

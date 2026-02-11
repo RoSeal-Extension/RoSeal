@@ -1985,34 +1985,6 @@ export const sections = [
 					},
 					{
 						type: "Regular",
-						id: "robloxBadgesObtainedDates",
-						component: {
-							type: "Toggle",
-							defaultValue: true,
-						},
-						subfeatures: {
-							items: [
-								{
-									type: "Regular",
-									id: "robloxBadgesObtainedDates.useRoSealOrdering",
-									component: {
-										type: "Toggle",
-										defaultValue: true,
-									},
-								},
-								{
-									type: "Regular",
-									id: "robloxBadgesObtainedDates.showUniqueIds",
-									component: {
-										type: "Toggle",
-										defaultValue: false,
-									},
-								},
-							],
-						},
-					},
-					{
-						type: "Regular",
 						id: "forceProfileFullBodyAvatarType",
 						component: {
 							type: "DropdownWithToggle",

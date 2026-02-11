@@ -2840,23 +2840,6 @@
 				"$context": ""
 			}
 		},
-		"robloxBadgesObtainedDates": {
-			"name": {
-				"$message": "Show obtained dates for Roblox badges on user profile on hover",
-				"$context": ""
-			},
-			"useRoSealOrdering": {
-				"name": {
-					"$message": "Sort Roblox badges by importance"
-				}
-			},
-			"showUniqueIds": {
-				"name": {
-					"$message": "Show unique ID of the badge",
-					"$context": ""
-				}
-			}
-		},
 		"liveProfilePresenceUpdate": {
 			"name": {
 				"$message": "Live user profile presence updates for all users",
@@ -8465,24 +8448,6 @@
 				},
 				"neutral": {
 					"$message": "Cancel"
-				}
-			}
-		},
-		"robloxBadges": {
-			"$context": "Roblox badges section",
-			"title": {
-				"$context": "",
-				"$message": "Roblox Badges"
-			},
-			"seeMore": {
-				"$context": "",
-				"$message": "See More"
-			},
-			"item": {
-				"$context": "Badge item",
-				"obtainedDate": {
-					"$context": "Obtained date",
-					"$message": "Obtained {date}"
 				}
 			}
 		},
