@@ -20,7 +20,6 @@ import PlayerBadgesContainer from "src/ts/components/users/userProfile/PlayerBad
 import UserPortraitView from "src/ts/components/users/userProfile/PortraitView";
 import UserProfilePublishedAvatars from "src/ts/components/users/userProfile/publishedAvatars/Carousel";
 import RemoveFollowerButton from "src/ts/components/users/userProfile/RemoveFollowerButton";
-import RobloxBadgesContainer from "src/ts/components/users/userProfile/RobloxBadgesContainer";
 import TacoButton from "src/ts/components/users/userProfile/TacoButton";
 import TrackConnectionActivityButton from "src/ts/components/users/userProfile/TrackConnectionActivity";
 import UserProfileLocale from "src/ts/components/users/userProfile/UserLocale";

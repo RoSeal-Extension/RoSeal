@@ -253,54 +253,6 @@
     }
 }
 
-#roseal-roblox-badges-container {
-    .badge-list {
-        overflow: auto;
-        max-height: unset;
-
-        &::before {
-            display: none;
-        }
-    }
-
-    .btr-profile & {
-        .section-content {
-            padding: 15px;
-            background-color: var(--RS_BACKGROUND-2-COLOR);
-        }
-        .badge-list {
-            max-height: 256px;
-
-            &.badge-list-more {
-                max-height: none;
-                overflow-x: hidden;
-            }
-
-            > .list-item {
-                width: 20%;
-                text-align: center;
-                overflow: hidden;
-
-                .asset-thumb-container {
-                    margin-left: 5px;
-                    transform: scale(calc(90 / 140));
-                    transform-origin: 0 0;
-
-                    margin-bottom: -50px;
-                }
-
-                .item-name {
-                    width: 100%;
-                    font-size: 14px;
-
-                    text-align: center;
-                    text-overflow: ellipsis;
-                }
-            }
-        }
-    }
-}
-
 #roseal-player-badges-container {
     .asset-thumb-container {
         width: 140px;
