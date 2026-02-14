@@ -145,6 +145,23 @@ export default function FriendRequestFilters({
 											/>
 										</div>
 									</li>
+									<li className="multi-item-option has-dropdown">
+										<div className="filter-option-icon-container">
+											<Icon name="logo-r" className="premium-zoom" />
+										</div>
+										<div className="filter-option-dropdown-container">
+											<Dropdown
+												selectionItems={premiumVerifiedBadgeOptions}
+												selectedItemValue={previewFilters.isRobloxAdmin}
+												onSelect={(isRobloxAdmin) => {
+													setPreviewFilters({
+														...previewFilters,
+														isRobloxAdmin,
+													});
+												}}
+											/>
+										</div>
+									</li>
 								</ul>
 							</div>
 							{/*

@@ -608,7 +608,7 @@
 				"premiumVerified": {
 					"$context": "Premium & Verified badges section",
 					"title": {
-						"$message": "Premium & Verified"
+						"$message": "Premium, Verified & Roblox Administrators"
 					},
 					"options": {
 						"$context": "Premium/verified badge options",
