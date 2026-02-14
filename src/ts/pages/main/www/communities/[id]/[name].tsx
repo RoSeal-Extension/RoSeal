@@ -31,8 +31,10 @@ import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { getGroupById, listUserGroupsRoles } from "src/ts/helpers/requests/services/groups";
 import { listMyExperienceEvents } from "src/ts/helpers/requests/services/universes";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
+import { getDeviceMeta } from "src/ts/utils/context";
 import { renderMentions } from "src/ts/utils/description";
 import { setActiveGroup } from "src/ts/utils/groups";
+import { determineCanJoinUser } from "src/ts/utils/joinData";
 import {
 	formatSeoName,
 	getGroupProfileLink,
@@ -365,6 +367,40 @@ export default {
 			modifyItemContextMenu(() => (
 				<ViewIconAssetButton itemType="Group" itemId={groupId.value} />
 			));
+		});
+
+		featureValueIs("userJoinCheck", true, () => {
+			watch("#action-button-JoinExperience", (btn) => {
+				const userLink = btn.closest("a");
+				if (!userLink?.href) return;
+
+				const parsedUserId = USER_PROFILE_REGEX.exec(
+					getPathFromMaybeUrl(userLink.href).realPath,
+				)?.[1];
+				if (!parsedUserId) return;
+
+				const userId = Number.parseInt(parsedUserId, 10);
+
+				btn.classList.add("roseal-disabled");
+				getDeviceMeta().then((data) =>
+					determineCanJoinUser({
+						userIdToFollow: userId,
+						overridePlatformType: data?.platformType,
+					})
+						.then((data) => {
+							if (data.message) {
+								btn.textContent = data.message;
+							}
+
+							if (data.disabled) {
+								btn.classList.add("roseal-grayscale");
+							} else {
+								btn.classList.remove("roseal-disabled");
+							}
+						})
+						.catch(() => btn.classList.remove("roseal-disabled")),
+				);
+			});
 		});
 
 		featureValueIs("blockedItems", true, () => {
