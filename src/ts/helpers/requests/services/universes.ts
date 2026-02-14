@@ -189,6 +189,7 @@ export type GetUniverseIconResponse = {
 
 export type GetUniverseMediaRequest = {
 	universeId: number;
+	fetchAllExperienceRelatedMedia?: boolean;
 };
 
 export type UniverseMedia = {
@@ -980,10 +981,11 @@ export async function multigetOmniRecommendationsMetadata({
 	});
 }
 
-export async function getUniverseMedia({ universeId }: GetUniverseMediaRequest) {
+export async function getUniverseMedia({ universeId, ...request }: GetUniverseMediaRequest) {
 	return (
 		await httpClient.httpRequest<GetUniverseMediaResponse>({
 			url: `${getRobloxUrl("games")}/v2/games/${universeId}/media`,
+			search: request,
 			credentials: {
 				type: "cookies",
 				value: true,
