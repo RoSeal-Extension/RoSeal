@@ -267,23 +267,6 @@ export default {
 			});
 		}
 
-		featureValueIs("desktopPastUsernamesButton", true, () => {
-			watch(".modal-title > h4", async (h4) => {
-				if (
-					h4.textContent ===
-					(await getLangNamespace("Feature.Profile"))["Label.PastUsername"]
-				) {
-					h4.closest(".modal")?.classList.add("past-usernames-modal");
-				}
-			});
-
-			watchOnce(".profile-name-history .tooltip-pastnames").then((tooltipBtn) => {
-				tooltipBtn.addEventListener("click", () => {
-					(tooltipBtn.previousElementSibling as HTMLButtonElement | null)?.click();
-				});
-			});
-		});
-
 		featureValueIs("confirmRemoveConnection", true, async () => {
 			const removeText = (await getLangNamespace("Feature.Profile"))[
 				"Label.RemoveConnection"

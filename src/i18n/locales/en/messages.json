@@ -3605,12 +3605,6 @@
 				"$context": ""
 			}
 		},
-		"desktopPastUsernamesButton": {
-			"name": {
-				"$message": "Clickable button to view past usernames modal",
-				"$context": "i.e. just makes the tooltip button clickable and will open a past usernames modal"
-			}
-		},
 		"groupOrganization": {
 			"name": {
 				"$message": "Community organization",
