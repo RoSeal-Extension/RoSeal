@@ -58,7 +58,7 @@ export async function modifyItemContextMenu<T extends VNode | (() => VNode)>(
 		isAvatarItemPage && hasReactContextMenu
 			? "#item-details-container .item-details-info-header .right"
 			: "#item-details-container > .section-content, #item-container > .section-content"
-	}, .profile-header:not(.hidden) .profile-header-content, .group-header .group-menu, .group-profile-header-info .actions-container, .look-name-container, .profile-header-buttons, .user-profile-header-info > .flex-gap-small`;
+	}, .profile-header:not(.hidden) .profile-header-content, .group-header .group-menu, .group-profile-header-info .actions-container, .look-name-container, .profile-header-buttons, .user-profile-header-info > .flex.gap-small > div:has(#user-profile-header-contextual-menu-button)`;
 	const container = await watchOnce(containerSelector);
 
 	// Inner context menu, for avatar items we get the inner .item-context-menu
