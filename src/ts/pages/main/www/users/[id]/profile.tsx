@@ -7,7 +7,6 @@ import CopyShareLinkButton from "src/ts/components/misc/CopyShareLinkButton";
 import UserProfileCurrentlyWearing from "src/ts/components/users/userProfile/avatar/CurrentlyWearing";
 import Download3DAvatarButton from "src/ts/components/users/userProfile/avatar/DownloadAvatarButton";
 import BlockedScreen from "src/ts/components/users/userProfile/BlockedScreen";
-import UserCommunityJoinedDateCarousel from "src/ts/components/users/userProfile/communities/JoinedDateCarousel";
 import UserCommunityJoinedDateGrid from "src/ts/components/users/userProfile/communities/JoinedDateGrid";
 import UserCommunityRoleGrid from "src/ts/components/users/userProfile/communities/RoleGrid";
 import CustomizeProfileButton from "src/ts/components/users/userProfile/CustomizeProfileButton";
@@ -765,33 +764,6 @@ export default {
 					);
 				},
 			);
-
-			watch("#groups-switcher .slide-item-stats .hlist", (stats) => {
-				if (stats.parentElement?.querySelector(".group-joined-date")) {
-					return;
-				}
-
-				const link = stats.closest("li")?.querySelector("a")?.href;
-				if (!link) {
-					return;
-				}
-
-				const path = new URL(link).pathname;
-				const idStr = GROUP_DETAILS_REGEX.exec(path)?.[2];
-				if (!idStr) {
-					return;
-				}
-
-				const id = Number.parseInt(idStr, 10);
-				renderIn(
-					<UserCommunityJoinedDateCarousel
-						userId={profileUserId}
-						groupId={id}
-						state={groupIdToJoinedDate}
-					/>,
-					stats,
-				);
-			});
 		});
 
 		featureValueIs("showUserCommunitiesRoles", true, () =>

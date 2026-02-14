@@ -279,7 +279,7 @@ export type ListGroupRoleMembersResponse = {
 
 export type ListGroupMembersV2Request = {
 	credentials: HTTPRequestCredentials;
-	groupId: number;
+	groupId: number | "-";
 	maxPageSize?: number;
 	pageToken?: string;
 	filter?: string;
