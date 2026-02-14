@@ -13,7 +13,7 @@ export type UserProfileInsightsRequest = {
 	refreshId?: number;
 };
 
-export type UserProfileInsightsResponse = MappedOmit<UserProfileInsightView, "targetUser"> & {
+export type UserProfileInsightsResponse = UserProfileInsightView & {
 	fromCache?: boolean;
 };
 
@@ -44,6 +44,7 @@ export const profileInsightsProcessor = new BatchRequestProcessor({
 				result[key] = {
 					retry: false,
 					value: {
+						targetUser: Number.parseInt(key, 10),
 						profileInsights: [],
 					},
 				};

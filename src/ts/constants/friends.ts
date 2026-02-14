@@ -129,7 +129,7 @@ export const MAX_COMMUNITIES_LIMIT = 110;
 
 export const FRIEND_REQUESTS_FILTER_SORTS = [
 	"sentDate",
-	/*"joinedDate",*/
+	"joinedDate",
 	"connectionsCount",
 	"followersCount",
 	"followingsCount",

@@ -11,6 +11,7 @@ import Popover from "../../core/Popover";
 import TextInput from "../../core/TextInput";
 import VerifiedBadge from "../../icons/VerifiedBadge";
 import type { FriendRequestsFilters } from "../tabs/FriendRequestsTab";
+import { formatDateForInput } from "../utils/filters";
 
 export type FriendRequestFiltersProps = {
 	filters: FriendRequestsFilters;
@@ -50,7 +51,6 @@ export default function FriendRequestFilters({
 		[],
 	);
 
-	/*
 	const [minJoinedDateValue, maxJoinedDateValue, currentData] = useMemo(() => {
 		const minDate = previewFilters.minJoinedDate
 			? new Date(previewFilters.minJoinedDate * 1_000)
@@ -65,7 +65,7 @@ export default function FriendRequestFilters({
 			maxDate && formatDateForInput(maxDate),
 			formatDateForInput(current),
 		];
-	}, [previewFilters.minJoinedDate, previewFilters.maxJoinedDate]);*/
+	}, [previewFilters.minJoinedDate, previewFilters.maxJoinedDate]);
 
 	useEffect(() => {
 		setPreviewFilters({
@@ -164,60 +164,6 @@ export default function FriendRequestFilters({
 									</li>
 								</ul>
 							</div>
-							{/*
-							<div className="filter">
-								<h5 className="filter-name">
-									{getMessage("friends.filters.badges.robloxBadges.title")}
-								</h5>
-								<ul className="filter-options multi-item-options">
-									{ROBLOX_BADGES_CONFIG.map((badge) => {
-										if (badge.deprecated) return null;
-
-										const isIncluded = useMemo(
-											() => previewFilters.robloxBadgeIds?.includes(badge.id),
-											[previewFilters.robloxBadgeIds],
-										);
-
-										const onClick = useCallback(() => {
-											if (!isIncluded) {
-												setPreviewFilters({
-													...previewFilters,
-													robloxBadgeIds: [
-														...(previewFilters.robloxBadgeIds ?? []),
-														badge.id,
-													],
-												});
-											} else {
-												const excluded =
-													previewFilters.robloxBadgeIds!.filter(
-														(item) => item !== badge.id,
-													);
-												setPreviewFilters({
-													...previewFilters,
-													robloxBadgeIds: excluded,
-												});
-											}
-										}, [isIncluded, previewFilters]);
-
-										return (
-											<li key={badge.id} className="multi-item-option">
-												<button
-													type="button"
-													className={classNames("roseal-btn", {
-														"option-selected": isIncluded,
-													})}
-													onClick={onClick}
-												>
-													<Icon
-														name={badge.iconName}
-														className="badge-zoom"
-													/>
-												</button>
-											</li>
-										);
-									})}
-								</ul>
-							</div>*/}
 						</div>
 					</div>
 					<div className="filters-section">
@@ -476,7 +422,6 @@ export default function FriendRequestFilters({
 							</div>
 						</div>
 					</div>
-					{/*
 					<div className="filters-section">
 						<div>
 							<h3>{getMessage("friends.filters.connections.joinedDate.title")}</h3>
@@ -533,7 +478,7 @@ export default function FriendRequestFilters({
 								</div>
 							</div>
 						</div>
-					</div>*/}
+					</div>
 				</div>
 				<div className="btns-container">
 					<Button

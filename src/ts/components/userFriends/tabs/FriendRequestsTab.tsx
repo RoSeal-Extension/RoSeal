@@ -29,6 +29,7 @@ import FriendRequestFilters from "../modals/FriendRequestFilters";
 import IgnoreAllFriendRequestsModal from "../modals/IgnoreFriendRequestModal";
 import type { SourceUniverseData } from "../Page";
 import FriendsPageTitle from "../PageTitle";
+import { profileInsightsProcessor } from "src/ts/helpers/processors/profileInsightsProcessor";
 
 export type FriendRequestsTabProps = {
 	userId: number;
@@ -63,10 +64,8 @@ export type FriendRequestsFilters = {
 	isPremium?: boolean;
 	isVerified?: boolean;
 	isRobloxAdmin?: boolean;
-	/*
 	minJoinedDate?: number;
 	maxJoinedDate?: number;
-	*/
 	minMutualConnectionsCount?: number;
 	maxMutualConnectionsCount?: number;
 	sortBy: (typeof FRIEND_REQUESTS_FILTER_SORTS)[number];
@@ -190,20 +189,44 @@ export default function FriendRequestsTab({
 		items: {
 			shouldAlwaysUpdate: true,
 			transformItems: (requests) =>
-				multiGetProfileComponentsData({
-					profileType: "User",
-					profileIds: requests.map((item) => item.id.toString()),
-					components: [
-						{
-							component: "UserProfileHeader",
-						},
-					],
-					includeCredentials: false,
-				}).then((data) => {
+				Promise.all([
+					multiGetProfileComponentsData({
+						profileType: "User",
+						profileIds: requests.map((item) => item.id.toString()),
+						components: [
+							{
+								component: "UserProfileHeader",
+							},
+						],
+						includeCredentials: false,
+					}),
+					profileInsightsProcessor.requestBatch(
+						requests.map((request) => ({
+							userId: request.id,
+						})),
+					),
+				]).then(([data, insights]) => {
 					const transformedData: UserFriendRequestWithComponents[] = [];
 
 					for (const request of requests) {
 						const components = data?.profiles?.[request.id]?.components;
+						let joinedDate: number | undefined;
+
+						for (const item of insights) {
+							if (item.targetUser === request.id) {
+								for (const insight of item.profileInsights) {
+									if (
+										insight.insightCase === 6 &&
+										insight.accountCreationDateInsight?.accountCreatedDateTime
+											?.seconds
+									) {
+										joinedDate =
+											insight.accountCreationDateInsight
+												.accountCreatedDateTime.seconds;
+									}
+								}
+							}
+						}
 
 						/*
 						let mutualCommunitiesCount = 0;
@@ -227,12 +250,7 @@ export default function FriendRequestsTab({
 								isVerified: components.UserProfileHeader?.isVerified ?? false,
 								isPremium: components.UserProfileHeader?.isPremium ?? false,
 								isRobloxAdmin: components.UserProfileHeader?.isRobloxAdmin ?? false,
-								/*joinedDate: data.components.About?.joinDateTime
-								? Math.floor(
-										new Date(data.components.About?.joinDateTime).getTime() /
-											1_000,
-									)
-								: undefined,*/
+								joinedDate,
 							},
 						});
 					}
@@ -246,7 +264,6 @@ export default function FriendRequestsTab({
 								const direction = sortOrder === "Desc" ? -1 : 1;
 
 								switch (filters.sortBy) {
-									/*
 									case "joinedDate": {
 										return (
 											((a.components?.joinedDate ?? 0) >
@@ -254,7 +271,7 @@ export default function FriendRequestsTab({
 												? 1
 												: -1) * direction
 										);
-									}*/
+									}
 									/*
 									case "mutualCommunitiesCount": {
 										return (
@@ -347,12 +364,12 @@ export default function FriendRequestsTab({
 										item.components.followingsCount,
 										filters.minFollowingsCount,
 										filters.maxFollowingsCount,
-									))) /*&&
+									) &&
 									checkValue(
 										item.components.joinedDate,
 										filters.minJoinedDate,
 										filters.maxJoinedDate,
-									)*/
+									)))
 						);
 					}
 				: undefined,
