@@ -126,19 +126,23 @@ export default {
 		});
 
 		featureValueIs("userProfileDownload3DAvatar", true, () =>
-			watchOnce<HTMLDivElement>(
-				".profile-avatar-left .thumbnail-2d-container, .profile-avatar-left .thumbnail-3d-container",
-			).then((container) =>
-				renderAfter(<Download3DAvatarButton userId={profileUserId} />, container),
+			watchOnce<HTMLDivElement>(".avatar-toggle-button").then((container) =>
+				renderIn(<Download3DAvatarButton userId={profileUserId} />, container),
 			),
 		);
 
 		featureValueIs("viewUserProfilePortrait", true, () =>
-			watchOnce<HTMLDivElement>(
-				".profile-avatar-left .thumbnail-2d-container, .profile-avatar-left .thumbnail-3d-container",
-			).then((container) =>
-				renderAfter(<UserPortraitView userId={profileUserId} />, container),
-			),
+			watchOnce<HTMLDivElement>(".avatar-toggle-button").then((buttons) => {
+				const container = buttons.parentElement?.querySelector<HTMLElement>(
+					".avatar-thumbnail-container",
+				);
+				if (!container) return;
+
+				renderAfter(
+					<UserPortraitView userId={profileUserId} buttons={buttons} />,
+					container,
+				);
+			}),
 		);
 
 		multigetFeaturesValues([

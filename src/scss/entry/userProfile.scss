@@ -186,10 +186,10 @@
 }
 
 .user-portrait-view {
-    .profile-avatar-left:has(&.show-portrait) {
-        .enable-three-dee,
-        .thumbnail-2d-container:not(.portrait-thumbnail-container),
-        .thumbnail-3d-container {
+    .profile-platform-container:has(&.show-portrait) {
+        .avatar-toggle-button .relative,
+        .download-avatar-file-btn,
+        .avatar-thumbnail-container:not(.user-portrait-view) {
             display: none;
         }
     }
@@ -454,8 +454,11 @@
     letter-spacing: var(--typography-label-medium-letter-spacing);
     color: var(--color-action-standard-foreground);
 
+    padding: 0 6px;
+
     &,
-    span {
+    span,
+    a {
         text-overflow: ellipsis;
         overflow: hidden;
     }

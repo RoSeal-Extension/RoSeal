@@ -216,8 +216,7 @@
 [data-rosealfe-cssfixes] {
     .enable-three-dee,
     .toggle-three-dee,
-    .toggle-thumbnail-type-btn,
-    .download-avatar-file-btn {
+    .toggle-thumbnail-type-btn:not(.roseal-user-profile-btn) {
         line-height: 150% !important;
         z-index: 9 !important;
         border-radius: 999px !important;
@@ -1639,13 +1638,25 @@ roseal-font {
     vertical-align: -0.1em !important;
 }
 
-.toggle-thumbnail-type-btn {
-    top: 12px;
-    right: 12px;
+.toggle-thumbnail-type-btn.roseal-user-profile-btn {
+    position: absolute;
+    width: fit-content;
+    right: 0;
+    top: 50px;
+    text-align: right;
 }
 
-.toggle-thumbnail-type-btn,
-.download-avatar-file-btn {
+.download-avatar-file-btn.roseal-user-profile-btn {
+    position: absolute;
+    width: fit-content;
+    right: 0;
+    top: 95px;
+    text-align: right;
+}
+
+.toggle-thumbnail-type-btn:not(.roseal-user-profile-btn) {
+    top: 12px;
+    right: 12px;
     user-select: none;
     border: 1px solid transparent;
     background-color: var(--RS_AVATAR-BUTTON-BACKGROUND-COLOR) !important;
@@ -1665,14 +1676,6 @@ roseal-font {
     border: 1px solid #b8b8b8;
     position: absolute;
     min-height: 32px;
-}
-
-.download-avatar-file-btn {
-    bottom: 12px;
-    left: 12px;
-
-    align-items: center;
-    display: flex;
 }
 
 .fast-user-search-item {

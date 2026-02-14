@@ -153,7 +153,10 @@ export default function DeletedUserProfilePreview({ userId }: DeletedUserProfile
 						</h2>
 					</div>
 					{blockedItemsEnabled && (
-						<ItemContextMenu containerClassName="deleted-user-context-menu">
+						<ItemContextMenu
+							containerClassName="deleted-user-context-menu"
+							wrapChildren={false}
+						>
 							<BlockCreatorButton type="User" id={userId} />
 						</ItemContextMenu>
 					)}
