@@ -28,6 +28,7 @@ export type PagesItems<T, U = T> = {
 	shouldAlwaysUpdate?: boolean;
 
 	transformItem?: (item: T, index: number, arr: T[]) => MaybePromise<U>;
+	transformItems?: (items: T[], arr: T[]) => MaybePromise<U[]>;
 	filterItem?: (item: U, index: number, arr: U[]) => MaybePromise<boolean>;
 	sortItems?: (items: U[]) => MaybePromise<U[]>;
 };
@@ -166,36 +167,78 @@ export default function usePages<T, U, V = unknown, X = T>({
 					: (itemsConfig?.replacementItems ?? data.items);
 
 			const getTransformedItems = async (items: T[]) => {
-				if (!itemsConfig?.transformItem) return items as unknown as X[];
+				if (!itemsConfig?.transformItem && !itemsConfig?.transformItems) {
+					return items as unknown as X[];
+				}
 
 				const newItems: MaybePromise<X>[] = [];
 
 				for (const aChunk of chunk(items, 100)) {
-					const promises: Promise<void>[] = [];
+					if (itemsConfig?.transformItems) {
+						const uncachedItems: T[] = [];
+						const uncachedIndices: number[] = [];
+						const chunkResults: MaybePromise<X>[] = new Array(aChunk.length);
 
-					for (let i = 0; i < aChunk.length; i++) {
-						const item = aChunk[i];
+						// 1. Separate cached items from items that need transforming
+						for (let i = 0; i < aChunk.length; i++) {
+							const item = aChunk[i];
+							const cached = data.transformedItems.get(item);
 
-						const cached = data.transformedItems.get(item);
-						if (cached) {
-							newItems.push(cached);
-							continue;
+							if (cached) {
+								chunkResults[i] = cached;
+							} else {
+								uncachedItems.push(item);
+								uncachedIndices.push(i); // Track index to preserve order later
+							}
 						}
 
-						const promise = itemsConfig.transformItem!(item, i, aChunk);
-						newItems.push(promise);
-
-						data.transformedItems.set(item, promise);
-						if (promise instanceof Promise) {
-							promises.push(
-								promise.then((promiseData) => {
-									data.transformedItems.set(item, promiseData);
-								}),
+						// 2. Transform only the uncached items in bulk
+						if (uncachedItems.length > 0) {
+							const transformedData = await itemsConfig.transformItems(
+								uncachedItems,
+								items,
 							);
-						}
-					}
 
-					await Promise.all(promises);
+							// 3. Update cache and place back into the chunk's results
+							for (let i = 0; i < uncachedItems.length; i++) {
+								const item = uncachedItems[i];
+								const result = transformedData[i];
+
+								data.transformedItems.set(item, result);
+								chunkResults[uncachedIndices[i]] = result;
+							}
+						}
+
+						newItems.push(...chunkResults);
+					} else {
+						const promises: Promise<void>[] = [];
+
+						for (let i = 0; i < aChunk.length; i++) {
+							const item = aChunk[i];
+
+							const cached = data.transformedItems.get(item);
+							if (cached) {
+								newItems.push(cached);
+								continue;
+							}
+
+							// Safe to use non-null assertion here because we verified
+							// transformItem exists if transformItems doesn't.
+							const promise = itemsConfig.transformItem!(item, i, aChunk);
+							newItems.push(promise);
+
+							data.transformedItems.set(item, promise);
+							if (promise instanceof Promise) {
+								promises.push(
+									promise.then((promiseData) => {
+										data.transformedItems.set(item, promiseData);
+									}),
+								);
+							}
+						}
+
+						await Promise.all(promises);
+					}
 				}
 
 				return Promise.all(newItems);

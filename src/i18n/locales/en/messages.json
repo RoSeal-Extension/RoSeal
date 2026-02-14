@@ -8378,7 +8378,7 @@
 	"userAvatars": {
 		"$context": "User avatars page (published only), /users/{USER_ID}/avatars",
 		"title": {
-			"$message": "{displayName}'s Inventory",
+			"$message": "{displayName}'s Published Avatars",
 			"withUsername": "{displayName} (@{username})'s Published Avatars"
 		},
 		"postMessage": {

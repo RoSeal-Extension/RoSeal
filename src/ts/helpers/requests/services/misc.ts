@@ -4,6 +4,7 @@ import { getAvatarAssetLink } from "src/ts/utils/links";
 import { httpClient } from "../main";
 import type { MarketplaceItemType } from "./marketplace";
 import type { OmniLayoutData, OmniTreatmentType, OmniUniverseLayoutData } from "./universes";
+import { chunk } from "src/ts/utils/objects";
 
 export type SearchPageType = "discover" | "home" | "all";
 
@@ -159,6 +160,14 @@ export type ProfileComponent = {
 export type GetProfileComponentsDataRequest = {
 	profileType: ProfileComponentsProfileType;
 	profileId: string;
+	components: ProfileComponent[];
+	includeComponentOrdering?: boolean;
+	includeCredentials?: boolean;
+};
+
+export type MultiGetProfileComponentsDataRequest = {
+	profileType: ProfileComponentsProfileType;
+	profileIds: string[];
 	components: ProfileComponent[];
 	includeComponentOrdering?: boolean;
 	includeCredentials?: boolean;
@@ -433,7 +442,21 @@ export type GetProfileComponentsDataResponse = {
 		ProfileBackground?: ProfileBackgroundProfileComponent;
 	};
 	onlyEssentialComponents: boolean;
+	gracefulDegredationEnabled: boolean;
 };
+
+export type MultiGetProfileComponentsDataResponse = {
+	profileType: ProfileComponentsProfileType;
+	profiles: Record<
+		string,
+		{
+			components: GetProfileComponentsDataResponse["components"];
+		}
+	>;
+	onlyEssentialComponents: boolean;
+	gracefulDegredationEnabled: boolean;
+};
+
 export type ListExperienceSearchSuggestionsRequest = {
 	type: 0;
 	language: string;
@@ -740,6 +763,54 @@ export async function getProfileComponentsData({
 		await httpClient.httpRequest<GetProfileComponentsDataResponse>({
 			method: "POST",
 			url: getRobloxUrl("apis", "/profile-platform-api/v1/profiles/get"),
+			body: {
+				type: "json",
+				value: request,
+			},
+			credentials: {
+				type: "cookies",
+				value: includeCredentials,
+			},
+		})
+	).body;
+}
+
+export async function multiGetProfileComponentsData({
+	includeCredentials = true,
+	...request
+}: MultiGetProfileComponentsDataRequest): Promise<MultiGetProfileComponentsDataResponse> {
+	if (request.profileIds.length > 25) {
+		return Promise.all(
+			chunk(request.profileIds, 25).map((chunk) =>
+				multiGetProfileComponentsData({
+					...request,
+					includeCredentials,
+					profileIds: chunk,
+				}),
+			),
+		).then((chunks) => {
+			const data: MultiGetProfileComponentsDataResponse = {
+				profileType: request.profileType,
+				profiles: {},
+				onlyEssentialComponents: false,
+				gracefulDegredationEnabled: false,
+			};
+
+			for (const chunk of chunks) {
+				for (const key in chunk.profiles) {
+					const item = chunk.profiles[key];
+					data.profiles[key] = item;
+				}
+			}
+
+			return data;
+		});
+	}
+
+	return (
+		await httpClient.httpRequest<MultiGetProfileComponentsDataResponse>({
+			method: "POST",
+			url: getRobloxUrl("apis", "/profile-platform-api/v1/profiles/batch/get"),
 			body: {
 				type: "json",
 				value: request,

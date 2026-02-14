@@ -4,7 +4,7 @@ import { FRIEND_REQUESTS_FILTER_SORTS } from "src/ts/constants/friends";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import type { SortOrder } from "src/ts/helpers/requests/services/badges";
-import { getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
+import { multiGetProfileComponentsData } from "src/ts/helpers/requests/services/misc";
 import {
 	multigetUniversesByIds,
 	multigetUniversesPlayabilityStatuses,
@@ -36,7 +36,6 @@ export type FriendRequestsTabProps = {
 };
 
 export type UserFriendRequestAdditionalComponents = {
-	//robloxBadgeIds: number[];
 	//mutualCommunitiesCount: number;
 	connectionsCount: number;
 	followersCount: number;
@@ -51,8 +50,8 @@ export type UserFriendRequestWithComponents = UserFriendRequest & {
 };
 
 export type FriendRequestsFilters = {
-	//robloxBadgeIds?: number[];
-	/*minMutualCommunitiesCount?: number;
+	/*
+	minMutualCommunitiesCount?: number;
 	maxMutualCommunitiesCount?: number;*/
 	minConnectionsCount?: number;
 	maxConnectionsCount?: number;
@@ -121,6 +120,7 @@ export default function FriendRequestsTab({
 	const [filters, setFilters] = useState<FriendRequestsFilters>({
 		sortBy: "sentDate",
 	});
+
 	/*
 	const [myGroups] = usePromise(
 		() =>
@@ -187,10 +187,10 @@ export default function FriendRequestsTab({
 		},
 		items: {
 			shouldAlwaysUpdate: true,
-			transformItem: (request) =>
-				getProfileComponentsData({
+			transformItems: (requests) =>
+				multiGetProfileComponentsData({
 					profileType: "User",
-					profileId: request.id.toString(),
+					profileIds: requests.map((item) => item.id.toString()),
 					components: [
 						{
 							component: "UserProfileHeader",
@@ -198,44 +198,43 @@ export default function FriendRequestsTab({
 					],
 					includeCredentials: false,
 				}).then((data) => {
-					/*
-					const robloxBadgeIds: number[] = [];
-					if (data.components.RobloxBadges) {
-						for (const item of data.components.RobloxBadges.robloxBadgeList) {
-							robloxBadgeIds.push(item.type.id);
-						}
-					}
+					const transformedData: UserFriendRequestWithComponents[] = [];
 
-					let mutualCommunitiesCount = 0;
-					if (myGroups && data.components.Communities)
-						for (const item of myGroups) {
-							if (data.components.Communities.groupsIds.includes(item)) {
-								mutualCommunitiesCount++;
-							}
-						}*/
+					for (const request of requests) {
+						const components = data?.profiles?.[request.id]?.components;
 
-					return {
-						...request,
-						components: {
-							/*
-							robloxBadgeIds,
-							mutualCommunitiesCount,*/
-							connectionsCount:
-								data.components.UserProfileHeader?.counts?.friendsCount ?? 0,
-							followersCount:
-								data.components.UserProfileHeader?.counts?.followersCount ?? 0,
-							followingsCount:
-								data.components.UserProfileHeader?.counts?.followingsCount ?? 0,
-							isVerified: data.components.UserProfileHeader?.isVerified ?? false,
-							isPremium: data.components.UserProfileHeader?.isPremium ?? false,
-							/*joinedDate: data.components.About?.joinDateTime
+						/*
+						let mutualCommunitiesCount = 0;
+						if (myGroups && components.Communities)
+							for (const item of myGroups) {
+								if (components.Communities.groupsIds.includes(item)) {
+									mutualCommunitiesCount++;
+								}
+							}*/
+
+						transformedData.push({
+							...request,
+							components: components && {
+								// mutualCommunitiesCount,
+								connectionsCount:
+									components.UserProfileHeader?.counts?.friendsCount ?? 0,
+								followersCount:
+									components.UserProfileHeader?.counts?.followersCount ?? 0,
+								followingsCount:
+									components.UserProfileHeader?.counts?.followingsCount ?? 0,
+								isVerified: components.UserProfileHeader?.isVerified ?? false,
+								isPremium: components.UserProfileHeader?.isPremium ?? false,
+								/*joinedDate: data.components.About?.joinDateTime
 								? Math.floor(
 										new Date(data.components.About?.joinDateTime).getTime() /
 											1_000,
 									)
 								: undefined,*/
-						},
-					};
+							},
+						});
+					}
+
+					return transformedData;
 				}),
 			sortItems:
 				advancedFilteringEnabled && filters.sortBy !== "sentDate"
@@ -321,7 +320,8 @@ export default function FriendRequestsTab({
 										item.components.robloxBadgeIds,
 										filters.robloxBadgeIds,
 									) &&*/
-									/*checkValue(
+									/*
+									checkValue(
 										item.components.mutualCommunitiesCount,
 										filters.minMutualCommunitiesCount,
 										filters.maxMutualCommunitiesCount,
