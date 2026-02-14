@@ -7195,6 +7195,9 @@
 				"TrendingWidget": {
 					"$message": "Trending Items"
 				},
+				"TrendingAvatarLooksWidget": {
+					"$message": "Trending Styles"
+				},
 				"SearchToAvatarLooksWidget": {
 					"$message": "Avatars"
 				}
