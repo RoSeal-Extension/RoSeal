@@ -1629,44 +1629,46 @@ roseal-font {
     vertical-align: -0.1em !important;
 }
 
-.toggle-thumbnail-type-btn.roseal-user-profile-btn {
-    position: absolute;
-    width: fit-content;
-    right: 0;
-    top: 50px;
-    text-align: right;
+.toggle-thumbnail-type-btn {
+    &.roseal-user-profile-btn {
+        position: absolute;
+        width: fit-content;
+        right: 0;
+        top: 50px;
+        text-align: right;
+    }
+
+    &:not(.roseal-user-profile-btn) {
+        top: 12px;
+        right: 12px;
+        user-select: none;
+        border: 1px solid transparent;
+        background-color: var(--RS_AVATAR-BUTTON-BACKGROUND-COLOR) !important;
+        border-color: var(--RS_AVATAR-BUTTON-BORDER-COLOR) !important;
+        color: var(--RS_AVATAR-BUTTON-TEXT-COLOR) !important;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 500;
+        height: auto;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        padding: 9px 9px;
+        font-size: 16px;
+        line-height: 100%;
+        border-radius: 3px;
+        border: 1px solid #b8b8b8;
+        position: absolute;
+        min-height: 32px;
+    }
 }
 
 .download-avatar-file-btn.roseal-user-profile-btn {
     position: absolute;
     width: fit-content;
     right: 0;
-    top: 95px;
+    top: 100px;
     text-align: right;
-}
-
-.toggle-thumbnail-type-btn:not(.roseal-user-profile-btn) {
-    top: 12px;
-    right: 12px;
-    user-select: none;
-    border: 1px solid transparent;
-    background-color: var(--RS_AVATAR-BUTTON-BACKGROUND-COLOR) !important;
-    border-color: var(--RS_AVATAR-BUTTON-BORDER-COLOR) !important;
-    color: var(--RS_AVATAR-BUTTON-TEXT-COLOR) !important;
-    cursor: pointer;
-    display: inline-block;
-    font-weight: 500;
-    height: auto;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    padding: 9px 9px;
-    font-size: 16px;
-    line-height: 100%;
-    border-radius: 3px;
-    border: 1px solid #b8b8b8;
-    position: absolute;
-    min-height: 32px;
 }
 
 .fast-user-search-item {
