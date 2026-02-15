@@ -1,0 +1,40 @@
+.roseal-item-carousel {
+    .roseal-scroller {
+        display: none;
+        position: absolute;
+        z-index: 2;
+        bottom: 140px;
+        padding: 6px;
+        border-radius: 99px;
+        background-color: var(--RS_PRIMARY-INVERT-BACKGROUND-COLOR);
+        border: 1px solid var(--RS_LINE-COLOR);
+        align-items: center;
+        opacity: 0.8;
+        &:hover {
+            opacity: 1;
+        }
+
+        .roseal-icon {
+            height: 28px;
+            width: 28px;
+            color: var(--RS_PRIMARY-INVERT-TEXT-COLOR);
+        }
+
+        &.previous {
+            left: 12px;
+        }
+
+        &.next {
+            right: 12px;
+        }
+    }
+    &:hover {
+        .roseal-scroller {
+            display: flex;
+        }
+    }
+
+    .game-carousel {
+        max-width: 966px;
+    }
+}
