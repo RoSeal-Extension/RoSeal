@@ -36,7 +36,7 @@ export default function UserProfilePublishedAvatars({ userId }: UserProfilePubli
 
 	return (
 		<div className="profile-published-avatars">
-			<div className="profile-carousel">
+			<div className="roseal-profile-carousel profile-carousel">
 				<div className="collection-carousel-container">
 					<div>
 						<a href={getUserAvatarsLink(userId)} className="items-center inline-flex">

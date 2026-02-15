@@ -3846,6 +3846,12 @@
 				"$context": ""
 			}
 		},
+		"prefetchRobloxPageData": {
+			"name": {
+				"$message": "Prefetch required Roblox page data",
+				"$context": ""
+			}
+		},
 		"formatItemMentions": {
 			"name": {
 				"$message": "Formatted user/community mentions in item descriptions",
@@ -8474,6 +8480,10 @@
 					"$message": "Emotes",
 					"$context": "View emotes tab"
 				}
+			},
+			"currentlyWearing": {
+				"$context": "Currently wearing section on profile",
+				"$message": "Currently Wearing{totalValue}"
 			},
 			"totalValue": {
 				"$context": "Total user outfit value next to the title ",

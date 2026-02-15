@@ -30,7 +30,7 @@ export default function ExperienceTopSongsList({
 					experienceName: universeName,
 				})}
 			</h2>
-			<ItemCarousel>
+			<ItemCarousel innerClassName="game-carousel horizontal-scroller dynamic-layout-sizing-disabled">
 				{topSongs.map((song) => (
 					<div
 						key={song.assetId}

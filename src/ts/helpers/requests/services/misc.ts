@@ -155,6 +155,7 @@ export type ProfileComponentsProfileType = "User" | "Contact" | "Community";
 
 export type ProfileComponent = {
 	component: ProfileComponentType;
+	supportedActions?: ProfileComponentAction[];
 };
 
 export type GetProfileComponentsDataRequest = {
@@ -246,30 +247,46 @@ export type CurrentlyWearingProfileComponent = {
 };
 
 export type ProfileComponentAction =
-	| "EditProfile"
-	| "Unfriend"
 	| "AcceptFriendRequest"
 	| "AcceptOffNetworkFriendRequest"
 	| "AddFriend"
 	| "AddFriendFromContacts"
 	| "AddFriendFromContactsSent"
 	| "Block"
-	| "QrCode"
-	| "CannotAddFriend"
-	| "Chat"
-	| "EditAlias"
-	| "IgnoreFriendRequest"
-	| "JoinExperience"
-	| "PendingFriendRequest"
-	| "Report"
-	| "Unblock"
-	| "CopyLink"
-	| "JoinCommunity"
 	| "CancelJoinCommunityRequest"
-	| "ViewCommunity"
+	| "CannotAddFriend"
+	| "ChangeCommunityOwner"
+	| "Chat"
+	| "ClaimCommunityOwnership"
+	| "ConfigureCommunity"
+	| "CopyLink"
+	| "EditAlias"
+	| "EditAvatar"
+	| "EditProfile"
+	| "Follow"
+	| "FollowUser"
+	| "IgnoreFriendRequest"
+	| "ImpersonateUser"
+	| "JoinCommunity"
+	| "JoinExperience"
 	| "LeaveCommunity"
+	| "LogInToAddConnection"
 	| "MakePrimaryCommunity"
-	| "RemovePrimaryCommunity";
+	| "PendingFriendRequest"
+	| "QrCode"
+	| "RemovePrimaryCommunity"
+	| "Report"
+	| "ShareProfile"
+	| "SignUpToAddConnection"
+	| "TradeItems"
+	| "Unblock"
+	| "Unfollow"
+	| "UnfollowUser"
+	| "Unfriend"
+	| "ViewCommunity"
+	| "ViewFavorites"
+	| "ViewFullProfile"
+	| "ViewInventory";
 
 export type ProfileComponentButton = {
 	type: string;
@@ -404,43 +421,45 @@ export type PlayerBadgesProfileComponent = {
 	badges: number[];
 };
 
+export type ProfileComponentsData = {
+	UserProfileHeader?: UserProfileHeaderProfileComponent;
+	About?: AboutProfileComponent;
+	SocialLinks?: SocialLinksProfileComponent;
+	ViewFullProfile?: ViewFullProfileProfileComponent;
+	CurrentlyWearing?: CurrentlyWearingProfileComponent;
+	Actions?: ActionsProfileComponent;
+	ContentPosts?: ContentPostsProfileComponent;
+	Store?: StoreProfileComponent;
+	ContactProfileHeader?: ContactProfileHeaderProfileComponent;
+	ContactDescription?: ContactProfileHeaderProfileComponent;
+	CommunityProfileHeader?: CommunityProfileHeaderProfileComponent;
+	Experiences?: ExperiencesProfileComponent;
+	FavoriteExperiences?: FavoriteExperiencesProfileComponent;
+	Inventory?: CurrentlyWearingProfileComponent;
+	CommunityTabs?: CommunityTabsComponent;
+	CommunitySearch?: CommunitySearchComponent;
+	Announcements?: unknown;
+	Shout?: unknown;
+	Events?: unknown;
+	ForumsDiscovery?: unknown;
+	Members?: unknown;
+	CoverPhoto?: CommunityCoverPhotoComponent;
+	Friends?: FriendsProfileComponent;
+	Communities?: CommunitiesProfileComponent;
+	RobloxBadges?: RobloxBadgesProfileComponent;
+	PlayerBadges?: PlayerBadgesProfileComponent;
+	Collections?: CollectionsProfileComponent;
+	Statistics?: RobloxStatisticsProfileComponent;
+	CreationsModels?: CreationsModelsProfileComponent;
+	Clothing?: unknown;
+	ProfileBackground?: ProfileBackgroundProfileComponent;
+};
+
 export type GetProfileComponentsDataResponse = {
 	profileType: ProfileComponentsProfileType;
 	profileId: string;
 	componentOrdering: ProfileComponentType[];
-	components: {
-		UserProfileHeader?: UserProfileHeaderProfileComponent;
-		About?: AboutProfileComponent;
-		SocialLinks?: SocialLinksProfileComponent;
-		ViewFullProfile?: ViewFullProfileProfileComponent;
-		CurrentlyWearing?: CurrentlyWearingProfileComponent;
-		Actions?: ActionsProfileComponent;
-		ContentPosts?: ContentPostsProfileComponent;
-		Store?: StoreProfileComponent;
-		ContactProfileHeader?: ContactProfileHeaderProfileComponent;
-		ContactDescription?: ContactProfileHeaderProfileComponent;
-		CommunityProfileHeader?: CommunityProfileHeaderProfileComponent;
-		Experiences?: ExperiencesProfileComponent;
-		FavoriteExperiences?: FavoriteExperiencesProfileComponent;
-		Inventory?: CurrentlyWearingProfileComponent;
-		CommunityTabs?: CommunityTabsComponent;
-		CommunitySearch?: CommunitySearchComponent;
-		Announcements?: unknown;
-		Shout?: unknown;
-		Events?: unknown;
-		ForumsDiscovery?: unknown;
-		Members?: unknown;
-		CoverPhoto?: CommunityCoverPhotoComponent;
-		Friends?: FriendsProfileComponent;
-		Communities?: CommunitiesProfileComponent;
-		RobloxBadges?: RobloxBadgesProfileComponent;
-		PlayerBadges?: PlayerBadgesProfileComponent;
-		Collections?: CollectionsProfileComponent;
-		Statistics?: RobloxStatisticsProfileComponent;
-		CreationsModels?: CreationsModelsProfileComponent;
-		Clothing?: unknown;
-		ProfileBackground?: ProfileBackgroundProfileComponent;
-	};
+	components: ProfileComponentsData;
 	onlyEssentialComponents: boolean;
 	gracefulDegredationEnabled: boolean;
 };
@@ -450,7 +469,7 @@ export type MultiGetProfileComponentsDataResponse = {
 	profiles: Record<
 		string,
 		{
-			components: GetProfileComponentsDataResponse["components"];
+			components: ProfileComponentsData;
 		}
 	>;
 	onlyEssentialComponents: boolean;

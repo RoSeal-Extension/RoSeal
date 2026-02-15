@@ -167,6 +167,15 @@ export type GetOmniRecommendationsRequest = {
 	sessionId: string;
 	supportedTreatmentTypes?: OmniTreatmentType[];
 	sduiTreatmentTypes?: OmniTreatmentType[];
+	inputUniverseIds?: {
+		interestCatcher: string[];
+	};
+	cpuCores?: number;
+	maxMemory?: number;
+	maxResolution?: string;
+	networkType?: string;
+	authIntentData?: unknown;
+	topicIds?: number[];
 };
 
 export type MultigetOmniRecommendationsMetadataRequest = {
@@ -400,6 +409,11 @@ export type ExperienceSortsFilters = {
 	device?: string;
 	country?: string;
 	age?: string;
+
+	cpuCores?: number;
+	maxMemory?: number;
+	maxResolution?: string;
+	networkType?: string;
 };
 
 export type ListExperienceSortsRequest = {

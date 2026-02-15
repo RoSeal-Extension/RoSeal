@@ -25,6 +25,10 @@ export const assetTypeGroups = {
 	Heads: {
 		lockedLimit: 1,
 	},
+
+	Makeup: {
+		lockedLimit: 8,
+	},
 } satisfies Record<string, AssetTypeGroup>;
 
 export type AssetTypeData = {
@@ -615,14 +619,26 @@ export const assetTypes = [
 	{
 		assetType: "FaceMakeup",
 		assetTypeId: 88,
+		assetTypeGroup: "Makeup",
+		is3D: true,
+		isAvatarAsset: true,
+		isWearable: true,
 	},
 	{
 		assetType: "LipMakeup",
 		assetTypeId: 89,
+		assetTypeGroup: "Makeup",
+		isAvatarAsset: true,
+		is3D: true,
+		isWearable: true,
 	},
 	{
 		assetType: "EyeMakeup",
 		assetTypeId: 90,
+		assetTypeGroup: "Makeup",
+		isAvatarAsset: true,
+		is3D: true,
+		isWearable: true,
 	},
 ] satisfies AssetTypeData[];
 

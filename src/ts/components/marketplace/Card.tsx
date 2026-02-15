@@ -44,6 +44,7 @@ export type MarketplaceCardProps = {
 	encryptedAdTrackingData?: string;
 	containerClassName?: string;
 	children?: ComponentChildren;
+	thumbnailChildren?: ComponentChildren;
 };
 
 export default function MarketplaceCard({
@@ -60,6 +61,7 @@ export default function MarketplaceCard({
 	encryptedAdTrackingData,
 	containerClassName,
 	children,
+	thumbnailChildren,
 }: MarketplaceCardProps) {
 	const { shoppingCart, isShoppingCartFull, toggleShoppingCart } = useMarketplaceCart();
 	const [showQuantityRemaining] = useFeatureValue("marketplaceShowQuantityRemaining", false);
@@ -135,7 +137,9 @@ export default function MarketplaceCard({
 										targetId: id,
 										size: "420x420",
 									}}
-								/>
+								>
+									{thumbnailChildren}
+								</Thumbnail>
 								{label && <span className={`restriction-icon ${label}`} />}
 							</div>
 							{isHovering &&
@@ -227,12 +231,14 @@ export default function MarketplaceCard({
 									isForSale
 								/>
 							)}
-							<RobuxView
-								textClassName="text-robux-tile"
-								containerClassName="new-price"
-								priceInRobux={totalPrice}
-								isForSale
-							/>
+							{totalPrice !== undefined && (
+								<RobuxView
+									textClassName="text-robux-tile"
+									containerClassName="new-price"
+									priceInRobux={totalPrice}
+									isForSale
+								/>
+							)}
 						</div>
 					</div>
 				</a>

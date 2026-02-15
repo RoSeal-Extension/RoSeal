@@ -145,21 +145,9 @@
     }
 }
 
-.profile-avatar-mask {
-    &:has(.roseal-emotes-container:not(.hide)) {
-        .profile-accoutrements-container:not(.roseal-emotes-container) {
-            display: none;
-        }
-    }
-
-    .roseal-accoutrements-pill {
-        @media (max-width: 767px) {
-            margin-top: 10px;
-        }
-        @media (min-width: 768px) {
-            position: absolute;
-            top: 2px;
-        }
+.profile-carousel:has(.roseal-emotes-container) {
+    div[class*="carouselContainer"] {
+        display: none;
     }
 }
 
@@ -353,31 +341,37 @@
 }
 
 .roseal-currently-wearing {
-    .accoutrement-image-container {
-        position: relative;
+    .collection-carousel-container {
+        gap: 2px !important;
+        .carousel {
+            height: 250px !important;
+        }
     }
+    .roseal-total-value {
+        padding-left: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        font-weight: 600;
+
+        &::before {
+            content: "|";
+            padding-right: 4px;
+        }
+    }
+
     .accoutrement-bundle-container {
-        border-bottom-left-radius: 0 !important;
+        border-top-left-radius: 8px;
         position: absolute;
         right: 0;
         bottom: 0;
         width: 45px !important;
         height: 45px !important;
         background-color: var(--RS_BACKGROUND-3-COLOR) !important;
-        border-top-right-radius: 0 !important;
     }
 }
 
-.roseal-total-value {
-    padding-left: 12px;
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    height: 33px;
-    line-height: 33px;
-}
-
-.profile-published-avatars {
+.roseal-profile-carousel {
     .collection-carousel-container {
         display: flex;
         flex-direction: column;

@@ -14,6 +14,11 @@ import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePromise from "../hooks/usePromise";
 import ShowcaseExperienceEvent from "./ShowcaseExperienceEvent";
 import { crossSort } from "src/ts/utils/objects";
+import {
+	getDeviceMaxMemoryMB,
+	getDeviceMaxResolution,
+	getDeviceNetworkType,
+} from "src/ts/utils/context";
 
 export default function ShowcaseExperienceEventsNav() {
 	const [authenticatedUser] = useAuthenticatedUser();
@@ -31,6 +36,11 @@ export default function ShowcaseExperienceEventsNav() {
 					pageType: "Home",
 					sessionId: crypto.randomUUID(),
 					supportedTreatmentTypes: ["SortlessGrid"],
+					cpuCores: navigator.hardwareConcurrency,
+					maxMemory: getDeviceMaxMemoryMB(),
+					maxResolution: getDeviceMaxResolution(),
+					networkType: getDeviceNetworkType(),
+					topicIds: [CONTINUE_SORT_TOPIC_ID],
 				});
 
 				return listUserUniverseFollowings({

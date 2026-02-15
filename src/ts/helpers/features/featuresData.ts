@@ -3665,6 +3665,14 @@ export const sections = [
 						hasCSS: true,
 					},
 					{
+						type: "Experimental",
+						id: "prefetchRobloxPageData",
+						component: {
+							type: "Toggle",
+							defaultValue: false,
+						},
+					},
+					{
 						type: "Regular",
 						id: "clearRobloxCacheAutomatically",
 						component: {

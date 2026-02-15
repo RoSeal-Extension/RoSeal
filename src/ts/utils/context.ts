@@ -330,3 +330,26 @@ export function robloxNavigateTo(_url: string) {
 		}),
 	);
 }
+
+export function getDeviceNetworkType(): string | undefined {
+	if (
+		"connection" in navigator &&
+		typeof navigator.connection === "object" &&
+		navigator.connection !== null &&
+		"effectiveType" in navigator.connection &&
+		typeof navigator.connection.effectiveType === "string"
+	) {
+		return navigator.connection.effectiveType;
+	}
+}
+
+export function getDeviceMaxMemoryMB(): number | undefined {
+	if ("deviceMemory" in navigator && typeof navigator.deviceMemory === "number") {
+		return navigator.deviceMemory * 1_024;
+	}
+}
+export function getDeviceMaxResolution(): string | undefined {
+	if (window?.screen?.width && window?.screen?.height) {
+		return `${window.screen.width}x${window.screen.height}`;
+	}
+}

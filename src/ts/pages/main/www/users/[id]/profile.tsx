@@ -40,7 +40,6 @@ import { getLangNamespace } from "src/ts/helpers/domInvokes";
 import { watch, watchAttributes, watchOnce, watchTextContent } from "src/ts/helpers/elements";
 import {
 	featureValueIs,
-	getFeatureValue,
 	multigetFeaturesValues,
 	setFeatureValue,
 } from "src/ts/helpers/features/helpers";
@@ -102,27 +101,29 @@ export default {
 			}),
 		);
 
-		getFeatureValue("improvedUserCurrentlyWearing").then((data) => {
-			if (data) {
-				watchOnce("#profile-current-wearing-avatar .profile-avatar-right").then((right) =>
-					renderAsContainer(
-						<UserProfileCurrentlyWearing userId={profileUserId} />,
-						right,
-					),
-				);
-			} else {
-				featureValueIs("viewUserEquippedEmotes", true, () =>
-					watchOnce(
-						".profile-accoutrements-container:not(.roseal-emotes-container)",
-					).then((container) => {
-						renderBefore(
-							<UserProfileCurrentlyWearing userId={profileUserId} forEmotes />,
-							container,
-						);
-					}),
-				);
-			}
-		});
+		multigetFeaturesValues(["improvedUserCurrentlyWearing", "viewUserEquippedEmotes"]).then(
+			(data) => {
+				if (data.improvedUserCurrentlyWearing) {
+					watchOnce(".profile-currently-wearing").then((right) =>
+						renderAsContainer(
+							<UserProfileCurrentlyWearing userId={profileUserId} />,
+							right,
+						),
+					);
+				} else if (data.viewUserEquippedEmotes) {
+					featureValueIs("viewUserEquippedEmotes", true, () =>
+						watchOnce(
+							".profile-currently-wearing .profile-carousel > div > div:not(.roseal-emotes-container)",
+						).then((container) => {
+							renderBefore(
+								<UserProfileCurrentlyWearing userId={profileUserId} forEmotes />,
+								container,
+							);
+						}),
+					);
+				}
+			},
+		);
 
 		featureValueIs("userProfileDownload3DAvatar", true, () =>
 			watchOnce<HTMLDivElement>(".avatar-toggle-button").then((container) =>

@@ -18,12 +18,18 @@ import { hijackCreateElement, hijackState } from "src/ts/helpers/hijack/react";
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import {
+	getOmniRecommendations,
 	type GetOmniRecommendationsRequest,
 	type GetOmniRecommendationsResponse,
 	multigetOmniRecommendationsMetadata,
 	type OmniItem,
 } from "src/ts/helpers/requests/services/universes";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import {
+	getDeviceMaxMemoryMB,
+	getDeviceMaxResolution,
+	getDeviceNetworkType,
+} from "src/ts/utils/context";
 import { calculateFriendsCarouselNewOffsetWidth } from "src/ts/utils/friendsCarousel";
 import { HOME_REGEX } from "src/ts/utils/regex";
 
@@ -96,6 +102,42 @@ export default {
 					blockSDUI();
 					hasBlockedExperience = true;
 				}
+			}),
+		);
+
+		checks.push(
+			featureValueIsInject("prefetchRobloxPageData", true, () => {
+				const data = getOmniRecommendations({
+					pageType: "Home",
+					sessionId: crypto.randomUUID(),
+					sduiTreatmentTypes: ["Carousel", "HeroUnit"],
+					supportedTreatmentTypes: ["SortlessGrid"],
+					cpuCores: navigator.hardwareConcurrency,
+					maxMemory: getDeviceMaxMemoryMB(),
+					maxResolution: getDeviceMaxResolution(),
+					networkType: getDeviceNetworkType(),
+				});
+
+				const endHijack = hijackRequest((req) => {
+					const url = new URL(req.url);
+					if (
+						url.hostname === getRobloxUrl("apis") &&
+						url.pathname === "/discovery-api/omni-recommendation"
+					) {
+						return data
+							.then(
+								(res) =>
+									new Response(JSON.stringify(res), {
+										headers: {
+											"content-type": "application/json",
+										},
+									}),
+							)
+							.finally(endHijack);
+					}
+				});
+
+				return endHijack;
 			}),
 		);
 

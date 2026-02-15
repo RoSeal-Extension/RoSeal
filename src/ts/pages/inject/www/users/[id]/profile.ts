@@ -3,6 +3,7 @@ import { featureValueIsInject, getFeatureValueInject } from "src/ts/helpers/feat
 import { hijackRequest, hijackResponse } from "src/ts/helpers/hijack/fetch";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { getUserAvatar } from "src/ts/helpers/requests/services/avatar";
+import { getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
 import {
 	type BatchGetThumbnailsRawResponse,
 	renderAvatar,
@@ -19,6 +20,116 @@ export default {
 	regex: [USER_PROFILE_REGEX],
 	fn: ({ regexMatches }) => {
 		const profileUserId = Number.parseInt(regexMatches![0]![1], 10);
+
+		featureValueIsInject("prefetchRobloxPageData", true, () => {
+			const profileComponentsPrefetch = getProfileComponentsData({
+				profileId: profileUserId.toString(),
+				profileType: "User",
+				components: [
+					{
+						component: "UserProfileHeader",
+					},
+					{
+						component: "Actions",
+						supportedActions: [
+							"EditProfile",
+							"QrCode",
+							"Chat",
+							"JoinExperience",
+							"Block",
+							"Unblock",
+							"AddFriend",
+							"Unfriend",
+							"AcceptFriendRequest",
+							"PendingFriendRequest",
+							"IgnoreFriendRequest",
+							"CannotAddFriend",
+							"AcceptOffNetworkFriendRequest",
+							"AddFriendFromContacts",
+							"AddFriendFromContactsSent",
+							"Follow",
+							"Unfollow",
+							"EditAlias",
+							"Report",
+							"JoinCommunity",
+							"CancelJoinCommunityRequest",
+							"ViewCommunity",
+							"ViewFullProfile",
+							"CopyLink",
+							"LeaveCommunity",
+							"MakePrimaryCommunity",
+							"RemovePrimaryCommunity",
+							"ShareProfile",
+							"ConfigureCommunity",
+							"ClaimCommunityOwnership",
+							"ChangeCommunityOwner",
+							"ViewInventory",
+							"ViewFavorites",
+							"TradeItems",
+							"LogInToAddConnection",
+							"SignUpToAddConnection",
+							"ImpersonateUser",
+							"EditAvatar",
+							"FollowUser",
+							"UnfollowUser",
+						] as const,
+					},
+					{
+						component: "About",
+					},
+					{
+						component: "CurrentlyWearing",
+					},
+					{
+						component: "Friends",
+					},
+					{
+						component: "Collections",
+					},
+					{
+						component: "Communities",
+					},
+					{
+						component: "FavoriteExperiences",
+					},
+					{
+						component: "RobloxBadges",
+					},
+					{
+						component: "PlayerBadges",
+					},
+					{
+						component: "Statistics",
+					},
+					{
+						component: "Experiences",
+					},
+					{
+						component: "Store",
+					},
+				],
+				includeComponentOrdering: true,
+			});
+
+			hijackRequest((req) => {
+				const url = new URL(req.url);
+
+				if (
+					url.hostname === getRobloxUrl("apis") &&
+					url.pathname === "/profile-platform-api/v1/profiles/get"
+				) {
+					return profileComponentsPrefetch
+						.then((data) => {
+							return new Response(JSON.stringify(data), {
+								headers: {
+									"content-type": "application/json",
+								},
+							});
+						})
+						.catch(() => {});
+				}
+			});
+		});
 
 		if (import.meta.env.TARGET_BASE === "firefox") {
 			featureValueIsInject("userProfileDownload3DAvatar", true, () =>

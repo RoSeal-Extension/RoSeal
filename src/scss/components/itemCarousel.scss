@@ -1,4 +1,6 @@
 .roseal-item-carousel {
+    position: relative;
+
     .roseal-scroller {
         display: none;
         position: absolute;
@@ -32,9 +34,5 @@
         .roseal-scroller {
             display: flex;
         }
-    }
-
-    .game-carousel {
-        max-width: 966px;
     }
 }

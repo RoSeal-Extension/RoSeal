@@ -7,19 +7,19 @@ import {
 } from "src/ts/helpers/requests/services/avatar";
 import PillToggle from "../../../core/PillToggle";
 import usePromise from "../../../hooks/usePromise";
-import UserProfileAccoutrementItem from "./AccoutrementItem";
 import {
 	type LookItemDetails,
 	type MarketplaceItemType,
 	multigetLookPurchaseDetails,
 } from "src/ts/helpers/requests/services/marketplace";
-import classNames from "classnames";
 import { emoteAssetTypeName, getAssetTypeData } from "src/ts/utils/itemTypes";
 import { RTHRO_ASSET_IDS } from "src/ts/constants/robloxAssets";
 import { watch, watchTextContent } from "src/ts/helpers/elements";
 import RobuxView from "src/ts/components/core/RobuxView";
-import { createPortal } from "preact/compat";
 import useFeatureValue from "src/ts/components/hooks/useFeatureValue";
+import ItemCarousel from "src/ts/components/core/ItemCarousel";
+import MarketplaceCard from "src/ts/components/marketplace/Card";
+import AssetWearingBundle from "./AssetWearingBundle";
 
 export type UserProfileCurrentlyWearingProps = {
 	userId: number;
@@ -62,7 +62,6 @@ export default function UserProfileCurrentlyWearing({
 
 	const [activeTab, setActiveTab] = useState<ActiveTab>("assets");
 	const [avatar] = usePromise(() => getUserAvatar({ userId }), [userId]);
-	const [wearingAssetsIndex, setWearingAssetsIndex] = useState(0);
 	const [purchaseDetails] = usePromise(() => {
 		if (!avatar) return;
 
@@ -85,8 +84,8 @@ export default function UserProfileCurrentlyWearing({
 		});
 	}, [avatar?.assets, avatar?.emotes, forEmotes]);
 
-	const [wearingAssets, wearingAnimations, emotes, pageCount, totalValue] = useMemo(() => {
-		if (!avatar) return [[], [], [], 1, 0];
+	const [wearingAssets, wearingAnimations, emotes, totalValue] = useMemo(() => {
+		if (!avatar) return [[], [], [], 0];
 
 		const assets: AssetWithDetails[] = [];
 		const animations: AssetWithDetails[] = [];
@@ -158,14 +157,8 @@ export default function UserProfileCurrentlyWearing({
 			totalValue += item.priceInRobux!;
 		}
 
-		return [
-			assets.slice(wearingAssetsIndex * 8, (wearingAssetsIndex + 1) * 8),
-			animations,
-			emotes,
-			Math.ceil(assets.length / 8),
-			totalValue,
-		];
-	}, [wearingAssetsIndex, avatar?.assets, purchaseDetails, forEmotes, separateAnimations]);
+		return [assets, animations, emotes, totalValue];
+	}, [avatar?.assets, purchaseDetails, forEmotes, separateAnimations]);
 
 	const tabs = useMemo(() => {
 		const tabs = [{ id: "assets", label: getMessage("user.avatar.tabs.assets") }];
@@ -186,47 +179,33 @@ export default function UserProfileCurrentlyWearing({
 		return tabs;
 	}, [forEmotes, emotes, wearingAnimations]);
 
-	const containerHeaderRef = useRef<HTMLDivElement>(null);
+	const h2HeaderRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (forEmotes) return;
 
-		return watch<HTMLDivElement>("#profile-current-wearing-avatar .container-header", (el) => {
-			containerHeaderRef.current = el;
+		return watch<HTMLDivElement>(".profile-currently-wearing h2", (el) => {
+			h2HeaderRef.current = el;
 		});
 	}, [forEmotes, userId]);
 
 	useEffect(() => {
-		if (forEmotes || !showTotalValue || !containerHeaderRef.current) return;
-
-		const h2 = containerHeaderRef.current.querySelector("h2");
-		if (!h2) return;
+		if (forEmotes || !showTotalValue || !h2HeaderRef.current) return;
 
 		const handleh2 = () => {
 			// rogold is not localized, so we are ok
-			const textNode = h2.childNodes[0];
+			const textNode = h2HeaderRef.current!.childNodes[0];
 			if (!textNode.nodeValue?.includes(" | Outfit Cost")) return;
 
-			h2.replaceChildren(textNode.nodeValue.replace(" | Outfit Cost", ""));
+			h2HeaderRef.current!.replaceChildren(textNode.nodeValue.replace(" | Outfit Cost", ""));
 		};
 		handleh2();
 
-		return watchTextContent(h2, handleh2);
-	}, [containerHeaderRef.current, forEmotes, showTotalValue]);
+		return watchTextContent(h2HeaderRef!.current, handleh2);
+	}, [h2HeaderRef.current, forEmotes, showTotalValue]);
 
 	const content = (
 		<>
-			{!forEmotes &&
-				showTotalValue &&
-				containerHeaderRef.current &&
-				createPortal(
-					<span className="roseal-total-value">
-						{getMessage("user.avatar.totalValue", {
-							value: <RobuxView priceInRobux={totalValue} isForSale showZero />,
-						})}
-					</span>,
-					containerHeaderRef.current,
-				)}
 			{tabs.length > 1 && (
 				<PillToggle
 					className="roseal-accoutrements-pill"
@@ -236,90 +215,149 @@ export default function UserProfileCurrentlyWearing({
 				/>
 			)}
 			{activeTab === "assets" && !forEmotes && (
-				<div className="profile-accoutrements-container roseal-emotes-container">
-					<div className="profile-accoutrements-slider">
-						<ul className="accoutrement-items-container">
-							{wearingAssets.map((asset) => (
-								<UserProfileAccoutrementItem
-									key={asset.id}
-									assetId={asset.id}
-									assetName={
-										asset.name ??
-										(asset.details?.itemType === "Asset"
-											? asset.details.name
-											: undefined)
-									}
-									details={asset.details}
-									showBundle={showAssociatedBundle && asset.showBundle}
-								/>
-							))}
-						</ul>
-					</div>
-					{pageCount > 1 && (
-						<div className="profile-accoutrements-page-container">
-							{new Array(pageCount).fill(0).map((_, index) => (
-								<span
-									// biome-ignore lint/suspicious/noArrayIndexKey: fine, intentional
-									key={index}
-									className={classNames("profile-accoutrements-page", {
-										"page-active": index === wearingAssetsIndex,
-									})}
-									onClick={() => setWearingAssetsIndex(index)}
-								/>
-							))}
+				<ItemCarousel
+					className="roseal-assets-container carousel-container"
+					innerClassName="carousel"
+				>
+					{wearingAssets.map((asset) => (
+						<div key={asset.id} className="carousel-item">
+							<MarketplaceCard
+								as="div"
+								type="Asset"
+								id={asset.id}
+								totalPrice={
+									asset.details?.itemType !== "Bundle"
+										? asset.details?.priceInRobux
+										: undefined
+								}
+								name={
+									asset.name ??
+									(asset.details?.itemType === "Asset" ? asset.details.name : "")
+								}
+								containerClassName="item-card profile-item-card"
+								thumbnailChildren={
+									asset.details?.itemType === "Bundle" &&
+									showAssociatedBundle &&
+									asset.showBundle && (
+										<AssetWearingBundle
+											id={asset.details.id}
+											name={asset.details.name}
+										/>
+									)
+								}
+							/>
 						</div>
-					)}
-				</div>
+					))}
+				</ItemCarousel>
 			)}
 			{activeTab === "animations" && separateAnimations && !forEmotes && (
-				<div className="profile-accoutrements-container roseal-animations-container">
-					<div className="profile-accoutrements-slider">
-						<ul className="accoutrement-items-container">
-							{wearingAnimations.map((asset) => (
-								<UserProfileAccoutrementItem
-									key={asset.id}
-									assetId={asset.id}
-									assetName={
-										asset.name ??
-										(asset.details?.itemType === "Asset"
-											? asset.details.name
-											: undefined)
-									}
-									details={asset.details}
-									showBundle={showAssociatedBundle && asset.showBundle}
-								/>
-							))}
-						</ul>
-					</div>
-				</div>
+				<ItemCarousel
+					className="roseal-animations-container carousel-container"
+					innerClassName="carousel"
+				>
+					{wearingAnimations.map((asset) => (
+						<div key={asset.id} className="carousel-item">
+							<MarketplaceCard
+								as="div"
+								type="Asset"
+								id={asset.id}
+								totalPrice={
+									asset.details?.itemType !== "Bundle"
+										? asset.details?.priceInRobux
+										: undefined
+								}
+								name={
+									asset.name ??
+									(asset.details?.itemType === "Asset" ? asset.details.name : "")
+								}
+								containerClassName="item-card profile-item-card"
+								thumbnailChildren={
+									asset.details?.itemType === "Bundle" &&
+									showAssociatedBundle &&
+									asset.showBundle && (
+										<AssetWearingBundle
+											id={asset.details.id}
+											name={asset.details.name}
+										/>
+									)
+								}
+							/>
+						</div>
+					))}
+				</ItemCarousel>
 			)}
 			{activeTab === "emotes" && showEmotes && (
-				<div className="profile-accoutrements-container roseal-emotes-container">
-					<div className="profile-accoutrements-slider">
-						<ul className="accoutrement-items-container">
-							{emotes.map((emote) => (
-								<UserProfileAccoutrementItem
-									key={emote.assetId}
-									assetId={emote.assetId}
-									assetName={emote.assetName}
-									details={emote.details}
-									showBundle={showAssociatedBundle && emote.showBundle}
-								/>
-							))}
-						</ul>
-					</div>
-				</div>
+				<ItemCarousel
+					className="roseal-emotes-container carousel-container"
+					innerClassName="carousel"
+				>
+					{emotes.map((emote) => (
+						<div key={emote.assetId} className="carousel-item">
+							<MarketplaceCard
+								as="div"
+								type="Asset"
+								id={emote.assetId}
+								totalPrice={
+									emote.details?.itemType !== "Bundle"
+										? emote.details?.priceInRobux
+										: undefined
+								}
+								name={emote.assetName || ""}
+								containerClassName="item-card profile-item-card"
+								thumbnailChildren={
+									emote.details?.itemType === "Bundle" &&
+									showAssociatedBundle &&
+									emote.showBundle && (
+										<AssetWearingBundle
+											id={emote.details.id}
+											name={emote.details.name}
+										/>
+									)
+								}
+							/>
+						</div>
+					))}
+				</ItemCarousel>
 			)}
 		</>
 	);
 
 	if (forEmotes) {
-		return emotes.length > 0 && content;
+		return (
+			emotes.length > 0 && (
+				<div className="roseal-currently-wearing">
+					<div className="roseal-profile-carousel">
+						<div className="collection-carousel-container">{content}</div>
+					</div>
+				</div>
+			)
+		);
 	}
 
 	return (
-		<div className="col-sm-6 section-content profile-avatar-right roseal-currently-wearing">
-			<div className="profile-avatar-mask">{content}</div>
+		<div className="profile-currently-wearing roseal-currently-wearing">
+			<div className="profile-carousel roseal-profile-carousel">
+				<div className="collection-carousel-container">
+					<h2 className="collection-carousel-title">
+						{getMessage("user.avatar.currentlyWearing", {
+							totalValue: !forEmotes && showTotalValue && (
+								<span className="roseal-total-value">
+									{getMessage("user.avatar.totalValue", {
+										value: (
+											<RobuxView
+												priceInRobux={totalValue}
+												isForSale
+												showZero
+											/>
+										),
+									})}
+								</span>
+							),
+						})}
+					</h2>
+					{content}
+				</div>
+			</div>
 		</div>
 	);
 }

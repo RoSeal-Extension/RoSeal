@@ -8,9 +8,10 @@ import classNames from "classnames";
 export type ItemCarouselProps = {
 	children: ComponentChildren;
 	className?: string;
+	innerClassName?: string;
 };
 
-export default function ItemCarousel({ children, className }: ItemCarouselProps) {
+export default function ItemCarousel({ children, className, innerClassName }: ItemCarouselProps) {
 	const [scrollWidth, setScrollWidth] = useState(0);
 
 	const [currentScrollLeft, setCurrentScrollLeft] = useState(0);
@@ -75,7 +76,7 @@ export default function ItemCarousel({ children, className }: ItemCarouselProps)
 				</button>
 			)}
 			<div
-				className="game-carousel horizontal-scroller dynamic-layout-sizing-disabled"
+				className={innerClassName}
 				ref={(el) => {
 					ref.current = el;
 					if (el) {
