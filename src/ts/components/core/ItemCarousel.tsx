@@ -9,9 +9,15 @@ export type ItemCarouselProps = {
 	children: ComponentChildren;
 	className?: string;
 	innerClassName?: string;
+	onlyXScroll?: boolean;
 };
 
-export default function ItemCarousel({ children, className, innerClassName }: ItemCarouselProps) {
+export default function ItemCarousel({
+	children,
+	className,
+	innerClassName,
+	onlyXScroll,
+}: ItemCarouselProps) {
 	const [scrollWidth, setScrollWidth] = useState(0);
 
 	const [currentScrollLeft, setCurrentScrollLeft] = useState(0);
@@ -21,13 +27,15 @@ export default function ItemCarousel({ children, className, innerClassName }: It
 
 	const onWheel: WheelEventHandler<HTMLDivElement> = useCallback(
 		(e) => {
+			if (onlyXScroll && Math.abs(e.deltaY) > Math.abs(e.deltaX)) return;
+
 			const scrollLeft = clamp(e.deltaX + e.deltaY + currentScrollLeft, 0, maxScrollLeft);
 
+			e.preventDefault();
 			if (scrollLeft === currentScrollLeft) {
 				return;
 			}
 
-			e.preventDefault();
 			e.currentTarget.scrollTo({
 				left: scrollLeft,
 			});

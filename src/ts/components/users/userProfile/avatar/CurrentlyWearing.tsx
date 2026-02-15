@@ -218,6 +218,7 @@ export default function UserProfileCurrentlyWearing({
 				<ItemCarousel
 					className="roseal-assets-container carousel-container"
 					innerClassName="carousel"
+					onlyXScroll
 				>
 					{wearingAssets.map((asset) => (
 						<div key={asset.id} className="carousel-item">
@@ -254,6 +255,7 @@ export default function UserProfileCurrentlyWearing({
 				<ItemCarousel
 					className="roseal-animations-container carousel-container"
 					innerClassName="carousel"
+					onlyXScroll
 				>
 					{wearingAnimations.map((asset) => (
 						<div key={asset.id} className="carousel-item">
@@ -290,6 +292,7 @@ export default function UserProfileCurrentlyWearing({
 				<ItemCarousel
 					className="roseal-emotes-container carousel-container"
 					innerClassName="carousel"
+					onlyXScroll
 				>
 					{emotes.map((emote) => (
 						<div key={emote.assetId} className="carousel-item">
