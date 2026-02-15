@@ -12,7 +12,7 @@
         "@preact/compat": "17.1.2",
         "@preact/signals": "2.8.0",
         "@roseal/http-client": "github:RoSeal-Extension/HTTPClient#0.1.3",
-        "@roseal/roblox-deeplink-parser": "npm:@jsr/roseal__roblox-deeplink-parser@0.1.17",
+        "@roseal/roblox-deeplink-parser": "npm:@jsr/roseal__roblox-deeplink-parser@0.1.18",
         "@types/d3-drag": "3.0.7",
         "@types/react-simple-maps": "3.0.6",
         "@types/tinycolor2": "1.4.6",
@@ -357,7 +357,7 @@
 
     "@roseal/http-client": ["@roseal/http-client@github:RoSeal-Extension/HTTPClient#3211678", { "dependencies": { "json-bigint-native": "^1.2.0", "parse-roblox-errors": "^1.1.11", "roblox-bat": "^0.6.0" } }, "RoSeal-Extension-HTTPClient-3211678"],
 
-    "@roseal/roblox-deeplink-parser": ["@jsr/roseal__roblox-deeplink-parser@0.1.17", "https://npm.jsr.io/~/11/@jsr/roseal__roblox-deeplink-parser/0.1.17.tgz", {}, "sha512-N+g2hYNNMG9T0sAeDbdKJs49gsMhqeqBxC9VVlFnGLLpGaj5Ukd/EN1IbEuNFHW7FgGQ0qq3l0dCI/ombxIeoA=="],
+    "@roseal/roblox-deeplink-parser": ["@jsr/roseal__roblox-deeplink-parser@0.1.18", "https://npm.jsr.io/~/11/@jsr/roseal__roblox-deeplink-parser/0.1.18.tgz", {}, "sha512-fP9QsMEFnoOguBV/7ShXdhEAC1JLnaifA9lWHw8++3a9AN1NCKZibrr3TSGPH+3PYdPgKEBPiJ9A3c1xQz0Vhg=="],
 
     "@svgr/babel-plugin-add-jsx-attribute": ["@svgr/babel-plugin-add-jsx-attribute@8.0.0", "", { "peerDependencies": { "@babel/core": "^7.0.0-0" } }, "sha512-b9MIk7yhdS1pMCZM8VeNfUlSKVRhsHZNMl5O9SfaX0l0t5wjdgu4IDzGB8bpnGBBOjGST3rRFVsaaEtI4W6f7g=="],
 
@@ -1223,7 +1223,7 @@
 
     "uncontrollable": ["uncontrollable@7.2.1", "", { "dependencies": { "@babel/runtime": "^7.6.3", "@types/react": ">=16.9.11", "invariant": "^2.2.4", "react-lifecycles-compat": "^3.0.4" }, "peerDependencies": { "react": ">=15.0.0" } }, "sha512-svtcfoTADIB0nT9nltgjujTi7BzVmwjZClOmskKu/E8FW9BXzg9os8OLr4f8Dlnk0rYWJIWr4wv9eKUXiQvQwQ=="],
 
-    "undici": ["undici@7.21.0", "", {}, "sha512-Hn2tCQpoDt1wv23a68Ctc8Cr/BHpUSfaPYrkajTXOS9IKpxVRx/X5m1K2YkbK2ipgZgxXSgsUinl3x+2YdSSfg=="],
+    "undici": ["undici@7.22.0", "", {}, "sha512-RqslV2Us5BrllB+JeiZnK4peryVTndy9Dnqq62S3yYRRTj0tFQCwEniUy2167skdGOy3vqRzEvl1Dm4sV2ReDg=="],
 
     "undici-types": ["undici-types@7.16.0", "", {}, "sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw=="],
 
@@ -1296,8 +1296,6 @@
     "zip-dir": ["zip-dir@2.0.0", "", { "dependencies": { "async": "^3.2.0", "jszip": "^3.2.2" } }, "sha512-uhlsJZWz26FLYXOD6WVuq+fIcZ3aBPGo/cFdiLlv3KNwpa52IF3ISV8fLhQLiqVu5No3VhlqlgthN6gehil1Dg=="],
 
     "zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
-
-    "@babel/core/debug": ["debug@4.4.3", "", { "dependencies": { "ms": "^2.1.3" } }, "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA=="],
 
     "@babel/core/semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
 
@@ -1377,7 +1375,7 @@
 
     "terser/commander": ["commander@2.20.3", "", {}, "sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ=="],
 
-    "topojson-client/commander": ["commander@2.9.0", "", { "dependencies": { "graceful-readlink": ">= 1.0.0" } }, "sha512-bmkUukX8wAOjHdN26xj5c4ctEV22TQ7dQYhSmuckKhToXrkUn0iIaolHdIxYYqD55nhpSPA9zPQ1yP57GdXP2A=="],
+    "topojson-client/commander": ["commander@2.20.3", "", {}, "sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ=="],
 
     "ts-json-schema-generator/commander": ["commander@14.0.3", "", {}, "sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw=="],
 
