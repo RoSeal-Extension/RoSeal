@@ -708,6 +708,7 @@ const featureKeys = [
 			defaultValue: true,
 		},
 	},
+	/*
 	{
 		id: "MoveAgeBracket",
 		newId: "ageBracket",
@@ -715,7 +716,7 @@ const featureKeys = [
 			type: "Toggle",
 			defaultValue: true,
 		},
-	},
+	},*/
 	{
 		id: "ChangeNavFriendsHash",
 		newId: "changeFriendsNav",

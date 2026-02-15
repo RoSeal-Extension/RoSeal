@@ -722,13 +722,6 @@ export default {
 				onStringTyped(body, "do a seal rain", () => sealRain()),
 			),
 		);
-		featureValueIs("moveAgeBracket", true, () => {
-			watchOnce("#right-navigation-header .age-bracket-label-age").then((label) => {
-				watchOnce("#navigation > ul .text-nav").then((navigation) => {
-					navigation.append(label);
-				});
-			});
-		});
 
 		getFlag("onboarding", "showOnboarding").then(async (showOnboarding) => {
 			if (showOnboarding) {

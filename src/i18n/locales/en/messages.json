@@ -5175,12 +5175,6 @@
 				"$context": ""
 			}
 		},
-		"moveAgeBracket": {
-			"name": {
-				"$message": "Move the age bracket to the left navigation",
-				"$context": ""
-			}
-		},
 		"times": {
 			"name": {
 				"$message": "Tooltip/shown text time configuration",

@@ -3161,15 +3161,6 @@ export const sections = [
 							defaultValue: true,
 						},
 					},
-					{
-						type: "Regular",
-						id: "moveAgeBracket",
-						component: {
-							type: "Toggle",
-							defaultValue: true,
-						},
-						hasCSS: true,
-					},
 				],
 			},
 			{
