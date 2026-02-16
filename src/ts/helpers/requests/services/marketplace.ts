@@ -295,6 +295,11 @@ export type AvatarItemSaleLocationType =
 	| "ExperiencesDevApiOnly"
 	| "ShopAndExperiencesById";
 
+export type MarketplaceTaxonomy = {
+	taxonomyId: string;
+	taxonomyName: string;
+};
+
 export type AvatarItemDetail<T extends MarketplaceItemType> = {
 	id: number;
 	itemType: T;
@@ -304,6 +309,7 @@ export type AvatarItemDetail<T extends MarketplaceItemType> = {
 	description: string;
 	productId?: number | null;
 	bundledItems: T extends "Bundle" ? BundledItem[] : never;
+	taxonomy?: MarketplaceTaxonomy[];
 	isRecolorable: T extends "Bundle" ? boolean : never;
 	itemStatus: AvatarItemStatus[];
 	itemRestrictions: AvatarItemRestriction[];
@@ -400,6 +406,7 @@ export type AvatarItem<T extends MarketplaceItemType> = {
 	productId?: number;
 	genres: string[];
 	bundledItems: T extends "Bundle" ? BundledItem[] : never;
+	taxonomy?: MarketplaceTaxonomy[];
 	itemStatus?: string;
 	itemRestrictions: string[];
 	creatorHasVerifiedBadge: boolean;

@@ -345,6 +345,15 @@ const inventoryItemCategories = [
 			{
 				value: "heads/dynamic-heads-asset",
 			},
+			{
+				value: "heads/face-makeup",
+			},
+			{
+				value: "heads/lip-makeup",
+			},
+			{
+				value: "heads/eye-makeup",
+			},
 		],
 	},
 	{ value: "meshparts" },
@@ -397,6 +406,8 @@ const favoriteItemCategories = [
 			{ value: "accessories/gear" },
 		],
 	},
+
+	{ value: "avatars" },
 
 	{ value: "animations" },
 	{ value: "audio" },
@@ -487,6 +498,15 @@ const favoriteItemCategories = [
 			},
 			{
 				value: "heads/dynamic-heads-asset",
+			},
+			{
+				value: "heads/face-makeup",
+			},
+			{
+				value: "heads/lip-makeup",
+			},
+			{
+				value: "heads/eye-makeup",
 			},
 		],
 	},

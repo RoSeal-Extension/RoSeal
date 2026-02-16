@@ -4144,6 +4144,18 @@
 					"$message": "Dynamic Heads (Asset)",
 					"$context": ""
 				},
+				"heads/face-makeup": {
+					"$message": "Face Makeup",
+					"$context": ""
+				},
+				"heads/lip-makeup": {
+					"$message": "Lip Makeup",
+					"$context": ""
+				},
+				"heads/eye-makeup": {
+					"$message": "Eye Makeup",
+					"$context": ""
+				},
 				"meshparts": {
 					"$message": "Meshes",
 					"$context": ""
@@ -4186,6 +4198,10 @@
 				},
 				"video": {
 					"$message": "Video",
+					"$context": ""
+				},
+				"avatars": {
+					"$message": "Avatars",
 					"$context": ""
 				}
 			}
@@ -4753,6 +4769,18 @@
 				},
 				"heads/dynamic-heads-asset": {
 					"$message": "Dynamic Heads (Asset)",
+					"$context": ""
+				},
+				"heads/face-makeup": {
+					"$message": "Face Makeup",
+					"$context": ""
+				},
+				"heads/lip-makeup": {
+					"$message": "Lip Makeup",
+					"$context": ""
+				},
+				"heads/eye-makeup": {
+					"$message": "Eye Makeup",
 					"$context": ""
 				},
 				"meshparts": {
@@ -7811,6 +7839,18 @@
 			},
 			"79": {
 				"$message": "Dynamic Heads (Asset)"
+			},
+			"88": {
+				"$message": "Face Makeup",
+				"$context": ""
+			},
+			"89": {
+				"$message": "Lip Makeup",
+				"$context": ""
+			},
+			"90": {
+				"$message": "Eye Makeup",
+				"$context": ""
 			}
 		},
 		"category": {
@@ -8116,6 +8156,34 @@
 			},
 			"83": {
 				"$message": "Screenshot",
+				"$context": ""
+			},
+			"84": {
+				"$message": "Runtime Property Set",
+				"$context": ""
+			},
+			"85": {
+				"$message": "Store Preview Video",
+				"$context": ""
+			},
+			"86": {
+				"$message": "Experience Preview Video",
+				"$context": ""
+			},
+			"87": {
+				"$message": "Creator Experience Config",
+				"$context": ""
+			},
+			"88": {
+				"$message": "Makeup | Face",
+				"$context": ""
+			},
+			"89": {
+				"$message": "Makeup | Lips",
+				"$context": ""
+			},
+			"90": {
+				"$message": "Makeup | Eyes",
 				"$context": ""
 			}
 		}
