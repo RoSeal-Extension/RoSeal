@@ -68,7 +68,7 @@
 		"zod": "4.3.6"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.0",
+		"@biomejs/biome": "2.4.1",
 		"@formatjs/icu-messageformat-parser": "3.5.1",
 		"@total-typescript/ts-reset": "0.6.1",
 		"@types/angular": "1.8.9",

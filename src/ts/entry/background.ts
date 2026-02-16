@@ -124,10 +124,9 @@ handleAlarmListeners(alarmListeners);
 // Tab redirects for mulitple features
 function handleTabRedirect() {
 	browser.webRequest.onBeforeRequest.addListener(
-		// @ts-expect-error: documentLifecycle is not in the type
 		(detail) => {
 			if (detail.documentLifecycle === "prerender") {
-				return;
+				return undefined;
 			}
 
 			featureValueIs("fixExperienceDeeplinks.useMainPage", true, () => {
