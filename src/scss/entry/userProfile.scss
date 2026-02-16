@@ -76,23 +76,6 @@
             flex-shrink: 0;
         }
     }
-    .touch .profile-accoutrements-page-container {
-        @media (min-width: 768px) {
-            display: revert !important;
-        }
-    }
-
-    .light-theme {
-        .profile-accoutrements-container .profile-accoutrements-page {
-            background-color: var(--RS_SECONDARY-BACKGROUND-COLOR) !important;
-            border: 1px solid var(--RS_BACKGROUND-4-COLOR) !important;
-
-            &.page-active {
-                background-color: var(--RS_PRIMARY-BACKGROUND-COLOR) !important;
-                border: 1px solid var(--RS_BACKGROUND-4-COLOR) !important;
-            }
-        }
-    }
 }
 
 [data-rosealfe-userprofileaddpadding] {
@@ -361,13 +344,17 @@
     }
 
     .accoutrement-bundle-container {
-        border-top-left-radius: 8px;
         position: absolute;
         right: 0;
         bottom: 0;
         width: 45px !important;
         height: 45px !important;
         background-color: var(--RS_BACKGROUND-3-COLOR) !important;
+
+        &,
+        .accoutrement-bundle-image-container {
+            border-top-left-radius: 8px;
+        }
     }
 }
 
