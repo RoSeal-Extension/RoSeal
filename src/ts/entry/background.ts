@@ -381,11 +381,6 @@ async function handleCookiesChange() {
 
 				if (currController.signal.aborted) return;
 
-				if (!discoverAccounts && !updateTabs) {
-					abortController = undefined;
-					return;
-				}
-
 				const [cookies, accounts] = await Promise.all([
 					getCurrentCookies(),
 					listRobloxAccounts(),
@@ -472,10 +467,9 @@ async function handleCookiesChange() {
 				let hasExistingAccount = false;
 				for (const account of accounts) {
 					if (account.userId === authedUser.id) {
-						if (discoverAccounts) {
-							hasExistingAccount = true;
-							account.cookies = cookies;
-						}
+						hasExistingAccount = true;
+						account.cookies = cookies;
+
 						break;
 					}
 				}
@@ -483,15 +477,17 @@ async function handleCookiesChange() {
 				abortController = undefined;
 				if (updateTabs) handleAuthenticatedUserChange(authedUser);
 
-				if (discoverAccounts) {
-					if (!hasExistingAccount && accounts.length < ROBLOX_ACCOUNT_LIMIT) {
-						accounts.push({
-							cookies,
-							userId: authedUser.id,
-						});
-					}
-					return updateRobloxAccounts(accounts);
+				if (
+					discoverAccounts &&
+					!hasExistingAccount &&
+					accounts.length < ROBLOX_ACCOUNT_LIMIT
+				) {
+					accounts.push({
+						cookies,
+						userId: authedUser.id,
+					});
 				}
+				return updateRobloxAccounts(accounts);
 			});
 		}
 	});

@@ -3776,7 +3776,7 @@
 			},
 			"discoverAccounts": {
 				"name": {
-					"$message": "Automatically discover and update accounts",
+					"$message": "Automatically discover accounts",
 					"$context": ""
 				}
 			},
