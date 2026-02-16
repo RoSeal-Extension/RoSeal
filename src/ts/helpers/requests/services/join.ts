@@ -320,6 +320,7 @@ export enum JoinServerStatusMessage {
 	CloudEditAccessDenied = 36,
 	InternalError = 37,
 	Unknown = 38,
+	JoinWithPartyVoiceElsewhere = 39,
 }
 
 export function parseJoinServerStatusMessage(value: string): JoinServerStatusMessage {
@@ -425,6 +426,9 @@ export function parseJoinServerStatusMessage(value: string): JoinServerStatusMes
 		case "One of the services required to determine game access is currently unavailable":
 		case "Backend Exception":
 			return JoinServerStatusMessage.InternalError;
+		case "Must join Communication server of Communication Place": {
+			return JoinServerStatusMessage.JoinWithPartyVoiceElsewhere;
+		}
 		default:
 			return JoinServerStatusMessage.Unknown;
 	}
