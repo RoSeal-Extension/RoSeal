@@ -323,8 +323,10 @@ export default function Passes({ universeId, canManageUniverse }: PassesProps) {
 					<li className="list-item rbx-passes-item-container rbx-gear-passes-item-add">
 						<div className="store-card">
 							<a className="store-card-add" href={getManagePassesLink(universeId)}>
-								{/* biome-ignore lint/a11y/useAltText: fine  */}
-								<img src="https://images.rbxcdn.com/eae19a3a62261e2c3953d37fbc6ca626.png" />
+								<img
+									src="https://images.rbxcdn.com/eae19a3a62261e2c3953d37fbc6ca626.png"
+									alt={getMessage("experience.passes.addPass")}
+								/>
 								<div className="store-card-add-label">
 									{getMessage("experience.passes.addPass")}
 								</div>

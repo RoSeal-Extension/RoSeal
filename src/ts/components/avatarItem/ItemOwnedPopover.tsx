@@ -59,8 +59,15 @@ export default function AvatarItemOwnedPopover({
 			{instances ? (
 				<ul className="instance-list">
 					{instances.map((instance, index) => (
-						// biome-ignore lint/suspicious/noArrayIndexKey: no other way tbh
-						<li className="instance-item" key={index}>
+						<li
+							className="instance-item"
+							key={
+								instance.addTime ||
+								instance.assetDetails?.collectibleDetails?.instanceId ||
+								instance.assetDetails?.instanceId ||
+								index
+							}
+						>
 							<div className="instance-number text small">
 								{instance.assetDetails?.collectibleDetails?.serialNumber
 									? getMessage("avatarItem.itemOwned.list.item.serialNumber", {

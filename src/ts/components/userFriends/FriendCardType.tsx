@@ -1,17 +1,12 @@
 import { useMemo } from "preact/hooks";
 import { DEFAULT_NONE_CONNECTION_TYPE, type ConnectionType } from "src/ts/constants/friends";
 import Popover from "../core/Popover";
-import {
-	getConnectionTypeDisplayDescription,
-	getConnectionTypeDisplayName,
-	getConnectionTypeIcon,
-} from "./utils/types";
+import { getConnectionTypeDisplayName, getConnectionTypeIcon } from "./utils/types";
 import type { RefObject } from "preact";
-import classNames from "classnames";
 import Button from "../core/Button";
-import IconButton from "../core/IconButton";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { DndProvider, getBackendOptions, MultiBackend, Tree } from "@minoru/react-dnd-treeview";
+import { FriendCardTypesItem } from "./FriendCardTypeItem";
 
 export type FriendCardTypesProps = {
 	availableConnectionTypes: ConnectionType[];
@@ -82,69 +77,15 @@ export default function FriendCardTypes({
 						canDrag={(item) => item?.data?.id !== DEFAULT_NONE_CONNECTION_TYPE.id}
 						render={(node, render) => {
 							const type = node.data!;
-							const displayName = useMemo(() => {
-								return getConnectionTypeDisplayName(type);
-							}, [type]);
-							const displayDescription = useMemo(() => {
-								return getConnectionTypeDisplayDescription(type);
-							}, [type]);
-
-							const icon = useMemo(() => getConnectionTypeIcon(type, true), [type]);
 
 							return (
-								<li
-									key={type.id}
-									className={classNames("type-selection", {
-										"has-color": type.color,
-										"is-dragging": render.isDragging,
-										active: type.id === connectionType.id,
-									})}
-									style={{
-										"--type-color": type.color,
-									}}
-								>
-									<button
-										type="button"
-										className="type-selection-btn roseal-btn"
-										onClick={() => {
-											setConnectionType(type.id);
-											document.body?.click();
-										}}
-									>
-										{icon && (
-											<div className="type-icon-container" key={type.id}>
-												{icon}
-											</div>
-										)}
-										<div
-											className={classNames(
-												"type-name-description-container text-overflow",
-												{
-													"has-description": displayDescription,
-												},
-											)}
-										>
-											<div className="type-name-container">
-												<div className="type-name text-overflow">
-													{displayName}
-												</div>
-												{type.type === "custom" && (
-													<IconButton
-														iconName="edit"
-														size="xs"
-														className="edit-type-btn"
-														onClick={() => openEditType(type.id)}
-													/>
-												)}
-											</div>
-											{displayDescription && (
-												<div className="type-description-container">
-													{displayDescription}
-												</div>
-											)}
-										</div>
-									</button>
-								</li>
+								<FriendCardTypesItem
+									type={type}
+									active={connectionType.id === type.id}
+									isDragging={render.isDragging}
+									setConnectionType={setConnectionType}
+									openEditType={openEditType}
+								/>
 							);
 						}}
 						onDrop={(data) => {

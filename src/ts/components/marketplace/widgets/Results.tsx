@@ -90,12 +90,12 @@ export default function MarketplaceResultsContainer({ tabs }: MarketplaceResults
 							{widgets.map((widget) => {
 								if (widget.type === "OrganicContent") {
 									if (widget.isSponsored) {
-										return <MarketplaceSponsoredWidget />;
+										return <MarketplaceSponsoredWidget key={widget.type} />;
 									}
-									return <MarketplaceRFYWidget />;
+									return <MarketplaceRFYWidget key={widget.type} />;
 								}
 
-								return <MarketplaceItemsWidget {...widget} />;
+								return <MarketplaceItemsWidget key={widget.type} {...widget} />;
 							})}
 						</div>
 					)}

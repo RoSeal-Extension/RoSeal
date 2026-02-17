@@ -10,7 +10,7 @@ import { watchAttributes, watchOnce } from "src/ts/helpers/elements";
 import type { Feature } from "src/ts/helpers/features/featuresData";
 import { locales } from "src/ts/helpers/i18n/locales.ts";
 import type { InjectScript } from "src/ts/utils/dom";
-import FeaturePermissions from "../../popup/Permissions";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export type FeaturePermissionsContainerProps = {
 	feature: Feature;
@@ -21,10 +21,6 @@ export function FeaturePermissionsContainer({
 	feature,
 	showError,
 }: FeaturePermissionsContainerProps) {
-	if (import.meta.env.TARGET_BASE === "firefox") {
-		return <FeaturePermissions feature={feature} showError={showError} />;
-	}
-
 	const [bodyClassName, setBodyClassName] = useState(document.body?.className);
 	const [stylesLoaded, setStylesLoaded] = useState(false);
 	const [height, setHeight] = useState(0);
@@ -112,8 +108,8 @@ export function FeaturePermissionsContainer({
 	}, [ref.current]);
 
 	return (
-		// biome-ignore lint/a11y/useIframeTitle: no need.
 		<iframe
+			title={getMessage("settings.features.permissions")}
 			className="feature-permissions-iframe"
 			ref={ref}
 			src={url}

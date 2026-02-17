@@ -22,11 +22,11 @@ import ItemContextMenu from "../../core/ItemContextMenu";
 import { success } from "../../core/systemFeedback/helpers/globalSystemFeedback";
 import useFeatureValue from "../../hooks/useFeatureValue";
 import useFlag from "../../hooks/useFlag";
-import usePromise from "../../hooks/usePromise";
 import { shouldFeatureDisplay } from "./shouldFeatureDisplay";
 import { FeatureComponent } from "./FeatureComponent";
 import { FeatureTypeLabel } from "./FeatureTypeLabel";
 import { FeaturePermissionsContainer } from "./FeaturePermissionsContainer";
+import FeaturePermissions from "../../popup/Permissions";
 
 export type FeatureContainerProps = {
 	feature: Feature;
@@ -39,21 +39,14 @@ export default function FeatureContainer({
 	asSection = true,
 	keyword,
 }: FeatureContainerProps) {
-	const descriptionValues: Record<string, unknown> | undefined =
-		feature.descriptionVariables && {};
-	if (feature.descriptionVariables) {
-		for (const key in feature.descriptionVariables) {
-			const value = feature.descriptionVariables[key];
-			descriptionValues![key] = usePromise(value.value)[0] || value.placeholder;
-		}
-	}
+	const featureDeprecatedFlag = useFlag(
+		typeof feature.deprecated === "object" ? feature.deprecated.value.namespace : undefined,
+		typeof feature.deprecated === "object" ? feature.deprecated.value.key : undefined,
+	);
 
 	const featureDeprecated =
 		typeof feature.deprecated === "object"
-			? flagCallMatch(
-					feature.deprecated.value,
-					useFlag(feature.deprecated.value.namespace, feature.deprecated.value.key),
-				)
+			? flagCallMatch(feature.deprecated.value, featureDeprecatedFlag)
 			: feature.deprecated;
 	const featureDisabled = isFeatureDisabled(feature);
 	const featureDirectlyDisabled = isFeatureDisabled(feature, false);
@@ -64,6 +57,29 @@ export default function FeatureContainer({
 		true,
 	);
 	const [showError, setShowError] = useState(false);
+	const [descriptionValues, setDescriptionValues] = useState(() => {
+		const descriptionValues: Record<string, unknown> | undefined =
+			feature.descriptionVariables && {};
+
+		if (feature.descriptionVariables) {
+			for (const key in feature.descriptionVariables) {
+				const value = feature.descriptionVariables[key];
+				if (typeof value?.value === "string") {
+					descriptionValues![key] = value.placeholder;
+				} else if (value?.value instanceof Promise) {
+					value.value.then((data) =>
+						setDescriptionValues((value) => ({
+							...value,
+							[key]: data,
+						})),
+					);
+				}
+			}
+		}
+
+		return descriptionValues;
+	});
+
 	const updateFeatureValue = (value: unknown) => {
 		if (feature.permissions?.required) {
 			return hasPermissions(feature.permissions.required).then((hasPermissions) => {
@@ -212,7 +228,11 @@ export default function FeatureContainer({
 			{feature.permissions && (
 				<div className="feature-permissions-container">
 					<h3>{getMessage("settings.features.permissions")}</h3>
-					<FeaturePermissionsContainer feature={feature} showError={showError} />
+					{import.meta.env.TARGET_BASE === "firefox" ? (
+						<FeaturePermissions feature={feature} showError={showError} />
+					) : (
+						<FeaturePermissionsContainer feature={feature} showError={showError} />
+					)}
 				</div>
 			)}
 			{displayedSubfeatures && displayedSubfeatures.length > 0 && (

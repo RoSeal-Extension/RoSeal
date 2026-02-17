@@ -422,18 +422,7 @@ export default function FriendsListCarousel({
 							visibleTileCount >= 0 &&
 							new Array(visibleTileCount).fill(<FriendsListShimmerCard />)}
 						{visibleFriendsList?.map((user) => {
-							const _typeId = connectionTypesStorageValue.users[user.id];
-							const connectionType = useMemo(() => {
-								if (
-									!_typeId ||
-									!connectionTypes ||
-									typeFilter !== DEFAULT_ALL_CONNECTION_TYPE.id
-								)
-									return;
-								for (const type of connectionTypes) {
-									if (type.id === _typeId) return type;
-								}
-							}, [connectionTypes, _typeId, connectionTypesEnabled, typeFilter]);
+							const typeId = connectionTypesStorageValue.users[user.id];
 
 							return (
 								<FriendsListCard
@@ -441,7 +430,10 @@ export default function FriendsListCarousel({
 									userId={user.id}
 									canChat={canAccessChat === true}
 									blockedUniverseIds={blockedUniverseIds || undefined}
-									connectionType={connectionType}
+									connectionTypesEnabled={connectionTypesEnabled}
+									connectionTypeFilter={typeFilter}
+									connectionTypes={connectionTypes}
+									connectionTypeId={typeId}
 								/>
 							);
 						})}

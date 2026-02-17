@@ -120,12 +120,7 @@ https://www.roblox.com/users/109176680/profile`}
 						>
 							secret mreow butotn.....
 						</Button>
-						{new Array(mreowCount).fill(0).map((_, index) => (
-							// biome-ignore lint/suspicious/noArrayIndexKey: What else?
-							<div className="mreow" key={index}>
-								mreow
-							</div>
-						))}
+						{new Array(mreowCount).fill(<div className="mreow">mreow</div>)}
 					</div>
 				</div>
 			</h1>

@@ -79,8 +79,7 @@ export default function AddToPlaylistButton({ universeId }: AddToPlaylistButtonP
 				trigger="click"
 				button={
 					<div className="toggle-playlist-button-container">
-						{/* biome-ignore lint/a11y/useValidAnchor: for styling  */}
-						<a className="toggle-playlist-button">
+						<button type="button" className="roseal-btn toggle-playlist-button">
 							<div className="icon-variants">
 								{isAdded ? (
 									<MdOutlineLibraryAddCheckFilled className="roseal-icon regular-icon-added" />
@@ -96,7 +95,7 @@ export default function AddToPlaylistButton({ universeId }: AddToPlaylistButtonP
 									`experience.addToPlaylist.buttonText.${isAdded ? "added" : "add"}`,
 								)}
 							</div>
-						</a>
+						</button>
 					</div>
 				}
 			>

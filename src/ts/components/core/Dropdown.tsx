@@ -175,8 +175,11 @@ export function BootstrapDropdown<T extends string | number | boolean | undefine
 						active={item.value === selectedItemValue}
 						className={item.className}
 					>
-						{/* biome-ignore lint/a11y/useValidAnchor: We don't need that. */}
-						{autoIncludeAnchors ? <a>{item.label}</a> : item.label}
+						{autoIncludeAnchors ? (
+							<button type="button">{item.label}</button>
+						) : (
+							item.label
+						)}
 					</BSDropdown.Item>
 				))}
 			</BSDropdown.Menu>

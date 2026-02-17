@@ -16,7 +16,7 @@ import useFeatureValue from "../hooks/useFeatureValue";
 import usePresence from "../hooks/usePresence";
 import useProfileData from "../hooks/useProfileData";
 import VerifiedBadge from "../icons/VerifiedBadge";
-import type { ConnectionType } from "src/ts/constants/friends";
+import { DEFAULT_ALL_CONNECTION_TYPE, type ConnectionType } from "src/ts/constants/friends";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getConnectionTypeDisplayName, getConnectionTypeIcon } from "../userFriends/utils/types";
 import usePromise from "../hooks/usePromise";
@@ -26,15 +26,28 @@ export type FriendsListCardProps = {
 	userId: number;
 	blockedUniverseIds?: number[];
 	canChat?: boolean;
-	connectionType?: ConnectionType;
+	connectionTypesEnabled?: boolean;
+	connectionTypeFilter?: number | string;
+	connectionTypes?: ConnectionType[];
+	connectionTypeId?: string | number;
 };
 
 export default function FriendsListCard({
 	userId,
 	blockedUniverseIds,
 	canChat,
-	connectionType,
+	connectionTypesEnabled,
+	connectionTypeFilter,
+	connectionTypes,
+	connectionTypeId,
 }: FriendsListCardProps) {
+	const connectionType = useMemo(() => {
+		if (!connectionTypes || !connectionTypeId || !connectionTypesEnabled) return;
+
+		for (const connectionType of connectionTypes) {
+			if (connectionType.id === connectionTypeId) return connectionType;
+		}
+	}, [connectionTypes, connectionTypeId, connectionTypesEnabled, connectionTypeFilter]);
 	const [isTrustedConnection] = usePromise(
 		() =>
 			getUserTrustedFriendStatus({
@@ -72,6 +85,8 @@ export default function FriendsListCard({
 
 		return text;
 	}, [presenceData?.lastLocation]);
+
+	const shouldShowConnectionType = connectionTypeFilter !== DEFAULT_ALL_CONNECTION_TYPE.id;
 
 	const presencePlaceId = presenceData?.placeId;
 	const presencePlaceLink =
@@ -183,7 +198,7 @@ export default function FriendsListCard({
 											data-testid="friends-carousel-tile-labels"
 										>
 											<div className="friends-carousel-tile-label">
-												{connectionType && (
+												{connectionType && shouldShowConnectionType && (
 													<div className="friend-carousel-tile-connection-type">
 														{connectionTypeIcon && (
 															<div

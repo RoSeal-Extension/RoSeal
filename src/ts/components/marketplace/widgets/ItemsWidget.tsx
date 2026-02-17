@@ -5,7 +5,7 @@ import { isAvatarItemBlocked } from "src/ts/utils/blockedItems";
 import usePromise from "../../hooks/usePromise";
 import type { MarketplaceCardProps } from "../Card";
 import ItemsListContainer from "../ItemsListContainer";
-import type { MarketplacePageWidget } from "./Results.ts";
+import type { MarketplacePageWidget } from "./Results";
 
 export default function MarketplaceItemsWidget({
 	type,

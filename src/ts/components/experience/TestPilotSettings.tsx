@@ -57,6 +57,7 @@ export default function ExperienceTestPilotSettings({
 				<ul className="test-pilot-programs">
 					{programs.map((program) => (
 						<TestPilotProgram
+							key={program.id}
 							program={program}
 							active={program === selectedProgram}
 							setActive={() => {

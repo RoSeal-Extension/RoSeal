@@ -50,13 +50,14 @@ export default function FavoriteItemButton({ assetId, canFavorite }: FavoriteIte
 			<div className="sg-system-feedback">
 				<div className="alert-system-feedback" />
 			</div>
-			<li className="favorite-button-container">
+			<div className="favorite-button-container">
 				<Tooltip
 					as="div"
 					button={
-						<a
+						<button
+							type="button"
 							id="toggle-favorite"
-							// biome-ignore lint/a11y/useValidAnchor: Fine
+							className="roseal-btn"
 							onClick={
 								canFavorite
 									? () => {
@@ -102,12 +103,12 @@ export default function FavoriteItemButton({ assetId, canFavorite }: FavoriteIte
 									favorited: !!userFavorite,
 								})}
 							/>
-						</a>
+						</button>
 					}
 				>
 					{getMessage(`item.${userFavorite ? "removeFrom" : "addTo"}Favorites`)}
 				</Tooltip>
-			</li>
+			</div>
 		</div>
 	);
 }

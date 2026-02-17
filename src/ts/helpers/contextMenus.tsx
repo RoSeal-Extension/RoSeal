@@ -35,8 +35,7 @@ export async function modifyItemContextMenu<T extends VNode | (() => VNode)>(
 	const elements = (Array.isArray(_elements) ? _elements : ([_elements] as T[])).map(
 		(Element) => {
 			// @ts-expect-error: Fine, quiet
-			// biome-ignore lint/correctness/useJsxKeyInIterable: fine
-			return typeof Element === "function" ? <Element /> : Element;
+			return typeof Element === "function" ? <Element key={Element} /> : Element;
 		},
 	) as VNode[];
 

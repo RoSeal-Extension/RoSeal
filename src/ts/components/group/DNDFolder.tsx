@@ -51,10 +51,10 @@ export default function DNDGroupFolder({
 					setIsModalOpen(false);
 				}}
 			/>
-			<a
+			<button
+				type="button"
 				className="groups-list-item folder-item-container"
 				title={folderName}
-				// biome-ignore lint/a11y/useValidAnchor: Fine for the moment.
 				onClick={toggleOpen}
 			>
 				<div className="groups-list-item-thumbnail folder-icon-container">
@@ -98,7 +98,7 @@ export default function DNDGroupFolder({
 						<Icon name={isOpen ? "up" : "down"} size="16x16" />
 					</div>
 				)}
-			</a>
+			</button>
 		</>
 	);
 }

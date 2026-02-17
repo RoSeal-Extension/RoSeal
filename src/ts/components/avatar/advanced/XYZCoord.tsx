@@ -22,7 +22,7 @@ export default function XYZCoord({
 	updateValue,
 }: XYZCoordProps) {
 	const [editing, setEditing] = useState(false);
-	const [previewValue, setPreviewValue] = useState(value);
+	const [previewValue, setPreviewValue] = useState(0);
 
 	useEffect(() => {
 		setPreviewValue(value);

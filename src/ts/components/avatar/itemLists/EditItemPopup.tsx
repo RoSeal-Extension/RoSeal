@@ -27,7 +27,7 @@ export default function EditItemPopup({
 	updateItem,
 	deleteItem,
 }: EditItemPopupProps) {
-	const [newName, setNewName] = useState(name);
+	const [newName, setNewName] = useState("");
 
 	useEffect(() => setNewName(name), [name]);
 

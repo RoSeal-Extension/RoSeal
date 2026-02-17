@@ -95,13 +95,14 @@ export default function useHybridTabNavigation({
 	return [
 		[
 			<Dropdown
+				key="mobile-navigation"
 				className="mobile-navigation-dropdown"
 				selectionItems={tabs}
 				selectedItemValue={currentTab?.id}
 				onSelect={updateCurrentTabId}
 			/>,
 		],
-		<VerticalMenu className="transparent-background-menu">
+		<VerticalMenu key="desktop-navigation" className="transparent-background-menu">
 			{tabs.map((item) => {
 				if ("asSection" in item && item.asSection) {
 					return (
@@ -191,7 +192,7 @@ export default function useHybridTabNavigation({
 				);
 			})}
 		</VerticalMenu>,
-		<div className="tab-content rbx-tab-content">
+		<div key="settings-content" className="tab-content rbx-tab-content">
 			<div role="tabpanel" className="tab-pane active">
 				{isContentVisible && (
 					<div className="section">

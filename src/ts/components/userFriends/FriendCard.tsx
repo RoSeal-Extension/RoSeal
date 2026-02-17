@@ -2,6 +2,7 @@ import classNames from "classnames";
 import type { ComponentChild, VNode } from "preact";
 import { useEffect, useMemo, useState } from "preact/hooks";
 import {
+	DEFAULT_NONE_CONNECTION_TYPE,
 	type FRIEND_REQUESTS_FILTER_SORTS,
 	MUTUAL_FRIENDS_SHOW_COUNT,
 } from "src/ts/constants/friends";
@@ -51,7 +52,7 @@ export type FriendCardPageData = {
 export type FriendCardProps = {
 	id: number;
 	pageUserId: number;
-	sourceUniverse?: SourceUniverseData;
+	universeData?: Record<number, SourceUniverseData>;
 	friendSince?: Date;
 	friendRequest?: UserFriendRequestData;
 	currentTab: FriendsTabType;
@@ -64,6 +65,8 @@ export type FriendCardProps = {
 	hasPlayedWith?: boolean;
 	requestsSortType?: (typeof FRIEND_REQUESTS_FILTER_SORTS)[number];
 	components?: UserFriendRequestAdditionalComponents;
+	connectionTypeId?: string | number;
+	onlineFriends?: UserPresence[] | null;
 	setFriendSince?: (date: Date) => void;
 	removeCard: () => void;
 } & Partial<FriendCardTypesProps>;
@@ -72,20 +75,21 @@ export default function FriendCard({
 	id,
 	pageUserId,
 	friendRequest,
-	sourceUniverse,
+	universeData,
 	currentTab,
 	isMyProfile,
-	friendPresence,
+	friendPresence: _friendPresence,
 	isFriends,
 	friendSince,
 	showSendFriendRequest,
 	mutualFriends,
 	pageData,
 	hasPlayedWith,
-	connectionType,
+	connectionTypeId,
 	availableConnectionTypes,
 	requestsSortType,
 	components,
+	onlineFriends,
 	updateConnectionTypesLayout,
 	openCreateType,
 	openEditType,
@@ -104,6 +108,7 @@ export default function FriendCard({
 				}
 			: undefined,
 	);
+
 	const profileData = !isHiddenProfile
 		? _profileData
 		: ({
@@ -124,6 +129,16 @@ export default function FriendCard({
 		"improvedUserFriendsPage.getAccurateFriendDate",
 		false,
 	);
+
+	const friendPresence = useMemo(() => {
+		if (onlineFriends) {
+			for (const friend of onlineFriends) {
+				if (friend.userId === id) {
+					return friend;
+				}
+			}
+		}
+	}, [onlineFriends, id]);
 	const presenceData = usePresence(isHiddenProfile ? undefined : id, friendPresence);
 
 	const [isTrustedConnection] = usePromise(() => {
@@ -136,6 +151,23 @@ export default function FriendCard({
 
 	const profileUrl =
 		!isHiddenProfile && !profileData?.isDeleted ? getUserProfileLink(id) : undefined;
+	const connectionType = useMemo(() => {
+		if (!availableConnectionTypes) return;
+
+		if (!connectionTypeId) return DEFAULT_NONE_CONNECTION_TYPE;
+		for (const type of availableConnectionTypes) {
+			if (type.id === connectionTypeId) return type;
+		}
+
+		return DEFAULT_NONE_CONNECTION_TYPE;
+	}, [availableConnectionTypes, connectionTypeId]);
+	const sourceUniverse = useMemo(() => {
+		if (friendRequest) {
+			if (!friendRequest?.sourceUniverseId) return;
+
+			return universeData[friendRequest.sourceUniverseId];
+		}
+	}, [friendRequest?.sourceUniverseId, universeData]);
 	/*
 	const presenceType = presenceTypes.find(
 		(type) => type.typeId === presenceData?.userPresenceType,

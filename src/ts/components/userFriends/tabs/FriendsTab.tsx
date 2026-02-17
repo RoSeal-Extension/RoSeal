@@ -60,7 +60,9 @@ export default function FriendsTab({
 	onlineFriends,
 	onlineFriendsFetched,
 }: FriendsTabProps) {
-	const [onlineFriendsMemoized, setOnlineFriendsMemoized] = useState(onlineFriends);
+	const [onlineFriendsMemoized, setOnlineFriendsMemoized] = useState<
+		UserPresence[] | null | undefined
+	>();
 	const [authenticatedUser] = useAuthenticatedUser();
 	const [createFriendLinksEnabled] = useFeatureValue("handleFriendLinks", true);
 	const [getAccurateFriendDateEnabled] = useFeatureValue(
@@ -722,22 +724,7 @@ export default function FriendsTab({
 					})}
 				>
 					{items?.map((friend) => {
-						const onlineFriend = useMemo(
-							() => onlineFriends?.find((friend2) => friend2.userId === friend.id),
-							[onlineFriends, friend.id],
-						);
-
-						const _typeId = typesStorageValue.users[friend.id];
-						const connectionType = useMemo(() => {
-							if (!allTypes) return;
-
-							if (!_typeId) return DEFAULT_NONE_CONNECTION_TYPE;
-							for (const type of allTypes) {
-								if (type.id === _typeId) return type;
-							}
-
-							return DEFAULT_NONE_CONNECTION_TYPE;
-						}, [allTypes, _typeId]);
+						const connectionTypeId = typesStorageValue.users[friend.id];
 
 						return (
 							<FriendCard
@@ -748,11 +735,7 @@ export default function FriendsTab({
 								isMyProfile={isMyProfile}
 								currentTab="friends"
 								pageData={friend.pageData}
-								sourceUniverse={
-									onlineFriend?.universeId
-										? universeData[onlineFriend.universeId]
-										: undefined
-								}
+								universeData={universeData}
 								removeCard={() => {
 									for (const item of pageData.value.items) {
 										if (item.id === friend.id) {
@@ -762,7 +745,7 @@ export default function FriendsTab({
 
 									refreshFriendsCount();
 								}}
-								friendPresence={onlineFriend}
+								onlineFriends={onlineFriends}
 								friendSince={
 									getAccurateFriendDateEnabled
 										? friendsSince?.[friend.id]
@@ -777,7 +760,7 @@ export default function FriendsTab({
 									});
 								}}
 								availableConnectionTypes={allTypes}
-								connectionType={connectionType}
+								connectionTypeId={connectionTypeId}
 								updateConnectionTypesLayout={updateConnectionTypesLayout}
 								setConnectionType={(id) => {
 									const newUsers = {

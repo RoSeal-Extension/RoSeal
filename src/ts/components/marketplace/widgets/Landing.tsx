@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import MarketplaceCartProvider from "../providers/ShoppingCartProvider";
-import MarketplaceResultsContainer from "./Results.ts";
+import MarketplaceResultsContainer from "./Results";
 
 export default function MarketplaceLanding() {
 	const [show, setShow] = useState(false);

@@ -134,11 +134,10 @@ export default function FeaturePermissions({
 	showError: _showError = false,
 }: FeaturePermissionsProps) {
 	const [showError, setShowError] = useState(_showError);
-	if (import.meta.env.TARGET_BASE !== "firefox") {
-		useEffect(() => {
+	useEffect(() => {
+		if (import.meta.env.TARGET_BASE !== "firefox")
 			return addMessageListener("featurePermissions.showError", setShowError);
-		}, []);
-	}
+	}, []);
 
 	return (
 		<div className="feature-permissions">

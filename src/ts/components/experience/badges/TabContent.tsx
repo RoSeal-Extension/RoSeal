@@ -846,7 +846,12 @@ export default function BadgesTabContent({ universeId }: BadgesTabContentProps) 
 												});
 											}}
 										>
-											<label className="checkbox-label text-label" />
+											<label
+												className="checkbox-label text-label"
+												aria-label={getMessage(
+													"experience.badges.filtering.countAllBadgesProgress.label",
+												)}
+											/>
 										</CheckboxField>
 									</div>
 								</div>

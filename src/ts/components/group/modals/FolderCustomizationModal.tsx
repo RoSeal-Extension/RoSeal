@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import SimpleModal from "../../core/modal/SimpleModal";
 import TextInput from "../../core/TextInput";
@@ -22,12 +22,20 @@ export type FolderCustomizationModalProps = {
 export function FolderCustomizationModal({
 	name,
 	color,
-	updateFolder,
 	show,
+	updateFolder,
 	hide,
 }: FolderCustomizationModalProps) {
-	const [newName, setNewName] = useState<string | undefined>(name);
-	const [newColor, setNewColor] = useState<string | undefined>(color);
+	const [newName, setNewName] = useState<string | undefined>("");
+	const [newColor, setNewColor] = useState<string | undefined>("");
+
+	useEffect(() => {
+		setNewName(name);
+	}, [name]);
+
+	useEffect(() => {
+		setNewColor(color);
+	}, [color]);
 
 	return (
 		<SimpleModal

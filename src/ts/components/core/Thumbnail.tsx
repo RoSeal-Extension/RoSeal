@@ -54,12 +54,9 @@ export default function Thumbnail({
 	children,
 }: ThumbnailProps) {
 	const [loading, setLoading] = useState(true);
+	const conditionalThumbnail = useThumbnail(request, undefined, true);
 	const [thumbnail, isThumbnailCached, _isPreviousThumbnail] =
-		data !== undefined
-			? [data, true, false]
-			: placeHolderData
-				? []
-				: useThumbnail(request, undefined, true);
+		data !== undefined ? [data, true, false] : placeHolderData ? [] : conditionalThumbnail;
 	const [prevThumbnailUrl, setPrevThumbnailUrl] = useState<string | undefined | null>();
 	const [isPreviousThumbnail, setIsPreviousThumbnail] = useState(false);
 

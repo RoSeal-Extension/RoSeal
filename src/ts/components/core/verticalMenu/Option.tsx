@@ -30,6 +30,7 @@ export default function Option({
 			})}
 			role="tab"
 			id={id}
+			aria-selected={isActive}
 		>
 			{isSecondary
 				? children &&

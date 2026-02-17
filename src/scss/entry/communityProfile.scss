@@ -132,6 +132,15 @@
         }
     }
 
+    .folder-item-container {
+        border: none;
+        background-color: var(--RS_BACKGROUND-4-COLOR);
+
+        &:hover {
+            background-color: var(--RS_LINE-COLOR);
+        }
+    }
+
     .folder-groups-btns {
         display: flex;
         align-items: center;
