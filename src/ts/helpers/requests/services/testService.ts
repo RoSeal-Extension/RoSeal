@@ -47,6 +47,7 @@ export type MultigetGUACPoliciesResponse<T extends string> = {
 
 export type GetGUACPolicyRequest = {
 	behaviorName: string;
+	extraParameters?: Record<string, string | undefined>;
 };
 
 export type MultigetGUACPoliciesRequest<T extends string> = {
@@ -160,10 +161,12 @@ export function getLayerValues<T extends string>({
 
 export function getGUACPolicy<T extends Record<string, unknown>>({
 	behaviorName,
+	extraParameters,
 }: GetGUACPolicyRequest) {
 	return httpClient
 		.httpRequest<T>({
 			url: `${getRobloxUrl("apis")}/guac-v2/v1/bundles/${behaviorName}`,
+			search: extraParameters,
 			credentials: {
 				type: "cookies",
 				value: true,

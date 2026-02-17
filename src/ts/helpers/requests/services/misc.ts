@@ -150,7 +150,13 @@ export type ProfileComponentType =
 	| "Statistics"
 	| "CreationsModels"
 	| "Clothing"
-	| "ProfileBackground";
+	| "ProfileBackground"
+	| "CoverPhoto"
+	| "Announcements"
+	| "Shout"
+	| "Events"
+	| "ForumsDiscovery"
+	| "Members" | "Videos" | "CommunityTabs" | "CommunityLocked";
 export type ProfileComponentsProfileType = "User" | "Contact" | "Community";
 
 export type ProfileComponent = {

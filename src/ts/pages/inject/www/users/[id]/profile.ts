@@ -111,7 +111,7 @@ export default {
 				includeComponentOrdering: true,
 			});
 
-			hijackRequest((req) => {
+			const endHijack = hijackRequest((req) => {
 				const url = new URL(req.url);
 
 				if (
@@ -126,7 +126,8 @@ export default {
 								},
 							});
 						})
-						.catch(() => {});
+						.catch(() => {})
+						.finally(endHijack);
 				}
 			});
 		});

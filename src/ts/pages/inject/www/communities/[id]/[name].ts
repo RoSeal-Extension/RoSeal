@@ -8,10 +8,13 @@ import {
 } from "src/ts/helpers/communication/dom";
 import { watch } from "src/ts/helpers/elements";
 import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
-import { hijackResponse } from "src/ts/helpers/hijack/fetch";
+import { hijackRequest, hijackResponse } from "src/ts/helpers/hijack/fetch";
 import { hijackCreateElement } from "src/ts/helpers/hijack/react";
 import { onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
+import { getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
+import { getGUACPolicy } from "src/ts/helpers/requests/services/testService";
+import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { GROUP_DETAILS_REGEX } from "src/ts/utils/regex";
 
@@ -34,6 +37,80 @@ export default {
 	globalDependencies: ["angular"],
 	fn: ({ dependencies, regexMatches }) => {
 		const groupId = signal(Number.parseInt(regexMatches![0][2], 10));
+
+		featureValueIsInject("prefetchRobloxPageData", true, () => {
+			const profileComponentsPrefetch = getProfileComponentsData({
+				profileId: groupId.toString(),
+				profileType: "Community",
+				components: [
+					{ component: "CommunityProfileHeader" },
+					{ component: "CoverPhoto" },
+					{ component: "Actions" },
+					{ component: "Videos" },
+					{ component: "CommunityTabs" },
+					{ component: "About" },
+					{ component: "Announcements" },
+					{ component: "Events" },
+					{ component: "Shout" },
+					{ component: "Experiences" },
+					{ component: "ForumsDiscovery" },
+					{ component: "Members" },
+					{ component: "CommunityLocked" },
+				],
+				includeComponentOrdering: true,
+			});
+
+			const endProfilePlatformHijack = hijackRequest((req) => {
+				const url = new URL(req.url);
+
+				if (
+					url.hostname === getRobloxUrl("apis") &&
+					url.pathname === "/profile-platform-api/v1/profiles/get"
+				) {
+					return profileComponentsPrefetch
+						.then((data) => {
+							return new Response(JSON.stringify(data), {
+								headers: {
+									"content-type": "application/json",
+								},
+							});
+						})
+						.catch(() => {})
+						.finally(endProfilePlatformHijack);
+				}
+			});
+
+			getAuthenticatedUser().then((user) => {
+				const guacPolicyPrefetch = getGUACPolicy({
+					behaviorName: "group-details-ui",
+					extraParameters: {
+						u: user?.userId?.toString() ?? "",
+					},
+				});
+
+				hijackRequest((req) => {
+					const url = new URL(req.url);
+
+					if (
+						url.hostname === getRobloxUrl("apis") &&
+						url.pathname === "/guac-v2/v1/bundles/group-details-ui"
+					) {
+						const param = url.searchParams.get("u");
+
+						if (!param || (!user && !param) || param === user?.userId?.toString())
+							return guacPolicyPrefetch
+								.then((data) => {
+									return new Response(JSON.stringify(data), {
+										headers: {
+											"content-type": "application/json",
+										},
+									});
+								})
+								.catch(() => {});
+					}
+				});
+			});
+		});
 
 		featureValueIsInject("moveCommunitySocialLinks", true, () => {
 			let groupProviderType: ComponentType | undefined;
