@@ -10,11 +10,12 @@ import {
 import { getMessageInject } from "src/ts/helpers/domInvokes";
 import { watch, watchOnce } from "src/ts/helpers/elements";
 import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
-import { hijackResponse } from "src/ts/helpers/hijack/fetch";
+import { hijackRequest, hijackResponse } from "src/ts/helpers/hijack/fetch";
 import { hijackComponent, hijackCreateElement } from "src/ts/helpers/hijack/react";
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { httpClient, type RESTError } from "src/ts/helpers/requests/main";
+import { getUserRobuxAmount } from "src/ts/helpers/requests/services/account";
 import { type Agent, getAssetById } from "src/ts/helpers/requests/services/assets";
 import {
 	type AvatarItem,
@@ -24,6 +25,7 @@ import {
 	getAvatarItem,
 	getCollectibleResaleData,
 	multigetBundlesByIds,
+	multigetCollectibleItemsByIds,
 	type MultigetCollectibleItemsByIdsRequest,
 	purchaseCollectibleItem,
 	type PurchaseCollectibleItemResponse,
@@ -31,9 +33,15 @@ import {
 	type PurchaseItemResponse,
 	type ResaleDataPoint,
 } from "src/ts/helpers/requests/services/marketplace";
+import {
+	canConfigureCollectibleItem,
+	multigetCanSponsorItems,
+} from "src/ts/helpers/requests/services/permissions";
+import { batchGetThumbnails } from "src/ts/helpers/requests/services/thumbnails";
+import { listUserRobloxCollections } from "src/ts/helpers/requests/services/users";
 import type { AvatarItemFeedback } from "src/ts/pages/main/www/items/[id]/[name]";
 import { calculateRecentAveragePriceAfterSale } from "src/ts/utils/assets";
-import { getAuthenticatedUserSync } from "src/ts/utils/authenticatedUser";
+import { getAuthenticatedUser, getAuthenticatedUserSync } from "src/ts/utils/authenticatedUser";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { getAvatarAssetLink, getAvatarBundleLink } from "src/ts/utils/links";
 import { AVATAR_ITEM_REGEX } from "src/ts/utils/regex";
@@ -105,6 +113,246 @@ export default {
 					);
 				}),
 			),
+		);
+
+		checks.push(
+			featureValueIsInject("prefetchRobloxPageData", true, () => {
+				const authdUser = getAuthenticatedUser();
+				const userCollections = authdUser.then(
+					(user) =>
+						user &&
+						listUserRobloxCollections({
+							userId: user.userId,
+						}),
+				);
+				const itemDetail = getAvatarItem({
+					itemType: itemType.value,
+					itemId: itemId.value,
+				});
+				const marketplaceItemDetail = itemDetail.then((data) => {
+					if (!data?.collectibleItemId) return;
+
+					return multigetCollectibleItemsByIds({
+						itemIds: [data.collectibleItemId],
+					});
+				});
+				const itemConfigurationAccess = canConfigureCollectibleItem({
+					targetType: itemType.value,
+					targetId: itemId.value,
+				});
+				const itemSponsorshipAccess =
+					itemType.value === "Asset"
+						? multigetCanSponsorItems({
+								campaignTargetType: "Asset",
+								campaignTargetIds: [itemId.value],
+							})
+						: undefined;
+				const userCurrency = getUserRobuxAmount();
+				const thumbnailRequest = batchGetThumbnails([
+					{
+						requestId: "0",
+						type: itemType.value === "Asset" ? "Asset" : "BundleThumbnail",
+						targetId: itemId.value,
+						size: "150x150",
+					},
+				]);
+
+				let handledItemDetail: number | undefined;
+				let handledMarketplaceItemDetail: number | undefined;
+				let handledItemConfigurationAccess = false;
+				let handledItemSponsorshipAccess = false;
+				let handledUserCurrency: number | undefined;
+				let handledThumbnails = false;
+				let handledUserCollections = false;
+				let handledItemsDetails: number | undefined;
+
+				return hijackRequest(async (req) => {
+					const url = new URL(req.url);
+
+					if (url.hostname === getRobloxUrl("apis")) {
+						if (
+							!handledUserCollections &&
+							url.pathname ===
+								"/showcases-api/v1/users/profile/robloxcollections-json"
+						) {
+							handledUserCollections = true;
+
+							return userCollections.then(
+								(data) =>
+									data &&
+									new Response(JSON.stringify(data), {
+										headers: {
+											"content-type": "application/json",
+										},
+									}),
+							);
+						}
+
+						if (
+							url.pathname === "/marketplace-items/v1/items/details" &&
+							(!handledMarketplaceItemDetail ||
+								Date.now() - handledMarketplaceItemDetail < 5_000)
+						) {
+							const body = await req.clone().json();
+							const data = await marketplaceItemDetail;
+							if (!data?.[0]) return;
+
+							if (
+								typeof body === "object" &&
+								body !== null &&
+								"itemIds" in body &&
+								Array.isArray(body.itemIds) &&
+								body.itemIds.length === 1 &&
+								body.itemIds[0] === data[0].collectibleItemId
+							) {
+								handledMarketplaceItemDetail = Date.now();
+
+								return new Response(JSON.stringify(data), {
+									headers: {
+										"content-type": "application/json",
+									},
+								});
+							}
+						}
+					}
+
+					if (
+						!handledItemConfigurationAccess &&
+						url.hostname === getRobloxUrl("itemconfiguration") &&
+						url.pathname === "/v1/collectibles/check-item-configuration-access" &&
+						url.searchParams.get("TargetType") ===
+							(itemType.value === "Asset" ? "0" : "1") &&
+						url.searchParams.get("TargetId") === itemId.value.toString()
+					) {
+						handledItemConfigurationAccess = true;
+						return itemConfigurationAccess.then(
+							(data) =>
+								new Response(JSON.stringify(data), {
+									headers: {
+										"content-type": "application/json",
+									},
+								}),
+						);
+					}
+
+					if (url.hostname === getRobloxUrl("catalog")) {
+						if (
+							url.pathname === `/v1/catalog/items/${itemId.value}/details` &&
+							url.searchParams.get("itemType")?.toLowerCase() ===
+								itemType.value.toLowerCase() &&
+							(!handledItemDetail || Date.now() - handledItemDetail < 5_000)
+						) {
+							handledItemDetail = Date.now();
+							return itemDetail.then(
+								(data) =>
+									data &&
+									new Response(JSON.stringify(data), {
+										headers: {
+											"content-type": "application/json",
+										},
+									}),
+							);
+						}
+
+						if (
+							url.pathname === "/v1/catalog/items/details" &&
+							(!handledItemsDetails || Date.now() - handledItemsDetails < 5_000)
+						) {
+							const body = await req.clone().json();
+
+							if (
+								typeof body === "object" &&
+								body !== null &&
+								"items" in body &&
+								Array.isArray(body.items) &&
+								body.items.length === 1 &&
+								typeof body.items[0] === "object" &&
+								body.items[0] !== null &&
+								"id" in body.items[0] &&
+								"itemType" in body.items[0] &&
+								typeof body.items[0].id &&
+								typeof body.items[0].itemType === "string" &&
+								String(body.items[0].id) === itemId.value.toString() &&
+								body.items[0].itemType?.toLowerCase() ===
+									itemType.value.toLowerCase()
+							) {
+								handledItemsDetails = Date.now();
+								return itemDetail.then(
+									(data) =>
+										new Response(JSON.stringify({ data: [data] }), {
+											headers: {
+												"content-type": "application/json",
+											},
+										}),
+								);
+							}
+						}
+					}
+
+					if (
+						itemSponsorshipAccess &&
+						!handledItemSponsorshipAccess &&
+						url.hostname === getRobloxUrl("adconfiguration") &&
+						url.pathname === "/v2/sponsored-campaigns/multi-get-can-user-sponsor" &&
+						url.searchParams.get("campaignTargetType") === "2" &&
+						url.searchParams.get("campaignTargetIds") === itemId.value.toString()
+					) {
+						handledItemSponsorshipAccess = true;
+
+						return itemSponsorshipAccess.then(
+							(data) =>
+								new Response(JSON.stringify(data), {
+									headers: {
+										"content-type": "application/json",
+									},
+								}),
+						);
+					}
+
+					if (
+						url.hostname === getRobloxUrl("economy") &&
+						url.pathname === `/v1/users/${(await authdUser)?.userId}/currency` &&
+						(!handledUserCurrency || Date.now() - handledUserCurrency < 5_000)
+					) {
+						handledUserCurrency = Date.now();
+
+						return userCurrency.then(
+							(data) =>
+								new Response(JSON.stringify(data), {
+									headers: {
+										"content-type": "application/json",
+									},
+								}),
+						);
+					}
+
+					if (
+						!handledThumbnails &&
+						url.hostname === getRobloxUrl("thumbnails") &&
+						(itemType.value === "Bundle"
+							? url.pathname === "/v1/bundles/thumbnails" &&
+								url.searchParams.get("bundleIds") === itemId.value.toString()
+							: url.pathname === "/v1/assets" &&
+								url.searchParams.get("assetIds") === itemId.value.toString())
+					) {
+						handledThumbnails = true;
+
+						return thumbnailRequest.then(
+							(data) =>
+								new Response(
+									JSON.stringify({
+										data,
+									}),
+									{
+										headers: {
+											"content-type": "application/json",
+										},
+									},
+								),
+						);
+					}
+				});
+			}),
 		);
 
 		checks.push(
