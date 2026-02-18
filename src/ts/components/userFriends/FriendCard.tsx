@@ -131,6 +131,7 @@ export default function FriendCard({
 	);
 
 	const friendPresence = useMemo(() => {
+		if (_friendPresence) return _friendPresence;
 		if (onlineFriends) {
 			for (const friend of onlineFriends) {
 				if (friend.userId === id) {
@@ -165,7 +166,7 @@ export default function FriendCard({
 		if (friendRequest) {
 			if (!friendRequest?.sourceUniverseId) return;
 
-			return universeData[friendRequest.sourceUniverseId];
+			return universeData?.[friendRequest.sourceUniverseId];
 		}
 	}, [friendRequest?.sourceUniverseId, universeData]);
 	/*
