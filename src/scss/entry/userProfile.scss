@@ -156,6 +156,10 @@
     }
 }
 
+.profile-platform-container:has(.roseal-currently-wearing) .profile-currently-wearing:not(.roseal-currently-wearing) {
+    display: none;
+}
+
 .user-portrait-view {
     .profile-platform-container:has(&.show-portrait) {
         .avatar-toggle-button .relative,

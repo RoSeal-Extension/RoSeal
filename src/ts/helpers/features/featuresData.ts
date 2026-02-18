@@ -2096,6 +2096,7 @@ export const sections = [
 					{
 						type: "Regular",
 						id: "improvedUserCurrentlyWearing",
+						variant: 1,
 						component: {
 							type: "Toggle",
 							defaultValue: true,

@@ -105,10 +105,7 @@ export default {
 			(data) => {
 				if (data.improvedUserCurrentlyWearing) {
 					watchOnce(".profile-currently-wearing").then((right) =>
-						renderAsContainer(
-							<UserProfileCurrentlyWearing userId={profileUserId} />,
-							right,
-						),
+						renderAfter(<UserProfileCurrentlyWearing userId={profileUserId} />, right),
 					);
 				} else if (data.viewUserEquippedEmotes) {
 					featureValueIs("viewUserEquippedEmotes", true, () =>
