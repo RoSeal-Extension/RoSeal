@@ -164,10 +164,9 @@
             display: none;
         }
     }
+
     &:not(.show-portrait) {
-        .portrait-thumbnail-container {
-            display: none;
-        }
+        display: none;
     }
 }
 
