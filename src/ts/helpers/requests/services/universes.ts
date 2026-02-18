@@ -6,6 +6,7 @@ import type { Agent } from "./assets";
 import type { AvatarScales } from "./avatar";
 import type { SortOrder } from "./badges";
 import type { HTTPRequestCredentials } from "@roseal/http-client";
+import type { UniversePassDetails } from "./passes";
 
 export type MultigetUniversesPlayabilityStatusesRequest = {
 	overridePlatformType?: PlatformType;
@@ -889,12 +890,6 @@ export type SDUIComponent<
 	feedItems?: FeedItem[];
 };
 
-export type GetUniverseAgeRecommendationsRequest = {
-	universeId: number;
-};
-
-export type GetUniverseAgeRecommendationsResponse = unknown;
-
 export async function getGroupShoutPreferences() {
 	return (
 		await httpClient.httpRequest<GetExperienceNotificationPreferencesResponse>({
@@ -1036,27 +1031,6 @@ export async function multigetUniversesAgeRecommendations(
 			url: getRobloxUrl(
 				"apis",
 				"/experience-guidelines-service/v1beta1/multi-age-recommendation",
-			),
-			body: {
-				type: "json",
-				value: request,
-			},
-			errorHandling: "BEDEV2",
-			credentials: {
-				type: "cookies",
-				value: true,
-			},
-		})
-	).body;
-}
-
-export async function getUniverseAgeRecommendations(request: GetUniverseAgeRecommendationsRequest) {
-	return (
-		await httpClient.httpRequest<GetUniverseAgeRecommendationsResponse>({
-			method: "POST",
-			url: getRobloxUrl(
-				"apis",
-				"/experience-guidelines-api/experience-guidelines/get-age-recommendation",
 			),
 			body: {
 				type: "json",
@@ -1388,6 +1362,143 @@ export async function listExperienceTopSongs(request: ListExperienceTopSongsRequ
 				value: true,
 			},
 			errorHandling: "BEDEV2",
+		})
+	).body;
+}
+
+export type ExperienceViewDetailsGameDetails = {
+	id: number;
+	rootPlaceId: number;
+	description: string;
+	creator: UniverseCreator;
+	visits: number;
+	playing: number;
+	genre_l1: string;
+	genre_l2: string;
+	maxPlayers: number;
+	created: string;
+	updated: string;
+};
+
+export type ExperienceViewDetailsAgeRecommendationsContainer = {
+	ageRecommendationsDetails: ExperienceViewDetailsAgeRecommendations;
+	headerDisplayName: string;
+	headerDisplayNameShort: string;
+};
+
+export type ExperienceViewDetailsAgeRecommendationsSummaryAgeRecommendation = {
+	displayName: string;
+	displayNameWithHeaderShort: string;
+	minimumAge: number;
+	minimumAgeDisplay: string;
+	contentMaturity: string;
+};
+
+export type ExperienceViewDetailsAgeRecommendationsDescriptorUsage = {
+	contains: boolean;
+	name: string;
+	descriptor: DescriptorDetails;
+	descriptorDimensionUsages: DescriptorDimension[];
+};
+
+export type ExperienceViewDetailsAgeRecommendationsSummary = {
+	ageRecommendation: ExperienceViewDetailsAgeRecommendationsSummaryAgeRecommendation;
+};
+
+export type ExperienceViewDetailsAgeRecommendations = {
+	summary: ExperienceViewDetailsAgeRecommendationsSummary;
+	descriptorUsages: ExperienceViewDetailsAgeRecommendationsDescriptorUsage[];
+};
+
+export type ExperienceViewDetailsFollowingStatus = {
+	canFollow: boolean;
+	isFollowing: boolean;
+	followingCountByType: number;
+	followingLimitByType: number;
+};
+
+export type ExperienceViewDetailsBadge = {
+	id: number;
+	name: string;
+	description: string;
+	displayName: string;
+	displayDescription: string;
+	enabled: boolean;
+	iconImageId: number;
+	displayIconImageId: number;
+	created: string;
+	updated: string;
+};
+
+export type ExperienceViewDetailsMediaGalleryItem = {
+	assetTypeId: number;
+	imageId: number;
+};
+
+export type ExperienceSocialLink = {
+	id: number;
+	title: string;
+	url: string;
+	type: "Twitter" | "Discord" | "Guilded" | "YouTube" | "Facebook" | "RobloxGroup";
+};
+
+export type ExperienceRelatedExperience = {
+	creatorId: number;
+	totalUpVotes: number;
+	totalDownVotes: number;
+	universeId: number;
+	name: string;
+	placeId: number;
+	playerCount: number;
+};
+
+export type ExperienceUserVote = {
+	userVote: boolean | null;
+	canVote: boolean;
+	reasonForNotVoteable: string;
+};
+
+export type ExperienceViewDetails = {
+	gameDetails: ExperienceViewDetailsGameDetails;
+	textFilterProfanity: boolean;
+	isFavorited: boolean;
+	userVote: ExperienceUserVote;
+	followingStatus: ExperienceViewDetailsFollowingStatus;
+	favoriteCount: number;
+	isVoiceSupported: boolean;
+	isCameraSupported: boolean;
+	totalUpVotes: number;
+	totalDownVotes: number;
+	ageRecommendations: ExperienceViewDetailsAgeRecommendationsContainer;
+	badges: ExperienceViewDetailsBadge[];
+	gamePassProducts: UniversePassDetails[];
+	mediaGallery: ExperienceViewDetailsMediaGalleryItem[];
+	socialLinks: ExperienceSocialLink[];
+	relatedGames: ExperienceRelatedExperience[];
+};
+
+export type GetExperienceViewDetailsResponse = {
+	sdui: {
+		feed: {
+			componentType: "VerticalFeed";
+			props: {
+				experienceDetails: ExperienceViewDetails;
+			};
+			feedItems: void[];
+		};
+	};
+};
+
+export async function getExperienceViewDetails(request: GetExperienceDetailedGuidelinesRequest) {
+	return (
+		await httpClient.httpRequest<GetExperienceViewDetailsResponse>({
+			url: getRobloxUrl("apis", "/experience-details-api/v1/get-experience-details"),
+			search: request,
+			errorHandling: "BEDEV2",
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
