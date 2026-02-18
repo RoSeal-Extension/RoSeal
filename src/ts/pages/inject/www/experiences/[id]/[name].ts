@@ -8,9 +8,10 @@ import { hijackComponent, hijackCreateElement } from "src/ts/helpers/hijack/reac
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { getPlaceVotesRaw } from "src/ts/helpers/requests/services/places";
-import { multigetGUACPolicies } from "src/ts/helpers/requests/services/testService";
+import { getLayersValues, multigetGUACPolicies } from "src/ts/helpers/requests/services/testService";
 import {
 	getUniverseAgeRecommendations,
+	getUniverseMedia,
 	multigetUniversesByIds,
 	multigetUniversesPlayabilityStatuses,
 	type ExperienceEvent,
@@ -144,6 +145,12 @@ export default {
 			const guacData = multigetGUACPolicies({
 				behaviorNames: ["app-policy", "play-button-ui"],
 			});
+			const ixpData = getLayersValues({
+				projectId: 1,
+				layers: {
+					"Website.GameDetails": {}
+				}
+			});
 
 			const votingService = getPlaceVotesRaw({
 				placeId,
@@ -152,6 +159,10 @@ export default {
 			const ageRecommendations = getUniverseAgeRecommendations({
 				universeId,
 			});
+
+			const universeMedia = getUniverseMedia({
+				universeId,
+			})
 
 			let endUniverseDataHijack = false;
 			let maxUniversePlayabilityHijack = 2;
@@ -191,6 +202,33 @@ export default {
 									},
 								}),
 						);
+					}
+
+					if (url.pathname.startsWith("/product-experimentation-platform/v1/projects/1/layers/Website.GameDetails/values")) {
+						return ixpData.then(
+							(res) =>
+								new Response(JSON.stringify(res.layers["Website.GameDetails"].parameters), {
+									headers: {
+										"content-type": "application/json",
+									},
+								}),
+						);
+					}
+
+					if (url.pathname === "/product-experimentation-platform/v1/projects/1/values") {
+						return req.json().then(data => {
+							if (typeof data === "object" && data !== null && "layers" in data && typeof data.layers === "object" && data.layers !== null && "Website.GameDetails" in data.layers) {
+								return ixpData.then(
+									(res) =>
+										new Response(JSON.stringify(res), {
+											headers: {
+												"content-type": "application/json",
+											},
+										}),
+								);
+								
+							}
+						})
 					}
 				}
 
@@ -238,6 +276,17 @@ export default {
 							.finally(() => {
 								endUniverseDataHijack = true;
 							});
+					}
+
+					if (url.pathname === `/v2/games/${universeId}/media`) {
+						return universeMedia.then(
+							(res) =>
+								new Response(JSON.stringify(res), {
+									headers: {
+										"content-type": "application/json",
+									},
+								}),
+						);
 					}
 				}
 				
