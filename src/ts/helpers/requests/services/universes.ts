@@ -889,6 +889,12 @@ export type SDUIComponent<
 	feedItems?: FeedItem[];
 };
 
+export type GetUniverseAgeRecommendationsRequest = {
+	universeId: number;
+};
+
+export type GetUniverseAgeRecommendationsResponse = unknown;
+
 export async function getGroupShoutPreferences() {
 	return (
 		await httpClient.httpRequest<GetExperienceNotificationPreferencesResponse>({
@@ -1030,6 +1036,27 @@ export async function multigetUniversesAgeRecommendations(
 			url: getRobloxUrl(
 				"apis",
 				"/experience-guidelines-service/v1beta1/multi-age-recommendation",
+			),
+			body: {
+				type: "json",
+				value: request,
+			},
+			errorHandling: "BEDEV2",
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+		})
+	).body;
+}
+
+export async function getUniverseAgeRecommendations(request: GetUniverseAgeRecommendationsRequest) {
+	return (
+		await httpClient.httpRequest<GetUniverseAgeRecommendationsResponse>({
+			method: "POST",
+			url: getRobloxUrl(
+				"apis",
+				"/experience-guidelines-api/experience-guidelines/get-age-recommendation",
 			),
 			body: {
 				type: "json",

@@ -40,6 +40,16 @@ export type UserVoiceOptInStatus = {
 	isUserOptIn: boolean;
 };
 
+export type GetUniverseVoiceSettingsRequest = {
+	universeId: number;
+};
+
+export type GetUniverseVoiceSettingsResponse = {
+    isUniverseEnabledForVoice: boolean;
+    isUniverseEnabledForAvatarVideo: boolean;
+    isChatGroupsApiEnabled: boolean;
+}
+
 export async function getUserVoiceSettings(): Promise<GetUserVoiceSettingsResponse> {
 	return getOrSetCache({
 		key: ["user", "voice-settings"],
@@ -114,5 +124,23 @@ export async function setUserAvatarChatOptInStatus(request: UserVoiceOptInStatus
 			value: true,
 		},
 		expect: "none",
+	});
+}
+
+export async function getUniverseVoiceSettings({
+	universeId,
+}: GetUniverseVoiceSettingsRequest): Promise<GetUniverseVoiceSettingsResponse> {
+	return getOrSetCache({
+		key: ["universes", universeId, "voice-settings"],
+		fn: () =>
+			httpClient
+				.httpRequest<GetUniverseVoiceSettingsResponse>({
+					url: `${getRobloxUrl("voice")}/v1/settings/universe/${universeId}`,
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
+				})
+				.then((res) => res.body),
 	});
 }

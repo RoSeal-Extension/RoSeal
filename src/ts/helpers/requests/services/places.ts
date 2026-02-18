@@ -131,17 +131,25 @@ export async function listPlaceServers({
 	).body;
 }
 
-export async function getPlaceVotes({ placeId }: GetPlaceVotesRequest) {
+export async function getPlaceVotesRaw({ placeId }: GetPlaceVotesRequest) {
 	const data = (
-		await httpClient.httpRequest<Document>({
+		await httpClient.httpRequest<string>({
 			url: `${getRobloxUrl("www")}/games/votingservice/${placeId}`,
 			credentials: {
 				type: "cookies",
 				value: true,
 			},
-			expect: "dom",
+			expect: "text",
 		})
 	).body;
+
+	return data;
+}
+
+export async function getPlaceVotes({ placeId }: GetPlaceVotesRequest) {
+	const parser = new DOMParser();
+
+	const data = parser.parseFromString(await getPlaceVotesRaw({ placeId }), "text/html");
 
 	const section = data.querySelector("#voting-section");
 	if (!section) {

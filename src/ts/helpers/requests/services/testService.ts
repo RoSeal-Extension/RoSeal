@@ -179,12 +179,15 @@ export function getGUACPolicy<T extends Record<string, unknown>>({
 export function multigetGUACPolicies<T extends string>({
 	behaviorNames,
 }: MultigetGUACPoliciesRequest<T>) {
+	const searchParams = new URLSearchParams();
+	for (const behaviorName of behaviorNames) {
+		searchParams.append("names", behaviorName);
+	}
+
 	return httpClient
 		.httpRequest<MultigetGUACPoliciesResponse<T>>({
 			url: getRobloxUrl("apis", "/universal-app-configuration/v1/behavior-contents"),
-			search: {
-				names: behaviorNames.join(","),
-			},
+			search: searchParams,
 			credentials: {
 				type: "cookies",
 				value: true,
