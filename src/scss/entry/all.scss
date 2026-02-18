@@ -264,7 +264,8 @@
 
 [data-rosealfe-accountsmanager-showauthenticateduserpill] {
     #right-navigation-header .age-bracket-label,
-    #navigation > ul:first-child {
+    #navigation > ul:first-child,
+    #left-navigation-container .gap-large ul > li:first-child {
         display: none;
     }
 }
@@ -1407,6 +1408,14 @@ roseal-font {
 .roseal-events-nav {
     width: 155px;
 
+    .gap-large & {
+        width: 100%;
+
+        .event-list {
+            gap: 6px;
+        }
+    }
+
     h5 {
         font-weight: 700 !important;
     }
@@ -1417,11 +1426,19 @@ roseal-font {
         flex-direction: column;
 
         .event-item {
+            display: block;
+            position: relative;
+            height: 100%;
+
             .thumbnail-2d-container {
                 height: 88px;
                 width: 100%;
                 border-radius: 8px;
                 aspect-ratio: unset !important;
+
+                .gap-large & {
+                    height: 102.93px;
+                }
             }
 
             .event-item-subtitle {
@@ -1767,6 +1784,62 @@ roseal-font {
 
         .look-img {
             width: auto;
+        }
+    }
+}
+
+.roseal-left-nav-item {
+    .nav-item-link {
+        overflow: hidden;
+        display: flex;
+        border-radius: var(--radius-medium);
+        gap: var(--gap-small);
+        padding-right: var(--padding-xxsmall);
+        padding-left: var(--padding-xsmall);
+        font: var(--typography-title-large-font);
+        letter-spacing: var(--typography-title-large-letter-spacing);
+        color: var(--color-content-emphasis);
+        align-items: center;
+        position: relative;
+
+        &::before {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            content: "";
+            transition-property:
+                color,
+                background-color,
+                border-color,
+                -webkit-text-decoration-color,
+                text-decoration-color,
+                fill,
+                stroke;
+            transition-timing-function: var(--ease-linear);
+            transition-duration: var(--time-100);
+        }
+
+        &:hover::before {
+            background-color: var(--color-state-hover);
+        }
+    }
+
+    .nav-item-icon {
+        display: flex;
+        justify-content: center;
+        flex-basis: auto;
+        flex-shrink: 0;
+        flex-grow: 0;
+        width: var(--size-1000);
+        height: var(--size-1000);
+        align-items: center;
+
+        .roseal-icon {
+            width: var(--icon-size-large);
+            height: var(--icon-size-large);
+            flex-basis: auto;
+            flex-shrink: 0;
+            flex-grow: 0;
         }
     }
 }

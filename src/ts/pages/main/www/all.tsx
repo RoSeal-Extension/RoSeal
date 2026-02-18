@@ -625,9 +625,15 @@ export default {
 				return;
 			}
 
-			watchOnce("#nav-inventory").then((el) =>
-				renderAfter(<NavigationFavorites />, el.parentElement!),
-			);
+			watchOnce(
+				'#nav-inventory, #left-navigation-container .gap-large li:has(a[href*="inventory"])',
+			).then((el) => {
+				const useNewNav = el.id !== "nav-inventory";
+				renderAfter(
+					<NavigationFavorites useNewNav={useNewNav} />,
+					useNewNav ? el : el.parentElement!,
+				);
+			});
 		});
 
 		addMessageListener("onlineFriendsFetched", (data) => {
@@ -648,7 +654,9 @@ export default {
 			if (!authenticatedUser) {
 				return;
 			}
-			watchOnce<HTMLAnchorElement>("#nav-inventory").then((el) => {
+			watchOnce<HTMLAnchorElement>(
+				'#nav-inventory, #left-navigation-container a[href*="inventory"]',
+			).then((el) => {
 				el.href = getUserInventoryLink(authenticatedUser.userId, value[1]);
 			});
 		});
@@ -876,9 +884,11 @@ export default {
 		});
 
 		featureValueIs("showcaseExperienceEventsNav", true, () => {
-			watchOnce("#navigation .left-col-list").then((list) => {
-				renderAppend(<ShowcaseExperienceEventsNav />, list);
-			});
+			watchOnce("#navigation .left-col-list, #left-navigation-container .gap-large").then(
+				(list) => {
+					renderAppend(<ShowcaseExperienceEventsNav />, list);
+				},
+			);
 		});
 
 		getFeatureValue("customErrorPageImage").then((value) => {
@@ -1461,26 +1471,26 @@ export default {
 				return;
 			}
 
-			watchOnce<HTMLAnchorElement>("#left-navigation-container #nav-friends").then(
-				(navFriends) => {
-					const link = new URL(navFriends.href);
-					link.hash = `#!/${value[1]}`;
+			watchOnce<HTMLAnchorElement>(
+				'#left-navigation-container #nav-friends, #left-navigation-container a[href*="friends"]',
+			).then((navFriends) => {
+				const link = new URL(navFriends.href);
+				link.hash = `#!/${value[1]}`;
 
-					const newLink = link.toString();
-					navFriends.href = newLink;
+				const newLink = link.toString();
+				navFriends.href = newLink;
 
-					watchAttributes(
-						navFriends,
-						(_, element) => {
-							if (element.href !== newLink) {
-								element.href = newLink;
-							}
-						},
-						["href"],
-						true,
-					);
-				},
-			);
+				watchAttributes(
+					navFriends,
+					(_, element) => {
+						if (element.href !== newLink) {
+							element.href = newLink;
+						}
+					},
+					["href"],
+					true,
+				);
+			});
 		});
 
 		getFeatureValue("changeMessagesNav").then((value) => {
@@ -1488,26 +1498,26 @@ export default {
 				return;
 			}
 
-			watchOnce<HTMLAnchorElement>("#left-navigation-container #nav-message").then(
-				(navMessages) => {
-					const link = new URL(navMessages.href);
-					link.hash = `#!/${value[1]}`;
+			watchOnce<HTMLAnchorElement>(
+				'#left-navigation-container #nav-message, #left-navigation-container a[href*="messages"]',
+			).then((navMessages) => {
+				const link = new URL(navMessages.href);
+				link.hash = `#!/${value[1]}`;
 
-					const newLink = link.toString();
-					navMessages.href = newLink;
+				const newLink = link.toString();
+				navMessages.href = newLink;
 
-					watchAttributes(
-						navMessages,
-						(_, element) => {
-							if (element.href !== newLink) {
-								element.href = newLink;
-							}
-						},
-						["href"],
-						true,
-					);
-				},
-			);
+				watchAttributes(
+					navMessages,
+					(_, element) => {
+						if (element.href !== newLink) {
+							element.href = newLink;
+						}
+					},
+					["href"],
+					true,
+				);
+			});
 		});
 
 		featureValueIs("premiumStatusNavbar", true, () =>

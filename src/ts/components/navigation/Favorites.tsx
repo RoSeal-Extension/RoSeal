@@ -1,25 +1,35 @@
-/*
-    .light-theme #left-navigation-transactions:hover .icon-robux-28x28,
-    .dark-theme #left-navigation-transactions .icon-robux-28x28 {
-        filter: brightness(0.7);
-    }
-
-    .light-theme #left-navigation-transactions .icon-robux-28x28,
-    .dark-theme #left-navigation-transactions:hover .icon-robux-28x28 {
-        filter: brightness(2);
-    }
-*/
-
+import MdOutlineBookmarkOutlined from "@material-symbols/svg-400/outlined/bookmark.svg";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getUserFavoritesLink } from "src/ts/utils/links";
 import Icon from "../core/Icon";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useFeatureValue from "../hooks/useFeatureValue";
 import LazyLink from "../core/LazyLink";
+import LeftNavItem from "./LeftNavItem";
 
-export default function NavigationFavorites() {
+export type NavigationFavoritesProps = {
+	useNewNav?: boolean;
+};
+
+export default function NavigationFavorites({ useNewNav }: NavigationFavoritesProps) {
 	const [featureData] = useFeatureValue("favoritesNav", [true, "accessories/face"]);
 	const [authenticatedUser] = useAuthenticatedUser();
+
+	if (useNewNav) {
+		return (
+			<LeftNavItem
+				id="user-favorites-nav"
+				href={
+					authenticatedUser
+						? getUserFavoritesLink(authenticatedUser.userId, featureData?.[1])
+						: undefined
+				}
+				iconComponent={<MdOutlineBookmarkOutlined className="roseal-icon" />}
+			>
+				{getMessage("navigation.favorites")}
+			</LeftNavItem>
+		);
+	}
 
 	return (
 		<li>
