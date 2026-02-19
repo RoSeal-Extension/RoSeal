@@ -3,8 +3,10 @@ import currentUrl from "src/ts/utils/currentUrl";
 import { deepLinksParser } from "src/ts/utils/deepLinks";
 import Icon from "../core/Icon";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import type { NavigationFavoritesProps } from "./Favorites";
+import LeftNavItem from "./LeftNavItem";
 
-export default function NavigationDesktopApp() {
+export default function NavigationDesktopApp({ useNewNav }: NavigationFavoritesProps) {
 	const [url, setUrl] = useState<string>();
 
 	useEffect(() => {
@@ -24,6 +26,18 @@ export default function NavigationDesktopApp() {
 	}, [currentUrl.value]);
 
 	if (!url) return null;
+
+	if (useNewNav) {
+		return (
+			<LeftNavItem
+				id="open-desktop-nav"
+				href={url}
+				iconComponent={<Icon name="default-logo-r" />}
+			>
+				{getMessage("navigation.desktopApp")}
+			</LeftNavItem>
+		);
+	}
 
 	return (
 		<li>

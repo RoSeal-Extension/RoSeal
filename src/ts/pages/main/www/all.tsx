@@ -1102,12 +1102,19 @@ export default {
 		);
 
 		featureValueIs("openDesktopAppNav", true, () =>
-			watchOnce("#nav-blog").then((blogItem) => {
-				const parent = blogItem.parentElement;
-				if (!parent) return;
+			watchOnce('#nav-blog, #left-navigation-container li:has(a[href*="blog"])').then(
+				(blogItem) => {
+					const parent = blogItem.parentElement;
+					if (!parent) return;
 
-				renderBefore(<NavigationDesktopApp />, parent);
-			}),
+					const useNewNav = blogItem.id !== "nav-blog";
+
+					renderBefore(
+						<NavigationDesktopApp useNewNav={useNewNav} />,
+						useNewNav ? blogItem : parent,
+					);
+				},
+			),
 		);
 
 		featureValueIs("blockedItems", true, () =>
