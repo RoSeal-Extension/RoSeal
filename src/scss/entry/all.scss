@@ -456,12 +456,14 @@
 }
 
 [data-rosealfe-hidefriendsnotificationscount] {
-    #nav-friends .notification {
+    #nav-friends .notification,
+    #left-navigation-container a[href*="friends"] .foundation-web-badge {
         display: none;
     }
 }
 
-[data-rosealfe-hidemessagesnotificationscount] {
+[data-rosealfe-hidemessagesnotificationscount],
+#left-navigation-container a[href*="messages"] .foundation-web-badge {
     #nav-message .notification {
         display: none;
     }
