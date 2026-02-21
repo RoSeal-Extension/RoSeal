@@ -1791,13 +1791,14 @@ roseal-font {
 }
 
 .roseal-left-nav-item {
+    padding-right: var(--padding-xxsmall);
+    padding-left: var(--padding-xsmall);
+
     .nav-item-link {
         overflow: hidden;
         display: flex;
         border-radius: var(--radius-medium);
         gap: var(--gap-small);
-        padding-right: var(--padding-xxsmall);
-        padding-left: var(--padding-xsmall);
         font: var(--typography-title-large-font);
         letter-spacing: var(--typography-title-large-letter-spacing);
         color: var(--color-content-emphasis);

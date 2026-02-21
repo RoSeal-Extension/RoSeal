@@ -7,7 +7,6 @@ import { featureValueIs, getFeatureValue } from "src/ts/helpers/features/helpers
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { profileProcessor } from "src/ts/helpers/processors/profileProcessor";
-import { getUserProfileDocument } from "src/ts/helpers/requests/services/misc";
 import { getUserById } from "src/ts/helpers/requests/services/users";
 import { getAuthenticatedUser, isAuthenticated } from "src/ts/utils/authenticatedUser";
 import { USER_FRIENDS_REGEX } from "src/ts/utils/regex";
@@ -18,12 +17,6 @@ export default {
 	id: "user.friends",
 	regex: [USER_FRIENDS_REGEX],
 	css: ["css/userFriends.css"],
-	injectScripts: [
-		{
-			document: getUserProfileDocument,
-			selectors: [['[data-bundlename="ProfileBadges"]']],
-		},
-	],
 	fn: async ({ regexMatches }) => {
 		const authenticatedUser = await getAuthenticatedUser();
 		const targetUserId = regexMatches?.[0]?.[2]

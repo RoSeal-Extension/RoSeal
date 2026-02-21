@@ -155,6 +155,7 @@ export async function handleMainPages(
 				if (!watchForErrorPage.length) {
 					const bundleSelectors = [
 						[
+							"RealTime",
 							"pageEnd",
 							"CrossTabCommunication",
 							"PresenceRegistration",
