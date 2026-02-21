@@ -86,7 +86,7 @@ export default function FriendsListCard({
 		return text;
 	}, [presenceData?.lastLocation]);
 
-	const shouldShowConnectionType = connectionTypeFilter !== DEFAULT_ALL_CONNECTION_TYPE.id;
+	const shouldShowConnectionType = connectionTypeFilter === DEFAULT_ALL_CONNECTION_TYPE.id;
 
 	const presencePlaceId = presenceData?.placeId;
 	const presencePlaceLink =
