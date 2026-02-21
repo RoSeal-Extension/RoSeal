@@ -15,7 +15,6 @@ import {
 import {
 	acceptUserFriendRequest,
 	declineUserFriendRequest,
-	getUserTrustedFriendStatus,
 	requestUserFriendship,
 	type UserFriendRequestData,
 	type UserPresence,
@@ -42,7 +41,6 @@ import FriendCardContextMenu from "./FriendCardContextMenu";
 import type { FriendCardTypesProps } from "./FriendCardType";
 import type { FriendsTabType, SourceUniverseData } from "./Page";
 import type { UserFriendRequestAdditionalComponents } from "./tabs/FriendRequestsTab";
-import usePromise from "../hooks/usePromise";
 
 export type FriendCardPageData = {
 	cursor?: string;
@@ -141,14 +139,6 @@ export default function FriendCard({
 		}
 	}, [onlineFriends, id]);
 	const presenceData = usePresence(isHiddenProfile ? undefined : id, friendPresence);
-
-	const [isTrustedConnection] = usePromise(() => {
-		if (!isMyProfile) return;
-
-		return getUserTrustedFriendStatus({
-			userId: id,
-		}).then((data) => data.status === "TrustedFriends");
-	}, [isMyProfile, id]);
 
 	const profileUrl =
 		!isHiddenProfile && !profileData?.isDeleted ? getUserProfileLink(id) : undefined;
@@ -455,9 +445,7 @@ export default function FriendCard({
 										}
 									: undefined
 							}
-							containerClassName={classNames("avatar-card-image", {
-								"trusted-connection-avatar-headshot": isTrustedConnection,
-							})}
+							containerClassName="avatar-card-image"
 						/>
 					}
 				/>
