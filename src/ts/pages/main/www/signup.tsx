@@ -12,7 +12,11 @@ export default {
 	fn: () => {
 		featureValueIs("showExperienceChatUsernameColor", true, () =>
 			watch<HTMLInputElement>("#signup-username", (signupField) => {
-				renderAfter(<UsernamePreviewContainer el={signupField} />, signupField);
+				const el = signupField.classList.contains("width-full")
+					? signupField.parentElement!
+					: signupField;
+
+				renderAfter(<UsernamePreviewContainer el={signupField} />, el);
 			}),
 		);
 	},
