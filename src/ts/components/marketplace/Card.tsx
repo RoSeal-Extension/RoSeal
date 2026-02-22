@@ -231,7 +231,7 @@ export default function MarketplaceCard({
 									isForSale
 								/>
 							)}
-							{totalPrice !== undefined && (
+							{totalPrice !== undefined && totalPrice !== null && (
 								<RobuxView
 									textClassName="text-robux-tile"
 									containerClassName="new-price"
