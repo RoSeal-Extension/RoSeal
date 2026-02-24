@@ -29,7 +29,7 @@ async function listAllPrivateMessages(pageSize = 20): Promise<PrivateMessage[]> 
 export type R2EButtonsProps = {
 	state: Signal<{
 		pending: boolean;
-		downloadString: string | undefined;
+		downloadUrl: string | undefined;
 		hasError: boolean;
 		messageIds: number[];
 	}>;
@@ -98,7 +98,7 @@ export default function R2EButtons({ state }: R2EButtonsProps) {
 				disabled={state.value.pending || state.value.hasError}
 				as="a"
 				onClick={() => {
-					if (state.value.downloadString) {
+					if (state.value.downloadUrl) {
 						if (state.value.messageIds.length) {
 							setShowModal(true);
 						}
@@ -144,10 +144,13 @@ export default function R2EButtons({ state }: R2EButtonsProps) {
 								csvValue = `${csvValue}\n${placeId},"${[...userIds].join(",")}"`;
 							}
 
+							const blob = new Blob([csvValue], {
+								type: "text/csv",
+							});
 							state.value = {
 								...state.value,
 								pending: false,
-								downloadString: `data:text/csv;base64,${btoa(csvValue)}`,
+								downloadUrl: URL.createObjectURL(blob),
 							};
 						})
 						.catch(() => {
@@ -158,8 +161,8 @@ export default function R2EButtons({ state }: R2EButtonsProps) {
 							};
 						});
 				}}
-				href={state.value.downloadString}
-				download={!!state.value.downloadString}
+				href={state.value.downloadUrl}
+				download={!!state.value.downloadUrl}
 			>
 				{getMessage(
 					`messages.r2eButton.${
@@ -167,13 +170,13 @@ export default function R2EButtons({ state }: R2EButtonsProps) {
 							? "pending"
 							: state.value.hasError
 								? "error"
-								: state.value.downloadString
+								: state.value.downloadUrl
 									? "download"
 									: "request"
 					}`,
 				)}
 			</Button>
-			{state.value.downloadString && (
+			{state.value.downloadUrl && (
 				<Button
 					className="roseal-markR2eRead"
 					size="sm"

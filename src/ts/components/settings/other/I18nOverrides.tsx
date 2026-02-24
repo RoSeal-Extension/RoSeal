@@ -54,13 +54,13 @@ export default function I18nOverrides() {
 									importFile
 										?.text()
 										.then(async (text) => {
-											const data: Record<
+											const data = JSON.parse(text) as Record<
 												string,
 												{
 													defaultMessage: string;
 													description?: string;
 												}
-											> = JSON.parse(text);
+											>;
 											const newData: Record<string, string> = {};
 
 											for (const key in data) {

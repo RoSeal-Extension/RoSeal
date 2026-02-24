@@ -1,10 +1,9 @@
 import classNames from "classnames";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { MAIN_STORAGE_KEYS_SYNC } from "src/ts/constants/storage";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { migrateStorage } from "src/ts/helpers/migrateStorage";
 import { storage } from "src/ts/helpers/storage";
-import { stringToBase64 } from "src/ts/utils/hex";
 import Button from "../../core/Button";
 import FileUpload from "../../core/FileUpload";
 
@@ -16,6 +15,10 @@ export default function DataManagement() {
 	const [readImportData, setReadImportData] = useState(false);
 	const [hasImportError, setHasImportError] = useState(false);
 	const [readingImportData, setReadingImportData] = useState(false);
+
+	useEffect(() => {
+		if (downloadDataStr) return () => URL.revokeObjectURL(downloadDataStr);
+	}, [downloadDataStr]);
 
 	return (
 		<div className="section data-management-section">
@@ -44,7 +47,8 @@ export default function DataManagement() {
 										?.text()
 										.then(async (text) => {
 											const migratedData = migrateStorage(
-												JSON.parse(text),
+												// biome-ignore lint/suspicious/noExplicitAny: need "any"
+												JSON.parse(text) as Record<string, any>,
 												await storage.get(),
 											);
 
@@ -94,13 +98,14 @@ export default function DataManagement() {
 							if (downloadDataStr) return;
 
 							setFetchingData(true);
-							storage
-								.get(MAIN_STORAGE_KEYS_SYNC)
-								.then((data) => stringToBase64(JSON.stringify(data)))
-								.then((b64) => {
-									setDownloadDataStr(`data:application/json;base64,${b64}`);
-									setFetchingData(false);
+							storage.get(MAIN_STORAGE_KEYS_SYNC).then((data) => {
+								const blob = new Blob([JSON.stringify(data)], {
+									type: "application/json",
 								});
+
+								setDownloadDataStr(URL.createObjectURL(blob));
+								setFetchingData(false);
+							});
 						}}
 						type="secondary"
 					>

@@ -14,7 +14,7 @@ export function getUserReferralPlayerId(placeId: number): number | undefined {
 	const refInfo = window.localStorage.getItem(PLAYER_REFERRAL_LOCALSTORAGE_KEY);
 	if (refInfo) {
 		try {
-			const userId = JSON.parse(atob(refInfo))?.[placeId];
+			const userId = (JSON.parse(atob(refInfo)) as Record<number, number>)?.[placeId];
 			window.localStorage.removeItem(PLAYER_REFERRAL_LOCALSTORAGE_KEY);
 
 			return userId;

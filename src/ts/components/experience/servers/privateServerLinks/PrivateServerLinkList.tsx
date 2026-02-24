@@ -70,6 +70,29 @@ export default function PrivateServerLinkList({
 		ownerIds,
 	);
 
+	const [serversDownloadLink, setServersDownloadLink] = useState<string>();
+
+	useEffect(() => {
+		if (!universePrivateServers?.data.length) return;
+
+		const blob = new Blob(
+			[
+				JSON.stringify({
+					...universePrivateServers,
+					version: 1,
+				}),
+			],
+			{
+				type: "application/json",
+			},
+		);
+
+		const link = URL.createObjectURL(blob);
+		setServersDownloadLink(link);
+
+		return () => URL.revokeObjectURL(link);
+	}, [universePrivateServers]);
+
 	useEffect(() => {
 		if (showAddCurrentModal && universePrivateServers.data.length) {
 			setShowAddCurrentModal(
@@ -177,12 +200,7 @@ export default function PrivateServerLinkList({
 										placeName,
 									},
 								)}.json`}
-								href={`data:application/json;base64,${btoa(
-									JSON.stringify({
-										...universePrivateServers,
-										version: 1,
-									}),
-								)}`}
+								href={serversDownloadLink}
 								disabled={!universePrivateServers?.data.length}
 							>
 								{getMessage("experience.privateServerLinks.actions.export")}
