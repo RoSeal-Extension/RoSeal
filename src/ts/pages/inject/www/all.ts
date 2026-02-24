@@ -410,6 +410,7 @@ export default {
 							const match = AVATAR_ITEM_REGEX.exec(path);
 
 							const itemType = match?.[1] === "bundles" ? "Bundle" : "Asset";
+
 							const idStr = match?.[2];
 							if (itemType && idStr) {
 								const id = Number.parseInt(idStr, 10);

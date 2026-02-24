@@ -168,6 +168,7 @@ import {
 	handleFriendsPresenceNotifications,
 } from "../../background-alarms/fetchOnlineFriends";
 import { fetchTradesAndUpdateData } from "../../background-alarms/fetchTrades";
+import currentUrl from "src/ts/utils/currentUrl";
 
 export type StoredUniverseCache = [
 	universeId: number,
@@ -1315,6 +1316,11 @@ export default {
 								if (type && idStr) {
 									creatorType = type;
 									creatorTargetId = Number.parseInt(idStr, 10);
+								} else if (
+									AVATAR_MARKETPLACE_REGEX.test(currentUrl.value.path.realPath)
+								) {
+									creatorType = "User";
+									creatorTargetId = 1;
 								}
 							} else {
 								const groupMatch = GROUP_DETAILS_REGEX.exec(getPath().realPath);
@@ -1372,7 +1378,11 @@ export default {
 									name,
 								)
 							) {
-								hideEl(card, true, "data-item-is-blocked");
+								hideEl(
+									card.closest("div.catalog-item-container") ?? card,
+									true,
+									"data-item-is-blocked",
+								);
 							}
 						},
 					);
