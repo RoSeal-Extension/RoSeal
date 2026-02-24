@@ -235,6 +235,11 @@ export default function UserProfileCurrentlyWearing({
 									asset.name ??
 									(asset.details?.itemType === "Asset" ? asset.details.name : "")
 								}
+								itemRestrictions={
+									asset.details?.itemType === "Asset"
+										? asset.details?.itemRestrictions
+										: undefined
+								}
 								containerClassName="item-card profile-item-card"
 								thumbnailChildren={
 									asset.details?.itemType === "Bundle" &&
@@ -272,6 +277,11 @@ export default function UserProfileCurrentlyWearing({
 									asset.name ??
 									(asset.details?.itemType === "Asset" ? asset.details.name : "")
 								}
+								itemRestrictions={
+									asset.details?.itemType === "Asset"
+										? asset.details?.itemRestrictions
+										: undefined
+								}
 								containerClassName="item-card profile-item-card"
 								thumbnailChildren={
 									asset.details?.itemType === "Bundle" &&
@@ -306,6 +316,11 @@ export default function UserProfileCurrentlyWearing({
 										: undefined
 								}
 								name={emote.assetName || ""}
+								itemRestrictions={
+									emote.details?.itemType === "Asset"
+										? emote.details?.itemRestrictions
+										: undefined
+								}
 								containerClassName="item-card profile-item-card"
 								thumbnailChildren={
 									emote.details?.itemType === "Bundle" &&
