@@ -462,8 +462,8 @@
     }
 }
 
-[data-rosealfe-hidemessagesnotificationscount],
-#left-navigation-container a[href*="messages"] .foundation-web-badge {
+[data-rosealfe-hidemessagesnotificationscount] {
+    #left-navigation-container a[href*="messages"] .foundation-web-badge,
     #nav-message .notification {
         display: none;
     }
