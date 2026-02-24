@@ -23,6 +23,9 @@
 			"id": "{f4f4223a-ff30-4961-b9c0-6a71b7a32aaf}",
 			"beta_id": "@roseal-beta.roseal",
 			"beta_update_url": "https://{ROSEAL_DOMAIN('data')}/v2/beta/firefox/updates.json",
+			"data_collection_permissions": {
+				"required": ["none"]
+			},
 			"android": {
 				"strict_min_version": "128.0"
 			}
