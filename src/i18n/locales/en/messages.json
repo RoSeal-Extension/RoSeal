@@ -11076,7 +11076,7 @@
 				"$context": ""
 			},
 			"description": {
-				"$message": "Experiments can be unreleased Roblox features that may not work correctly. They may affect your account and/or break extensions.",
+				"$message": "Roblox Experiments are unreleased and may not function correctly. Some features can cause undesirable and permanent modifications to your account.\n\nPlease note that most Roblox extensions will be incompatible with features or functionality enabled by experiments.",
 				"$context": ""
 			},
 			"action": {
