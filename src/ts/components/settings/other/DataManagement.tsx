@@ -90,7 +90,7 @@ export default function DataManagement() {
 					</div>
 					<Button
 						as={downloadDataStr ? "a" : undefined}
-						download={!!downloadDataStr}
+						download="RoSeal data.json"
 						className="import-data-btn"
 						disabled={fetchingData}
 						href={downloadDataStr}

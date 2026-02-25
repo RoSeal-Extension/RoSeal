@@ -162,7 +162,7 @@ export default function R2EButtons({ state }: R2EButtonsProps) {
 						});
 				}}
 				href={state.value.downloadUrl}
-				download={!!state.value.downloadUrl}
+				download="R2E data.csv"
 			>
 				{getMessage(
 					`messages.r2eButton.${
