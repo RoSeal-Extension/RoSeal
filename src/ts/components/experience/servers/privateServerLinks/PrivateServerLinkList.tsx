@@ -73,7 +73,7 @@ export default function PrivateServerLinkList({
 	const [serversDownloadLink, setServersDownloadLink] = useState<string>();
 
 	useEffect(() => {
-		if (!universePrivateServers?.data.length) return;
+		if (!universePrivateServers?.data.length) return setServersDownloadLink(undefined);
 
 		const blob = new Blob(
 			[
