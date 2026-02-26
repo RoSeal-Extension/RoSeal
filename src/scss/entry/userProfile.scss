@@ -128,12 +128,6 @@
     }
 }
 
-.profile-carousel:has(.roseal-emotes-container) {
-    div[class*="carouselContainer"] {
-        display: none;
-    }
-}
-
 [data-rosealfe-improveduserfriendspage-mutualstab] {
     // hide ropro's mutual friends count
     .profile-header-social-counts li:has([href*="#mutuals"]) {

@@ -101,26 +101,11 @@ export default {
 			}),
 		);
 
-		multigetFeaturesValues(["improvedUserCurrentlyWearing", "viewUserEquippedEmotes"]).then(
-			(data) => {
-				if (data.improvedUserCurrentlyWearing) {
-					watchOnce(".profile-currently-wearing").then((right) =>
-						renderAfter(<UserProfileCurrentlyWearing userId={profileUserId} />, right),
-					);
-				} else if (data.viewUserEquippedEmotes) {
-					featureValueIs("viewUserEquippedEmotes", true, () =>
-						watchOnce(
-							".profile-currently-wearing .profile-carousel > div > div:not(.roseal-emotes-container)",
-						).then((container) => {
-							renderBefore(
-								<UserProfileCurrentlyWearing userId={profileUserId} forEmotes />,
-								container,
-							);
-						}),
-					);
-				}
-			},
-		);
+		featureValueIs("improvedUserCurrentlyWearing", true, () => {
+			watchOnce(".profile-currently-wearing").then((right) =>
+				renderAfter(<UserProfileCurrentlyWearing userId={profileUserId} />, right),
+			);
+		});
 
 		featureValueIs("userProfileDownload3DAvatar", true, () =>
 			watchOnce<HTMLDivElement>(".avatar-toggle-button").then((container) =>
@@ -728,65 +713,64 @@ export default {
 			});
 		});
 
-		featureValueIs("showCommunityJoinedDate", true, () => {
-			const groupIdToJoinedDate = signal<Record<string, string>>({});
+		multigetFeaturesValues(["showCommunityJoinedDate", "showUserCommunitiesRoles"]).then(
+			(data) => {
+				if (!data.showCommunityJoinedDate && !data.showUserCommunitiesRoles) return;
 
-			watch<HTMLAnchorElement>(
-				"groups-showcase-grid .list-item .card-item, .btr-profile-groups .game-card .game-card-container a, .profile-communities .base-tile-metadata",
-				(card) => {
-					if (card.parentElement?.querySelector(".group-joined-date")) {
-						return;
-					}
+				const groupIdToJoinedDate = signal<Record<string, string>>({});
+				const usersRoles = data.showUserCommunitiesRoles
+					? listUserGroupsRoles({
+							userId: profileUserId,
+						})
+					: undefined;
 
-					const link = card.closest("a")?.href;
-					if (!link) {
-						return;
-					}
+				watch<HTMLAnchorElement>(
+					".btr-profile-groups .game-card .game-card-container a, .profile-communities .base-tile-metadata",
+					(card) => {
+						if (card.parentElement?.querySelector(".group-joined-date")) {
+							return;
+						}
 
-					const path = new URL(link).pathname;
-					const idStr = GROUP_DETAILS_REGEX.exec(path)?.[2];
-					if (!idStr) {
-						return;
-					}
+						const link = card.closest("a")?.href;
+						if (!link) {
+							return;
+						}
 
-					const id = Number.parseInt(idStr, 10);
-					if (!card.parentElement) return;
+						const path = new URL(link).pathname;
+						const idStr = GROUP_DETAILS_REGEX.exec(path)?.[2];
+						if (!idStr) {
+							return;
+						}
 
-					renderAppend(
-						<UserCommunityJoinedDateGrid
-							userId={profileUserId}
-							groupId={id}
-							state={groupIdToJoinedDate}
-						/>,
-						card.parentElement,
-					);
-				},
-			);
-		});
+						const id = Number.parseInt(idStr, 10);
+						if (!card.parentElement) return;
 
-		featureValueIs("showUserCommunitiesRoles", true, () =>
-			listUserGroupsRoles({
-				userId: profileUserId,
-			}).then((data) => {
-				watch(".profile-communities .base-tile-metadata", (card) => {
-					const link = card.closest("a")?.href;
-					if (!link) {
-						return;
-					}
-
-					const path = new URL(link).pathname;
-					const idStr = GROUP_DETAILS_REGEX.exec(path)?.[2];
-					if (!idStr) {
-						return;
-					}
-
-					const id = Number.parseInt(idStr, 10);
-					const roleName = data.data.find((item) => item.group.id === id)?.role?.name;
-					if (!roleName || !card.parentElement) return;
-
-					renderAppend(<UserCommunityRoleGrid roleName={roleName} />, card.parentElement);
-				});
-			}),
+						renderAppend(
+							<>
+								{usersRoles && (
+									<UserCommunityRoleGrid
+										roleName={usersRoles.then((data) => {
+											for (const item of data.data) {
+												if (item.group.id === id) {
+													return item.role.name;
+												}
+											}
+										})}
+									/>
+								)}
+								{data.showCommunityJoinedDate && (
+									<UserCommunityJoinedDateGrid
+										userId={profileUserId}
+										groupId={id}
+										state={groupIdToJoinedDate}
+									/>
+								)}
+							</>,
+							card.parentElement,
+						);
+					},
+				);
+			},
 		);
 
 		if (profileUserId !== authenticatedUser?.userId) {

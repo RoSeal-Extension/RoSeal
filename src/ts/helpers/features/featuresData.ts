@@ -2087,14 +2087,6 @@ export const sections = [
 					},
 					{
 						type: "Regular",
-						id: "viewUserEquippedEmotes",
-						component: {
-							type: "Toggle",
-							defaultValue: true,
-						},
-					},
-					{
-						type: "Regular",
 						id: "improvedUserCurrentlyWearing",
 						variant: 1,
 						component: {
@@ -2103,6 +2095,14 @@ export const sections = [
 						},
 						subfeatures: {
 							items: [
+								{
+									type: "Regular",
+									id: "improvedUserCurrentlyWearing.viewUserEquippedEmotes",
+									component: {
+										type: "Toggle",
+										defaultValue: true,
+									},
+								},
 								{
 									type: "Regular",
 									id: "improvedUserCurrentlyWearing.showAssociatedItemsBundle",

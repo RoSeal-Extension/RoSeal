@@ -1,29 +1,28 @@
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
+import ItemCarousel from "src/ts/components/core/ItemCarousel";
+import RobuxView from "src/ts/components/core/RobuxView";
+import useFeatureValue from "src/ts/components/hooks/useFeatureValue";
+import MarketplaceCard from "src/ts/components/marketplace/Card";
+import { RTHRO_ASSET_IDS } from "src/ts/constants/robloxAssets";
+import { watch, watchTextContent } from "src/ts/helpers/elements";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	type AvatarAssetDefinitionWithTypes,
 	type AvatarEmote,
 	getUserAvatar,
 } from "src/ts/helpers/requests/services/avatar";
-import PillToggle from "../../../core/PillToggle";
-import usePromise from "../../../hooks/usePromise";
 import {
 	type LookItemDetails,
 	type MarketplaceItemType,
 	multigetLookPurchaseDetails,
 } from "src/ts/helpers/requests/services/marketplace";
 import { emoteAssetTypeName, getAssetTypeData } from "src/ts/utils/itemTypes";
-import { RTHRO_ASSET_IDS } from "src/ts/constants/robloxAssets";
-import { watch, watchTextContent } from "src/ts/helpers/elements";
-import RobuxView from "src/ts/components/core/RobuxView";
-import useFeatureValue from "src/ts/components/hooks/useFeatureValue";
-import ItemCarousel from "src/ts/components/core/ItemCarousel";
-import MarketplaceCard from "src/ts/components/marketplace/Card";
+import PillToggle from "../../../core/PillToggle";
+import usePromise from "../../../hooks/usePromise";
 import AssetWearingBundle from "./AssetWearingBundle";
 
 export type UserProfileCurrentlyWearingProps = {
 	userId: number;
-	forEmotes?: boolean;
 };
 
 type ActiveTab = "assets" | "emotes" | "animations";
@@ -36,11 +35,8 @@ type AssetWithDetails = AvatarAssetDefinitionWithTypes & {
 	showBundle?: boolean;
 };
 
-export default function UserProfileCurrentlyWearing({
-	userId,
-	forEmotes,
-}: UserProfileCurrentlyWearingProps) {
-	const [showEmotes] = useFeatureValue("viewUserEquippedEmotes", false);
+export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurrentlyWearingProps) {
+	const [showEmotes] = useFeatureValue("improvedUserCurrentlyWearing", false);
 	const [separateAnimations] = useFeatureValue(
 		"improvedUserCurrentlyWearing.separateAnimationsTab",
 		false,
@@ -66,10 +62,9 @@ export default function UserProfileCurrentlyWearing({
 		if (!avatar) return;
 
 		const assetIds: number[] = [];
-		if (!forEmotes)
-			for (const item of avatar.assets) {
-				assetIds.push(item.id);
-			}
+		for (const item of avatar.assets) {
+			assetIds.push(item.id);
+		}
 
 		for (const item of avatar.emotes) {
 			if (assetIds.includes(item.assetId)) continue;
@@ -82,7 +77,7 @@ export default function UserProfileCurrentlyWearing({
 				id,
 			})),
 		});
-	}, [avatar?.assets, avatar?.emotes, forEmotes]);
+	}, [avatar?.assets, avatar?.emotes]);
 
 	const [wearingAssets, wearingAnimations, emotes, totalValue] = useMemo(() => {
 		if (!avatar) return [[], [], [], 0];
@@ -109,35 +104,33 @@ export default function UserProfileCurrentlyWearing({
 			}
 		}
 
-		if (!forEmotes)
-			for (const item of avatar.assets) {
-				const type = getAssetTypeData(item.assetType.id);
+		for (const item of avatar.assets) {
+			const type = getAssetTypeData(item.assetType.id);
 
-				const shouldInclude =
-					!type?.isUsuallyTemplate && !RTHRO_ASSET_IDS.includes(item.id);
+			const shouldInclude = !type?.isUsuallyTemplate && !RTHRO_ASSET_IDS.includes(item.id);
 
-				const details = assetIdToItem[item.id];
-				const newAsset = {
-					...item,
-					details,
-					showBundle: shouldInclude,
-				};
+			const details = assetIdToItem[item.id];
+			const newAsset = {
+				...item,
+				details,
+				showBundle: shouldInclude,
+			};
 
-				const isAnimation = type?.isAnimated && type.assetType !== emoteAssetTypeName;
-				if (isAnimation && separateAnimations) {
-					animations.push(newAsset);
-				} else {
-					assets.push(newAsset);
-				}
-
-				if (
-					shouldInclude &&
-					details?.priceInRobux &&
-					(!isAnimation || showTotalValueIncludesAnimations)
-				) {
-					totalValueItems.add(details);
-				}
+			const isAnimation = type?.isAnimated && type.assetType !== emoteAssetTypeName;
+			if (isAnimation && separateAnimations) {
+				animations.push(newAsset);
+			} else {
+				assets.push(newAsset);
 			}
+
+			if (
+				shouldInclude &&
+				details?.priceInRobux &&
+				(!isAnimation || showTotalValueIncludesAnimations)
+			) {
+				totalValueItems.add(details);
+			}
+		}
 
 		for (const item of avatar.emotes) {
 			const details = assetIdToItem[item.assetId];
@@ -147,7 +140,7 @@ export default function UserProfileCurrentlyWearing({
 				showBundle: true,
 			});
 
-			if (!forEmotes && details?.priceInRobux && showTotalValueIncludesEmotes) {
+			if (details?.priceInRobux && showTotalValueIncludesEmotes) {
 				totalValueItems.add(details);
 			}
 		}
@@ -158,12 +151,12 @@ export default function UserProfileCurrentlyWearing({
 		}
 
 		return [assets, animations, emotes, totalValue];
-	}, [avatar?.assets, purchaseDetails, forEmotes, separateAnimations]);
+	}, [avatar?.assets, purchaseDetails, separateAnimations]);
 
 	const tabs = useMemo(() => {
 		const tabs = [{ id: "assets", label: getMessage("user.avatar.tabs.assets") }];
 
-		if (!forEmotes && wearingAnimations.length && separateAnimations) {
+		if (wearingAnimations.length && separateAnimations) {
 			tabs.push({
 				id: "animations",
 				label: getMessage("user.avatar.tabs.animations"),
@@ -177,20 +170,18 @@ export default function UserProfileCurrentlyWearing({
 			});
 
 		return tabs;
-	}, [forEmotes, emotes, wearingAnimations]);
+	}, [emotes, wearingAnimations]);
 
 	const h2HeaderRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		if (forEmotes) return;
-
 		return watch<HTMLDivElement>(".profile-currently-wearing h2", (el) => {
 			h2HeaderRef.current = el;
 		});
-	}, [forEmotes, userId]);
+	}, [userId]);
 
 	useEffect(() => {
-		if (forEmotes || !showTotalValue || !h2HeaderRef.current) return;
+		if (!showTotalValue || !h2HeaderRef.current) return;
 
 		const handleh2 = () => {
 			// rogold is not localized, so we are ok
@@ -202,7 +193,7 @@ export default function UserProfileCurrentlyWearing({
 		handleh2();
 
 		return watchTextContent(h2HeaderRef!.current, handleh2);
-	}, [h2HeaderRef.current, forEmotes, showTotalValue]);
+	}, [h2HeaderRef.current, showTotalValue]);
 
 	const content = (
 		<>
@@ -214,7 +205,7 @@ export default function UserProfileCurrentlyWearing({
 					currentId={activeTab}
 				/>
 			)}
-			{activeTab === "assets" && !forEmotes && (
+			{activeTab === "assets" && (
 				<ItemCarousel
 					className="roseal-assets-container carousel-container"
 					innerClassName="carousel"
@@ -256,7 +247,7 @@ export default function UserProfileCurrentlyWearing({
 					))}
 				</ItemCarousel>
 			)}
-			{activeTab === "animations" && separateAnimations && !forEmotes && (
+			{activeTab === "animations" && separateAnimations && (
 				<ItemCarousel
 					className="roseal-animations-container carousel-container"
 					innerClassName="carousel"
@@ -340,25 +331,13 @@ export default function UserProfileCurrentlyWearing({
 		</>
 	);
 
-	if (forEmotes) {
-		return (
-			emotes.length > 0 && (
-				<div className="roseal-currently-wearing">
-					<div className="roseal-profile-carousel">
-						<div className="collection-carousel-container">{content}</div>
-					</div>
-				</div>
-			)
-		);
-	}
-
 	return (
 		<div className="profile-currently-wearing roseal-currently-wearing">
 			<div className="profile-carousel roseal-profile-carousel">
 				<div className="collection-carousel-container">
 					<h2 className="collection-carousel-title">
 						{getMessage("user.avatar.currentlyWearing", {
-							totalValue: !forEmotes && showTotalValue && (
+							totalValue: showTotalValue && (
 								<span className="roseal-total-value">
 									{getMessage("user.avatar.totalValue", {
 										value: (

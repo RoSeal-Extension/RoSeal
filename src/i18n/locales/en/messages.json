@@ -2901,7 +2901,7 @@
 				"$message": "View a user's total RAP on their profile"
 			}
 		},
-		"viewUserEquippedEmotes": {
+		"improvedUserCurrentlyWearing": {
 			"name": {
 				"$message": "View the emotes a user has equipped",
 				"$context": ""

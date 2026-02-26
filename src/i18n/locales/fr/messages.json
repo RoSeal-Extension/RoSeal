@@ -1861,7 +1861,7 @@
 				"$context": ""
 			}
 		},
-		"viewUserEquippedEmotes": {
+		"improvedUserCurrentlyWearing": {
 			"name": {
 				"$message": "View the emotes a user has equipped",
 				"$context": ""
