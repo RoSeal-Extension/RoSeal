@@ -1,7 +1,6 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { httpClient } from "../main";
 import type { FriendRequestOriginType, UserPresence } from "./users";
-import { UserPresenceTypeId } from "src/ts/constants/presence";
 
 export type BaseNotification = {
 	SequenceNumber: number;
@@ -535,11 +534,13 @@ export function getRealtimeSubscriptionEventCounts() {
 			);
 		};
 		ws.onmessage = (e) => {
-			const data = JSON.parse(e.data.substring(0, e.data.length - 1));
+			// biome-ignore lint/suspicious/noExplicitAny: fine
+			const data = JSON.parse(e.data.substring(0, e.data.length - 1)) as any;
 			if (data.target === "subscriptionStatus") {
 				ws.close();
 				if (data.arguments[0] === "Subscribed") {
-					return resolve(JSON.parse(data.arguments[1]).NamespaceSequenceNumbers);
+					// biome-ignore lint/suspicious/noExplicitAny: fine
+					return resolve((JSON.parse(data.arguments[1]) as any).NamespaceSequenceNumbers);
 				}
 
 				reject();
