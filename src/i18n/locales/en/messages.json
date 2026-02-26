@@ -2903,16 +2903,16 @@
 		},
 		"improvedUserCurrentlyWearing": {
 			"name": {
-				"$message": "View the emotes a user has equipped",
-				"$context": ""
-			}
-		},
-		"improvedUserCurrentlyWearing": {
-			"name": {
 				"$message": "Improved user currently wearing section"
 			},
 			"description": {
 				"$message": "When enabled, uses RoSeal's version of the currently wearing section which adds Bundle thumbnails to the bottom right of items that are included in bundles."
+			},
+			"viewUserEquippedEmotes": {
+				"name": {
+					"$message": "View the emotes a user has equipped",
+					"$context": ""
+				}
 			},
 			"showAssociatedItemsBundle": {
 				"name": {
@@ -8537,7 +8537,7 @@
 			"tabs": {
 				"$context": "User's avatar tabs",
 				"assets": {
-					"$message": "Assets",
+					"$message": "Items",
 					"$context": "View assets tab"
 				},
 				"animations": {

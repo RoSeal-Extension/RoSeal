@@ -54,6 +54,8 @@
         --RS_MAP-REGION-FILL-COLOR: #3b4a54;
         --RS_MAP-REGION-OUTLINE-COLOR: #212b33;
         --RS_MAP-SPHERE-FILL-COLOR: #212b33;
+
+        --RS_PILL-BACKGROUND-COLOR: #272930;
     }
 
     &:has(.light-theme),
@@ -93,5 +95,7 @@
         --RS_MAP-REGION-FILL-COLOR: #e6e8ea;
         --RS_MAP-REGION-OUTLINE-COLOR: #d1d6db;
         --RS_MAP-SPHERE-FILL-COLOR: #d1d6db;
+
+        --RS_PILL-BACKGROUND-COLOR: #e3e3e3;
     }
 }

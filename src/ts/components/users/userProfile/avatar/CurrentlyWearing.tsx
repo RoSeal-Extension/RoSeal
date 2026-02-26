@@ -36,7 +36,10 @@ type AssetWithDetails = AvatarAssetDefinitionWithTypes & {
 };
 
 export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurrentlyWearingProps) {
-	const [showEmotes] = useFeatureValue("improvedUserCurrentlyWearing", false);
+	const [showEmotes] = useFeatureValue(
+		"improvedUserCurrentlyWearing.viewUserEquippedEmotes",
+		false,
+	);
 	const [separateAnimations] = useFeatureValue(
 		"improvedUserCurrentlyWearing.separateAnimationsTab",
 		false,
