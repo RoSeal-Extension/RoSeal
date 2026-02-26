@@ -375,7 +375,7 @@ export default {
 						userId: authenticatedUser.userId,
 						assetTypeId,
 						cursor: pageToken,
-						limit: 100,
+						limit: 50,
 					});
 
 					const items: ListedUserAvatarItem[] = [];
@@ -846,6 +846,9 @@ export default {
 					const listId = url.searchParams.get("sortOption")?.split("rosealList_")?.[1];
 					if (!listId) return;
 
+					const pageTokenStr = url.searchParams.get("pageToken") ?? undefined;
+					const pageToken = pageTokenStr ? Number.parseInt(pageTokenStr, 10) : 0;
+
 					const isAllLists = listId === "allLists";
 					const assetIds: number[] = [];
 					const outfitIds: number[] = [];
@@ -911,6 +914,7 @@ export default {
 					]);
 
 					const formattedItems: ListedUserAvatarItem[] = [];
+
 					for (const item of items) {
 						if (item.type === "Asset") {
 							const owned = ownedAssets.some(
@@ -962,10 +966,14 @@ export default {
 						}
 					}
 
+					const lastItem = (pageToken + 1) * 50;
 					return new Response(
 						JSON.stringify({
-							avatarInventoryItems: formattedItems,
-							nextPageToken: null,
+							avatarInventoryItems: formattedItems.slice(
+								pageToken * 50,
+								(pageToken + 1) * 50,
+							),
+							nextPageToken: formattedItems.at(lastItem + 1) ? pageToken + 1 : null,
 						}),
 						{
 							status: 200,
