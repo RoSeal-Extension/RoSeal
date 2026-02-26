@@ -162,17 +162,17 @@ export function getUserAgentOverrides(robloxVersion = "0") {
 			deviceType: "Console",
 		},
 		{
-			userAgent: `(0MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Tablet RobloxApp/${robloxVersion} (GlobalDist; GooglePlayStore)`,
+			userAgent: `(1MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Tablet RobloxApp/${robloxVersion} (GlobalDist; GooglePlayStore)`,
 			platformType: "Tablet",
 			deviceType: "Tablet",
 		},
 		{
-			userAgent: `(0MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Phone RobloxApp/${robloxVersion} (GlobalDist; GooglePlayStore)`,
+			userAgent: `(1MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Phone RobloxApp/${robloxVersion} (GlobalDist; GooglePlayStore)`,
 			platformType: "Phone",
 			deviceType: "Phone",
 		},
 		{
-			userAgent: `(0MB; 0x0; 0x0; 0x0; oculus Oculus Questseacliff; 0) ROBLOX Android VR OculusQuest3Store RobloxApp/${robloxVersion} (GlobalDist; OculusQuest3Store)`,
+			userAgent: `(1MB; 0x0; 0x0; 0x0; oculus Oculus Questseacliff; 0) ROBLOX Android VR OculusQuest3Store RobloxApp/${robloxVersion} (GlobalDist; OculusQuest3Store)`,
 			platformType: "VR",
 			deviceType: "VR",
 		},

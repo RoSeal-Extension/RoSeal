@@ -47,9 +47,9 @@ All user agents are the absolute minimal needed.
 | iOS         | 20     | iPadAir                    | Tablet     | iPad Air                      | iPad4,1 ROBLOX iOS App                                                                    |
 | iOS         | 21     | iPhone5c                   | Phone      | iPhone 5c                     | iPhone5,3 ROBLOX iOS App                                                                  |
 | iOS         | 22     | iPhone5s                   | Phone      | iPhone 5s                     | iPhone6,1 ROBLOX iOS App                                                                  |
-| Android     | 23     | AndroidLowEndPhone         | Phone      | Android: low-end phone        | (0MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Phone                                            |
+| Android     | 23     | AndroidLowEndPhone         | Phone      | Android: low-end phone        | (1MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Phone                                            |
 | Android     | 24     | AndroidHighEndPhone        | Phone      | Android: high-end phone       | (1251MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Phone                                         |
-| Android     | 25     | AndroidLowEndTablet        | Tablet     | Android: low-end tablet       | (0MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Tablet                                           |
+| Android     | 25     | AndroidLowEndTablet        | Tablet     | Android: low-end tablet       | (1MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Tablet                                           |
 | Android     | 26     | AndroidHighEndTablet       | Tablet     | Android: high-end tablet      | (1251MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android Tablet                                        |
 | Android     | 27     | AndroidUnknown             | Computer   | Android: unknown              | ROBLOX Android                                                                            |
 | iOS         | 28     | iOSUnknown                 | Computer   | iOS: unknown                  | iOS                                                                                       |
@@ -103,7 +103,7 @@ All user agents are the absolute minimal needed.
 | Windows     | 85     | DesktopWindowsUniversalApp | Computer   | Desktop Windows Universal App | Roblox/WinInet RobloxApp/0                                                                |
 | OSX         | 86     | DesktopMacUniversalApp     | Computer   | Desktop Mac Universal App     | Roblox/Darwin RobloxApp/0                                                                 |
 | Android     | 88     | AmazonUnknownTablet        | Tablet     | Amazon: unknown tablet        | ROBLOX Android AmazonAppStore                                                             |
-| Android     | 89     | AmazonLowEndTablet         | Tablet     | Amazon: low-end tablet        | (0MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android AmazonAppStore                                   |
+| Android     | 89     | AmazonLowEndTablet         | Tablet     | Amazon: low-end tablet        | (1MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android AmazonAppStore                                   |
 | Android     | 90     | AmazonMediumEndTablet      | Tablet     | Amazon: mid-end tablet        | (1251MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android AmazonAppStore                                |
 | Android     | 91     | AmazonHighEndTablet        | Tablet     | Amazon: high-end tablet       | (2101MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android AmazonAppStore                                |
 | iOS         | 92     | iPhone12Mini               | Phone      | iPhone 12 Mini                | iPhone13,1 ROBLOX iOS App                                                                 |
@@ -114,7 +114,7 @@ All user agents are the absolute minimal needed.
 | iOS         | 97     | iPhone13                   | Phone      | iPhone 13                     | iPhone14,5 ROBLOX iOS App                                                                 |
 | iOS         | 98     | iPhone13Pro                | Phone      | iPhone 13 Pro                 | iPhone14,2 ROBLOX iOS App                                                                 |
 | iOS         | 99     | iPhone13ProMax             | Phone      | iPhone 13 Pro Max             | iPhone14,3 ROBLOX iOS App                                                                 |
-| Android     | 100    | OculusQuest2               | VR         | Oculus Quest 2                | (0MB; 0x0; 0x0; 0x0; oculus Oculus Quest; 0) ROBLOX Android VR OculusQuest3Store          |
+| Android     | 100    | OculusQuest2               | VR         | Oculus Quest 2                | (1MB; 0x0; 0x0; 0x0; oculus Oculus Quest; 0) ROBLOX Android VR OculusQuest3Store          |
 | iOS         | 101    | iPad8                      | Tablet     | iPad 8                        | iPad11,6 ROBLOX iOS App                                                                   |
 | iOS         | 102    | iPad9                      | Tablet     | iPad 9                        | iPad12,1 ROBLOX iOS App                                                                   |
 | iOS         | 103    | iPadAir4                   | Tablet     | iPad Air 4                    | iPad13,1 ROBLOX iOS App                                                                   |
@@ -125,9 +125,9 @@ All user agents are the absolute minimal needed.
 | iOS         | 108    | iPhone14ProMax             | Phone      | iPhone 14 Pro Max             | iPhone15,3 ROBLOX iOS App                                                                 |
 | PlayStation | 109    | PlayStation4               | Console    | PlayStation 4                 | PlayStation 4                                                                             |
 | PlayStation | 110    | PlayStation5               | Console    | PlayStation 5                 | PlayStation 5                                                                             |
-| Android     | 111    | OculusQuest2Hollywood      | VR         | Oculus Quest 2 Hollywood      | (0MB; 0x0; 0x0; 0x0; oculus Oculus Questhollywood; 0) ROBLOX Android VR OculusQuest3Store |
-| Android     | 112    | OculusQuest3Eureka         | VR         | Oculus Quest 3 Eureka         | (0MB; 0x0; 0x0; 0x0; oculus Oculus Questeureka; 0) ROBLOX Android VR OculusQuest3Store    |
-| Android     | 113    | OculusQuestProSeacliff     | VR         | Oculus Quest Pro Seacliff     | (0MB; 0x0; 0x0; 0x0; oculus Oculus Questseacliff; 0) ROBLOX Android VR OculusQuest3Store  |
+| Android     | 111    | OculusQuest2Hollywood      | VR         | Oculus Quest 2 Hollywood      | (1MB; 0x0; 0x0; 0x0; oculus Oculus Questhollywood; 0) ROBLOX Android VR OculusQuest3Store |
+| Android     | 112    | OculusQuest3Eureka         | VR         | Oculus Quest 3 Eureka         | (1MB; 0x0; 0x0; 0x0; oculus Oculus Questeureka; 0) ROBLOX Android VR OculusQuest3Store    |
+| Android     | 113    | OculusQuestProSeacliff     | VR         | Oculus Quest Pro Seacliff     | (1MB; 0x0; 0x0; 0x0; oculus Oculus Questseacliff; 0) ROBLOX Android VR OculusQuest3Store  |
 | iOS         | 114    | iPad10                     | Tablet     | iPad 10                       | iPad13,18 ROBLOX iOS App                                                                  |
 | iOS         | 115    | iPadMini6G                 | Tablet     | iPad mini 6G                  | iPad14,2 ROBLOX iOS App                                                                   |
 | iOS         | 116    | iPadPro11_2                | Tablet     | iPad Pro 11 (2nd Gen)         | iPad8,10 ROBLOX iOS App                                                                   |

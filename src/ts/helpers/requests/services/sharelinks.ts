@@ -153,7 +153,7 @@ export type CreateShareLinkV2Response = {
 };
 
 export type ResolveShareLinkV2Request = {
-	code: string;
+	linkId: string;
 };
 
 export async function resolveShareLink<T extends ShareLinkType>(
