@@ -100,7 +100,8 @@ export type JoinScript = {
 	partyId?: string;
 	showRobloxTranslations: boolean;
 	matchmakingAttributes: JoinMatchmakingAttributes;
-	translationDisplayMode?: string;
+	translationDisplayMode: string;
+	imageTranslationContentVariantType: string;
 	placeVersion?: number;
 };
 

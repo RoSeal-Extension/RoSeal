@@ -46,6 +46,11 @@ export type PriceInformation = {
 	isInActivePriceOptimizationExperiment?: boolean;
 };
 
+export type GeneralAssetTimedOption = {
+	days: number;
+	price: number;
+};
+
 export type GeneralAssetDetails = {
 	targetId: number;
 	productType: string | null;
@@ -76,6 +81,7 @@ export type GeneralAssetDetails = {
 	collectibleItemId: string | null;
 	collectibleProductId: string | null;
 	collectiblesItemDetails: AssetCollectibleItemDetails | null;
+	timedOptions?: GeneralAssetTimedOption[] | null;
 };
 
 export type DevelopCreator = {

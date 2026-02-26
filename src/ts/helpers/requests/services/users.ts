@@ -103,7 +103,6 @@ export type UserPresence = {
 	gameId: string | null;
 	universeId: number | null;
 	userId: number;
-	lastOnline?: string;
 };
 
 export type MultigetUsersPresencesResponse = {
@@ -342,7 +341,7 @@ export type ListUserFriendsRequest = {
 	cursor?: string;
 	limit?: number;
 	// 0 = All friends
-	// 1 = Trusted friends
+	// 1 = Trusted friends, use this with userSort = 2
 	findFriendsType?: 0 | 1;
 };
 

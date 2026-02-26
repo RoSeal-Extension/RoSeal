@@ -1,6 +1,7 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { httpClient } from "../main";
-import type { FriendRequestOriginType } from "./users";
+import type { FriendRequestOriginType, UserPresence } from "./users";
+import { UserPresenceTypeId } from "src/ts/constants/presence";
 
 export type BaseNotification = {
 	SequenceNumber: number;
@@ -89,6 +90,10 @@ export type PresenceNotificationType = "PresenceChanged";
 export type RealtimeNotificationsPresenceNotificationInformation = BaseNotification & {
 	UserId: number;
 	Type: PresenceNotificationType;
+	PresenceReport?: UserPresence;
+	SessionStarted?: string;
+	SortScore?: number;
+	LoggingJoinKey?: string;
 };
 
 export type AuthenticationNotificationType = "SignOut";
@@ -478,7 +483,11 @@ export type RealtimeNotifications =
 	| ["EligibilityStatusChanged", unknown] // don't know the type...
 	| ["ChatModerationTypeEligibility", unknown] // Dont know the type
 	| ["PostCreationNotification", unknown] /// same....
-	| ["toast-in-experience-notifications", unknown]; // Same....
+	| ["toast-in-experience-notifications", unknown]
+	| ["TrustedConnectionNotifications", unknown]
+	| ["PartyNudgeUpdated", unknown]
+	| ["AssetDependencyGrantEvent", unknown]
+	| ["desktop-notifications-windows", unknown]; // Same....
 
 export type SendExperienceInviteNotificationRequest = {
 	recipientUserId: number;

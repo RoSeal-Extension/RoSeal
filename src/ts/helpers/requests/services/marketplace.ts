@@ -68,6 +68,7 @@ export enum MarketplaceCategoryFilterV2 {
 export type SearchItemsRequestV2 = {
 	assetTypeIds?: number[];
 	bundleTypeIds?: number[];
+	taxonomy?: string;
 	categoryFilter?: MarketplaceCategoryFilterV2 | number;
 	sortAggregation?: MarketplaceAggregationType;
 	sortType?: MarketplaceSortType;
@@ -261,6 +262,8 @@ export type BundledItem = {
 	id: number;
 	name: string;
 	type: BundledItemType;
+	supportsHeadShapes?: boolean;
+	assetType: number;
 };
 
 export type AvatarItemStatus =
@@ -300,6 +303,12 @@ export type MarketplaceTaxonomy = {
 	taxonomyName: string;
 };
 
+export type AvatarItemTimedOption = {
+	days: number;
+	price: number;
+	selected: boolean;
+};
+
 export type AvatarItemDetail<T extends MarketplaceItemType> = {
 	id: number;
 	itemType: T;
@@ -330,6 +339,8 @@ export type AvatarItemDetail<T extends MarketplaceItemType> = {
 	hasResellers: boolean;
 	isOffSale: boolean;
 	quantityLimitPerUser: number;
+	supportsHeadShapes?: boolean;
+	timedOptions?: AvatarItemTimedOption[];
 };
 
 export type MultigetAvatarItemsResponse<T extends MarketplaceItemType> = {
@@ -427,6 +438,8 @@ export type AvatarItem<T extends MarketplaceItemType> = {
 	hasResellers: boolean;
 	isOffSale: boolean;
 	quantityLimitPerUser: number;
+	supportsHeadShapes?: boolean;
+	timedOptions?: AvatarItemTimedOption[];
 };
 
 export type GetAvatarItemRequest<T extends MarketplaceItemType> = {
