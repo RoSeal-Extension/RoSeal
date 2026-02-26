@@ -1297,6 +1297,8 @@ export default {
 
 							if (!card) return;
 
+							if (el.closest(".profile-currently-wearing")) return;
+
 							const creatorLink =
 								card.querySelector<HTMLAnchorElement>("a.creator-name")?.href;
 							let creatorType: Agent | undefined;
