@@ -826,12 +826,16 @@ export async function getUserHydratedPlayerInfo(): Promise<HydratedPlayerInfo> {
 	return (
 		await httpClient.httpRequest<HydratedPlayerInfo>({
 			url: getRobloxUrl("apis", "/player-hydration-service/v1/players/signed"),
-			errorHandling: "BEDEV2",
+			// this endpoint is extremely sensitive for no reason
+			headers: {
+				"content-type": "application/json",
+			},
+			skipTrackingSearchParam: true,
 			credentials: {
 				type: "cookies",
 				value: true,
 			},
-			skipTrackingSearchParam: true,
+			errorHandling: "BEDEV2",
 		})
 	).body;
 }
