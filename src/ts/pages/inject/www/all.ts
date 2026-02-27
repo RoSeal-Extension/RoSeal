@@ -399,6 +399,10 @@ export default {
 					(name) => {
 						if (!isAvatarMarketplace || shouldNotBlock) return;
 
+						if (name.closest(".marketplace-landing-container")) {
+							return;
+						}
+
 						const card = name.closest<HTMLElement>(
 							".item-card, .catalog-item-container",
 						)!;
