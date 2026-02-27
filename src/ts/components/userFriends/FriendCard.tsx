@@ -65,6 +65,7 @@ export type FriendCardProps = {
 	components?: UserFriendRequestAdditionalComponents;
 	connectionTypeId?: string | number;
 	onlineFriends?: UserPresence[] | null;
+	sourceUniverse?: SourceUniverseData;
 	setFriendSince?: (date: Date) => void;
 	removeCard: () => void;
 } & Partial<FriendCardTypesProps>;
@@ -88,6 +89,7 @@ export default function FriendCard({
 	requestsSortType,
 	components,
 	onlineFriends,
+	sourceUniverse: _sourceUniverse,
 	updateConnectionTypesLayout,
 	openCreateType,
 	openEditType,
@@ -153,12 +155,13 @@ export default function FriendCard({
 		return DEFAULT_NONE_CONNECTION_TYPE;
 	}, [availableConnectionTypes, connectionTypeId]);
 	const sourceUniverse = useMemo(() => {
+		if (_sourceUniverse) return _sourceUniverse;
 		if (friendRequest) {
 			if (!friendRequest?.sourceUniverseId) return;
 
 			return universeData?.[friendRequest.sourceUniverseId];
 		}
-	}, [friendRequest?.sourceUniverseId, universeData]);
+	}, [friendRequest?.sourceUniverseId, universeData, _sourceUniverse]);
 	/*
 	const presenceType = presenceTypes.find(
 		(type) => type.typeId === presenceData?.userPresenceType,

@@ -156,7 +156,10 @@ export type ProfileComponentType =
 	| "Shout"
 	| "Events"
 	| "ForumsDiscovery"
-	| "Members" | "Videos" | "CommunityTabs" | "CommunityLocked";
+	| "Members"
+	| "Videos"
+	| "CommunityTabs"
+	| "CommunityLocked";
 export type ProfileComponentsProfileType = "User" | "Contact" | "Community";
 
 export type ProfileComponent = {
@@ -185,6 +188,7 @@ export type UserProfileHeaderProfileComponent = {
 	isPremium: boolean;
 	isVerified: boolean;
 	isRobloxAdmin: boolean;
+	isBlackbird?: boolean;
 	counts: {
 		friendsCount: number;
 		followersCount: number;
