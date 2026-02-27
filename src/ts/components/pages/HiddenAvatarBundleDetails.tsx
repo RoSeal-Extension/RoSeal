@@ -1,6 +1,5 @@
-import { resolveOrCreateShareLink } from "src/ts/helpers/requests/services/sharelinks";
 import usePromise from "../hooks/usePromise";
-import { getAvatarBundleLink, getAvatarMarketplaceLink, getShareLink } from "src/ts/utils/links";
+import { getAvatarBundleLink, getAvatarMarketplaceLink } from "src/ts/utils/links";
 import Loading from "../core/Loading";
 import { useEffect } from "preact/hooks";
 import { multigetAvatarItems } from "src/ts/helpers/requests/services/marketplace";
@@ -22,23 +21,15 @@ export default function HiddenAvatarBundleContainer({
 	bundleId,
 }: HiddenAvatarBundleContainerProps) {
 	const [details, , error] = usePromise(() => {
-		return resolveOrCreateShareLink({
-			linkType: "AvatarItemDetails",
-			data: {
-				itemType: "Bundle",
-				itemId: bundleId,
-			},
-		})
-			.then((data) =>
-				httpClient.httpRequest<Document>({
-					url: getShareLink("AvatarItemDetails", data.linkId, "en"),
-					expect: "dom",
-					credentials: {
-						type: "cookies",
-						value: false,
-					},
-				}),
-			)
+		return httpClient
+			.httpRequest<Document>({
+				url: getAvatarBundleLink(bundleId),
+				expect: "dom",
+				credentials: {
+					type: "cookies",
+					value: false,
+				},
+			})
 			.then(async (res) => {
 				const name = res.body
 					.querySelector<HTMLMetaElement>("meta[name='twitter:description']")

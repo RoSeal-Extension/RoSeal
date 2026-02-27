@@ -831,6 +831,7 @@ export async function getUserHydratedPlayerInfo(): Promise<HydratedPlayerInfo> {
 				type: "cookies",
 				value: true,
 			},
+			skipTrackingSearchParam: true,
 		})
 	).body;
 }
