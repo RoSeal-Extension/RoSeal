@@ -11,17 +11,11 @@
 }
 
 .user-is-blocked {
-    &:not(.user-blocked-bypass) > div:not(.user-blocked-screen) > div:not(:has(#profile-header-container)) {
-        display: none !important;
-    }
-
-    .details-actions,
-    .profile-header-buttons button:not(:has([data-testid="MoreHorizIcon"])) {
-        display: none !important;
-    }
-
-    .foundation-web-icon-button[aria-label="Open Popover"] {
-        display: none;
+    &:not(.user-blocked-bypass) > div:not(.user-blocked-screen) {
+        .profile-tabs,
+        .profile-tab-content {
+            display: none !important;
+        }
     }
 }
 
