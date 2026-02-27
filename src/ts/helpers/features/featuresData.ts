@@ -2335,6 +2335,7 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
+						deprecated: true,
 					},
 					{
 						id: "searchGroupStore",
@@ -2352,6 +2353,7 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: false,
 						},
+						deprecated: true,
 					},
 					{
 						id: "showGroupCreatedDate",
@@ -3643,6 +3645,7 @@ export const sections = [
 								},
 							],
 						},
+						deprecated: true,
 					},
 				],
 			},
