@@ -25,7 +25,7 @@ export type UserProfileCurrentlyWearingProps = {
 	userId: number;
 };
 
-type ActiveTab = "assets" | "emotes" | "animations";
+type ActiveTab = "assets" | "emotes" | "animations" | "bodyParts";
 type EmoteWithDetails = AvatarEmote & {
 	details?: LookItemDetails<MarketplaceItemType>;
 	showBundle?: boolean;
@@ -42,6 +42,10 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 	);
 	const [separateAnimations] = useFeatureValue(
 		"improvedUserCurrentlyWearing.separateAnimationsTab",
+		false,
+	);
+	const [separateBodyParts] = useFeatureValue(
+		"improvedUserCurrentlyWearing.separateBodyPartsTab",
 		false,
 	);
 	const [showTotalValue] = useFeatureValue("improvedUserCurrentlyWearing.showTotalValue", false);
@@ -82,11 +86,12 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 		});
 	}, [avatar?.assets, avatar?.emotes]);
 
-	const [wearingAssets, wearingAnimations, emotes, totalValue] = useMemo(() => {
-		if (!avatar) return [[], [], [], 0];
+	const [wearingAssets, wearingAnimations, emotes, bodyParts, totalValue] = useMemo(() => {
+		if (!avatar) return [[], [], [], [], 0];
 
 		const assets: AssetWithDetails[] = [];
 		const animations: AssetWithDetails[] = [];
+		const bodyParts: AssetWithDetails[] = [];
 		const emotes: EmoteWithDetails[] = [];
 
 		const totalValueItems = new Set<LookItemDetails<MarketplaceItemType>>();
@@ -99,8 +104,6 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 				} else if (item.itemType === "Bundle") {
 					if (item.assetsInBundle)
 						for (const item2 of item.assetsInBundle) {
-							if (!item2.isIncluded) continue;
-
 							assetIdToItem[item2.id] = item;
 						}
 				}
@@ -120,8 +123,12 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 			};
 
 			const isAnimation = type?.isAnimated && type.assetType !== emoteAssetTypeName;
+			const isBodyPart = type?.isBodyPart || type?.isPartOfHead;
+
 			if (isAnimation && separateAnimations) {
 				animations.push(newAsset);
+			} else if (isBodyPart && separateBodyParts) {
+				bodyParts.push(newAsset);
 			} else {
 				assets.push(newAsset);
 			}
@@ -153,11 +160,18 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 			totalValue += item.priceInRobux!;
 		}
 
-		return [assets, animations, emotes, totalValue];
+		return [assets, animations, emotes, bodyParts, totalValue];
 	}, [avatar?.assets, purchaseDetails, separateAnimations]);
 
 	const tabs = useMemo(() => {
 		const tabs = [{ id: "assets", label: getMessage("user.avatar.tabs.assets") }];
+
+		if (bodyParts.length && separateBodyParts) {
+			tabs.push({
+				id: "bodyParts",
+				label: getMessage("user.avatar.tabs.bodyParts"),
+			});
+		}
 
 		if (wearingAnimations.length && separateAnimations) {
 			tabs.push({
@@ -173,7 +187,7 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 			});
 
 		return tabs;
-	}, [emotes, wearingAnimations]);
+	}, [emotes, wearingAnimations, bodyParts]);
 
 	const h2HeaderRef = useRef<HTMLDivElement>(null);
 
@@ -198,6 +212,41 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 		return watchTextContent(h2HeaderRef!.current, handleh2);
 	}, [h2HeaderRef.current, showTotalValue]);
 
+	const assetTabContent = (
+		activeTab === "assets"
+			? wearingAssets
+			: activeTab === "animations"
+				? wearingAnimations
+				: activeTab === "bodyParts"
+					? bodyParts
+					: undefined
+	)?.map((asset) => (
+		<div key={asset.id} className="carousel-item">
+			<MarketplaceCard
+				as="div"
+				type="Asset"
+				id={asset.id}
+				totalPrice={
+					asset.details?.itemType !== "Bundle" ? asset.details?.priceInRobux : undefined
+				}
+				name={asset.name ?? (asset.details?.itemType === "Asset" ? asset.details.name : "")}
+				itemRestrictions={
+					asset.details?.itemType === "Asset"
+						? asset.details?.itemRestrictions
+						: undefined
+				}
+				containerClassName="item-card profile-item-card"
+				thumbnailChildren={
+					asset.details?.itemType === "Bundle" &&
+					showAssociatedBundle &&
+					asset.showBundle && (
+						<AssetWearingBundle id={asset.details.id} name={asset.details.name} />
+					)
+				}
+			/>
+		</div>
+	));
+
 	const content = (
 		<>
 			{tabs.length > 1 && (
@@ -214,40 +263,7 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 					innerClassName="carousel"
 					onlyXScroll
 				>
-					{wearingAssets.map((asset) => (
-						<div key={asset.id} className="carousel-item">
-							<MarketplaceCard
-								as="div"
-								type="Asset"
-								id={asset.id}
-								totalPrice={
-									asset.details?.itemType !== "Bundle"
-										? asset.details?.priceInRobux
-										: undefined
-								}
-								name={
-									asset.name ??
-									(asset.details?.itemType === "Asset" ? asset.details.name : "")
-								}
-								itemRestrictions={
-									asset.details?.itemType === "Asset"
-										? asset.details?.itemRestrictions
-										: undefined
-								}
-								containerClassName="item-card profile-item-card"
-								thumbnailChildren={
-									asset.details?.itemType === "Bundle" &&
-									showAssociatedBundle &&
-									asset.showBundle && (
-										<AssetWearingBundle
-											id={asset.details.id}
-											name={asset.details.name}
-										/>
-									)
-								}
-							/>
-						</div>
-					))}
+					{assetTabContent}
 				</ItemCarousel>
 			)}
 			{activeTab === "animations" && separateAnimations && (
@@ -256,40 +272,16 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 					innerClassName="carousel"
 					onlyXScroll
 				>
-					{wearingAnimations.map((asset) => (
-						<div key={asset.id} className="carousel-item">
-							<MarketplaceCard
-								as="div"
-								type="Asset"
-								id={asset.id}
-								totalPrice={
-									asset.details?.itemType !== "Bundle"
-										? asset.details?.priceInRobux
-										: undefined
-								}
-								name={
-									asset.name ??
-									(asset.details?.itemType === "Asset" ? asset.details.name : "")
-								}
-								itemRestrictions={
-									asset.details?.itemType === "Asset"
-										? asset.details?.itemRestrictions
-										: undefined
-								}
-								containerClassName="item-card profile-item-card"
-								thumbnailChildren={
-									asset.details?.itemType === "Bundle" &&
-									showAssociatedBundle &&
-									asset.showBundle && (
-										<AssetWearingBundle
-											id={asset.details.id}
-											name={asset.details.name}
-										/>
-									)
-								}
-							/>
-						</div>
-					))}
+					{assetTabContent}
+				</ItemCarousel>
+			)}
+			{activeTab === "bodyParts" && separateBodyParts && (
+				<ItemCarousel
+					className="roseal-body-parts-container carousel-container"
+					innerClassName="carousel"
+					onlyXScroll
+				>
+					{assetTabContent}
 				</ItemCarousel>
 			)}
 			{activeTab === "emotes" && showEmotes && (

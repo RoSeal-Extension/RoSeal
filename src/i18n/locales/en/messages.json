@@ -2924,6 +2924,11 @@
 					"$message": "Separate Animation assets into their own tab"
 				}
 			},
+			"separateBodyPartsTab": {
+				"name": {
+					"$message": "Separate Body assets into their own tab"
+				}
+			},
 			"showTotalValue": {
 				"name": {
 					"$message": "Show the total value of the user's outfit and emotes next to the Currently Wearing header"
@@ -8547,6 +8552,10 @@
 				"emotes": {
 					"$message": "Emotes",
 					"$context": "View emotes tab"
+				},
+				"bodyParts": {
+					"$message": "Body",
+					"$context": "View body parts tab"
 				}
 			},
 			"currentlyWearing": {

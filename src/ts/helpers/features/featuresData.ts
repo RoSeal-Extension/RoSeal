@@ -2121,6 +2121,14 @@ export const sections = [
 								},
 								{
 									type: "Regular",
+									id: "improvedUserCurrentlyWearing.separateBodyPartsTab",
+									component: {
+										type: "Toggle",
+										defaultValue: false,
+									},
+								},
+								{
+									type: "Regular",
 									id: "improvedUserCurrentlyWearing.showTotalValue",
 									component: {
 										type: "Toggle",

@@ -36,6 +36,7 @@ export type AssetTypeData = {
 	assetType: string;
 	alternativeTypes?: string[];
 
+	isPartOfHead?: boolean;
 	isBodyPart?: boolean;
 	canHaveThumbnail?: boolean;
 	isAvatarAsset?: boolean;
@@ -140,6 +141,7 @@ export const assetTypes = [
 		is3D: true,
 		isAvatarAsset: true,
 		isWearable: true,
+		isPartOfHead: true,
 	},
 	{
 		assetType: "Face",
@@ -574,6 +576,7 @@ export const assetTypes = [
 		isAvatarAsset: true,
 		isWearable: true,
 		isUsuallyTemplate: true,
+		isPartOfHead: true,
 	},
 	{
 		assetType: "DynamicHead",
@@ -583,6 +586,7 @@ export const assetTypes = [
 		is3D: true,
 		isAvatarAsset: true,
 		isWearable: true,
+		isPartOfHead: true,
 	},
 	{
 		assetType: "CodeSnippet",
@@ -623,6 +627,7 @@ export const assetTypes = [
 		is3D: true,
 		isAvatarAsset: true,
 		isWearable: true,
+		isPartOfHead: true,
 	},
 	{
 		assetType: "LipMakeup",
@@ -631,6 +636,7 @@ export const assetTypes = [
 		isAvatarAsset: true,
 		is3D: true,
 		isWearable: true,
+		isPartOfHead: true,
 	},
 	{
 		assetType: "EyeMakeup",
@@ -639,6 +645,7 @@ export const assetTypes = [
 		isAvatarAsset: true,
 		is3D: true,
 		isWearable: true,
+		isPartOfHead: true,
 	},
 ] satisfies AssetTypeData[];
 
