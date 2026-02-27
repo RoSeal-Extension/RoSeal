@@ -1381,7 +1381,7 @@ export default {
 								)
 							) {
 								hideEl(
-									card.closest("div.catalog-item-container") ?? card,
+									card.closest(".catalog-item-container") ?? card,
 									true,
 									"data-item-is-blocked",
 								);

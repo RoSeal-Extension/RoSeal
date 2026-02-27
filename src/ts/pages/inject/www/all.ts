@@ -405,6 +405,7 @@ export default {
 						const link = card.querySelector<HTMLAnchorElement>(
 							"a.item-card-link, a.item-card-container",
 						)?.href;
+
 						if (link) {
 							const path = getPathFromMaybeUrl(link).realPath;
 							const match = AVATAR_ITEM_REGEX.exec(path);
