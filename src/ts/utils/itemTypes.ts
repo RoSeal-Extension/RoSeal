@@ -548,6 +548,7 @@ export const assetTypes = [
 		assetTypeId: 76,
 		lockedLimit: 1,
 		isLayered: true,
+		isPartOfHead: true,
 		is3D: true,
 		meta: {
 			order: 1,
@@ -560,6 +561,7 @@ export const assetTypes = [
 		alternativeTypes: ["Eyelash Accessory"],
 		assetTypeId: 77,
 		isLayered: true,
+		isPartOfHead: true,
 		lockedLimit: 1,
 		is3D: true,
 		meta: {
