@@ -19,11 +19,12 @@ import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import {
 	getOmniRecommendations,
+	multigetOmniRecommendationsMetadata,
 	type GetOmniRecommendationsRequest,
 	type GetOmniRecommendationsResponse,
-	multigetOmniRecommendationsMetadata,
 	type OmniItem,
 } from "src/ts/helpers/requests/services/universes";
+import { handleOmniRecommendationsResponse } from "src/ts/specials/blockedItems";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import {
 	getDeviceMaxMemoryMB,
@@ -107,16 +108,18 @@ export default {
 
 		checks.push(
 			featureValueIsInject("prefetchRobloxPageData", true, () => {
-				const data = getOmniRecommendations({
-					pageType: "Home",
-					sessionId: crypto.randomUUID(),
-					sduiTreatmentTypes: ["Carousel", "HeroUnit"],
-					supportedTreatmentTypes: ["SortlessGrid"],
-					cpuCores: navigator.hardwareConcurrency,
-					maxMemory: getDeviceMaxMemoryMB(),
-					maxResolution: getDeviceMaxResolution(),
-					networkType: getDeviceNetworkType(),
-				});
+				const data = getFlagInject("homePage", "blockSDUI").then((shouldBlockSDUI) =>
+					getOmniRecommendations({
+						pageType: "Home",
+						sessionId: crypto.randomUUID(),
+						sduiTreatmentTypes: shouldBlockSDUI ? [] : ["Carousel", "HeroUnit"],
+						supportedTreatmentTypes: ["SortlessGrid"],
+						cpuCores: navigator.hardwareConcurrency,
+						maxMemory: getDeviceMaxMemoryMB(),
+						maxResolution: getDeviceMaxResolution(),
+						networkType: getDeviceNetworkType(),
+					}),
+				);
 
 				const endHijack = hijackRequest((req) => {
 					const url = new URL(req.url);
@@ -133,6 +136,8 @@ export default {
 										},
 									}),
 							)
+
+							.then(handleOmniRecommendationsResponse)
 							.finally(endHijack);
 					}
 				});

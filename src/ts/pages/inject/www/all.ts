@@ -48,7 +48,6 @@ import type { ListedStreamNotification } from "src/ts/helpers/requests/services/
 import type { BatchThumbnailRequest } from "src/ts/helpers/requests/services/thumbnails";
 import type {
 	ExperienceSort,
-	GetOmniRecommendationsResponse,
 	ListAgentUniversesResponse,
 	ListExperienceSortsResponse,
 } from "src/ts/helpers/requests/services/universes";
@@ -61,6 +60,7 @@ import {
 	type ProfileField,
 	type ProfileFieldName,
 } from "src/ts/helpers/requests/services/users";
+import { handleOmniRecommendationsResponse } from "src/ts/specials/blockedItems";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
 import { getRobloxCDNUrl, getRobloxUrl } from "src/ts/utils/baseUrls";
 import { isAvatarItemBlocked, isExperienceBlocked } from "src/ts/utils/blockedItems";
@@ -797,54 +797,7 @@ export default {
 							url.pathname === "/discovery-api/omni-recommendation" &&
 							hasExperienceConfig
 						) {
-							const data = (await res
-								.clone()
-								.json()) as GetOmniRecommendationsResponse;
-
-							const checkUniverseIds: number[] = [];
-							if (shouldExperienceRequest)
-								for (const sort of data.sorts) {
-									if (sort.recommendationList) {
-										for (const item of sort.recommendationList) {
-											if (item.contentType === "Game") {
-												checkUniverseIds.push(item.contentId);
-											}
-										}
-									}
-								}
-							const checkUniverseData = shouldExperienceRequest
-								? await invokeMessage("checkBlockedUniverses", {
-										ids: checkUniverseIds,
-									})
-								: undefined;
-
-							for (const sort of data.sorts) {
-								if (sort.recommendationList) {
-									for (let i = 0; i < sort.recommendationList.length; i++) {
-										const item = sort.recommendationList[i];
-										if (item.contentType === "Game") {
-											const universe =
-												data.contentMetadata?.Game?.[item.contentId];
-
-											if (
-												isExperienceBlocked(
-													item.contentId,
-													undefined,
-													undefined,
-													universe?.name,
-													undefined,
-													checkUniverseData,
-												)
-											) {
-												sort.recommendationList.splice(i, 1);
-												i--;
-											}
-										}
-									}
-								}
-							}
-
-							return new Response(JSON.stringify(data), res);
+							return handleOmniRecommendationsResponse(res);
 						}
 					} else if (url.hostname === getRobloxUrl("games")) {
 						if (
