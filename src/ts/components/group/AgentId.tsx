@@ -17,7 +17,7 @@ export default function GroupAgentId({ groupId }: GroupAgentIdProps) {
 			limit: 10,
 		}).then(async (universes) => {
 			const assetId =
-				universes[0]?.rootPlace.id ??
+				universes.data[0]?.rootPlace.id ??
 				(
 					await searchItems({
 						creatorType: "Group",

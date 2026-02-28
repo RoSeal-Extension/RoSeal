@@ -100,20 +100,36 @@ export default {
 					}
 				});
 
-				const state = hijackState({
+				const state = hijackState<{
+					includeNotForSale?: boolean;
+					category: {
+						categoryId: number;
+					};
+				}>({
 					matches: (state) =>
 						typeof state === "object" &&
 						state !== null &&
 						"category" in state &&
 						typeof state.category === "object" &&
 						state.category !== null &&
-						"categoryId" in state.category &&
-						state.category.categoryId === ROSEAL_CUSTOM_CATEGORY_ID,
+						"categoryId" in state.category,
 					setState: ({ value }) => {
-						return {
-							...(value.current as Record<string, string>),
-							includeNotForSale: true,
-						};
+						const currentDescriptor = Object.getOwnPropertyDescriptor(
+							value.current,
+							"includeNotForSale",
+						);
+
+						if (value.current.category.categoryId === ROSEAL_CUSTOM_CATEGORY_ID) {
+							if (!currentDescriptor?.get) {
+								Object.defineProperty(value.current, "includeNotForSale", {
+									get: () => true,
+								});
+							}
+						} else if (currentDescriptor?.get) {
+							delete value.current.includeNotForSale;
+						}
+
+						return value.current;
 					},
 				});
 
