@@ -2734,6 +2734,14 @@ export const sections = [
 							defaultValue: true,
 						},
 					},
+					{
+						type: "Regular",
+						id: "marketplaceShowHiddenCategories",
+						component: {
+							type: "Toggle",
+							defaultValue: false,
+						},
+					},
 				],
 			},
 			{

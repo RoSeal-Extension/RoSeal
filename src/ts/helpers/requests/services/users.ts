@@ -226,7 +226,7 @@ export type CheckUsersBlockedRequest = {
 	overrideCache?: boolean;
 };
 
-export type ProfileInsightsRankingStrategy = "tc_info_boost";
+export type ProfileInsightsRankingStrategy = "tc_info_boost" | "profile_info_boost";
 
 export type MultigetProfileInsightsRequest = {
 	count?: number;

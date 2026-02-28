@@ -5849,6 +5849,12 @@
 				"$context": ""
 			}
 		},
+		"marketplaceShowHiddenCategories": {
+			"name": {
+				"$context": "",
+				"$message": "Show hidden item types in the Avatar Marketplace"
+			}
+		},
 		"marketplaceCreatorTypeFilter": {
 			"name": {
 				"$message": "Creator type filter in the Marketplace page",
@@ -7198,6 +7204,15 @@
 	},
 	"marketplace": {
 		"$context": "Avatar Marketplace page",
+		"categories": {
+			"$context": "Marketplace categories",
+			"hidden": {
+				"$context": "Hidden category",
+				"title": {
+					"$message": "Hidden"
+				}
+			}
+		},
 		"cart": {
 			"$context": "Marketplace cart",
 			"systemFeedback": {

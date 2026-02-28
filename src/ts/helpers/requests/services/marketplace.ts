@@ -362,6 +362,7 @@ export type AvatarBundleItem = {
 	id: number;
 	name: string;
 	type: AvatarBundleItemType;
+	assetType: number;
 };
 
 export type AvatarBundleProduct = {
@@ -1059,6 +1060,82 @@ export type CreateUserLookResponse = {
 	id: string;
 };
 
+export type SearchNavigationMenuSubcategory = {
+	subcategory: string;
+	taxonomy?: string;
+	assetTypeIds: number[];
+	bundleTypeIds: number[];
+	subcategoryId: number | string;
+	name: string;
+	shortName: string | null;
+};
+
+export type SearchNavigationMenuCategory = {
+	category?: string;
+	taxonomy?: string;
+	assetTypeIds: number[];
+	bundleTypeIds: number[];
+	categoryId: number | string;
+	name: string;
+	orderIndex: number;
+	subcategories: SearchNavigationMenuSubcategory[];
+	isSearchable: boolean;
+};
+
+export type SearchNavigationMenuSortsSort = {
+	sortType: number;
+	sortOrder: number;
+	name: string;
+	isSelected: boolean;
+	hasSubMenu: boolean;
+	isPriceRelated: boolean;
+};
+
+export type SearchNavigationMenuSortsAggregation = {
+	sortAggregation: number;
+	name: string;
+	isSelected: boolean;
+	hasSubMenu: boolean;
+	isPriceRelated: boolean;
+};
+
+export type SearchNavigationMenuSorts = {
+	sortOptions: SearchNavigationMenuSortsSort[];
+	sortAggregations: SearchNavigationMenuSortsAggregation[];
+};
+
+export type SearchNavigationMenuCreatorFilter = {
+	userId: number;
+	name: string;
+	isSelected: boolean;
+};
+
+export type SearchNavigationMenuPriceFilter = {
+	currencyType: number;
+	name: string;
+	excludePriceSorts: boolean;
+};
+
+export type SearchNavigationMenuSalesTypeFilter = {
+	name: string;
+	filter: number;
+};
+
+export type GetSearchNavigationMenusResponse = {
+	categories: SearchNavigationMenuCategory[];
+	sortMenu: SearchNavigationMenuSorts;
+	creatorFilters: SearchNavigationMenuCreatorFilter[];
+	priceFilters: SearchNavigationMenuPriceFilter[];
+	defaultGearSubcategory: number;
+	defaultCategory: number;
+	defaultCategoryIdForRecommendedSearch: number;
+	defaultCurrency: number;
+	defaultSortType: number;
+	defaultSortAggregation: number;
+	categoriesWithCreator: number[];
+	salesTypeFilters: SearchNavigationMenuSalesTypeFilter;
+};
+
 export async function searchItems(request: SearchItemsRequest): Promise<SearchItemsResponse> {
 	return (
 		await httpClient.httpRequest<SearchItemsResponse>({
@@ -1705,6 +1782,18 @@ export async function createUserLook(data: CreateUserLookRequest) {
 				value: true,
 			},
 			errorHandling: "BEDEV2",
+		})
+	).body;
+}
+
+export async function getMarketplaceSearchNavigationMenu() {
+	return (
+		await httpClient.httpRequest<GetSearchNavigationMenusResponse>({
+			url: getRobloxUrl("catalog", "/v1/search/navigation-menu-items"),
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
 		})
 	).body;
 }
