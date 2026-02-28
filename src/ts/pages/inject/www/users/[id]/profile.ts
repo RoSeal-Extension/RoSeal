@@ -191,7 +191,7 @@ export default {
 
 				const data = (await res.clone().json()) as BatchGetThumbnailsRawResponse;
 				for (const item of data.data) {
-					if (item.requestId === `${profileUserId}::Avatar:352x352:webp:regular:`) {
+					if (item.requestId === `${profileUserId}::Avatar:720x720:webp:regular:`) {
 						if (avatarData) {
 							item.imageUrl = avatarData.imageUrl;
 							item.state = avatarData.state;
@@ -252,7 +252,7 @@ export default {
 							thumbnailConfig: {
 								thumbnailType: "2dWebp",
 								thumbnailId: profileUserId,
-								size: "352x352",
+								size: "720x720",
 							},
 						});
 
