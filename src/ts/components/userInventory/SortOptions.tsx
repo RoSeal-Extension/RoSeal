@@ -89,108 +89,108 @@ export default function UserInventorySortOptions({
 		itemType,
 		itemSubType,
 	} = useMemo(() => {
-		switch (categoryData?.category?.categoryType) {
-			case "PrivateServers": {
+		if (categoryData?.category?.categoryType === "PrivateServers") {
+			return {
+				isDeletingSupported: false,
+				isArchivingSupported: false,
+				isCountingSupported:
+					categoryData.subcategory?.filter !== "SharedPrivateServers" && !isFavoritesPage,
+				isArchivedPage: false,
+				isAvatarItem: false,
+				hasGetMore: false,
+				itemType: categoryData.category.categoryType,
+				itemSubType: categoryData?.subcategory?.categoryType,
+			} as const;
+		}
+		if (categoryData?.category?.categoryType === "Place") {
+			return {
+				isDeletingSupported: isFavoritesPage && isViewingAuthenticatedUser,
+				isArchivingSupported: false,
+				isCountingSupported: !isFavoritesPage,
+				isArchivedPage: false,
+				isAvatarItem: false,
+				hasGetMore: false,
+				itemType: categoryData.category.categoryType,
+				itemSubType: categoryData?.subcategory?.categoryType,
+			} as const;
+		}
+
+		if (
+			categoryData?.category?.categoryType === "Badge" ||
+			categoryData?.category?.categoryType === "GamePass"
+		) {
+			return {
+				isDeletingSupported: isViewingAuthenticatedUser,
+				isArchivingSupported: false,
+				isCountingSupported: !isFavoritesPage,
+				isArchivedPage: false,
+				isAvatarItem: false,
+				hasGetMore: false,
+				itemType: categoryData.category.categoryType,
+			} as const;
+		}
+
+		if (
+			categoryData?.category?.categoryType === "Bundle" ||
+			(categoryData?.category?.categoryType === "DynamicHead" &&
+				categoryData.subcategory?.type !== "AssetType")
+		) {
+			const bundleId = categoryData?.subcategory?.id;
+			if (!bundleId)
 				return {
 					isDeletingSupported: false,
 					isArchivingSupported: false,
-					isCountingSupported:
-						categoryData.subcategory?.filter !== "SharedPrivateServers" &&
-						!isFavoritesPage,
+					isCountingSupported: false,
 					isArchivedPage: false,
 					isAvatarItem: false,
-					hasGetMore: false,
-					itemType: categoryData.category.categoryType,
-					itemSubType: categoryData?.subcategory?.categoryType,
-				} as const;
-			}
-			case "Place": {
-				return {
-					isDeletingSupported: isFavoritesPage && isViewingAuthenticatedUser,
-					isArchivingSupported: false,
-					isCountingSupported: !isFavoritesPage,
-					isArchivedPage: false,
-					isAvatarItem: false,
-					hasGetMore: false,
-					itemType: categoryData.category.categoryType,
-					itemSubType: categoryData?.subcategory?.categoryType,
-				} as const;
-			}
-
-			case "Badge":
-			case "GamePass": {
-				return {
-					isDeletingSupported: isViewingAuthenticatedUser,
-					isArchivingSupported: false,
-					isCountingSupported: !isFavoritesPage,
-					isArchivedPage: false,
-					isAvatarItem: false,
-					hasGetMore: false,
-					itemType: categoryData.category.categoryType,
-				} as const;
-			}
-
-			case "Bundle":
-			case "DynamicHead": {
-				const bundleId = categoryData?.subcategory?.id;
-				if (!bundleId)
-					return {
-						isDeletingSupported: false,
-						isArchivingSupported: false,
-						isCountingSupported: false,
-						isArchivedPage: false,
-						isAvatarItem: false,
-						hasGetMore: true,
-						itemType: "Bundle",
-					};
-
-				return {
-					isDeletingSupported: false,
-					isArchivingSupported: isViewingAuthenticatedUser,
-					isCountingSupported: !isFavoritesPage,
-					isArchivedPage: false,
-					isAvatarItem: true,
 					hasGetMore: true,
 					itemType: "Bundle",
-					itemSubType: getBundleTypeData(bundleId)?.bundleType as AvatarBundleType,
-				} as const;
-			}
+				};
 
-			default: {
-				const assetTypeId = categoryData?.subcategory?.id;
-				if (!assetTypeId || categoryData.subcategory?.type !== "AssetType")
-					return {
-						isDeletingSupported: false,
-						isArchivingSupported: false,
-						isCountingSupported: false,
-						isArchivedPage: false,
-						isAvatarItem: false,
-						hasGetMore: true,
-						itemType: "Asset",
-						assetTypeId,
-					};
-
-				const assetTypeData = getAssetTypeData(assetTypeId);
-				const isArchivedPage = assetTypeId < 0;
-				const isAvatarAsset = assetTypeData?.isAvatarAsset === true;
-
-				return {
-					isDeletingSupported:
-						isViewingAuthenticatedUser &&
-						(isFavoritesPage || assetTypeData?.isDeletable === true),
-					isArchivingSupported:
-						isViewingAuthenticatedUser &&
-						(assetTypeData?.isAvatarAsset || isArchivedPage) &&
-						archiveAvatarItemsEnabled,
-					isCountingSupported: !isFavoritesPage && !isArchivedPage,
-					isArchivedPage,
-					isAvatarItem: isAvatarAsset,
-					hasGetMore: isAvatarAsset || assetTypeData?.isCreatorMarketplaceAsset === true,
-					itemType: "Asset",
-					itemSubType: assetTypeId,
-				} as const;
-			}
+			return {
+				isDeletingSupported: false,
+				isArchivingSupported: isViewingAuthenticatedUser,
+				isCountingSupported: !isFavoritesPage,
+				isArchivedPage: false,
+				isAvatarItem: true,
+				hasGetMore: true,
+				itemType: "Bundle",
+				itemSubType: getBundleTypeData(bundleId)?.bundleType as AvatarBundleType,
+			} as const;
 		}
+
+		const assetTypeId = categoryData?.subcategory?.id;
+		if (!assetTypeId || categoryData.subcategory?.type !== "AssetType")
+			return {
+				isDeletingSupported: false,
+				isArchivingSupported: false,
+				isCountingSupported: false,
+				isArchivedPage: false,
+				isAvatarItem: false,
+				hasGetMore: true,
+				itemType: "Asset",
+				assetTypeId,
+			};
+
+		const assetTypeData = getAssetTypeData(assetTypeId);
+		const isArchivedPage = assetTypeId < 0;
+		const isAvatarAsset = assetTypeData?.isAvatarAsset === true;
+
+		return {
+			isDeletingSupported:
+				isViewingAuthenticatedUser &&
+				(isFavoritesPage || assetTypeData?.isDeletable === true),
+			isArchivingSupported:
+				isViewingAuthenticatedUser &&
+				(assetTypeData?.isAvatarAsset || isArchivedPage) &&
+				archiveAvatarItemsEnabled,
+			isCountingSupported: !isFavoritesPage && !isArchivedPage,
+			isArchivedPage,
+			isAvatarItem: isAvatarAsset,
+			hasGetMore: isAvatarAsset || assetTypeData?.isCreatorMarketplaceAsset === true,
+			itemType: "Asset",
+			itemSubType: assetTypeId,
+		} as const;
 	}, [
 		categoryData?.category,
 		categoryData?.subcategory,
