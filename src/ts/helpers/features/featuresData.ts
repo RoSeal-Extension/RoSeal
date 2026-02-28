@@ -2739,7 +2739,7 @@ export const sections = [
 						id: "marketplaceShowHiddenCategories",
 						component: {
 							type: "Toggle",
-							defaultValue: false,
+							defaultValue: true,
 						},
 					},
 				],
