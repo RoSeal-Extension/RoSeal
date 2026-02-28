@@ -13,6 +13,9 @@ import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { assetTypes } from "src/ts/utils/itemTypes";
 import { AVATAR_MARKETPLACE_REGEX } from "src/ts/utils/regex";
 import type messagesType from "#i18n/types";
+import { hijackState } from "src/ts/helpers/hijack/react";
+
+const ROSEAL_CUSTOM_CATEGORY_ID = 12252022;
 
 export default {
 	id: "marketplace",
@@ -23,8 +26,8 @@ export default {
 			[];
 
 		checks.push(
-			featureValueIsInject("marketplaceShowHiddenCategories", true, () =>
-				hijackResponse(async (req, res) => {
+			featureValueIsInject("marketplaceShowHiddenCategories", true, () => {
+				const res = hijackResponse(async (req, res) => {
 					if (!res) return;
 
 					const url = new URL(req.url);
@@ -61,7 +64,7 @@ export default {
 						const messagesData = await getMessagesInject(messages);
 
 						const category: SearchNavigationMenuCategory = {
-							categoryId: 12_25_2022,
+							categoryId: ROSEAL_CUSTOM_CATEGORY_ID,
 							assetTypeIds: [],
 							bundleTypeIds: [],
 							name: messagesData[0],
@@ -95,8 +98,30 @@ export default {
 
 						return new Response(JSON.stringify(data), res);
 					}
-				}),
-			),
+				});
+
+				const state = hijackState({
+					matches: (state) =>
+						typeof state === "object" &&
+						state !== null &&
+						"category" in state &&
+						typeof state.category === "object" &&
+						state.category !== null &&
+						"categoryId" in state.category &&
+						state.category.categoryId === ROSEAL_CUSTOM_CATEGORY_ID,
+					setState: ({ value }) => {
+						return {
+							...(value.current as Record<string, string>),
+							includeNotForSale: true,
+						};
+					},
+				});
+
+				return () => {
+					state();
+					res();
+				};
+			}),
 		);
 
 		checks.push(
