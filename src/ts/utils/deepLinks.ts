@@ -1,5 +1,5 @@
-import DeepLinkParser from "@roseal/roblox-deeplink-parser";
-import AuthedProtoolParser from "@roseal/roblox-deeplink-parser/authedProtocol";
+import DeepLinkParser from "roblox-deeplink-parser";
+import AuthedProtoolParser from "roblox-deeplink-parser/authedProtocol";
 import { lazyLoad } from "./lazyLoad";
 import { getRobloxUrl } from "./baseUrls" with { type: "macro" };
 import { getPlaceUniverseId } from "../helpers/requests/services/places";

@@ -24,7 +24,6 @@
 		"@preact/compat": "17.1.2",
 		"@preact/signals": "2.8.1",
 		"@roseal/http-client": "github:RoSeal-Extension/HTTPClient#0.1.6",
-		"@roseal/roblox-deeplink-parser": "npm:@jsr/roseal__roblox-deeplink-parser@0.1.20",
 		"@types/d3-drag": "3.0.7",
 		"@types/react-simple-maps": "3.0.6",
 		"@types/tinycolor2": "1.4.6",
@@ -63,6 +62,7 @@
 		"react-tiny-virtual-list": "2.2.0",
 		"react-toastify": "11.0.5",
 		"roblox-bat": "0.6.2",
+		"roblox-deeplink-parser": "0.1.26",
 		"tinycolor2": "1.6.0",
 		"usehooks-ts": "3.1.1",
 		"zod": "4.3.6"
