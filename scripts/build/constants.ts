@@ -93,7 +93,7 @@ export function getDomains(target?: Target, isDev?: boolean, devServers?: DevSer
 	const EDGE_LISTING_LINK =
 		"https://microsoftedge.microsoft.com/addons/detail/emjkdffoonmeappoffiaalofdiflmela";
 
-	const TWEMOJI_EMOJI_BASE_URL = "https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/";
+	const TWEMOJI_EMOJI_BASE_URL = "https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/";
 	const FLUENTUI_EMOJI_BASE_URL =
 		"https://cdn.jsdelivr.net/gh/RoSeal-Extension/fluentui-emoji@latest/export/";
 
