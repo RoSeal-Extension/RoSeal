@@ -732,7 +732,7 @@ export async function search<T extends SearchVerticalType>(
 export async function getSearchLandingPage(request: GetSearchLandingPageRequest) {
 	return (
 		await httpClient.httpRequest<GetSearchLandingPageResponse>({
-			url: getRobloxUrl("apis", "/search-api/search-landing-page"),
+			url: getRobloxUrl("apis", "/search-landing-page-api/v1"),
 			search: request,
 			credentials: {
 				type: "cookies",

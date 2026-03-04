@@ -39,19 +39,6 @@ declare module "#pages/background-alarms" {
 	export const alarmListeners: BackgroundAlarmListener[];
 }
 
-// From: https://github.com/lokesh/color-thief/issues/188#issuecomment-1166887824
-declare module "colorthief" {
-	export type RGBColor = [number, number, number];
-	export default class ColorThief {
-		getColor: (img: HTMLImageElement | null, quality = 10) => RGBColor | null;
-		getPalette: (
-			img: HTMLImageElement | null,
-			colorCount = 10,
-			quality = 10,
-		) => RGBColor[] | null;
-	}
-}
-
 declare module "#pages/main-listeners" {
 	export const messageListeners: BackgroundMessageListener[];
 }

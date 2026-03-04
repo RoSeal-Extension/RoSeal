@@ -696,7 +696,8 @@ export default {
 						}
 
 						if (
-							url.pathname === "/search-api/search-landing-page" &&
+							(url.pathname === "/search-api/search-landing-page" ||
+								url.pathname === "/search-landing-page-api/v1") &&
 							hasExperienceConfig
 						) {
 							const data = (await res.clone().json()) as GetSearchLandingPageResponse;
