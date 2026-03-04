@@ -1,5 +1,5 @@
 import { effect, signal } from "@preact/signals";
-import ColorThief from "colorthief";
+import { getPaletteSync } from "colorthief";
 import { render } from "preact";
 import MarketplaceColorFiltersNew from "src/ts/components/marketplace/filters/Colors";
 import MarketplaceCreatorTypeFilterNew from "src/ts/components/marketplace/filters/CreatorTypes";
@@ -157,7 +157,6 @@ export default {
 
 		checks.push(
 			featureValueIs("clientMarketplaceColorFilters", true, () => {
-				const colorThief = new ColorThief();
 				const state = signal<MarketplaceColorFiltersState>(
 					DEFAULT_MARKETPLACE_COLOR_FILTERS_STATE,
 				);
@@ -194,9 +193,19 @@ export default {
 					if (imageCache.has(img.src)) {
 						imgColor = imageCache.get(img.src)!;
 					} else {
-						imgColor = colorThief.getPalette(img) || [];
+						const imgColor = getPaletteSync(img);
+
 						if (imgColor) {
-							imageCache.set(img.src, imgColor);
+							imageCache.set(
+								img.src,
+								imgColor
+									? imgColor.map((color) => {
+											const { r, g, b } = color.rgb();
+
+											return [r, g, b];
+										})
+									: [],
+							);
 						}
 					}
 
