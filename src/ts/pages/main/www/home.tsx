@@ -4,7 +4,7 @@ import FriendsCarousel from "src/ts/components/friendsCarousel/Carousel";
 import HomeUserHeader from "src/ts/components/home/HomeUserHeader";
 import CustomizeLayoutButton from "src/ts/components/home/layoutCustomization/Button";
 import { addMessageListener } from "src/ts/helpers/communication/dom";
-import { watch } from "src/ts/helpers/elements";
+import { watch, watchOnce } from "src/ts/helpers/elements";
 import { featureValueIs } from "src/ts/helpers/features/helpers";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type { OmniSort } from "src/ts/helpers/requests/services/universes";
@@ -26,7 +26,9 @@ export default {
 			}
 		});
 
-		const featureChecks = Promise.all([
+		const abortController = new AbortController();
+
+		const checks: MaybeNestedPromise<unknown>[] = [
 			featureValueIs("customizeHomeSortsLayout", true, () => {
 				const el = <CustomizeLayoutButton state={state} />;
 
@@ -35,9 +37,15 @@ export default {
 						return;
 					}
 
-					renderAfter(el, section);
+					const component = renderAfter(el, section);
+
+					if (component)
+						watchOnce(section, true, abortController.signal).then(() => {
+							render(null, component);
+						});
 				});
 			}),
+
 			featureValueIs("improvedConnectionsCarousel", true, async () => {
 				const authenticatedUser = await getAuthenticatedUser();
 				if (!authenticatedUser) return;
@@ -45,14 +53,17 @@ export default {
 				const btr = signal(false);
 				const btrSecondRow = signal(false);
 
-				addMessageListener("home.setBTRFeatureDetection", (args) => {
-					btr.value = args.btr;
-					btrSecondRow.value = args.btrSecondRow;
-				});
+				checks.push(
+					addMessageListener("home.setBTRFeatureDetection", (args) => {
+						btr.value = args.btr;
+						btrSecondRow.value = args.btrSecondRow;
+					}),
+				);
 
 				const friendsCount = listUserFriendsCount({
 					userId: authenticatedUser.userId,
 				}).then((data) => data.count);
+
 				return watch(".game-home-page-container .friend-carousel-container", async (el) => {
 					let overrideRows: number | undefined;
 					const overrideRowsStr = getComputedStyle(el).getPropertyValue(
@@ -73,24 +84,37 @@ export default {
 						/>,
 						el,
 					);
+
+					watchOnce(el, true, abortController.signal).then(() => {
+						render(null, el);
+					});
 				});
 			}),
 			featureValueIs("homeUserHeader", true, () =>
 				watch("#HomeContainer > .section", (section) => {
 					section.replaceChildren();
 
-					renderAsContainer(<HomeUserHeader />, section);
+					const parent = section?.parentNode;
+					if (!parent) return;
+
+					const container = renderAsContainer(<HomeUserHeader />, section);
+
+					if (container)
+						watchOnce(parent, true, abortController.signal).then(() => {
+							render(null, container);
+						});
 				}),
 			),
-		]);
+		];
 
 		return () => {
 			onSortsUpdated();
-			featureChecks.then((values) => {
+			Promise.all(checks).then((values) => {
 				for (const value of values) {
-					value?.();
+					if (typeof value === "function") value?.();
 				}
 			});
+			abortController.abort();
 		};
 	},
 } satisfies Page;

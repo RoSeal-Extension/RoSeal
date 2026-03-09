@@ -199,7 +199,7 @@ export default {
 		);
 
 		checks.push(
-			featureValueIsInject("hideAddFriendsButton", true, () => {
+			featureValueIsInject("hideAddFriendsButton", true, () =>
 				hijackCreateElement(
 					(_, props) => !!props && "isAddFriendsTileEnabled" in props,
 					(_, __, props) => {
@@ -211,8 +211,8 @@ export default {
 						propsType.badgeCount = 0;
 						propsType.isAddFriendsTileEnabled = false;
 					},
-				);
-			}),
+				),
+			),
 			getFeatureValueInject("expandHomeContent").then((value) => {
 				if (!value?.[0]) {
 					return;

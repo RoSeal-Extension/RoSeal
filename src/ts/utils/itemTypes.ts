@@ -657,7 +657,7 @@ export const bundleTypes = [
 		bundleType: "BodyParts",
 		alternativeTypes: ["Body"],
 		searchQuery: {
-			Category: 17,
+			Category: 18,
 			Subcategory: undefined,
 		},
 	},
