@@ -1752,6 +1752,13 @@ roseal-font {
     top: -20px;
     position: absolute;
     left: -25px;
+
+    @media (max-width: 767px) {
+        #user-profile-header-bg & {
+            top: 0px;
+            left: 0;
+        }
+    }
 }
 
 [data-rosealfe-removewhitebackgroundfriendcarouselsdarktheme]

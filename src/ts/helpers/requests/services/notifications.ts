@@ -434,6 +434,16 @@ export type RealtimeNotificationsActivityHistoryEventInformation = BaseNotificat
 	UserId: number;
 };
 
+export type RealtimeNotificationsTrustedConnectionNotificationsInformation = {
+	Actor: number;
+	TargetId: number;
+	EventType: 1 | 2; // 1 = add, 2 = remove
+};
+
+export type RealtimeNotificationsChatModerationTypeEligibilityInformation = {
+	channels_inspected: string[];
+};
+
 export type RealtimeNotifications =
 	| ["ChatNotifications", RealtimeNotificationsChatNotificationsInformation]
 	| ["CloudEditChatNotifications", RealtimeNotificationsChatNotificationsInformation]
@@ -480,10 +490,16 @@ export type RealtimeNotifications =
 	| ["UserSettingsChanged", RealtimeNotificationsUserSettingsChangedInformation]
 	| ["ActivityHistoryEvent", RealtimeNotificationsActivityHistoryEventInformation]
 	| ["EligibilityStatusChanged", unknown] // don't know the type...
-	| ["ChatModerationTypeEligibility", unknown] // Dont know the type
+	| [
+			"ChatModerationTypeEligibility",
+			RealtimeNotificationsChatModerationTypeEligibilityInformation,
+	  ]
 	| ["PostCreationNotification", unknown] /// same....
 	| ["toast-in-experience-notifications", unknown]
-	| ["TrustedConnectionNotifications", unknown]
+	| [
+			"TrustedConnectionNotifications",
+			RealtimeNotificationsTrustedConnectionNotificationsInformation,
+	  ]
 	| ["PartyNudgeUpdated", unknown]
 	| ["AssetDependencyGrantEvent", unknown]
 	| ["desktop-notifications-windows", unknown]; // Same....
