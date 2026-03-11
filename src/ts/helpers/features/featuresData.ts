@@ -2201,15 +2201,6 @@ export const sections = [
 					},
 					{
 						type: "Regular",
-						id: "desktopPastUsernamesButton",
-						component: {
-							type: "Toggle",
-							defaultValue: true,
-						},
-						deprecated: true,
-					},
-					{
-						type: "Regular",
 						id: "userProfileEasterEggs",
 						component: {
 							type: "Toggle",
