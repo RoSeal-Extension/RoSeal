@@ -166,6 +166,10 @@
 				"viewProfile": {
 					"$message": "View Profile"
 				}
+			},
+			"connect": {
+				"$context": "Connect card",
+				"$message": "Connect"
 			}
 		}
 	},
@@ -658,7 +662,11 @@
 			"$context": "Friend card",
 			"username": {
 				"$context": "Username",
-				"$message": "@{username}"
+				"$message": "@{username}",
+				"withTrusted": {
+					"$context": "Is trusted connection",
+					"$message": "@{username} • Trusted"
+				}
 			},
 			"profileHidden": {
 				"$context": "Shown when the user can't view the friend data",

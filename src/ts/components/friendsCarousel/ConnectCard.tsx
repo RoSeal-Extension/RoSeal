@@ -3,6 +3,7 @@ import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import LazyLink from "../core/LazyLink";
 import MdOutlineAddFilled from "@material-symbols/svg-600/outlined/add-fill.svg";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export type ConnectCardProps = {
 	count?: number | null;
@@ -36,7 +37,9 @@ export default function ConnectCard({ count }: ConnectCardProps) {
 						>
 							<div className="friends-carousel-tile-label">
 								<div className="friends-carousel-tile-name">
-									<span className="friends-carousel-display-name">Connect</span>
+									<span className="friends-carousel-display-name">
+										{getMessage("connectionsCarousel.card.connect")}
+									</span>
 								</div>
 							</div>
 						</div>

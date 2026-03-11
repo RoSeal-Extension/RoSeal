@@ -15,6 +15,7 @@ import {
 import {
 	acceptUserFriendRequest,
 	declineUserFriendRequest,
+	getUserTrustedFriendStatus,
 	requestUserFriendship,
 	type UserFriendRequestData,
 	type UserPresence,
@@ -41,6 +42,7 @@ import FriendCardContextMenu from "./FriendCardContextMenu";
 import type { FriendCardTypesProps } from "./FriendCardType";
 import type { FriendsTabType, SourceUniverseData } from "./Page";
 import type { UserFriendRequestAdditionalComponents } from "./tabs/FriendRequestsTab";
+import usePromise from "../hooks/usePromise";
 
 export type FriendCardPageData = {
 	cursor?: string;
@@ -162,6 +164,15 @@ export default function FriendCard({
 			return universeData?.[friendRequest.sourceUniverseId];
 		}
 	}, [friendRequest?.sourceUniverseId, universeData, _sourceUniverse]);
+
+	const [isMyTrustedConnection] = usePromise(() => {
+		if (!isMyProfile || !isFriends) return;
+
+		return getUserTrustedFriendStatus({
+			userId: id,
+		}).then((res) => res.status === "TrustedFriends");
+	}, [isMyProfile, id, isFriends]);
+
 	/*
 	const presenceType = presenceTypes.find(
 		(type) => type.typeId === presenceData?.userPresenceType,
@@ -461,6 +472,7 @@ export default function FriendCard({
 							: undefined
 					}
 					isHidden={isHiddenProfile || profileData?.isDeleted}
+					isTrustedConnection={isMyTrustedConnection === true}
 					displayName={friendRequest?.senderNickname || profileData?.names.combinedName}
 					hasVerifiedBadge={profileData?.isVerified}
 					usernameLink={!profileData?.isDeleted ? profileUrl : undefined}

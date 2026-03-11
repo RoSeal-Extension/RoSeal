@@ -22,6 +22,7 @@ export type AvatarCardCaptionProps = OmitExtend<
 		userId: number;
 
 		isHidden?: boolean;
+		isTrustedConnection?: boolean;
 
 		labelFirstLine?: ComponentChild;
 		labelFirstLineLink?: string;
@@ -45,6 +46,7 @@ export default function AvatarCardCaption({
 	userId,
 
 	isHidden,
+	isTrustedConnection,
 
 	labelFirstLine,
 	labelFirstLineLink,
@@ -56,6 +58,7 @@ export default function AvatarCardCaption({
 
 	availableConnectionTypes,
 	connectionType,
+
 	updateConnectionTypesLayout,
 	openCreateType,
 	openEditType,
@@ -84,9 +87,12 @@ export default function AvatarCardCaption({
 						})}
 					>
 						{username
-							? getMessage("friends.card.username", {
-									username,
-								})
+							? getMessage(
+									`${isTrustedConnection ? "friends.card.username.withTrusted" : "friends.card.username"}`,
+									{
+										username,
+									},
+								)
 							: null}
 					</div>
 				)}
