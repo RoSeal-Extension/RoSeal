@@ -17,6 +17,9 @@ export default function SocialHeaderV2({
 			type="button"
 			className={classNames(
 				"roseal-profile-header-v2-social-count relative clip group/interactable focus-visible:outline-focus disabled:outline-none flex justify-center items-center radius-circle stroke-none padding-left-medium padding-right-medium height-800 text-label-medium bg-shift-300 content-action-utility",
+				{
+					"opacity-[0.5]": disabled,
+				},
 				className,
 			)}
 			onClick={() => {
