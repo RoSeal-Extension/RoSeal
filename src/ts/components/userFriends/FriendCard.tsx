@@ -166,12 +166,12 @@ export default function FriendCard({
 	}, [friendRequest?.sourceUniverseId, universeData, _sourceUniverse]);
 
 	const [isMyTrustedConnection] = usePromise(() => {
-		if (!isMyProfile || !isFriends) return;
+		if (!isMyProfile || !isFriends || currentTab === "trusted-friends") return;
 
 		return getUserTrustedFriendStatus({
 			userId: id,
 		}).then((res) => res.status === "TrustedFriends");
-	}, [isMyProfile, id, isFriends]);
+	}, [isMyProfile, id, isFriends, currentTab]);
 
 	/*
 	const presenceType = presenceTypes.find(
