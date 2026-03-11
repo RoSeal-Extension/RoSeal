@@ -296,7 +296,11 @@ export type ProfileComponentAction =
 	| "ViewCommunity"
 	| "ViewFavorites"
 	| "ViewFullProfile"
-	| "ViewInventory";
+	| "ViewInventory"
+	| "AddTrustedConnection"
+	| "AddIncomingTrustedConnection"
+	| "RemoveTrustedConnection"
+	| "PendingTrustedConnection";
 
 export type ProfileComponentButton = {
 	type: string;

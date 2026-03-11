@@ -164,7 +164,11 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 	}, [avatar?.assets, purchaseDetails, separateAnimations]);
 
 	const tabs = useMemo(() => {
-		const tabs = [{ id: "assets", label: getMessage("user.avatar.tabs.assets") }];
+		const tabs = [];
+
+		if (wearingAssets.length) {
+			tabs.push({ id: "assets", label: getMessage("user.avatar.tabs.assets") });
+		}
 
 		if (bodyParts.length && separateBodyParts) {
 			tabs.push({
@@ -211,6 +215,18 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 
 		return watchTextContent(h2HeaderRef!.current, handleh2);
 	}, [h2HeaderRef.current, showTotalValue]);
+
+	useEffect(() => {
+		if (!tabs.length) return;
+
+		for (const tab of tabs) {
+			if (tab.id === activeTab) {
+				return;
+			}
+		}
+
+		setActiveTab(tabs[0].id as ActiveTab);
+	}, [tabs.length]);
 
 	const assetTabContent = (
 		activeTab === "assets"

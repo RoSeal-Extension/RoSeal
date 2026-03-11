@@ -72,6 +72,10 @@ export default {
 							"EditAvatar",
 							"FollowUser",
 							"UnfollowUser",
+							"AddTrustedConnection",
+							"AddIncomingTrustedConnection",
+							"RemoveTrustedConnection",
+							"PendingTrustedConnection",
 						] as const,
 					},
 					{
@@ -97,9 +101,6 @@ export default {
 					},
 					{
 						component: "PlayerBadges",
-					},
-					{
-						component: "Statistics",
 					},
 					{
 						component: "Experiences",
