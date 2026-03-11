@@ -614,7 +614,9 @@ export default {
 				watch(".group-description-dialog-body-header", (text) => {
 					if (text.textContent !== expectText) return;
 
-					const count = text.nextElementSibling?.textContent?.split("; ").length;
+					const count = text.parentElement
+						?.querySelector(".group-description-dialog-body-content")
+						?.textContent?.split("; ").length;
 					if (count)
 						text.textContent = getMessage("user.pastUsernamesCount", {
 							count,
