@@ -119,7 +119,7 @@ export default function FriendRequestsTab({
 
 	const [sortOrder, setSortOrder] = useState<SortOrder>("Desc");
 	const [filters, setFilters] = useState<FriendRequestsFilters>({
-		sortBy: "sentDate",
+		sortBy: "default",
 	});
 
 	/*
@@ -138,7 +138,7 @@ export default function FriendRequestsTab({
 			if (
 				key !== "minMutualConnectionsCount" &&
 				key !== "maxMutualConnectionsCount" &&
-				(key !== "sortBy" || filters[key] !== "sentDate")
+				(key !== "sortBy" || filters[key] !== "default")
 			) {
 				return [true, true];
 			}
@@ -184,7 +184,7 @@ export default function FriendRequestsTab({
 		paging: {
 			method: "pagination",
 			itemsPerPage: pageSize || 18,
-			immediatelyLoadAllData: filters.sortBy !== "sentDate",
+			immediatelyLoadAllData: filters.sortBy !== "default",
 		},
 		items: {
 			shouldAlwaysUpdate: true,
@@ -258,12 +258,20 @@ export default function FriendRequestsTab({
 					return transformedData;
 				}),
 			sortItems:
-				advancedFilteringEnabled && filters.sortBy !== "sentDate"
+				advancedFilteringEnabled && filters.sortBy !== "default"
 					? (arr) =>
 							crossSort(arr, (a, b) => {
 								const direction = sortOrder === "Desc" ? -1 : 1;
 
 								switch (filters.sortBy) {
+									case "sentDate": {
+										return (
+											(new Date(a.friendRequest?.sentAt ?? 0).getTime() >
+											new Date(b.friendRequest?.sentAt ?? 0).getTime()
+												? 1
+												: -1) * direction
+										);
+									}
 									case "joinedDate": {
 										return (
 											((a.components?.joinedDate ?? 0) >
@@ -399,7 +407,7 @@ export default function FriendRequestsTab({
 	});
 
 	useEffect(() => {
-		if (filters.sortBy === "sentDate") return;
+		if (filters.sortBy === "default") return;
 
 		loadAllItems();
 	}, [filters.sortBy]);

@@ -128,6 +128,7 @@ export const MAX_CONNECTIONS_LIMIT = 1_000;
 export const MAX_COMMUNITIES_LIMIT = 110;
 
 export const FRIEND_REQUESTS_FILTER_SORTS = [
+	"default",
 	"sentDate",
 	"joinedDate",
 	"connectionsCount",

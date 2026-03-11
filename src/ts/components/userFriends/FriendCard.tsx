@@ -231,7 +231,8 @@ export default function FriendCard({
 		if (
 			!components &&
 			requestsSortType !== "mutualConnectionsCount" &&
-			requestsSortType !== "sentDate"
+			requestsSortType !== "sentDate" &&
+			requestsSortType !== "default"
 		) {
 			return null;
 		}

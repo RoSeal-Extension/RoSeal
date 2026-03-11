@@ -628,6 +628,9 @@
 		"sorts": {
 			"$context": "Friend request sorts",
 			"requests": {
+				"default": {
+					"$message": "Default"
+				},
 				"sentDate": {
 					"$message": "By sent date"
 				},
