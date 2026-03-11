@@ -23,7 +23,7 @@ export default function ConnectCard({ count }: ConnectCardProps) {
 						}
 					>
 						<div className="add-friends-icon-container">
-							{count && count > 0 && (
+							{!!count && (
 								<span className="friend-request-badge">
 									{asLocaleString(count)}
 								</span>
