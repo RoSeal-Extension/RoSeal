@@ -58,6 +58,7 @@ import { getHomePageUrl } from "src/ts/utils/links";
 import { getDelayKey } from "src/ts/utils/misc";
 import type { FlagCall } from "../flags/flags";
 import type { SubscriptionTier } from "../requests/services/roseal";
+import { PRIVATE_SERVER_LINKS_STORAGE_KEY } from "src/ts/constants/privateServerLinks";
 
 export type FeatureType = "Regular" | "Beta" | "Experimental";
 
@@ -1560,6 +1561,9 @@ export const sections = [
 						component: {
 							type: "Toggle",
 							defaultValue: true,
+						},
+						storageKeys: {
+							main: [PRIVATE_SERVER_LINKS_STORAGE_KEY],
 						},
 						subfeatures: {
 							items: [
