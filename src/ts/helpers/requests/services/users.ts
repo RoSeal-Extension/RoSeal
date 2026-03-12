@@ -502,26 +502,6 @@ export type ListMyFriendRequestsResponse = {
 	data: UserFriendRequest[];
 };
 
-export type ListUserPlacesRequest = {
-	userId: number;
-};
-
-export type ListedUserPlace = {
-	plays: number;
-	isOwned: boolean;
-	totalUpVotes: number;
-	totalDownVotes: number;
-	universeID: number;
-	description: string;
-	name: string;
-	placeID: number;
-	playerCount: number;
-};
-export type ListUserPlacesResponse = {
-	title: string;
-	games: ListedUserPlace[];
-};
-
 export type DeclineAllMyFriendRequestsResponse = {
 	backgrounded: boolean;
 };
@@ -1249,21 +1229,6 @@ export async function listUserRobloxCollections(request: ListUserRobloxCollectio
 		})
 	).body;
 }
-
-export async function listUserPlaces(request: ListUserPlacesRequest) {
-	return (
-		await httpClient.httpRequest<ListUserPlacesResponse>({
-			url: getRobloxUrl("www", "/users/profile/playergames-json"),
-			search: request,
-			credentials: {
-				type: "cookies",
-				value: true,
-			},
-			camelizeResponse: true,
-		})
-	).body;
-}
-
 export async function listUserFollowingsCount({ userId }: ListUserFriendsFollowersCountRequest) {
 	return (
 		await httpClient.httpRequest<GetUserFriendsFollowersCountResponse>({
