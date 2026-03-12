@@ -24,7 +24,11 @@ import {
 	type StoredAccount,
 	UNENCRYPTED_ACCOUNTS_STORAGE_KEY,
 } from "../constants/accountsManager";
-import { ACCOUNTS_RULES_END_ID, ACCOUNTS_RULES_START_ID } from "../constants/dnrRules";
+import {
+	ACCOUNTS_RULES_END_ID,
+	ACCOUNTS_RULES_START_ID,
+	STATIC_RULES_START_ID,
+} from "../constants/dnrRules";
 import { ACCOUNT_TRACKING_PREVENTION_FEATURE_ID } from "../constants/accountTrackingPrevention";
 import {
 	FRIENDS_LAST_SEEN_BACKGROUND_CHECKS_FEATURE_ID,
@@ -102,6 +106,7 @@ import {
 } from "../utils/regex";
 import { getPath } from "../utils/url";
 import { getUserById } from "../helpers/requests/services/users";
+import { ROSEAL_TRACKING_HEADER_NAME } from "scripts/build/constants";
 
 // Listeners and stuff
 if ("setAccessLevel" in browser.storage.session && import.meta.env.TARGET_BASE !== "firefox")
@@ -643,7 +648,7 @@ async function updateAccountIdsCookies() {
 	}
 
 	await Promise.all([
-		browser.declarativeNetRequest.updateDynamicRules({
+		browser.declarativeNetRequest.updateSessionRules({
 			removeRuleIds,
 			addRules,
 		}),
@@ -653,7 +658,7 @@ async function updateAccountIdsCookies() {
 	]);
 
 	return () =>
-		browser.declarativeNetRequest.updateDynamicRules({
+		browser.declarativeNetRequest.updateSessionRules({
 			removeRuleIds: allRuleIds,
 		});
 }
@@ -788,6 +793,35 @@ featureValueIsLater(STARTUP_NOTIFICATIONS_FEATURE_ID, [true], async (value) => {
 	});
 
 	return onEnd;
+});
+
+browser.declarativeNetRequest.getSessionRules().then((data) => {
+	for (const item of data) {
+		if (item.id === STATIC_RULES_START_ID) return;
+	}
+
+	browser.declarativeNetRequest.updateSessionRules({
+		addRules: [
+			{
+				id: STATIC_RULES_START_ID,
+				priority: 1,
+				action: {
+					type: "modifyHeaders",
+					requestHeaders: [
+						{
+							header: "user-agent",
+							operation: "set",
+							value: `${navigator.userAgent ?? ""} ${import.meta.env.USER_AGENT_SUFFIX}`,
+						},
+					],
+				},
+				condition: {
+					urlFilter: `||${getRobloxUrl("").replace(".", "")}/*${ROSEAL_TRACKING_HEADER_NAME}`,
+					resourceTypes: ["xmlhttprequest"],
+				},
+			},
+		],
+	});
 });
 
 /*

@@ -7,6 +7,7 @@ declare module "bun" {
 		VERSION: string;
 		ENV: import("scripts/build/constants").Env;
 		VERSION_NAME: string;
+		USER_AGENT_SUFFIX: string;
 		BASE_STORAGE_TYPE: chrome.storage.AreaName;
 
 		ROBLOX_PLAYER_DEEPLINK_PROTOCOL: string;
