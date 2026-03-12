@@ -259,24 +259,6 @@ export function writeDNRRules({
 							resourceTypes: ["main_frame", "sub_frame"],
 						},
 					},
-					{
-						id: idx++,
-						priority: 1,
-						action: {
-							type: "modifyHeaders",
-							requestHeaders: [
-								{
-									header: "user-agent",
-									operation: "append",
-									value: appendString,
-								},
-							],
-						},
-						condition: {
-							urlFilter: `||${ROBLOX_DOMAIN.replace(/{service}\.?/, "")}/*${ROSEAL_TRACKING_HEADER_NAME}`,
-							resourceTypes: ["xmlhttprequest"],
-						},
-					},
 				]),
 				isDev,
 				devServers,

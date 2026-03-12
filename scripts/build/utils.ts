@@ -20,6 +20,7 @@ import {
 	type TargetBase,
 } from "./constants.ts";
 import rosealPlugins from "./plugins/rosealPlugins.ts";
+import { makeUserAgentSuffix } from "scripts/build.ts";
 
 export const CONTENT_SECURITY_POLICY_HEADER_NAME = "content-security-policy";
 
@@ -274,6 +275,7 @@ export function getEnvironmentVariables({
 		VERSION: manifest.version,
 		BASE_STORAGE_TYPE: "local",
 		VERSION_NAME: manifest.version_name?.replaceAll("__manifest_version__", manifest.version),
+		USER_AGENT_SUFFIX: makeUserAgentSuffix(target, manifest.version, isDev),
 		...getDomains(target, isDev, devServers),
 		...devServers,
 	};

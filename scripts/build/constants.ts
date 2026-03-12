@@ -108,6 +108,15 @@ export function getDomains(target?: Target, isDev?: boolean, devServers?: DevSer
 	const ROBLOX_OAUTH_CLIENT_ID = "5550176950208496010";
 	const ROBLOX_OAUTH_REDIRECT_URI = "https://api.roseal.live/v1/auth/providers/roblox/redirect";
 
+	let WEB_STORE_LISTING_LINK: string;
+	if (target === "firefox") {
+		WEB_STORE_LISTING_LINK = FIREFOX_LISTING_LINK;
+	} else if (target === "chrome") {
+		WEB_STORE_LISTING_LINK = CHROME_LISTING_LINK;
+	} else {
+		WEB_STORE_LISTING_LINK = EDGE_LISTING_LINK;
+	}
+
 	return {
 		ROBLOX_DOMAIN,
 		ROBLOX_CDN_DOMAIN,
@@ -128,12 +137,7 @@ export function getDomains(target?: Target, isDev?: boolean, devServers?: DevSer
 		DISCORD_DOMAIN,
 		CROWDIN_DOMAIN,
 
-		WEB_STORE_LISTING_LINK:
-			target === "firefox"
-				? FIREFOX_LISTING_LINK
-				: target === "edge"
-					? EDGE_LISTING_LINK
-					: CHROME_LISTING_LINK,
+		WEB_STORE_LISTING_LINK,
 		TWEMOJI_EMOJI_BASE_URL,
 		FLUENTUI_EMOJI_BASE_URL,
 
