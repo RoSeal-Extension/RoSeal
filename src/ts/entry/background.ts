@@ -811,7 +811,7 @@ browser.declarativeNetRequest.getSessionRules().then((data) => {
 						{
 							header: "user-agent",
 							operation: "set",
-							value: `${navigator.userAgent ?? ""} ${import.meta.env.USER_AGENT_SUFFIX}`,
+							value: `${globalThis?.navigator?.userAgent ?? ""} ${import.meta.env.USER_AGENT_SUFFIX}`,
 						},
 					],
 				},
