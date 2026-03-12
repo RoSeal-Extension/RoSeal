@@ -24,7 +24,7 @@ import {
 	type StoredAccount,
 	UNENCRYPTED_ACCOUNTS_STORAGE_KEY,
 } from "../constants/accountsManager";
-import { ACCOUNTS_RULES_START_ID } from "../constants/dnrRules";
+import { ACCOUNTS_RULES_END_ID, ACCOUNTS_RULES_START_ID } from "../constants/dnrRules";
 import { ACCOUNT_TRACKING_PREVENTION_FEATURE_ID } from "../constants/accountTrackingPrevention";
 import {
 	FRIENDS_LAST_SEEN_BACKGROUND_CHECKS_FEATURE_ID,
@@ -544,7 +544,7 @@ if (browser.notifications) {
 }
 
 async function updateAccountIdsCookies() {
-	const [tokens, accounts, rules] = await Promise.all([
+	const [tokens, accounts, oldRules, rules] = await Promise.all([
 		browser.storage.session
 			.get(ACCOUNTS_RULES_SESSION_CACHE_STORAGE_KEY)
 			.then(
@@ -556,7 +556,24 @@ async function updateAccountIdsCookies() {
 			.get(UNENCRYPTED_ACCOUNTS_STORAGE_KEY)
 			.then((data) => data[UNENCRYPTED_ACCOUNTS_STORAGE_KEY] as StoredAccount[] | undefined),
 		browser.declarativeNetRequest.getDynamicRules(),
+		browser.declarativeNetRequest.getSessionRules(),
 	]);
+
+	if (oldRules.length) {
+		const ruleIdsToRemove: number[] = [];
+
+		for (const oldRule of oldRules) {
+			if (oldRule.id >= ACCOUNTS_RULES_START_ID && oldRule.id <= ACCOUNTS_RULES_END_ID) {
+				ruleIdsToRemove.push(oldRule.id);
+			}
+		}
+
+		if (ruleIdsToRemove.length) {
+			browser.declarativeNetRequest.updateDynamicRules({
+				removeRuleIds: ruleIdsToRemove,
+			});
+		}
+	}
 
 	const allRuleIds: number[] = [];
 	const removeRuleIds: number[] = [];

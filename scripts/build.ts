@@ -189,6 +189,10 @@ export type WriteDNRRuleProps = {
 	cspPolicy: string;
 };
 
+export function makeUserAgentSuffix(target: Target, version: string, isDev?: boolean) {
+	return `RoSealExtension (RoSeal/${target}/${version}/${isDev ? "dev" : "prod"})`;
+}
+
 export function writeDNRRules({
 	outDir,
 	target,
@@ -206,7 +210,7 @@ export function writeDNRRules({
 
 	const userAgentOverrides = getUserAgentOverrides(robloxVersion);
 
-	const appendString = `RoSealExtension (RoSeal/${target}/${version}/${isDev ? "dev" : "prod"})`;
+	const appendString = makeUserAgentSuffix(target, version, isDev);
 
 	let idx = STATIC_RULES_START_ID;
 
