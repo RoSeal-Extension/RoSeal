@@ -162,7 +162,7 @@ export default {
 						);
 
 						return watch(
-							".games-page-container > .section .grid-item-container, .game-sort-detail-container > .game-grid, #games-search-page .game-grid",
+							".games-page-container > .section .grid-item-container, .game-sort-detail-container > .game-grid, #games-search-page .game-grid, #game-search-web-app .game-grid",
 							async (el) => {
 								if (document.querySelector(".roseal-filters-container")) {
 									return;
