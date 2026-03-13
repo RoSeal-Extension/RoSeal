@@ -3787,7 +3787,7 @@
 				"$context": ""
 			},
 			"description": {
-				"$message": "When enabled, adds a new item to the top navigation that activates a popup for managing your accounts. Your accounts are stored and encrypted on-device. Use at your own risk.",
+				"$message": "When enabled, adds a new item to the top navigation that activates a popup for managing your accounts. Accounts are not encrypted on-device due to browser storage bugs. Use at your own risk.",
 				"$context": ""
 			},
 			"discoverAccounts": {
@@ -5910,7 +5910,7 @@
 				"$context": ""
 			},
 			"description": {
-				"$message": "When enabled, allows you to create Item Lists for Avatar assets, and display and organize them in the Avatar Editor. NOTE: Bundles and outfits will be supported at a later date.",
+				"$message": "When enabled, allows you to create Item Lists for Avatar item and outfits, display, and organize them in the Avatar Editor.",
 				"$context": ""
 			}
 		},
