@@ -51,6 +51,7 @@ export default function ItemConnectionsOwned({ itemType, itemId }: ItemConnectio
 				title={getMessage("avatarItem.connectionsOwned.modal.title", {
 					sealEmoji: SEAL_EMOJI_COMPONENT,
 					count: asLocaleString(data.totalCount),
+					countNum: data.totalCount,
 				})}
 				onClose={() => setShowModal(false)}
 				className="connections-owned-modal roseal-scrollbar"

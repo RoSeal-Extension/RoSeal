@@ -6261,7 +6261,7 @@
 			"modal": {
 				"$context": "Modal shown when clicked on the owned text",
 				"title": {
-					"$message": "{sealEmoji} {count} Connections Who Own This"
+					"$message": "{sealEmoji} {count} {countNum, plural, =1 {Connection} other {Connections}} Who Own This"
 				},
 				"body": {
 					"item": {
