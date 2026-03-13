@@ -6,6 +6,7 @@ import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useFeatureValue from "../hooks/useFeatureValue";
 import LazyLink from "../core/LazyLink";
 import LeftNavItem from "./LeftNavItem";
+import { USER_FAVORITES_REGEX } from "src/ts/utils/regex";
 
 export type NavigationFavoritesProps = {
 	useNewNav?: boolean;
@@ -25,6 +26,7 @@ export default function NavigationFavorites({ useNewNav }: NavigationFavoritesPr
 						: undefined
 				}
 				iconComponent={<MdOutlineBookmarkOutlined className="roseal-icon" />}
+				regex={USER_FAVORITES_REGEX}
 			>
 				{getMessage("navigation.favorites")}
 			</LeftNavItem>

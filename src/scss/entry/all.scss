@@ -1801,6 +1801,10 @@ roseal-font {
     padding-right: var(--padding-xxsmall);
     padding-left: var(--padding-xsmall);
 
+    &.active .nav-item-link {
+        background-color: var(--color-surface-300);
+    }
+
     .nav-item-link {
         overflow: hidden;
         display: flex;
