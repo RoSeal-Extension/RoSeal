@@ -93,11 +93,14 @@ export const ACCURATE_TOPIC_HANDLING = {
 					cursor,
 				});
 
-				const checkUniverseData = blockedItemsData.value?.experiences.descriptions.length
-					? await invokeMessage("checkBlockedUniverses", {
-							ids: data.data.map((item) => item.id),
-						})
-					: undefined;
+				const checkUniverseData =
+					blockedItemsData.value?.experiences.descriptions.length ||
+					blockedItemsData.value?.creators.length ||
+					allowedItemsData.value?.creators
+						? await invokeMessage("checkBlockedUniverses", {
+								ids: data.data.map((item) => item.id),
+							})
+						: undefined;
 
 				for (const item of data.data) {
 					if (

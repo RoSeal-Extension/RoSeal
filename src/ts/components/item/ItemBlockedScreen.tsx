@@ -152,25 +152,25 @@ export default function ItemBlockedScreen({
 		let blockedTypes: ("Explicit" | "Creator" | "Name" | "Description" | undefined)[] = [];
 		const keywords: string[] = [];
 
-		if (blockedItemsData.value) {
-			if (data) {
-				if (
-					allowedItemsData.value?.creators.some(
-						(creator) =>
-							creator.id === data.creator?.id && creator.type === data.creator.type,
-					)
-				) {
-					return { blockedType: undefined, otherCount: 0, keywords: [] };
-				}
+		if (!data)
+			return {
+				blockedType: undefined,
+				otherCount: 0,
+				keywords: [],
+			};
 
-				if (
-					blockedItemsData.value.creators.some(
-						(creator) =>
-							creator.id === data.creator?.id && creator.type === data.creator.type,
-					)
-				) {
-					blockedTypes.push("Creator");
-				}
+		const allowedByCreator = allowedItemsData.value?.creators.some(
+			(creator) => creator.id === data.creator?.id && creator.type === data.creator.type,
+		);
+		if (blockedItemsData.value) {
+			if (
+				blockedItemsData.value.creators.some(
+					(creator) =>
+						creator.id === data.creator?.id && creator.type === data.creator.type,
+				) &&
+				!allowedByCreator
+			) {
+				blockedTypes.push("Creator");
 			}
 
 			const realName = asLocaleLowerCase(name ?? data?.name ?? "");
@@ -180,7 +180,7 @@ export default function ItemBlockedScreen({
 					blockedTypes.push("Explicit");
 				}
 
-				if (realName) {
+				if (realName && !allowedByCreator) {
 					for (const keyword of blockedItemsData.value.experiences.names) {
 						if (
 							blockedItemsKeywordToRegEx.value[keyword]
@@ -193,7 +193,7 @@ export default function ItemBlockedScreen({
 					}
 				}
 
-				if (data?.description) {
+				if (data.description && !allowedByCreator) {
 					const realDescription = asLocaleLowerCase(data.description);
 					for (const keyword of blockedItemsData.value.experiences.descriptions) {
 						if (
@@ -221,7 +221,7 @@ export default function ItemBlockedScreen({
 					blockedTypes.push("Explicit");
 				}
 
-				if (realName) {
+				if (realName && !allowedByCreator) {
 					for (const keyword of blockedItemsData.value.items.names) {
 						if (
 							blockedItemsKeywordToRegEx.value[keyword]
@@ -234,7 +234,7 @@ export default function ItemBlockedScreen({
 					}
 				}
 
-				if (data?.description) {
+				if (data.description && !allowedByCreator) {
 					const realDescription = asLocaleLowerCase(data.description);
 					for (const keyword of blockedItemsData.value.items.descriptions) {
 						if (
@@ -270,10 +270,6 @@ export default function ItemBlockedScreen({
 		allowedItemsData.value,
 		blockedItemsKeywordToRegEx.value,
 	]);
-
-	useEffect(() => {
-		setBypassScreen(!blockedType);
-	}, [blockedType]);
 
 	const [useHoverEffect, setUseHoverEffect] = useState(false);
 	const translationPrefix = useMemo(() => {

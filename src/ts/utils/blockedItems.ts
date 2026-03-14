@@ -58,25 +58,33 @@ export function isExperienceBlocked(
 	const name = _name?.toLowerCase();
 	const description = _description?.toLowerCase();
 
-	if (
-		(id !== undefined && allowedItemsData.value?.experiences.ids.includes(id)) ||
-		(creatorType &&
-			creatorId &&
-			allowedItemsData.value?.creators.some(
-				(creator) => creator.id === creatorId && creator.type === creatorType,
-			))
-	)
-		return false;
+	const allowedByCreator =
+		creatorType &&
+		creatorId &&
+		allowedItemsData.value?.creators.some(
+			(creator) => creator.id === creatorId && creator.type === creatorType,
+		);
+
+	if (id !== undefined) {
+		if (allowedItemsData.value?.experiences.ids.includes(id)) {
+			return false;
+		}
+
+		if (blockedItemsData.value?.experiences.ids.includes(id)) {
+			return true;
+		}
+	}
+
+	if (allowedByCreator) return false;
 
 	return Boolean(
-		(id !== undefined && blockedItemsData.value?.experiences.ids.includes(id)) ||
-			(name !== undefined &&
-				name !== null &&
-				blockedItemsData.value?.experiences.names.some((keyword) =>
-					blockedItemsKeywordToRegEx.value[keyword]
-						? blockedItemsKeywordToRegEx.value[keyword].test(name)
-						: name.includes(keyword),
-				)) ||
+		(name !== undefined &&
+			name !== null &&
+			blockedItemsData.value?.experiences.names.some((keyword) =>
+				blockedItemsKeywordToRegEx.value[keyword]
+					? blockedItemsKeywordToRegEx.value[keyword].test(name)
+					: name.includes(keyword),
+			)) ||
 			(description !== undefined &&
 				description !== null &&
 				blockedItemsData.value?.experiences.descriptions.some((keyword) =>
