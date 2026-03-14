@@ -2,7 +2,9 @@
 	"$schema": "../../../../src/types/schemas/i18nFile.json",
 	"manifest": {
 		"$context": "RoSeal extension manifest file",
-		"$types": ["manifest"],
+		"$types": [
+			"manifest"
+		],
 		"name": {
 			"$message": "RoSeal - Augmented Roblox Experience",
 			"$context": "The name of the extension as shown in chrome://extensions, or about:addons"
@@ -19,7 +21,10 @@
 		}
 	},
 	"notifications": {
-		"$types": ["background", "main"],
+		"$types": [
+			"background",
+			"main"
+		],
 		"$context": "Notification strings",
 		"startup": {
 			"context": {
@@ -99,7 +104,7 @@
 		},
 		"connnectionActivity": {
 			"context": {
-				"$message": "RoSeal Connection Activity Notifier"
+				"$message": "RoSeal Friend Activity Notifier"
 			},
 			"message": {
 				"InGame": {
@@ -125,7 +130,7 @@
 	"connectionsCarousel": {
 		"$context": "Connections carousel shown on home page and users page",
 		"title": {
-			"$message": "Connections<countText>({count})</countText>"
+			"$message": "Friends<countText>({count})</countText>"
 		},
 		"seeAll": {
 			"$message": "See All"
@@ -164,7 +169,7 @@
 			},
 			"connect": {
 				"$context": "Connect card",
-				"$message": "Connect"
+				"$message": "Add"
 			}
 		}
 	},
@@ -338,10 +343,10 @@
 				"title": {
 					"$context": "Modal title",
 					"update": {
-						"$message": "{sealEmoji} Update Connection Type"
+						"$message": "{sealEmoji} Update Friend Type"
 					},
 					"create": {
-						"$message": "{sealEmoji} Create Connection Type"
+						"$message": "{sealEmoji} Create Friend Type"
 					}
 				},
 				"buttons": {
@@ -423,7 +428,7 @@
 						"$message": "Friend"
 					},
 					"description": {
-						"$message": "A connection you enjoy spending time with"
+						"$message": "A friend you enjoy spending time with"
 					}
 				},
 				"mutual": {
@@ -492,11 +497,11 @@
 			"connections": {
 				"$context": "Total connections section",
 				"title": {
-					"$message": "Total Connections"
+					"$message": "Total Friends"
 				},
 				"connections": {
 					"title": {
-						"$message": "Connections"
+						"$message": "Friends"
 					},
 					"min": {
 						"placeholder": {
@@ -577,9 +582,9 @@
 					}
 				},
 				"connections": {
-					"$context": "Mutual Connections",
+					"$context": "Mutual Friends",
 					"title": {
-						"$message": "Connections"
+						"$message": "Friends"
 					},
 					"min": {
 						"placeholder": {
@@ -637,7 +642,7 @@
 					"$message": "By joined date"
 				},
 				"connectionsCount": {
-					"$message": "By connections count"
+					"$message": "By friends count"
 				},
 				"followersCount": {
 					"$message": "By followers count"
@@ -649,7 +654,7 @@
 					"$message": "By mutual communities count"
 				},
 				"mutualConnectionsCount": {
-					"$message": "By mutual connections count"
+					"$message": "By mutual friends count"
 				}
 			}
 		},
@@ -665,7 +670,7 @@
 			},
 			"profileHidden": {
 				"$context": "Shown when the user can't view the friend data",
-				"$message": "Connection Hidden"
+				"$message": "Friend Hidden"
 			},
 			"plusMore": {
 				"$message": "+{count} more",
@@ -676,7 +681,7 @@
 				"$context": "Played with at some point"
 			},
 			"mutualFriends": {
-				"$message": "{count} mutual {countNum, plural, =1 {connection} other {connections}}",
+				"$message": "{count} mutual {countNum, plural, =1 {friend} other {friends}}",
 				"$context": "Mutual friends count"
 			},
 			"mutualCommunities": {
@@ -684,7 +689,7 @@
 				"$context": "Mutual communities count"
 			},
 			"connectionsCount": {
-				"$message": "{count} {countNum, plural, =1 {connection} other {connections}}",
+				"$message": "{count} {countNum, plural, =1 {friend} other {friends}}",
 				"$context": "Friends count"
 			},
 			"followersCount": {
@@ -705,7 +710,7 @@
 			},
 			"buttons": {
 				"sendFriendRequest": {
-					"$message": "Add Connection",
+					"$message": "Add Friend",
 					"$context": "Send Friend Request button in card"
 				},
 				"ignore": {
@@ -772,11 +777,11 @@
 				"$context": "Block button in the context menu of user friends actions"
 			},
 			"unfriend": {
-				"$message": "Remove Connection",
+				"$message": "Unfriend",
 				"$context": "Unfriend button in the context menu of user friends actions"
 			},
 			"removeTrustedFriend": {
-				"$message": "Remove Trusted Connection",
+				"$message": "Remove Trusted Friend",
 				"$context": "Remove Trusted Friend button in the context menu of user friends actions"
 			},
 			"removeFollower": {
@@ -797,11 +802,11 @@
 					"$context": "System feedback success message shown at the top of the page when a user is blocked"
 				},
 				"unfriend": {
-					"$message": "Successfully removed this connection.",
+					"$message": "Successfully removed this friend.",
 					"$context": "System feedback success message shown at the top of the page when a user is unfriended"
 				},
 				"removeTrustedFriend": {
-					"$message": "Successfully removed this trusted connection.",
+					"$message": "Successfully removed this trusted friend.",
 					"$context": "System feedback success message shown at the top of the page when a user is removed as a trusted friend"
 				},
 				"removeFollower": {
@@ -821,33 +826,33 @@
 			}
 		},
 		"myTitle": {
-			"$message": "My Connections",
+			"$message": "My Friends",
 			"$context": "Page title for user connections page"
 		},
 		"regularTitle": {
-			"$message": "{displayName}'s Connections",
+			"$message": "{displayName}'s Friends",
 			"$context": "Page title for user friends page"
 		},
 		"newTitle": {
-			"$message": "{displayName} (@{username})'s Connections",
+			"$message": "{displayName} (@{username})'s Friends",
 			"$context": "New page title for user friends page that includes the username"
 		},
 		"notAllowed": {
-			"$message": "You cannot view this user's connections.",
+			"$message": "You cannot view this user's friends.",
 			"$context": "Error message shown when a user tries to access the friends page of someone who has either blocked you, or their friends are not public"
 		},
 		"mutuals": {
 			"noItems": {
 				"someone": {
-					"$message": "This user has no mutual connections with you.",
-					"$context": "Message shown when a user has no mutual connections with the viewed user"
+					"$message": "This user has no mutual friends with you.",
+					"$context": "Message shown when a user has no mutual friends with the viewed user"
 				}
 			}
 		},
 		"trustedFriends": {
 			"noItems": {
 				"you": {
-					"$message": "You have no trusted connections.",
+					"$message": "You have no trusted friends.",
 					"$context": "Message shown when a user has no trusted connections"
 				}
 			}
@@ -879,7 +884,7 @@
 		"friendRequests": {
 			"noItems": {
 				"you": {
-					"$message": "You have no incoming connection requests.",
+					"$message": "You have no incoming friend requests.",
 					"$context": "Message shown when a user has no friend requests"
 				}
 			},
@@ -896,11 +901,11 @@
 				},
 				"modal": {
 					"title": {
-						"$message": "{sealEmoji} Ignore All Connection Requests",
+						"$message": "{sealEmoji} Ignore All Friend Requests",
 						"$context": "Title of the modal that appears when the user clicks the Ignore All button"
 					},
 					"body": {
-						"$message": "Are you sure you want to ignore all connection requests? This action cannot be undone.",
+						"$message": "Are you sure you want to ignore all friend requests? This action cannot be undone.",
 						"$context": "Body of the modal that appears when the user clicks the Ignore All button"
 					},
 					"buttons": {
@@ -914,7 +919,7 @@
 						}
 					},
 					"backgroundedMessage": {
-						"$message": "Ignoring all connection requests is now happening in the background"
+						"$message": "Ignoring all friend requests is now happening in the background"
 					}
 				}
 			}
@@ -922,20 +927,20 @@
 		"friends": {
 			"noItems": {
 				"you": {
-					"$message": "You have no connections.",
+					"$message": "You have no friends yet.",
 					"$context": "Message shown when a user has no connections"
 				},
 				"someone": {
-					"$message": "This user has no connections.",
+					"$message": "This user has no friends yet.",
 					"$context": "Message shown when a user has no connections"
 				}
 			},
 			"noFilteredItems": {
-				"$message": "No connections match your filter.",
+				"$message": "No friends match your filter.",
 				"$context": "Message shown when a user has no connections matching the filter"
 			},
 			"searchPlaceholder": {
-				"$message": "Search connections",
+				"$message": "Search friends",
 				"$context": "Placeholder text for the search bar"
 			},
 			"statusFilter": {
@@ -979,22 +984,22 @@
 		},
 		"tabs": {
 			"friends": {
-				"$message": "Connections",
+				"$message": "Friends",
 				"$context": "Tab title for friends tab",
 				"withNumber": {
-					"$message": "Connections ({number})",
+					"$message": "Friends ({number})",
 					"$context": "Tab title for friends tab with the number of friends"
 				},
 				"tooltip": {
-					"$message": "Connections are established when two Roblox users mutually agree to add eachother.",
+					"$message": "Friends are established when two Roblox users mutually agree to add eachother.",
 					"$context": "Tooltip text for the Connections tab"
 				}
 			},
 			"trustedFriends": {
-				"$message": "Trusted Connections",
+				"$message": "Trusted Friends",
 				"$context": "Tab title for trusted friends tab",
 				"tooltip": {
-					"$message": "Trusted Connections are established when two connections mutually agree to become Trusted Connections.",
+					"$message": "Trusted Friends are established when two friends mutually agree to become Trusted Friends.",
 					"$context": "Tooltip text for the Trusted Connections tab"
 				}
 			},
@@ -1002,11 +1007,11 @@
 				"$message": "Requests",
 				"$context": "Tab title for friend requests tab",
 				"withNumber": {
-					"$message": "Connection Requests ({number}{showPlus, select, true {+} other{}})",
+					"$message": "Friend Requests ({number}{showPlus, select, true {+} other{}})",
 					"$context": "Tab title for friend requests tab with the number of requests"
 				},
 				"tooltip": {
-					"$message": "People who have requested to become your connection.",
+					"$message": "People who have requested to become your friend.",
 					"$context": "Tooltip text for the Friend Requests tab"
 				}
 			},
@@ -1018,7 +1023,7 @@
 					"$context": "Tab title for mutuals tab with the number of mutuals"
 				},
 				"tooltip": {
-					"$message": "Your connections who are also connections with this person.",
+					"$message": "Your friends who are also friends with this person.",
 					"$context": "Tooltip text for the Mutuals tab"
 				}
 			},
@@ -1049,23 +1054,23 @@
 		},
 		"linkButton": {
 			"buttonText": {
-				"$message": "Create Connection Link",
+				"$message": "Create Friend Link",
 				"$context": "A button on the users friends page that creates and copies a friend link to the clipboard"
 			},
 			"tooltip": {
 				"default": {
-					"$message": "Create a one-time use link that can be used to become your connection.",
+					"$message": "Create a one-time use link that can be used to become your friend.",
 					"$context": "Tooltip text for the Create Friend Link"
 				},
 				"success": {
-					"$message": "Copied one-time use connection link to your clipboard.",
+					"$message": "Copied one-time use friend link to your clipboard.",
 					"$context": "Tooltip text for the Create Friend Link when clicked"
 				}
 			}
 		},
 		"linkModal": {
 			"title": {
-				"$message": "{sealEmoji} Accept Connection",
+				"$message": "{sealEmoji} Accept Friend",
 				"$context": "Modal title for accepting a friend invite link"
 			},
 			"accept": {
@@ -1082,11 +1087,11 @@
 			},
 			"body": {
 				"pending": {
-					"$message": "Would you like to become their connection? This link can not be used again.",
+					"$message": "Would you like to become their friend? This link can not be used again.",
 					"$context": "Modal body for friend invite link modal when the link is first used by anyone"
 				},
 				"accepted": {
-					"$message": "You are now their connection.",
+					"$message": "You are now their friend.",
 					"$context": "Modal body when they accept the friend invite"
 				},
 				"used": {
@@ -1094,11 +1099,11 @@
 					"$context": "Modal body for when the link has already been used"
 				},
 				"error": {
-					"$message": "An error occurred while accepting the connection link. This will not be retried.",
+					"$message": "An error occurred while accepting the friend link. This will not be retried.",
 					"$context": "System feedback error message shown at the top of the page when an error occurs during friend link acceptance"
 				},
 				"myPending": {
-					"$message": "This link is still active. Share it with anyone for them to become your connection!",
+					"$message": "This link is still active. Share it with anyone for them to become your friend!",
 					"$context": "Modal body for when the link is still active and the current user is the one who created it"
 				}
 			}
@@ -2155,7 +2160,10 @@
 	},
 	"featurePermissions": {
 		"$context": "Feature permissions",
-		"$types": ["popup", "main"],
+		"$types": [
+			"popup",
+			"main"
+		],
 		"forOrigin": {
 			"$message": "Host access for {origin}",
 			"$context": "i.e. host access for https://www.roblox.com, this is not used at the moment, but may be used in the future"
@@ -2292,7 +2300,7 @@
 				"$context": "Users title"
 			},
 			"friends.title": {
-				"$message": "User Connections List",
+				"$message": "User Friends List",
 				"$context": "Friends List subsection title"
 			},
 			"profile.title": {
@@ -2651,10 +2659,10 @@
 		},
 		"connectionActivityNotifications": {
 			"name": {
-				"$message": "Connection activity notifications"
+				"$message": "Friend activity notifications"
 			},
 			"description": {
-				"$message": "When enabled, allows you to be notified about your Connections' activity. This requires having initialized tracking in the dropdown menu on their Profile page."
+				"$message": "When enabled, allows you to be notified about your Friends' activity. This requires having initialized tracking in the dropdown menu on their Profile page."
 			},
 			"inExperience": {
 				"name": {
@@ -2676,7 +2684,7 @@
 					"$message": "Run background checks"
 				},
 				"description": {
-					"$message": "When enabled, the extension will check for connection activity updates in the background. This will also show your presence as online while the browser is open."
+					"$message": "When enabled, the extension will check for friend activity updates in the background. This will also show your presence as online while the browser is open."
 				}
 			}
 		},
@@ -2698,7 +2706,7 @@
 		},
 		"viewAvatarItemConnectionsOwned": {
 			"name": {
-				"$message": "View which of your Connections own an item"
+				"$message": "View which of your Friends own an item"
 			}
 		},
 		"viewAvatarItemResellerMoreInfo": {
@@ -2974,7 +2982,7 @@
 		},
 		"hideAddFriendsButton": {
 			"name": {
-				"$message": "Hide \"Add Connections\" button in connections list",
+				"$message": "Hide \"Add\" button in friends list",
 				"$context": ""
 			}
 		},
@@ -3471,11 +3479,11 @@
 		},
 		"homeFriendsRows": {
 			"name": {
-				"$message": "Override the maximum amount of Connections rows on your home page",
+				"$message": "Override the maximum amount of freinds rows on your home page",
 				"$context": ""
 			},
 			"description": {
-				"$message": "When enabled, allows you to override the amount of maximum Connections rows that can be displayed on your home page. There is currently a maximum of 50 Connections that can be shown.",
+				"$message": "When enabled, allows you to override the amount of maximum friends rows that can be displayed on your home page. There is currently a maximum of 50 friends that can be shown.",
 				"$context": ""
 			},
 			"values": {
@@ -3503,7 +3511,7 @@
 		},
 		"userJoinCheck": {
 			"name": {
-				"$message": "Check if you are unable to join a user from connection lists and profiles",
+				"$message": "Check if you are unable to join a user from friend lists and profiles",
 				"$context": ""
 			},
 			"description": {
@@ -3513,7 +3521,7 @@
 		},
 		"removeWhiteBackgroundFriendCarouselsDarkTheme": {
 			"name": {
-				"$message": "Remove white background from Connection carousels on dark theme"
+				"$message": "Remove white background from friend carousels on dark theme"
 			}
 		},
 		"showDeletedUsersUsernames": {
@@ -3538,17 +3546,17 @@
 		},
 		"userPagesNewTitle": {
 			"name": {
-				"$message": "Show username in the title of the connections list, inventory, and favorites pages of other users",
+				"$message": "Show username in the title of the friends list, inventory, and favorites pages of other users",
 				"$context": ""
 			},
 			"description": {
-				"$message": "When enabled, adds the username of the viewed connections list, inventory, or connections page for other users to the top of the page after their display name. (This won't show when you're viewing your own connections list.)",
+				"$message": "When enabled, adds the username of the viewed friends list, inventory, or favorites page for other users to the top of the page after their display name. (This won't show when you're viewing your own connections list.)",
 				"$context": ""
 			}
 		},
 		"userFriendsMoreActions": {
 			"name": {
-				"$message": "Show more actions in the user's connections list",
+				"$message": "Show more actions in the user's friends list",
 				"$context": ""
 			},
 			"description": {
@@ -3558,13 +3566,13 @@
 		},
 		"cancelFriendRequests": {
 			"name": {
-				"$message": "Cancel outgoing connection requests",
+				"$message": "Cancel outgoing friend requests",
 				"$context": ""
 			}
 		},
 		"confirmRemoveConnection": {
 			"name": {
-				"$message": "Show a confirmation modal before removing a connection"
+				"$message": "Show a confirmation modal before removing a friend"
 			}
 		},
 		"removeFollowers": {
@@ -3625,11 +3633,11 @@
 		},
 		"handleFriendLinks": {
 			"name": {
-				"$message": "Generate and handle one-time use connection links",
+				"$message": "Generate and handle one-time use friend links",
 				"$context": ""
 			},
 			"description": {
-				"$message": "When enabled, allows you to generate one-time connection links for anyone to use to become your connection. This also fixes connection links not correctly adding them as connections on the website.",
+				"$message": "When enabled, allows you to generate one-time friend links for anyone to use to become your friend. This also fixes friend links not correctly adding them as friends on the website.",
 				"$context": ""
 			}
 		},
@@ -4317,7 +4325,7 @@
 			},
 			"showConnectionsInServer": {
 				"name": {
-					"$message": "Show connections in a server"
+					"$message": "Show friends in a server"
 				}
 			},
 			"showServerLikelyBotted": {
@@ -4426,42 +4434,42 @@
 		},
 		"improvedUserFriendsPage": {
 			"name": {
-				"$message": "Improved user connections page",
+				"$message": "Improved user freinds page",
 				"$context": ""
 			},
 			"description": {
-				"$message": "When enabled, replaces the entire user connections page with a version made for and optimized by RoSeal. This allows for much more customization options and features. It may conflict with other extensions.",
+				"$message": "When enabled, replaces the entire user friends page with a version made for and optimized by RoSeal. This allows for much more customization options and features. It may conflict with other extensions.",
 				"$context": ""
 			},
 			"peopleYouMayKnow": {
 				"name": {
-					"$message": "Show people you may know in Connection requests"
+					"$message": "Show people you may know in friend requests"
 				}
 			},
 			"trustedConnectionsTab": {
 				"$context": "",
 				"name": {
-					"$message": "Trusted Connections tab"
+					"$message": "Trusted Friends tab"
 				}
 			},
 			"mutualsTab": {
 				"$context": "",
 				"name": {
-					"$message": "Show mutual connections with other users",
+					"$message": "Show mutual friends with other users",
 					"$context": ""
 				}
 			},
 			"advancedFiltering": {
 				"$context": "",
 				"name": {
-					"$message": "Advanced connection request filtering",
+					"$message": "Advanced friend request filtering",
 					"$context": ""
 				}
 			},
 			"connectionsTypes": {
 				"$context": "",
 				"name": {
-					"$message": "Connections types",
+					"$message": "Friend types",
 					"$context": ""
 				}
 			},
@@ -4509,25 +4517,25 @@
 			"getAccurateFriendDate": {
 				"$context": "",
 				"name": {
-					"$message": "Attempt to get the accurate connection creation date",
+					"$message": "Attempt to get the accurate friend creation date",
 					"$context": ""
 				}
 			},
 			"showFriendRequestSentAt": {
 				"$context": "",
 				"name": {
-					"$message": "Show the date of when connection requests were sent",
+					"$message": "Show the date of when friend requests were sent",
 					"$context": ""
 				}
 			}
 		},
 		"friendsLastSeen": {
 			"name": {
-				"$message": "Last seen date of connections",
+				"$message": "Last seen date of friends",
 				"$context": ""
 			},
 			"description": {
-				"$message": "When enabled, shows the last time a connection was seen online on their user profile page. The extension records last seen online data locally, and does not record while your browser is closed",
+				"$message": "When enabled, shows the last time a friend was seen online on their user profile page. The extension records last seen online data locally, and does not record while your browser is closed",
 				"$context": ""
 			},
 			"backgroundChecks": {
@@ -4536,7 +4544,7 @@
 					"$context": ""
 				},
 				"description": {
-					"$message": "When enabled, the extension will check for connection presence updates in the background. This will also show your presence as online while the browser is open.",
+					"$message": "When enabled, the extension will check for friend presence updates in the background. This will also show your presence as online while the browser is open.",
 					"$context": ""
 				}
 			}
@@ -4863,20 +4871,20 @@
 		},
 		"changeFriendsNav": {
 			"name": {
-				"$message": "Change default connections tab in the left navigation",
+				"$message": "Change default friends tab in the left navigation",
 				"$context": ""
 			},
 			"description": {
-				"$message": "Overrides the tab of your connections list that you will be taken to when going to your connections page in the left navigation.",
+				"$message": "Overrides the tab of your friends list that you will be taken to when going to your friends page in the left navigation.",
 				"$context": ""
 			},
 			"values": {
 				"friend-requests": {
-					"$message": "Connection Requests",
+					"$message": "Friend Requests",
 					"$context": ""
 				},
 				"trusted-friends": {
-					"$message": "Trusted Connections",
+					"$message": "Trusted Friends",
 					"$context": ""
 				},
 				"followers": {
@@ -4884,7 +4892,7 @@
 					"$context": ""
 				},
 				"friends": {
-					"$message": "Connections",
+					"$message": "Friends",
 					"$context": ""
 				},
 				"following": {
@@ -4923,7 +4931,7 @@
 		},
 		"hideFriendsNotificationsCount": {
 			"name": {
-				"$message": "Hide pending connection requests count",
+				"$message": "Hide pending friend requests count",
 				"$context": ""
 			}
 		},
@@ -5489,25 +5497,25 @@
 				"$context": ""
 			},
 			"description": {
-				"$message": "List of fixes applied:\n- Pending, blocked, or moderated thumbnails in most places will now always match your website theme\n- The X button on the prompt for push notifications will be properly visible for your website theme\n- Experience tooltips will no longer overrun outside of the tooltip box\n- The layout of the Included Items list in Bundles will stay more consistent\n- Newlines will work in item descriptions\n- The pagination of the \"Currently Wearing\" section will work consistently on Desktop\n- The border above the Hosted By field on Experience events now has a visible color on Light theme\n- Favorites button is now always right under the thumbnail on item pages\n- Modernizes 3D, 2D, Try-On, Portrait/Avatar switch/Download 3D Avatar buttons\n- Adds padding between the \"Your Privacy Choices\" text and verified symbol\n- Carousel controls for experience media are now more visible after the colors update\n- Connection popovers now have consistent thumbnail size for the currently playing experience",
+				"$message": "List of fixes applied:\n- Pending, blocked, or moderated thumbnails in most places will now always match your website theme\n- The X button on the prompt for push notifications will be properly visible for your website theme\n- Experience tooltips will no longer overrun outside of the tooltip box\n- The layout of the Included Items list in Bundles will stay more consistent\n- Newlines will work in item descriptions\n- The pagination of the \"Currently Wearing\" section will work consistently on Desktop\n- The border above the Hosted By field on Experience events now has a visible color on Light theme\n- Favorites button is now always right under the thumbnail on item pages\n- Modernizes 3D, 2D, Try-On, Portrait/Avatar switch/Download 3D Avatar buttons\n- Adds padding between the \"Your Privacy Choices\" text and verified symbol\n- Carousel controls for experience media are now more visible after the colors update\n- Friend popovers now have consistent thumbnail size for the currently playing experience",
 				"$context": ""
 			}
 		},
 		"improvedConnectionsCarousel": {
 			"name": {
-				"$message": "Improved connections carousel"
+				"$message": "Improved friends carousel"
 			},
 			"description": {
-				"$message": "When enabled, RoSeal overrides Roblox's connections carousel with one that is more performant and can have more features."
+				"$message": "When enabled, RoSeal overrides Roblox's friends carousel with one that is more performant and can have more features."
 			},
 			"showCardUsername": {
 				"name": {
-					"$message": "Show username under display name on connection tiles"
+					"$message": "Show username under display name on friend tiles"
 				}
 			},
 			"autoUpdate": {
 				"name": {
-					"$message": "Automatically update the order of online connections"
+					"$message": "Automatically update the order of online friends"
 				},
 				"values": {
 					"1": {
@@ -5986,7 +5994,7 @@
 		},
 		"profileFetchFixes": {
 			"name": {
-				"$message": "Fix user profiles fetch failing when the user has more than 200 connection online concurrently",
+				"$message": "Fix user profiles fetch failing when the user has more than 200 friends online concurrently",
 				"$context": ""
 			}
 		},
@@ -6246,14 +6254,14 @@
 			"$message": "Created in {experienceName}"
 		},
 		"connectionsOwned": {
-			"$context": "Button to show how many connections own an item",
+			"$context": "Button to show how many friends own an item",
 			"buttonText": {
-				"$message": "{count} {countNum, plural, =1 {Connection owns} other {Connections own}}"
+				"$message": "{count} {countNum, plural, =1 {Friend owns} other {Friends own}}"
 			},
 			"modal": {
 				"$context": "Modal shown when clicked on the owned text",
 				"title": {
-					"$message": "{sealEmoji} {count} {countNum, plural, =1 {Connection} other {Connections}} Who Own This"
+					"$message": "{sealEmoji} {count} {countNum, plural, =1 {Friend} other {Friends}} Who Own This"
 				},
 				"body": {
 					"item": {
@@ -8512,13 +8520,13 @@
 			}
 		},
 		"confirmRemoveConnectionModal": {
-			"$context": "Modal shown when trying to remove a connection in order to confirm that the user actually wants to do that",
+			"$context": "Modal shown when trying to remove a friend in order to confirm that the user actually wants to do that",
 			"title": {
-				"$message": "{sealEmoji} Remove Connection"
+				"$message": "{sealEmoji} Remove Friend"
 			},
 			"body": {
 				"text": {
-					"$message": "Are you sure you want to remove this connection? You will have to mutually agree to become connections again."
+					"$message": "Are you sure you want to remove this friend? You will have to mutually agree to become friends again."
 				},
 				"checkbox": {
 					"$message": "Don't show this again"
@@ -8526,7 +8534,7 @@
 			},
 			"buttons": {
 				"action": {
-					"$message": "Remove Connection"
+					"$message": "Remove Friend"
 				},
 				"neutral": {
 					"$message": "Cancel"
@@ -8607,8 +8615,8 @@
 				"mutuals": {
 					"$message": "{countNum, plural, =1 {Mutual} other {Mutuals}}",
 					"alt": {
-						"$message": "{countNum, plural, =1 {{count} Mutual Connection} other {{count} Mutual Connections}}",
-						"$context": "Mutual connections count"
+						"$message": "{countNum, plural, =1 {{count} Mutual Friend} other {{count} Mutual Friends}}",
+						"$context": "Mutual friends count"
 					},
 					"$context": "Mutuals count"
 				},
@@ -9430,7 +9438,7 @@
 				},
 				"friendsInServer": {
 					"$context": "Connections in server",
-					"$message": "Connections in this server: {friends}"
+					"$message": "Friends in this server: {friends}"
 				},
 				"status": {
 					"$context": "Server status",
@@ -9538,11 +9546,11 @@
 						"$context": "Shutdown server button"
 					},
 					"allowAllConnections": {
-						"$message": "Allow All Connections",
+						"$message": "Allow All Friends",
 						"$context": "Toggle connection joinability button"
 					},
 					"revokeAllConnections": {
-						"$message": "Revoke All Connections",
+						"$message": "Revoke All Friends",
 						"$context": "Toggle connection joinability button"
 					}
 				},
@@ -9635,7 +9643,7 @@
 			"friends": {
 				"$context": "Friends servers section",
 				"title": {
-					"$message": "Servers My Connections Are In",
+					"$message": "Servers My Friends Are In",
 					"$context": "Title of the friends servers section"
 				}
 			},
@@ -9646,7 +9654,7 @@
 					"$context": "Title of the private servers section"
 				},
 				"tooltip": {
-					"$message": "Private servers let you visit this experience privately with connections or people you invite!",
+					"$message": "Private servers let you visit this experience privately with friends or people you invite!",
 					"$context": "Tooltip shown when hovering over the questionmark next to the private servers section title"
 				},
 				"price": {
@@ -9654,7 +9662,7 @@
 					"$context": "Price of the private server"
 				},
 				"playWithOthersText": {
-					"$message": "Visit this experience with connections and other people you invite.",
+					"$message": "Visit this experience with friends and other people you invite.",
 					"$context": "Text shown next to the create private server button"
 				},
 				"freeLimitReached": {
@@ -10891,7 +10899,7 @@
 				"$context": "Title"
 			},
 			"description": {
-				"$message": "You can enable this feature to mostly prevent your avatar from loading anywhere. This works by constantly changing your avatar thumbnail in the background. This may sometimes conflict with Accounts Manager when changing accounts. This only works while the browser is open and RoSeal is enabled.{lineBreak}{lineBreak}If you intend for no one to join you, including connections, please set your Join Privacy to No One in your <privacySettingsLink>Privacy Settings</privacySettingsLink>. It will also stop server snipers from joining your experience.{lineBreak}{lineBreak}Server sniping is the act of bypasing privacy restrictions to find and join someone else's server.",
+				"$message": "You can enable this feature to mostly prevent your avatar from loading anywhere. This works by constantly changing your avatar thumbnail in the background. This may sometimes conflict with Accounts Manager when changing accounts. This only works while the browser is open and RoSeal is enabled.{lineBreak}{lineBreak}If you intend for no one to join you, including friends, please set your Join Privacy to No One in your <privacySettingsLink>Privacy Settings</privacySettingsLink>. It will also stop server snipers from joining your experience.{lineBreak}{lineBreak}Server sniping is the act of bypasing privacy restrictions to find and join someone else's server.",
 				"$context": "Description"
 			}
 		}
@@ -11785,7 +11793,7 @@
 				"status": {
 					"connection": {
 						"$context": "Users are connections",
-						"$message": "You are connections"
+						"$message": "You are friends"
 					},
 					"you": {
 						"$context": "You are this user",
@@ -11961,15 +11969,15 @@
 				},
 				"FriendsFollowingAndFollowers": {
 					"$context": "",
-					"$message": "Connections, following, and followers"
+					"$message": "Friends, following, and followers"
 				},
 				"FriendsAndFollowing": {
 					"$context": "",
-					"$message": "Connections and following"
+					"$message": "Friends and following"
 				},
 				"Friends": {
 					"$context": "",
-					"$message": "Connections"
+					"$message": "Friends"
 				},
 				"NoOne": {
 					"$context": "",
@@ -12045,15 +12053,15 @@
 				},
 				"Followers": {
 					"$context": "",
-					"$message": "Connections, following, and followers"
+					"$message": "Friends, following, and followers"
 				},
 				"Following": {
 					"$context": "",
-					"$message": "Connections and following"
+					"$message": "Friends, and following"
 				},
 				"Friends": {
 					"$context": "",
-					"$message": "Connections"
+					"$message": "Friends"
 				},
 				"NoOne": {
 					"$context": "",
