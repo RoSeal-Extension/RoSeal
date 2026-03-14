@@ -271,6 +271,14 @@ export default function ItemBlockedScreen({
 		blockedItemsKeywordToRegEx.value,
 	]);
 
+	useEffect(() => {
+		setBypassScreen(!blockedType);
+		const parent = ref.current?.parentElement;
+		if (parent?.classList.contains("item-is-blocked") && !blockedType) {
+			parent.classList.remove("item-is-blocked");
+		}
+	}, [blockedType]);
+
 	const [useHoverEffect, setUseHoverEffect] = useState(false);
 	const translationPrefix = useMemo(() => {
 		if (itemType === "Universe") {
