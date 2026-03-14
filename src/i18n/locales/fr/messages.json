@@ -2,9 +2,7 @@
 	"$schema": "../../../../src/types/schemas/i18nFile.json",
 	"manifest": {
 		"$context": "RoSeal extension manifest file",
-		"$types": [
-			"manifest"
-		],
+		"$types": ["manifest"],
 		"name": {
 			"$message": "RoSeal - Expérience Roblox Améliorée",
 			"$context": "The name of the extension as shown in chrome://extensions, or about:addons"
@@ -1380,10 +1378,7 @@
 	},
 	"featurePermissions": {
 		"$context": "Feature permissions",
-		"$types": [
-			"popup",
-			"main"
-		],
+		"$types": ["popup", "main"],
 		"forOrigin": {
 			"$message": "Accès à l'hôte pour {origin}",
 			"$context": "i.e. host access for htxtps://www.roblox.com, this is not used at the moment, but may be used in the future"

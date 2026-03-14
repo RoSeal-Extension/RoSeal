@@ -1,17 +1,17 @@
-import usePromise from "../hooks/usePromise";
-import { getAvatarBundleLink, getAvatarMarketplaceLink } from "src/ts/utils/links";
-import Loading from "../core/Loading";
 import { useEffect } from "preact/hooks";
+import { modifyTitle } from "src/ts/helpers/elements";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { httpClient } from "src/ts/helpers/requests/main";
 import { multigetAvatarItems } from "src/ts/helpers/requests/services/marketplace";
 import { multigetUsersByNames } from "src/ts/helpers/requests/services/users";
-import Thumbnail from "../core/Thumbnail";
-import { modifyTitle } from "src/ts/helpers/elements";
-import AgentMentionContainer from "../core/items/AgentMentionContainer";
 import { getRobloxCDNUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getAvatarBundleLink, getAvatarMarketplaceLink } from "src/ts/utils/links";
 import Button from "../core/Button";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import Page404 from "../core/errors/404";
-import { httpClient } from "src/ts/helpers/requests/main";
+import AgentMentionContainer from "../core/items/AgentMentionContainer";
+import Loading from "../core/Loading";
+import Thumbnail from "../core/Thumbnail";
+import usePromise from "../hooks/usePromise";
 
 export type HiddenAvatarBundleContainerProps = {
 	bundleId: number;
@@ -24,7 +24,7 @@ export default function HiddenAvatarBundleContainer({
 		return httpClient
 			.httpRequest<Document>({
 				url: getAvatarBundleLink(bundleId),
-				expect: "dom",
+				expect: { type: "dom" },
 				credentials: {
 					type: "cookies",
 					value: false,

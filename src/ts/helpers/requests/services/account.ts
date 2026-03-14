@@ -1,7 +1,7 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { httpClient, RESTError } from "../main.ts";
 import type { Agent } from "./assets.ts";
 import type { AnyItemType } from "./marketplace.ts";
-import { httpClient, RESTError } from "../main.ts";
 
 export type GetPublicRolesResponse = {
 	roles: string[];
@@ -760,7 +760,7 @@ export async function logout() {
 	await httpClient.httpRequest({
 		method: "POST",
 		url: getRobloxUrl("auth", "/v1/logout"),
-		expect: "none",
+		expect: { type: "none" },
 		credentials: {
 			type: "cookies",
 			value: true,
@@ -894,7 +894,7 @@ export async function updateUserSettings(request: UpdateUserSettingsRequest) {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 		errorHandling: "BEDEV2",
 	});
 }
@@ -965,7 +965,7 @@ export async function userHeartbeatPulse(request: HeartbeatPulseRequest) {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 		errorHandling: "BEDEV2",
 	});
 }
@@ -1071,7 +1071,7 @@ export async function deleteAPIKey(data: DeleteAPIKeyRequest): Promise<void> {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 		errorHandling: "BEDEV2",
 	});
 }
@@ -1088,7 +1088,7 @@ export async function updateAPIKey(data: UpdateAPIKeyRequest): Promise<void> {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 		errorHandling: "BEDEV2",
 	});
 }
@@ -1149,7 +1149,7 @@ export async function updateSelectedTestPilotProgram(
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 

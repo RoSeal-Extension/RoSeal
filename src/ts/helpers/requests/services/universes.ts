@@ -1,3 +1,4 @@
+import type { HTTPRequestCredentials } from "@roseal/http-client";
 import type { PlatformType } from "scripts/build/constants";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../cache";
@@ -5,7 +6,6 @@ import { httpClient } from "../main";
 import type { Agent } from "./assets";
 import type { AvatarScales } from "./avatar";
 import type { SortOrder } from "./badges";
-import type { HTTPRequestCredentials } from "@roseal/http-client";
 import type { UniversePassDetails } from "./passes";
 
 export type MultigetUniversesPlayabilityStatusesRequest = {
@@ -1159,7 +1159,7 @@ export async function shutdownExperienceServer(request: ShutdownExperienceServer
 			value: true,
 		},
 		errorHandling: "BEDEV2",
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 

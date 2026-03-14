@@ -1,7 +1,7 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getOrSetCache } from "../../cache.ts";
 import { httpClient } from "../main.ts";
 import type { SuccessResponse } from "./misc.ts";
-import { getOrSetCache } from "../../cache.ts";
 
 export type VoiceChatBan = {
 	Seconds: number;
@@ -45,10 +45,10 @@ export type GetUniverseVoiceSettingsRequest = {
 };
 
 export type GetUniverseVoiceSettingsResponse = {
-    isUniverseEnabledForVoice: boolean;
-    isUniverseEnabledForAvatarVideo: boolean;
-    isChatGroupsApiEnabled: boolean;
-}
+	isUniverseEnabledForVoice: boolean;
+	isUniverseEnabledForAvatarVideo: boolean;
+	isChatGroupsApiEnabled: boolean;
+};
 
 export async function getUserVoiceSettings(): Promise<GetUserVoiceSettingsResponse> {
 	return getOrSetCache({
@@ -107,7 +107,7 @@ export async function setUserVoiceOptInStatus(request: UserVoiceOptInStatus): Pr
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -123,7 +123,7 @@ export async function setUserAvatarChatOptInStatus(request: UserVoiceOptInStatus
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 

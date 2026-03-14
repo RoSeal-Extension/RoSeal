@@ -40,7 +40,9 @@ export function getAssetDependencies(assetId: number, versionNumber?: number) {
 					return httpClient
 						.httpRequest<string>({
 							url: requestData.locations[0].location,
-							expect: "text",
+							expect: {
+								type: "text",
+							},
 							bypassCORS: import.meta.env.TARGET_BASE === "firefox",
 						})
 						.then(({ body }) => {

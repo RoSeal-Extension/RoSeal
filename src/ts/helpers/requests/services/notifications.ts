@@ -579,7 +579,7 @@ export async function sendExperienceInviteNotification(
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 		errorHandling: "BEDEV2",
 	});
 }

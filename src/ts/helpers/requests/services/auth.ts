@@ -34,7 +34,7 @@ export async function generateAuthenticationTicket(
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 
 	return {
@@ -66,7 +66,7 @@ export async function updateClientStatus(request: ClientStatusRequest) {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 

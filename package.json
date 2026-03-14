@@ -23,7 +23,7 @@
 		"@phosphor-icons/react": "2.1.10",
 		"@preact/compat": "17.1.2",
 		"@preact/signals": "2.8.2",
-		"@roseal/http-client": "github:RoSeal-Extension/HTTPClient#0.1.17",
+		"@roseal/http-client": "github:RoSeal-Extension/HTTPClient#0.2.0",
 		"@types/d3-drag": "3.0.7",
 		"@types/react-simple-maps": "3.0.6",
 		"@types/tinycolor2": "1.4.6",
@@ -47,7 +47,7 @@
 		"is-emoji-supported": "0.0.5",
 		"json-bigint-native": "1.2.0",
 		"localforage": "1.10.0",
-		"parse-roblox-errors": "1.1.12",
+		"parse-roblox-errors": "1.1.13",
 		"preact": "10.29.0",
 		"pretty-bytes": "7.1.0",
 		"react": "npm:@preact/compat@17.1.2",
@@ -68,7 +68,7 @@
 		"zod": "4.3.6"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.6",
+		"@biomejs/biome": "2.4.7",
 		"@formatjs/icu-messageformat-parser": "3.5.1",
 		"@total-typescript/ts-reset": "0.6.1",
 		"@types/angular": "1.8.9",

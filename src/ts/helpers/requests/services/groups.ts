@@ -1,8 +1,8 @@
+import type { HTTPRequestCredentials } from "@roseal/http-client";
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../cache.ts";
 import { httpClient } from "../main.ts";
 import type { SortOrder } from "./badges.ts";
-import type { HTTPRequestCredentials } from "@roseal/http-client";
 
 export type GroupV2Owner = {
 	id: number;
@@ -394,7 +394,7 @@ export async function setGroupNotificationSetting({
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -460,7 +460,7 @@ export async function deleteUserGroupMembership(
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 

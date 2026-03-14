@@ -1,10 +1,10 @@
 import type { GeographiesProps } from "react-simple-maps";
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { getAvatarAssetLink } from "src/ts/utils/links";
+import { chunk } from "src/ts/utils/objects";
 import { httpClient } from "../main";
 import type { MarketplaceItemType } from "./marketplace";
 import type { OmniLayoutData, OmniTreatmentType, OmniUniverseLayoutData } from "./universes";
-import { chunk } from "src/ts/utils/objects";
 
 export type SearchPageType = "discover" | "home" | "all";
 
@@ -699,7 +699,7 @@ export async function getUserProfileDocument(): Promise<Document> {
 				type: "cookies",
 				value: true,
 			},
-			expect: "dom",
+			expect: { type: "dom" },
 		})
 	).body;
 }
@@ -712,7 +712,7 @@ export async function getHomePageDocument(): Promise<Document> {
 				type: "cookies",
 				value: true,
 			},
-			expect: "dom",
+			expect: { type: "dom" },
 		})
 	).body;
 }
@@ -759,7 +759,7 @@ export async function getAvatarItemPageData({
 				type: "cookies",
 				value: true,
 			},
-			expect: "dom",
+			expect: { type: "dom" },
 		})
 	).body;
 }

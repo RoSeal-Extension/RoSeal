@@ -28,7 +28,9 @@ function IconsReference() {
 			httpClient
 				.httpRequest<string>({
 					url: style.href,
-					expect: "text",
+					expect: {
+						type: "text",
+					},
 				})
 				.then((res) => {
 					const rules = rulesForCSSText(res.body);

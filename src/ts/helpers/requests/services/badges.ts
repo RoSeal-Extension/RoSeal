@@ -160,6 +160,6 @@ export async function deleteBadgeFromInventory({ badgeId }: DeleteBadgeFromInven
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }

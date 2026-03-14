@@ -1,6 +1,6 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
-import { httpClient, ROBLOX_PLACE_ID_HEADER_NAME } from "../main";
 import { getOrSetCache } from "../../cache";
+import { httpClient, ROBLOX_PLACE_ID_HEADER_NAME } from "../main";
 
 export type GetUserCurrentlyWearingRequest = {
 	userId: number;
@@ -460,7 +460,7 @@ export async function setBodyColors(request: AvatarColors3s) {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -476,7 +476,7 @@ export async function updateOutfit({ outfitId, ...request }: UpdateOutfitRequest
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -492,7 +492,7 @@ export async function createOutfit(request: PartialOutfitRequest) {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -516,7 +516,7 @@ export async function deleteOutfit({ outfitId }: GetOutfitByIdRequest) {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -553,7 +553,7 @@ export async function setAvatarType({ playerAvatarType }: SetAvatarTypeRequest) 
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -569,7 +569,7 @@ export async function setScales(request: AvatarScales) {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -586,7 +586,7 @@ export async function setThumbnailCustomization(request: ThumbnailCustomization)
 			value: true,
 		},
 		retries: import.meta.env.ENV === "background" ? 0 : undefined,
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -648,7 +648,7 @@ export async function redrawUserThumbnail() {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 

@@ -25,7 +25,9 @@ export default function TacoButton({ audioAssetId }: TacoButtonProps) {
 					const buffer = (
 						await httpClient.httpRequest<ArrayBuffer>({
 							url: location,
-							expect: "arrayBuffer",
+							expect: {
+								type: "arrayBuffer",
+							},
 						})
 					).body;
 					const blob = new Blob([buffer], { type: "audio/wav" });

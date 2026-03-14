@@ -229,7 +229,9 @@ export default function ItemUpdatedCreated({
 							return httpClient
 								.httpRequest({
 									url: getHashUrl(hash),
-									expect: "none",
+									expect: {
+										type: "none",
+									},
 									bypassCORS: true,
 								})
 								.then((data) => {

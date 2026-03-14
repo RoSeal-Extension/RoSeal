@@ -54,7 +54,9 @@ export async function getUser3dThumbnailDownloadData(userId: number) {
 					httpClient
 						.httpRequest<ArrayBuffer>({
 							url: file.url,
-							expect: "arrayBuffer",
+							expect: {
+								type: "arrayBuffer",
+							},
 						})
 						.then((data) => ({
 							name: file.name,

@@ -1,3 +1,4 @@
+import type { HTTPRequestCredentials } from "@roseal/http-client";
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getOrSetCache } from "../../cache.ts";
 import { httpClient } from "../main.ts";
@@ -5,7 +6,6 @@ import type { Agent } from "./assets.ts";
 import type { SortOrder } from "./badges.ts";
 import type { AssetFavoritesRequest } from "./favorites.ts";
 import type { AvatarBundleType } from "./marketplace.ts";
-import type { HTTPRequestCredentials } from "@roseal/http-client";
 
 export type InventoryItemType = "Asset" | "Bundle" | "Badge" | "GamePass";
 
@@ -326,7 +326,7 @@ export async function addItemToCollection({ itemType, itemId }: CollectionReques
 	await httpClient.httpRequest<void>({
 		method: "POST",
 		url: `${getRobloxUrl("inventory")}/v1/collections/items/${itemType}/${itemId}`,
-		expect: "none",
+		expect: { type: "none" },
 		credentials: {
 			type: "cookies",
 			value: true,
@@ -341,7 +341,7 @@ export async function removeItemFromCollection({
 	await httpClient.httpRequest<void>({
 		method: "DELETE",
 		url: `${getRobloxUrl("inventory")}/v1/collections/items/${itemType}/${itemId}`,
-		expect: "none",
+		expect: { type: "none" },
 		credentials: {
 			type: "cookies",
 			value: true,
@@ -357,7 +357,7 @@ export async function deleteAssetFromInventory({ assetId }: AssetFavoritesReques
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -492,7 +492,7 @@ export async function deletePassFromInventory({ passId }: DeletePassFromInventor
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 		errorHandling: "BEDEV2",
 	});
 }

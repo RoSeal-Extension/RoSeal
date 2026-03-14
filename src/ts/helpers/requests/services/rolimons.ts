@@ -22,7 +22,7 @@ export async function getRolimonsUpvoteRatio({ placeId, days }: GetRolimonsUpvot
 	const document = (
 		await httpClient.httpRequest<Document>({
 			url: `${getRolimonsUrl("www")}/game/${placeId}`,
-			expect: "dom",
+			expect: { type: "dom" },
 			bypassCORS: true,
 		})
 	).body;
@@ -34,7 +34,7 @@ export async function getRolimonsUpvoteRatio({ placeId, days }: GetRolimonsUpvot
 		const match = content.match(/({.+})/)?.[1];
 		if (!match) continue;
 
-		const data: InternalRolimonsData = JSON.parse(match);
+		const data = JSON.parse(match) as InternalRolimonsData;
 
 		const endTime = Date.now();
 		const startTime = subHours(endTime, days).getTime();

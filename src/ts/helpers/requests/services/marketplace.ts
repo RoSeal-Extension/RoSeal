@@ -1669,7 +1669,7 @@ export async function postSponsoredItemClick(request: PostSponsoredItemClickRequ
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -1745,7 +1745,7 @@ export async function deleteUserLook({ lookId }: DeleteUserLookRequest) {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 		errorHandling: "BEDEV2",
 	});
 }

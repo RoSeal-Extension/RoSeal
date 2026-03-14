@@ -1,9 +1,9 @@
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getExperienceLink } from "src/ts/utils/links.ts";
+import { getOrSetCache } from "../../cache.ts";
 import { httpClient } from "../main.ts";
 import type { SortOrder } from "./badges.ts";
 import type { PlaceServer } from "./places.ts";
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
-import { getOrSetCache } from "../../cache.ts";
 
 export type GetPrivateServerStatusByCodeRequest = {
 	placeId: number;
@@ -170,7 +170,7 @@ export async function getPrivateServerStatusByCode({
 				type: "cookies",
 				value: true,
 			},
-			expect: "dom",
+			expect: { type: "dom" },
 		})
 	).body;
 

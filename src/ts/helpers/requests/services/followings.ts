@@ -55,7 +55,7 @@ export async function removeUserUniverseFollowing({
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -70,7 +70,7 @@ export async function addUserUniverseFollowing({
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 

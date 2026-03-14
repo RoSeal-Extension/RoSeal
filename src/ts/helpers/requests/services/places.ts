@@ -139,7 +139,9 @@ export async function getPlaceVotesRaw({ placeId }: GetPlaceVotesRequest) {
 				type: "cookies",
 				value: true,
 			},
-			expect: "text",
+			expect: {
+				type: "text",
+			},
 		})
 	).body;
 

@@ -1,3 +1,4 @@
+import type { HTTPRequestCredentials } from "@roseal/http-client";
 import type {
 	UserPresenceLocationType,
 	UserPresenceType,
@@ -8,7 +9,6 @@ import { getOrSetCache, getOrSetCaches } from "../../../helpers/cache.ts";
 import { renderGenericChallenge } from "../../domInvokes.ts";
 import { httpClient } from "../main.ts";
 import type { SortOrder } from "./badges.ts";
-import type { HTTPRequestCredentials } from "@roseal/http-client";
 
 export type GetUserByIdRequest = {
 	userId: number;
@@ -669,7 +669,7 @@ export async function blockUser({ userId }: BlockUserRequest): Promise<void> {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 		errorHandling: "BEDEV2",
 	});
 }
@@ -762,7 +762,7 @@ export async function unblockUser({ userId }: BlockUserRequest): Promise<void> {
 			value: true,
 		},
 		errorHandling: "BEDEV2",
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -801,7 +801,7 @@ export async function unfriendUser({ userId }: UnfriendUserRequest): Promise<voi
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -813,7 +813,7 @@ export async function removeTrustedFriend({ userId }: UnfriendUserRequest): Prom
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -832,7 +832,7 @@ export async function acceptFriendRequestWithToken({
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -844,7 +844,7 @@ export async function followUser({ userId }: UnfollowUserRequest): Promise<void>
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 		handleChallenge: renderGenericChallenge,
 	});
 }
@@ -857,7 +857,7 @@ export async function unfollowUser({ userId }: UnfollowUserRequest): Promise<voi
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -1322,7 +1322,7 @@ export async function declineAllMyNewFriendRequests() {
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -1347,7 +1347,7 @@ export async function declineUserFriendRequest({ userId }: AcceptUserFriendReque
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -1359,7 +1359,7 @@ export async function ignoreUserTrustedFriendRequest({ userId }: AcceptUserFrien
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -1371,7 +1371,7 @@ export async function acceptUserFriendRequest({ userId }: AcceptUserFriendReques
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -1383,7 +1383,7 @@ export async function acceptUserTrustedFriendRequest({ userId }: AcceptUserFrien
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 	});
 }
 
@@ -1477,7 +1477,7 @@ export async function updateProfileCustomization(request: UpdateProfileCustomiza
 			type: "cookies",
 			value: true,
 		},
-		expect: "none",
+		expect: { type: "none" },
 		errorHandling: "BEDEV2",
 	});
 }
@@ -1509,7 +1509,7 @@ export async function updateInExperienceProfileSettings(
 			type: "json",
 			value: request,
 		},
-		expect: "none",
+		expect: { type: "none" },
 		errorHandling: "BEDEV2",
 	});
 }

@@ -29,7 +29,9 @@ export async function getRoSealNotificationIcon(request: ThumbnailRequest) {
 			const body = (
 				await httpClient.httpRequest<ArrayBuffer>({
 					url: thumbnail.imageUrl,
-					expect: "arrayBuffer",
+					expect: {
+						type: "arrayBuffer",
+					},
 				})
 			).body;
 
