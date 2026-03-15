@@ -7168,6 +7168,10 @@
 			"createEvent": {
 				"$message": "Create Event",
 				"$context": "Create Event button if the user is the owner/can manage events for the group"
+			},
+			"viewCoverPhotoAsset": {
+				"$message": "View Cover Photo Asset",
+				"$context": "Button to view the community's cover photo asset"
 			}
 		},
 		"created2": {

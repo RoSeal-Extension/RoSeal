@@ -21,6 +21,7 @@ import {
 import { renderAppendBody } from "src/ts/utils/render.ts";
 import { LocalizedMetadataModal } from "./localeMetadata/Modal.tsx";
 import { getCreatorStoreAssetLink } from "src/ts/utils/links.ts";
+import { getProfileComponentsData } from "src/ts/helpers/requests/services/misc.ts";
 
 export type ViewIconAssetProps = {
 	itemId: number;
@@ -158,12 +159,36 @@ export default function ViewIconAssetButton({
 		}
 	}, [itemId, itemType, viewIntlMediaEnabled]);
 
+	const [communityCoverPhotoId] = usePromise(() => {
+		if (itemType !== "Group") return;
+
+		return getProfileComponentsData({
+			profileType: "Community",
+			profileId: itemId.toString(),
+			components: [
+				{
+					component: "CoverPhoto",
+				},
+			],
+		}).then((data) => data.components.CoverPhoto?.coverPhotoId);
+	}, [itemId, itemType]);
+
 	return (
 		<>
 			{!!iconAssetId && (
 				<li id="view-icon-asset-li" className="roseal-menu-item">
 					<a id="view-icon-asset-btn" href={getCreatorStoreAssetLink(iconAssetId)}>
 						{getMessage("item.contextMenu.viewIconAsset")}
+					</a>
+				</li>
+			)}
+			{!!communityCoverPhotoId && (
+				<li id="view-cover-photo-asset-li" className="roseal-menu-item">
+					<a
+						id="view-icon-asset-btn"
+						href={getCreatorStoreAssetLink(communityCoverPhotoId)}
+					>
+						{getMessage("group.contextMenu.viewCoverPhotoAsset")}
 					</a>
 				</li>
 			)}
