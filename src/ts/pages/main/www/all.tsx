@@ -1297,7 +1297,8 @@ export default {
 
 							if (!card) return;
 
-							if (el.closest(".profile-currently-wearing")) return;
+							if (el.closest(".profile-currently-wearing, #avatar-react-container"))
+								return;
 
 							const creatorLink =
 								card.querySelector<HTMLAnchorElement>("a.creator-name")?.href;
