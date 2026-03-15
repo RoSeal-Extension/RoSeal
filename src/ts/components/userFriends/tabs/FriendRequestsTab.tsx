@@ -184,7 +184,7 @@ export default function FriendRequestsTab({
 		paging: {
 			method: "pagination",
 			itemsPerPage: pageSize || 18,
-			immediatelyLoadAllData: filters.sortBy !== "default",
+			immediatelyLoadAllData: filters.sortBy !== "default" || sortOrder === "Asc",
 		},
 		items: {
 			shouldAlwaysUpdate: true,
@@ -258,29 +258,33 @@ export default function FriendRequestsTab({
 					return transformedData;
 				}),
 			sortItems:
-				advancedFilteringEnabled && filters.sortBy !== "default"
+				advancedFilteringEnabled && (filters.sortBy !== "default" || sortOrder === "Asc")
 					? (arr) =>
-							crossSort(arr, (a, b) => {
-								const direction = sortOrder === "Desc" ? -1 : 1;
+							filters.sortBy === "default" && sortOrder === "Asc"
+								? arr.reverse()
+								: crossSort(arr, (a, b) => {
+										const direction = sortOrder === "Desc" ? -1 : 1;
 
-								switch (filters.sortBy) {
-									case "sentDate": {
-										return (
-											(new Date(a.friendRequest?.sentAt ?? 0).getTime() >
-											new Date(b.friendRequest?.sentAt ?? 0).getTime()
-												? 1
-												: -1) * direction
-										);
-									}
-									case "joinedDate": {
-										return (
-											((a.components?.joinedDate ?? 0) >
-											(b.components?.joinedDate ?? 0)
-												? 1
-												: -1) * direction
-										);
-									}
-									/*
+										switch (filters.sortBy) {
+											case "sentDate": {
+												return (
+													(new Date(
+														a.friendRequest?.sentAt ?? 0,
+													).getTime() >
+													new Date(b.friendRequest?.sentAt ?? 0).getTime()
+														? 1
+														: -1) * direction
+												);
+											}
+											case "joinedDate": {
+												return (
+													((a.components?.joinedDate ?? 0) >
+													(b.components?.joinedDate ?? 0)
+														? 1
+														: -1) * direction
+												);
+											}
+											/*
 									case "mutualCommunitiesCount": {
 										return (
 											((a.components?.mutualCommunitiesCount ?? 0) >
@@ -289,44 +293,44 @@ export default function FriendRequestsTab({
 												: -1) * direction
 										);
 									}*/
-									case "mutualConnectionsCount": {
-										return (
-											((a.mutualFriendsList.length ?? 0) >
-											(b.mutualFriendsList.length ?? 0)
-												? 1
-												: -1) * direction
-										);
-									}
-									case "connectionsCount": {
-										return (
-											((a.components?.connectionsCount ?? 0) >
-											(b.components?.connectionsCount ?? 0)
-												? 1
-												: -1) * direction
-										);
-									}
-									case "followingsCount": {
-										return (
-											((a.components?.followingsCount ?? 0) >
-											(b.components?.followingsCount ?? 0)
-												? 1
-												: -1) * direction
-										);
-									}
-									case "followersCount": {
-										return (
-											((a.components?.followersCount ?? 0) >
-											(b.components?.followersCount ?? 0)
-												? 1
-												: -1) * direction
-										);
-									}
-									// not implmented
-									default: {
-										return 0;
-									}
-								}
-							})
+											case "mutualConnectionsCount": {
+												return (
+													((a.mutualFriendsList.length ?? 0) >
+													(b.mutualFriendsList.length ?? 0)
+														? 1
+														: -1) * direction
+												);
+											}
+											case "connectionsCount": {
+												return (
+													((a.components?.connectionsCount ?? 0) >
+													(b.components?.connectionsCount ?? 0)
+														? 1
+														: -1) * direction
+												);
+											}
+											case "followingsCount": {
+												return (
+													((a.components?.followingsCount ?? 0) >
+													(b.components?.followingsCount ?? 0)
+														? 1
+														: -1) * direction
+												);
+											}
+											case "followersCount": {
+												return (
+													((a.components?.followersCount ?? 0) >
+													(b.components?.followersCount ?? 0)
+														? 1
+														: -1) * direction
+												);
+											}
+											// not implmented
+											default: {
+												return 0;
+											}
+										}
+									})
 					: undefined,
 			filterItem: advancedFilteringEnabled
 				? (item) => {
@@ -386,7 +390,6 @@ export default function FriendRequestsTab({
 			listMyFriendRequests({
 				limit: 100,
 				cursor: pageData.nextCursor,
-				sortOrder,
 			}).then((data) => {
 				return {
 					...pageData,
@@ -396,7 +399,7 @@ export default function FriendRequestsTab({
 				};
 			}),
 		dependencies: {
-			reset: [userId, sortOrder],
+			reset: [userId],
 			refreshToFirstPage: [
 				advancedFilteringEnabled,
 				filters,
@@ -487,7 +490,11 @@ export default function FriendRequestsTab({
 					refreshFriendRequestsCount();
 				}}
 				sortOrder={sortOrder}
-				setSortOrder={hasAnyItems || shouldBeDisabled ? setSortOrder : undefined}
+				setSortOrder={
+					hasAnyItems || shouldBeDisabled || filters.sortBy !== "default"
+						? setSortOrder
+						: undefined
+				}
 			>
 				{friendRequestsCount !== 0 && advancedFilteringEnabled && (
 					<>

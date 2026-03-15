@@ -464,7 +464,6 @@ export type GetUserFriendsFollowersCountResponse = {
 export type ListMyFriendRequestsRequest = {
 	limit?: number;
 	cursor?: string;
-	sortOrder?: SortOrder;
 };
 
 export type FriendRequestOriginType =
