@@ -76,7 +76,7 @@ export default {
 			if (req.url.includes("/my/settings/json")) {
 				return new Response(
 					JSON.stringify({
-						...(await res?.clone().json()),
+						...((await res?.clone().json()) as object),
 						RobuxRemainingForUsernameChange: 0,
 					}),
 					res,

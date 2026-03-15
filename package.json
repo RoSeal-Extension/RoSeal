@@ -19,6 +19,7 @@
 		"@formatjs/intl-durationformat": "0.10.1",
 		"@material-symbols/svg-400": "0.40.2",
 		"@material-symbols/svg-600": "0.40.2",
+		"@microsoft/signalr": "10.0.0",
 		"@minoru/react-dnd-treeview": "3.5.3",
 		"@phosphor-icons/react": "2.1.10",
 		"@preact/compat": "17.1.2",

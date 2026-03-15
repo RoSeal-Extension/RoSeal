@@ -991,7 +991,7 @@
 					"$context": "Tab title for friends tab with the number of friends"
 				},
 				"tooltip": {
-					"$message": "Friends are established when two Roblox users mutually agree to add eachother.",
+					"$message": "Friends are established when two Roblox users mutually agree to become friends.",
 					"$context": "Tooltip text for the Connections tab"
 				}
 			},
