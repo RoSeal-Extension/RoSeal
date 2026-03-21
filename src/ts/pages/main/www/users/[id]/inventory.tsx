@@ -203,7 +203,7 @@ export default {
 						cardToBadgeId.set(card, badgeId);
 					}
 
-					if (!badgeIds.length) return;
+					if (!badgeIds.length) return cardToBadgeId.clear();
 
 					const data = await multigetBadgesAwardedDates({
 						userId: targetUserId,
@@ -219,7 +219,7 @@ export default {
 						const thumbContainer = card.querySelector<HTMLDivElement>(
 							".item-card-thumb-container",
 						);
-						if (!thumbContainer) return;
+						if (!thumbContainer) continue;
 
 						getFeatureValue("viewInventoryItemObtainedDate.showOnHover").then(
 							(value) => {
@@ -238,6 +238,8 @@ export default {
 							},
 						);
 					}
+
+					cardToBadgeId.clear();
 				},
 			);
 

@@ -7,7 +7,6 @@ import {
 } from "src/ts/helpers/requests/services/universes";
 import {
 	listUserFriends,
-	multigetUsersAreTrustedFriends,
 	type SkinnyUserFriend,
 	type UserPresence,
 } from "src/ts/helpers/requests/services/users";
@@ -55,14 +54,13 @@ export default function TrustedFriendsTab({ userId, onlineFriends }: TrustedFrie
 			return listUserFriends({
 				userId,
 				limit: 50,
+				findFriendsType: 1,
+				userSort: "Created",
 				cursor: pageData.nextCursor,
-			}).then(async (data) => {
+			}).then((data) => {
 				return {
 					...pageData,
-					items: await multigetUsersAreTrustedFriends({
-						targetUserId: userId,
-						userIds: data.pageItems.map((item) => item.id),
-					}),
+					items: data.pageItems,
 					nextCursor: data.nextCursor || undefined,
 					hasNextPage: !!data.nextCursor,
 				};

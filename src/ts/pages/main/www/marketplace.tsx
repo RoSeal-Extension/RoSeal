@@ -180,13 +180,14 @@ export default {
 					};
 				};
 
+				const imageCache = new Map<string, [number, number, number][]>();
+
 				parseUrl();
 				globalThis.addEventListener("popstate", parseUrl);
 				checks.push(() => {
+					imageCache.clear();
 					globalThis.removeEventListener("popstate", parseUrl);
 				});
-
-				const imageCache = new Map<string, [number, number, number][]>();
 
 				const onImgLoad = (img: HTMLImageElement, card: HTMLLIElement) => {
 					let imgColor: [number, number, number][] | undefined;

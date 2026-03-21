@@ -173,7 +173,7 @@ export default {
 						games: data.relatedGames,
 					},
 					votingService: `
-<li id="voting-section" class="voting-panel body" data-target-id="${placeId}" data-total-up-votes="${data.totalUpVotes}" data-total-down-votes="${data.totalDownVotes}" data-vote-modal="" data-user-authenticated="${(await authenticatedUser) ? "true" : "false"}" data-vote-url="${getRobloxUrl("apis")}/voting-api/vote/asset/${placeId}?vote=" data-register-url="" data-account-page-url="">
+<li id="voting-section" class="voting-panel body" data-target-id="${placeId}" data-total-up-votes="${data.totalUpVotes}" data-total-down-votes="${data.totalDownVotes}" data-vote-modal="" data-user-authenticated="${(await authenticatedUser) ? "true" : "false"}" data-vote-url="https://${getRobloxUrl("apis")}/voting-api/vote/asset/${placeId}?vote=" data-register-url="" data-account-page-url="">
   <div class="spinner spinner-sm loading"></div>
   <div class="vote-summary">
     <div class="voting-details">

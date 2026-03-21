@@ -54,7 +54,7 @@ export default function usePromise<
 						if (increment.value !== curIncrement) {
 							return;
 						}
-						setState([null, true, error ?? null]);
+						setState([null, true, (error ?? null) as U]);
 					} catch {}
 				});
 		} else setState([result as Awaited<ReturnType<T>>, true, undefined]);

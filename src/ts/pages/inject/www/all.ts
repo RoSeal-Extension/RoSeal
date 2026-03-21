@@ -963,6 +963,8 @@ export default {
 								}
 							}
 
+							userIdToDataMapping.clear();
+
 							return new Response(JSON.stringify(data), res);
 						});
 					}

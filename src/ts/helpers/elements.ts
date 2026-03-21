@@ -127,6 +127,14 @@ if (import.meta.env.ENV !== "background") {
 				}
 			}
 		}
+
+		for (const item of collectedNodes) {
+			item[1].clear();
+		}
+		collectedNodes.clear();
+		for (const item of removedNodes) {
+			item[1].clear();
+		}
 	});
 
 	observer.observe(document, {
