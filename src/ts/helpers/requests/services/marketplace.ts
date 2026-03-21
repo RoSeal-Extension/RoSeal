@@ -840,31 +840,6 @@ export type SearchItemsDetailsResponse<T extends MarketplaceItemType> = {
 	data: AvatarItemDetail<T>[];
 };
 
-export type GetMarketplaceItemTagsRequest = {
-	itemIds: (`AssetId:${number}` | `BundleId:${number}`)[];
-};
-
-export type MarketplaceItemTagDetail = {
-	tagId: string;
-	name: string;
-	localizedDisplayName: string;
-	status: "Success" | "Failure";
-};
-
-export type MarketplaceItemTag = {
-	id: string;
-	tag: MarketplaceItemTagDetail;
-};
-
-export type MarketplaceItemWithTags = {
-	id: number;
-	itemTags: MarketplaceItemTag[];
-};
-
-export type GetMarketplaceItemTagsResponse = {
-	data: MarketplaceItemWithTags[];
-};
-
 export type GetCollectibleResaleDataRequest = {
 	collectibleItemId: string;
 };
@@ -1636,19 +1611,6 @@ export async function getItemConfigurationMetadata() {
 		await httpClient.httpRequest<GetItemConfigurationMetadataResponse>({
 			url: getRobloxUrl("itemconfiguration", "/v1/metadata"),
 			// Do not camelize.
-			credentials: {
-				type: "cookies",
-				value: true,
-			},
-		})
-	).body;
-}
-
-export async function getMarketplaceItemTags(request: GetMarketplaceItemTagsRequest) {
-	return (
-		await httpClient.httpRequest<GetMarketplaceItemTagsResponse>({
-			url: getRobloxUrl("itemconfiguration", "/v1/item-tags"),
-			search: request,
 			credentials: {
 				type: "cookies",
 				value: true,

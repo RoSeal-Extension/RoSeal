@@ -7,7 +7,6 @@ import BundleRecolorableField from "src/ts/components/avatarItem/BundleRecolorab
 import ItemCreatedExperience from "src/ts/components/avatarItem/CreatedExperience";
 import ItemBundles from "src/ts/components/avatarItem/ItemBundles";
 import AvatarItemOwnedPopover from "src/ts/components/avatarItem/ItemOwnedPopover";
-import ItemTags from "src/ts/components/avatarItem/ItemTags";
 import AddToAvatarListButton from "src/ts/components/avatarItem/lists/AddToListButton";
 import PriceInfo from "src/ts/components/avatarItem/PriceInfo";
 import AvatarItemResellerOwned from "src/ts/components/avatarItem/resellers/ItemOwned";
@@ -884,16 +883,6 @@ export default {
 							<></>
 						),
 					-2,
-				),
-			),
-		);
-
-		checks.push(
-			featureValueIs("viewAvatarItemTags", true, () =>
-				modifyItemStats(
-					"Item",
-					() => <ItemTags itemType={itemType.value} itemId={itemId.value} />,
-					-1,
 				),
 			),
 		);

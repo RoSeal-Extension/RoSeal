@@ -33,7 +33,6 @@ import AssetDependenciesList from "../avatarItem/DependenciesList.tsx";
 import FavoriteItemButton from "../avatarItem/FavoriteButton.tsx";
 import ItemBundles from "../avatarItem/ItemBundles.tsx";
 import AvatarItemOwnedPopover from "../avatarItem/ItemOwnedPopover.tsx";
-import ItemTags from "../avatarItem/ItemTags.tsx";
 import PriceInfo from "../avatarItem/PriceInfo.tsx";
 import SearchByCreatorButton from "../avatarItem/SearchByCreatorButton.tsx";
 import Button from "../core/Button.tsx";
@@ -79,7 +78,6 @@ export default function AvatarAssetContainer({ assetId }: AvatarAssetContainerPr
 	const [showAssetDependenciesEnabled] = useFeatureValue("viewAvatarAssetDependencies", false);
 	const [copyShareLinksEnabled] = useFeatureValue("copyShareLinks", false);
 	const [blockedItemsEnabled] = useFeatureValue("blockedItems", false);
-	const [viewItemTagsEnabled] = useFeatureValue("viewAvatarItemTags", false);
 	const [viewObtainedDatesPopoverEnabled] = useFeatureValue(
 		"viewInventoryItemObtainedDate",
 		false,
@@ -744,9 +742,6 @@ export default function AvatarAssetContainer({ assetId }: AvatarAssetContainerPr
 														{assetTypeDisplayName}
 													</div>
 												</ItemField>
-												{viewItemTagsEnabled && (
-													<ItemTags itemType="Asset" itemId={assetId} />
-												)}
 												{updatedCreatedEnabled && (
 													<UpdatedCreatedField
 														itemType="Asset"

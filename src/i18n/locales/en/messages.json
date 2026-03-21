@@ -3699,16 +3699,6 @@
 				"$context": ""
 			}
 		},
-		"viewAvatarItemTags": {
-			"name": {
-				"$message": "View the item tags on avatar items",
-				"$context": ""
-			},
-			"description": {
-				"$message": "When enabled, shows the search tags of avatar items set by their creators in their item pages. Classic (2D) clothing do not have configurable item tags.",
-				"$context": ""
-			}
-		},
 		"avatarItemCreatedUpdated": {
 			"name": {
 				"$message": "Show created and updated date on avatar items",
