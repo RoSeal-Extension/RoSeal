@@ -116,8 +116,9 @@ export default function Server({
 
 	const canManageServer = item.type === "private" && authenticatedUser?.userId === item.owner?.id;
 	const canShutdownServer = canManageServer || canManagePlace;
-	const canJoinServer = item.type !== "private" || item.accessCode !== undefined;
-	const isServerOnline = item.id !== undefined;
+	const canJoinServer =
+		item.type !== "private" || (item.accessCode !== undefined && item.accessCode !== null);
+	const isServerOnline = item.id !== undefined && item.id !== null;
 
 	const [showRenewPrivateServerModal, setShowRenewPrivateServerModal] = useState(false);
 	const [showCancelPrivateServerModal, setShowCancelPrivateServerModal] = useState(false);
