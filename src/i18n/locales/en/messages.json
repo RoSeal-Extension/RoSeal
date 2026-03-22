@@ -767,7 +767,7 @@
 				"$context": "when the friend request was sent"
 			},
 			"friendshipCreatedTime": {
-				"$message": "Connected {time}",
+				"$message": "Friended {time}",
 				"$context": "when the friendship created"
 			}
 		},
@@ -793,7 +793,7 @@
 				"$context": "Unfollow button in the context menu of user friends actions"
 			},
 			"getFriendDate": {
-				"$message": "Get Connected Time",
+				"$message": "Get Friend Date",
 				"$context": "Get Friend Date button in the context menu of user friends actions"
 			},
 			"success": {

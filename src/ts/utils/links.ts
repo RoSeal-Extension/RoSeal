@@ -221,7 +221,7 @@ export function getRoSealChangelogLink(path = "") {
 }
 
 export function getRoSealFriendInviteLink(code: string) {
-	return getRoSealSiteLink(`connection-invite?code=${code}`);
+	return getRoSealSiteLink(`friend-invite?code=${code}`);
 }
 
 export function getRoSealServerJoinLink(data: Record<string, string | undefined>) {
