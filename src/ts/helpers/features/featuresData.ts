@@ -47,6 +47,7 @@ import {
 	ROBUX_HISTORY_STORAGE_KEY,
 	STARTUP_NOTIFICATIONS_FEATURE_ID,
 } from "src/ts/constants/misc";
+import { PRIVATE_SERVER_LINKS_STORAGE_KEY } from "src/ts/constants/privateServerLinks";
 import { EXPERIMENTS_DISCOVERED_STORAGE_KEY } from "src/ts/constants/robloxExperiments";
 import {
 	TRADING_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
@@ -58,7 +59,6 @@ import { getHomePageUrl } from "src/ts/utils/links";
 import { getDelayKey } from "src/ts/utils/misc";
 import type { FlagCall } from "../flags/flags";
 import type { SubscriptionTier } from "../requests/services/roseal";
-import { PRIVATE_SERVER_LINKS_STORAGE_KEY } from "src/ts/constants/privateServerLinks";
 
 export type FeatureType = "Regular" | "Beta" | "Experimental";
 
@@ -915,6 +915,14 @@ export const sections = [
 			{
 				id: "stats",
 				features: [
+					{
+						type: "Regular",
+						id: "showExperienceCreatedDate",
+						component: {
+							type: "Toggle",
+							defaultValue: false,
+						},
+					},
 					{
 						type: "Regular",
 						id: "experienceRecentVotes",

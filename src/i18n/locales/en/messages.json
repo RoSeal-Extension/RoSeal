@@ -3090,6 +3090,11 @@
 				"$context": ""
 			}
 		},
+		"showExperienceCreatedDate": {
+			"name": {
+				"$message": "Show the experience's created date"
+			}
+		},
 		"experienceRecentVotes": {
 			"name": {
 				"$message": "Show experience recent upvote ratio",

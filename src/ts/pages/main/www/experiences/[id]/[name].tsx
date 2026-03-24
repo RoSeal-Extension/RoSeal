@@ -139,6 +139,7 @@ export default {
 		const privateServerLimit = Number.parseInt(placeDataset.privateServerLimit || "0", 10);
 		const privateServerLinkCode = placeDataset.privateServerLinkCode || undefined;
 		const sellerName = placeDataset.sellerName || "";
+		const hideCreatedDate = placeDataset.removeCreatedDate?.toLowerCase() === "true";
 
 		if (canPreCreatePrivateServer)
 			featureValueIs("precreateExperiencePrivateServers", true, () => {
@@ -1045,10 +1046,10 @@ export default {
 			});
 		});
 
-		checkItemTimes("experiences").then((value) => {
-			if (!value) {
-				return;
-			}
+		checkItemTimes("experiences").then(async (value) => {
+			const enableExperienceCreatedDate = await getFeatureValue("showExperienceCreatedDate");
+
+			if (!value && !enableExperienceCreatedDate) return;
 
 			watchOnce(".game-stat-container").then(async (container) => {
 				const list = container.querySelectorAll<HTMLLIElement>(".game-stat");
@@ -1066,9 +1067,28 @@ export default {
 					}
 				}
 
-				if (created) {
-					updated?.remove();
-					renderAsContainer(<ExperienceCreatedDate placeId={placeId} />, created);
+				if (value) {
+					const elToReplace = updated || created;
+					const otherEl = created || updated;
+
+					if (elToReplace) {
+						if (elToReplace !== otherEl) {
+							otherEl?.remove();
+						}
+
+						renderAsContainer(
+							<ExperienceCreatedDate
+								placeId={placeId}
+								hideCreatedDate={hideCreatedDate}
+							/>,
+							elToReplace,
+						);
+					}
+				} else if (updated && !created) {
+					renderAsContainer(
+						<ExperienceCreatedDate placeId={placeId} hideCreatedDate={false} />,
+						updated,
+					);
 				}
 			});
 		});

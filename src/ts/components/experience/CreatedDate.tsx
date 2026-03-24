@@ -1,21 +1,25 @@
-import { getUserById } from "src/ts/helpers/requests/services/users";
-import usePromise from "../hooks/usePromise";
-import useTime from "../hooks/useTime";
-import Tooltip from "../core/Tooltip";
-import { handleTimeSwitch } from "../utils/handleTimeSwitch";
+import classNames from "classnames";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getAssetById } from "src/ts/helpers/requests/services/assets";
 import ExperienceField from "../core/items/ExperienceField";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import Tooltip from "../core/Tooltip";
 import useFeatureValue from "../hooks/useFeatureValue";
-import classNames from "classnames";
+import usePromise from "../hooks/usePromise";
+import useTime from "../hooks/useTime";
+import { handleTimeSwitch } from "../utils/handleTimeSwitch";
 
 export type ExperienceCreatedDateProps = {
 	placeId: number;
+	hideCreatedDate?: boolean;
 };
 
-export default function ExperienceCreatedDate({ placeId }: ExperienceCreatedDateProps) {
+export default function ExperienceCreatedDate({
+	placeId,
+	hideCreatedDate,
+}: ExperienceCreatedDateProps) {
 	const [isClickSwitchEnabled] = useFeatureValue("times.clickSwitch", false);
 	const [switchCreatedUpdated] = useFeatureValue("times.switchCreatedUpdated", false);
+	const [showCreatedDate] = useFeatureValue("showExperienceCreatedDate", false);
 
 	const [getTime, timeType, setTimeType] = useTime("experiences", "time", true);
 	const [getTooltipTime, tooltipTimeType] = useTime("experiences", "tooltip", true);
@@ -37,7 +41,7 @@ export default function ExperienceCreatedDate({ placeId }: ExperienceCreatedDate
 		? () => handleTimeSwitch(timeType, setTimeType)
 		: undefined;
 	const innerClass = classNames("text-lead font-caption-body", {
-		"time-type-switch": isClickSwitchEnabled,
+		"time-type-switch": isClickSwitchEnabled && timeType && !tooltipTimeType,
 	});
 
 	const updatedField = (
@@ -60,7 +64,7 @@ export default function ExperienceCreatedDate({ placeId }: ExperienceCreatedDate
 		</ExperienceField>
 	);
 
-	const createdField = (
+	const createdField = (!hideCreatedDate || showCreatedDate) && (
 		<ExperienceField title={getMessage("item.created")}>
 			{tooltipTimeType !== undefined ? (
 				<Tooltip

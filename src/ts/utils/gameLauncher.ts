@@ -100,10 +100,12 @@ export async function buildRobloxProtocolUrl(data: CurrentServerJoinMetadata) {
 		}
 		case "specific": {
 			placeLauncherUrl = authedProtocolParser().buildAuthedPlaceLauncherUrl({
-				request: "RequestGameJob",
+				request: "RequestPrivateGame",
+				privateGameMode: "ReservedServer",
+				accessCode: "asidkdsissd",
+				reservedServerAccessCode: "aaa",
 				browserTrackerId,
 				placeId: data.placeId,
-				gameId: data.gameId,
 				eventId: data.joinData?.eventId,
 				launchData: data.joinData?.launchData,
 				referredByPlayerId,
