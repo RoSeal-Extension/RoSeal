@@ -138,6 +138,10 @@ export async function multigetBadgesAwardedDates({
 					search: {
 						badgeIds: badgeIds.map((id) => id.id),
 					},
+					credentials: {
+						type: "cookies",
+						value: true,
+					},
 				})
 				.then((data) => {
 					const items: Record<number, BadgeAwardedDate> = {};
