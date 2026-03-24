@@ -426,7 +426,6 @@ export default {
 				dynamicHeadsMessage,
 				bodyMessage,
 				bodyPartsMessage,
-				classicHeadMessage,
 				headMessage,
 			] = await getMessagesInject([
 				"assetTypes.shortCategory.76",
@@ -435,7 +434,6 @@ export default {
 				"assetTypes.shortCategory.79",
 				"avatar.itemTabs.body",
 				"avatar.itemTabs.bodyParts",
-				"avatar.itemTabs.classicHead",
 				"avatar.itemTabs.head",
 			]);
 
@@ -446,7 +444,6 @@ export default {
 				"RoSeal.DynamicHeads": dynamicHeadsMessage,
 				"RoSeal.Body": bodyMessage,
 				"RoSeal.BodyParts": bodyPartsMessage,
-				"RoSeal.ClassicHead": classicHeadMessage,
 				"RoSeal.Head": headMessage,
 			});
 
@@ -456,8 +453,6 @@ export default {
 					if (tab.name === "Body" && !("categoryRows" in tab)) {
 						let hairAccessory: SubcategoryMenu | undefined;
 						let dynamicHeads: SubcategoryMenu | undefined;
-						let classicHeads: SubcategoryMenu | undefined;
-						let classicFaces: SubcategoryMenu | undefined;
 						let leftArms: SubcategoryMenu | undefined;
 						let rightArms: SubcategoryMenu | undefined;
 						let leftLegs: SubcategoryMenu | undefined;
@@ -472,10 +467,6 @@ export default {
 							} else if (row.name === "DynamicHeads") {
 								row.assetType = "Head"; // fix weird bug
 								dynamicHeads = row;
-							} else if (row.name === "Head") {
-								classicHeads = row;
-							} else if (row.name === "Face") {
-								classicFaces = row;
 							} else if (row.name === "LeftArms") {
 								leftArms = row;
 							} else if (row.name === "RightArms") {
@@ -495,7 +486,18 @@ export default {
 							}
 						}
 
-						if (!dynamicHeads) return;
+						if (
+							!dynamicHeads ||
+							!hairAccessory ||
+							!leftArms ||
+							!rightArms ||
+							!leftLegs ||
+							!rightLegs ||
+							!torso ||
+							!skinColor ||
+							!scales
+						)
+							return;
 
 						// @ts-expect-error: Fine
 						delete tab.subCategoryMenu;
@@ -541,11 +543,6 @@ export default {
 									],
 								},
 								{
-									title: "RoSeal.ClassicHead",
-									name: "ClassicHead",
-									subCategoryMenu: [classicHeads, classicFaces],
-								},
-								{
 									title: "RoSeal.BodyParts",
 									name: "BodyParts",
 									subCategoryMenu: [
@@ -564,6 +561,7 @@ export default {
 								},
 							],
 						};
+
 						break;
 					}
 				}

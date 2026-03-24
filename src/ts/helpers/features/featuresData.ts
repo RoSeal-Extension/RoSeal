@@ -2838,6 +2838,7 @@ export const sections = [
 					{
 						type: "Regular",
 						id: "improvedAvatarBodySection",
+						variant: 1,
 						component: {
 							type: "Toggle",
 							defaultValue: true,
