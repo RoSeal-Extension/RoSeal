@@ -326,7 +326,7 @@ export type ListExperienceEventsRequest = {
 	endsBefore?: string;
 	visibility?: ExperienceEventVisibility;
 	reverse?: boolean;
-	limit?: boolean;
+	limit?: number;
 	cursor?: string;
 	includeCredentials?: boolean;
 };

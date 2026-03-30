@@ -3,16 +3,18 @@ import ExperienceTab from "../Tab.tsx";
 import EventsTabContent from "./TabContent.tsx";
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats.ts";
-import type { ExperienceEvent } from "src/ts/helpers/requests/services/universes.ts";
+import type { ListExperienceEventsResponse } from "src/ts/helpers/requests/services/universes.ts";
 
 export type ExperienceEventsTabProps = {
+	universeId: number;
 	list: HTMLDivElement;
 	eventCount: Signal<number>;
-	pastEvents: Signal<ExperienceEvent[]>;
+	pastEvents: Signal<ListExperienceEventsResponse | undefined>;
 	onRender?: () => void;
 };
 
 export default function ExperienceEventsTab({
+	universeId,
 	list,
 	eventCount,
 	pastEvents,
@@ -23,7 +25,13 @@ export default function ExperienceEventsTab({
 			id="events"
 			tabList={list}
 			title={getMessage("experience.events")}
-			content={<EventsTabContent pastEvents={pastEvents} count={eventCount} />}
+			content={
+				<EventsTabContent
+					universeId={universeId}
+					pastEvents={pastEvents}
+					count={eventCount}
+				/>
+			}
 			onRender={onRender}
 		>
 			{eventCount.value !== 0 && (

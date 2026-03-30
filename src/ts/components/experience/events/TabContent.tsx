@@ -2,23 +2,69 @@ import type { Signal } from "@preact/signals";
 import classNames from "classnames";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import type { ExperienceEvent as ExperienceEventType } from "src/ts/helpers/requests/services/universes";
+import {
+	type ExperienceEvent as ExperienceEventType,
+	listExperienceEvents,
+	type ListExperienceEventsResponse,
+} from "src/ts/helpers/requests/services/universes";
 import { useResizeObserver } from "usehooks-ts";
 import PillToggle from "../../core/PillToggle";
 import ExperienceEvent from "./Event";
+import usePages from "../../hooks/usePages";
+import Pagination from "../../core/Pagination";
 
 export type EventsTabContentProps = {
-	pastEvents: Signal<ExperienceEventType[]>;
+	universeId: number;
+	pastEvents: Signal<ListExperienceEventsResponse | undefined>;
 	count: Signal<number>;
 };
 
 type EventsTabType = "current" | "past";
-export default function EventsContentTab({ pastEvents, count }: EventsTabContentProps) {
+export default function EventsContentTab({ universeId, pastEvents, count }: EventsTabContentProps) {
 	const [activeTab, setActiveTab] = useState<EventsTabType>("current");
 	const ref = useRef<HTMLDivElement>(null);
 	const { width } = useResizeObserver({
 		ref,
 	});
+
+	const { items, loading, pageNumber, maxPageNumber, hasAnyItems, setPageNumber } = usePages<
+		ExperienceEventType,
+		string
+	>({
+		getNextPage: (state) => {
+			if (!state.nextCursor) {
+				return {
+					...state,
+					items: pastEvents.value?.data ?? [],
+					nextCursor: pastEvents.value?.nextPageCursor,
+					hasNextPage: !!pastEvents.value?.nextPageCursor,
+				};
+			}
+
+			return listExperienceEvents({
+				universeId,
+				endsBefore: new Date().toISOString(),
+				visibility: "public",
+				limit: 40,
+				cursor: state.nextCursor,
+			}).then((data) => ({
+				...state,
+				items: data.data,
+				nextCursor: data.nextPageCursor ?? undefined,
+				hasNextPage: !!data.nextPageCursor,
+			}));
+		},
+		paging: {
+			method: "pagination",
+			itemsPerPage: 40,
+		},
+		dependencies: {
+			reset: [universeId, pastEvents.value],
+		},
+		disabled: pastEvents.value === undefined,
+	});
+
+	console.log(items);
 
 	useEffect(() => {
 		document.documentElement.style.setProperty("--home-feed-width", `${width}px`);
@@ -26,7 +72,7 @@ export default function EventsContentTab({ pastEvents, count }: EventsTabContent
 
 	return (
 		<div className="roseal-events-container" ref={ref}>
-			{pastEvents.value.length > 0 && (
+			{hasAnyItems && (
 				<PillToggle
 					className="event-tabs-toggle"
 					items={[
@@ -50,20 +96,28 @@ export default function EventsContentTab({ pastEvents, count }: EventsTabContent
 						</div>
 					)}
 				</div>
-				{pastEvents.value.length > 0 && (
+				{hasAnyItems && (
 					<div
 						className={classNames("virtual-event-game-details-container", {
 							hide: activeTab !== "past",
+							"roseal-disabled": loading,
 						})}
 						id="roseal-past-events-container"
 					>
 						<div className="stack">
 							<ul className="game-grid wide-game-tile-game-grid game-details-page-events-grid">
-								{pastEvents.value.map((pastEvent) => (
+								{items.map((pastEvent) => (
 									<ExperienceEvent key={pastEvent.id} {...pastEvent} />
 								))}
 							</ul>
 						</div>
+						{(maxPageNumber > 1 || pageNumber > 1) && (
+							<Pagination
+								current={pageNumber}
+								hasNext={pageNumber < maxPageNumber}
+								onChange={setPageNumber}
+							/>
+						)}
 					</div>
 				)}
 			</div>

@@ -65,10 +65,10 @@ import { listUserGroupsRoles } from "src/ts/helpers/requests/services/groups";
 import { search } from "src/ts/helpers/requests/services/misc";
 import { getPlaceVotes } from "src/ts/helpers/requests/services/places";
 import {
-	type ExperienceEvent,
 	getUniverseMedia,
 	getUniverseStartInfo,
 	listExperienceEvents,
+	type ListExperienceEventsResponse,
 	listUniverseActiveSubscriptions,
 	multigetDevelopUniversesByIds,
 	multigetOmniRecommendationsMetadata,
@@ -302,7 +302,7 @@ export default {
 
 			let promise: Promise<string> | undefined;
 			const count = signal(0);
-			const pastEvents = signal<ExperienceEvent[]>([]);
+			const pastEvents = signal<ListExperienceEventsResponse | undefined>();
 			const render = () => {
 				return watchOnce("#tab-about, #tab-events").then((aboutTab) => {
 					const list = aboutTab.closest<HTMLDivElement>(".rbx-tabs-horizontal")!;
@@ -310,6 +310,7 @@ export default {
 					return new Promise<string>((resolve) => {
 						renderAfter(
 							<ExperienceEventsTab
+								universeId={universeId}
 								list={list}
 								eventCount={count}
 								pastEvents={pastEvents}
@@ -335,6 +336,7 @@ export default {
 					universeId,
 					endsBefore: new Date().toISOString(),
 					visibility: "public",
+					limit: 40,
 				}).then((data) => {
 					if (data.data.length === 0) return;
 
@@ -343,7 +345,7 @@ export default {
 					for (const item of data.data) {
 						if (!item.placeId) item.placeId = rootPlaceId;
 					}
-					pastEvents.value = data.data;
+					pastEvents.value = data;
 				});
 			}
 		});
