@@ -1,5 +1,11 @@
 export function bytesToHex(bytes: Uint8Array) {
-	return [...bytes].map((x) => x.toString(16).padStart(2, "0")).join("");
+	let str = "";
+
+	for (const x of bytes) {
+		str += x.toString(16).padStart(2, "0");
+	}
+
+	return str;
 }
 
 export function hexToBytes(str: string) {
@@ -10,7 +16,8 @@ export function hexToBytes(str: string) {
 
 	return uint8array;
 }
-export async function bytesToBase64(buffer: Uint8Array) {
+
+export async function bytesToBase64(buffer: Uint8Array<ArrayBuffer>) {
 	// use a FileReader to generate a base64 data URI:
 	const base64url = await new Promise<string>((r) => {
 		const reader = new FileReader();
