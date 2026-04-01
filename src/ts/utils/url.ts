@@ -131,4 +131,4 @@ export function getSiteType(url: string | URL): (typeof sites)[number] | null {
 
 	return null;
 }
-export const localeRegex = /^[a-z]{2}(\-[a-z0-9]{2,3})?$/i;
+export const localeRegex = /^[a-z]{2}(-[a-z0-9]{2,3})?$/i;

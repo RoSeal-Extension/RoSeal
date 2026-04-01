@@ -22,11 +22,11 @@ export default function processString<T>(
 ) => string | JSX.Element | (string | JSX.Element)[] {
 	let key = 0;
 
-	function processInputWithRegex(
+	const processInputWithRegex = (
 		option: ProcessStringOption<T>,
 		input: string | JSX.Element | (string | JSX.Element)[],
 		data?: T,
-	): string | JSX.Element | (string | JSX.Element)[] {
+	): string | JSX.Element | (string | JSX.Element)[] => {
 		if (!option.fn || typeof option.fn !== "function") return input;
 		if (!option.regex) return input;
 		if (Array.isArray(input)) {
@@ -63,7 +63,7 @@ export default function processString<T>(
 		}
 
 		return input;
-	}
+	};
 	return (
 		input: string | JSX.Element | (string | JSX.Element)[],
 		data?: T,

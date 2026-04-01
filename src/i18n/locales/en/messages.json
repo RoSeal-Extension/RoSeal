@@ -4429,7 +4429,7 @@
 		},
 		"improvedUserFriendsPage": {
 			"name": {
-				"$message": "Improved user freinds page",
+				"$message": "Improved user friends page",
 				"$context": ""
 			},
 			"description": {
