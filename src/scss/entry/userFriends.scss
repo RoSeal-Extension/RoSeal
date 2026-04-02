@@ -13,10 +13,14 @@
 }
 
 #roseal-friends-web-app {
+    .ignore-button {
+        position: inherit;
+    }
     .container-header {
         display: flex;
         align-items: flex-start;
         width: 100%;
+        flex-direction: row;
 
         .friends-left {
             margin-right: 10px; /* Space between left text and right flex */
