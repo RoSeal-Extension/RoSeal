@@ -67,6 +67,24 @@ export function setupHijackXhr() {
 				return target.apply(xhr, argArray);
 			}
 
+			for (const [name, value] of xhr[hijackedSymbol]!.responseHeaders) {
+				if (name === argArray[0]) {
+					return value;
+				}
+			}
+
+			return null;
+		},
+		"getResponseHeader",
+	);
+
+	hijackFunction(
+		globalThis.XMLHttpRequest.prototype as HijackedXHR,
+		(target, xhr, argArray) => {
+			if (!(hijackedSymbol in xhr)) {
+				return target.apply(xhr, argArray);
+			}
+
 			const data = xhr[hijackedSymbol]!;
 			data.responseDone = false;
 
@@ -188,6 +206,17 @@ export function setupHijackXhr() {
 	globalThis.XMLHttpRequest = new Proxy(globalThis.XMLHttpRequest, {
 		construct: (target) => {
 			const xhr: HijackedXHR = new target();
+			let onLoadEnd: typeof xhr.onloadend = null;
+
+			Object.defineProperty(xhr, "onloadend", {
+				get() {
+					return onLoadEnd;
+				},
+				set(newValue) {
+					onLoadEnd = newValue;
+				},
+			});
+
 			const data: HijackedXHR[typeof hijackedSymbol] = {
 				requestHeaders: new Headers(),
 				responseHeaders: new Headers(),
@@ -199,6 +228,15 @@ export function setupHijackXhr() {
 					});
 					data!.responseDone = true;
 					xhr.dispatchEvent(stateChangeEvent);
+					if (onLoadEnd) {
+						const loadEndEvent = new CustomEvent("loadend", {
+							bubbles: true,
+							cancelable: false,
+						});
+						onLoadEnd.apply(xhr, [
+							loadEndEvent as unknown as ProgressEvent<EventTarget>,
+						]);
+					}
 
 					if (type) {
 						const loadEvent = new CustomEvent(type, {
@@ -224,6 +262,7 @@ export function setupHijackXhr() {
 					}
 
 					e.stopImmediatePropagation();
+
 					if (xhr.readyState !== xhr.DONE) {
 						return;
 					}
