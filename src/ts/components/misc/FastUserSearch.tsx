@@ -12,6 +12,7 @@ import useOnlineFriends from "../hooks/useOnlineFriends";
 import useProfilesData from "../hooks/useProfilesData";
 import usePromise from "../hooks/usePromise";
 import FastUserSearchItem from "./FastUserSearchItem";
+import useFeatureValue from "../hooks/useFeatureValue";
 
 export type FastUserSearchProps = {
 	search: Signal<string>;
@@ -30,6 +31,7 @@ export type FastUserSearchDetail = {
 };
 
 export default function FastUserSearch({ search, menu, container }: FastUserSearchProps) {
+	const [previewUserDeletedProfile] = useFeatureValue("previewUserDeletedProfile", false);
 	const [authenticatedUser] = useAuthenticatedUser();
 	const [onlineFriends] = useOnlineFriends();
 	const [onlineFriendsProfileData] = useProfilesData(onlineFriends || undefined);
@@ -75,7 +77,7 @@ export default function FastUserSearch({ search, menu, container }: FastUserSear
 		if (onlineFriends)
 			for (const item of onlineFriendsProfileData) {
 				if (item?.names.username.toLowerCase() === search.value.toLowerCase()) {
-					if (item.isDeleted) return null;
+					if (item.isDeleted && !previewUserDeletedProfile) return null;
 
 					return {
 						id: item.userId,
@@ -89,7 +91,7 @@ export default function FastUserSearch({ search, menu, container }: FastUserSear
 
 		return multigetUsersByNames({
 			usernames: [search.value],
-			excludeBannedUsers: true,
+			excludeBannedUsers: !previewUserDeletedProfile,
 		}).then((data) => {
 			const user = data[0];
 			if (!user) return null;
@@ -101,7 +103,7 @@ export default function FastUserSearch({ search, menu, container }: FastUserSear
 				username: user.name,
 			};
 		});
-	}, [search.value]);
+	}, [search.value, previewUserDeletedProfile]);
 
 	const [allFriendsSearch] = usePromise(async () => {
 		if (!search.value || !authenticatedUser) return;
@@ -121,7 +123,7 @@ export default function FastUserSearch({ search, menu, container }: FastUserSear
 
 		const items: FastUserSearchDetail[] = [];
 		for (const item of profileData) {
-			if (item.isDeleted) continue;
+			if (item.isDeleted && !previewUserDeletedProfile) continue;
 
 			items.push({
 				id: item.userId,
