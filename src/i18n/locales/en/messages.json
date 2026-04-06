@@ -9415,7 +9415,7 @@
 				"connection": {
 					"$context": "Connection label",
 					"slowest": {
-						"$message": "Furthest Distance",
+						"$message": "Farthest Distance",
 						"$context": "Slowest connection"
 					},
 					"fastest": {
