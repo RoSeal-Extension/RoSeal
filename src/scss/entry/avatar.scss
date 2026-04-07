@@ -75,6 +75,7 @@ span.icon-roseal-hidden-label::after {
     .redraw-avatar {
         display: flex;
         align-items: center;
+        justify-content: space-between;
 
         > a {
             margin-left: auto;
