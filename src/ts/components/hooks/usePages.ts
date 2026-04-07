@@ -1,9 +1,9 @@
 import { useSignal } from "@preact/signals";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { sleep } from "src/ts/utils/misc";
+import { chunk } from "src/ts/utils/objects";
 import useCallbackSignal from "./useCallbackSignal";
 import useDidMountEffect from "./useDidMountEffect";
-import { chunk } from "src/ts/utils/objects";
 
 /*
 this wholeeee thing needs to be redone a thousand times.
@@ -73,12 +73,16 @@ export default function usePages<T, U, V = unknown, X = T>({
 }: UsePagesProps<PageData<T, U, X>, T, U, X>) {
 	const [error, setError] = useState<V>();
 	const [displayItems, setDisplayItems] = useState<X[]>([]);
+	const [allItems, setAllItems] = useState<T[]>([]);
 	const [hasAnyItems, setHasAnyItems] = useState(false);
 	const [maxPageNumber, setMaxPageNumber] = useState<number>(1);
 
 	const [loading, setLoading] = useState(true);
 	const requestInProgress = useSignal(false);
 	const [shouldBeDisabled, setShouldBeDisabled] = useState(true);
+
+	// Use a ref to track the current call ID so stale async ops can be aborted
+	const currentCallId = useRef(0);
 
 	const pageData = useSignal<PageData<T, U, X>>({
 		items: [],
@@ -94,6 +98,7 @@ export default function usePages<T, U, V = unknown, X = T>({
 
 	const getItems = async (
 		_items: X[],
+		hasNextPage: boolean | undefined,
 		pageNumber?: number,
 		prefixItems?: X[],
 		suffixItems?: X[],
@@ -103,7 +108,7 @@ export default function usePages<T, U, V = unknown, X = T>({
 		if (prefixItems?.length) {
 			newArr.unshift(...prefixItems);
 		}
-		if (suffixItems?.length && (!pageData.value.hasNextPage || includeSuffixItems)) {
+		if (suffixItems?.length && (!hasNextPage || includeSuffixItems)) {
 			newArr.push(...suffixItems);
 		}
 		if (itemsConfig?.sortItems) {
@@ -128,9 +133,7 @@ export default function usePages<T, U, V = unknown, X = T>({
 					const newSlice = newArr.slice(start, end);
 					setMaxPageNumber(
 						Math.ceil(newArr.length / paging.itemsPerPage) +
-							(pageData.value.hasNextPage && newSlice.length === paging.itemsPerPage
-								? 1
-								: 0),
+							(hasNextPage && newSlice.length === paging.itemsPerPage ? 1 : 0),
 					);
 					newArr = newSlice;
 					break;
@@ -139,11 +142,11 @@ export default function usePages<T, U, V = unknown, X = T>({
 					const end = (pageNumber - 1) * paging.incrementCount + paging.initialCount;
 
 					const newSlice = newArr.slice(0, end);
+					const extraPage = hasNextPage && newSlice.length === end ? 1 : 0;
 					setMaxPageNumber(
-						Math.ceil(
-							(newArr.length - paging.initialCount) / paging.incrementCount +
-								(pageData.value.hasNextPage && newSlice.length === end ? 1 : 0),
-						) + 1,
+						Math.ceil((newArr.length - paging.initialCount) / paging.incrementCount) +
+							1 +
+							extraPage,
 					);
 					newArr = newSlice;
 					break;
@@ -154,14 +157,36 @@ export default function usePages<T, U, V = unknown, X = T>({
 		return newArr;
 	};
 
+	const getAllItems = (items: T[], prefixItems?: T[] | null, suffixItems?: T[] | null) => {
+		const combinedItems = [...items];
+
+		if (prefixItems?.length) {
+			combinedItems.unshift(...prefixItems);
+		}
+
+		if (suffixItems?.length) {
+			combinedItems.push(...suffixItems);
+		}
+
+		return combinedItems;
+	};
+
 	// Enhanced handleItems: includes transformation
 	const handleItems = async (data: PageData<T, U, X>) => {
 		if (disabled) return;
 
+		// Stamp this call; if a newer call starts, this one will bail out
+		const callId = ++currentCallId.current;
+		const isStale = () => callId !== currentCallId.current;
+
 		requestInProgress.value = true;
 		setLoading(true);
+
+		// Capture a local reference to the transformedItems map for this call
+		const transformedItemsCache = data.transformedItems;
+
 		try {
-			const newItems =
+			const rawItems =
 				itemsConfig?.replacementItems === null
 					? []
 					: (itemsConfig?.replacementItems ?? data.items);
@@ -174,6 +199,8 @@ export default function usePages<T, U, V = unknown, X = T>({
 				const newItems: MaybePromise<X>[] = [];
 
 				for (const aChunk of chunk(items, 100)) {
+					if (isStale()) return [];
+
 					if (itemsConfig?.transformItems) {
 						const uncachedItems: T[] = [];
 						const uncachedIndices: number[] = [];
@@ -182,9 +209,9 @@ export default function usePages<T, U, V = unknown, X = T>({
 						// 1. Separate cached items from items that need transforming
 						for (let i = 0; i < aChunk.length; i++) {
 							const item = aChunk[i];
-							const cached = data.transformedItems.get(item);
+							const cached = transformedItemsCache.get(item);
 
-							if (cached) {
+							if (cached !== undefined) {
 								chunkResults[i] = cached;
 							} else {
 								uncachedItems.push(item);
@@ -198,13 +225,14 @@ export default function usePages<T, U, V = unknown, X = T>({
 								uncachedItems,
 								items,
 							);
+							if (isStale()) return [];
 
 							// 3. Update cache and place back into the chunk's results
 							for (let i = 0; i < uncachedItems.length; i++) {
 								const item = uncachedItems[i];
 								const result = transformedData[i];
 
-								data.transformedItems.set(item, result);
+								transformedItemsCache.set(item, result);
 								chunkResults[uncachedIndices[i]] = result;
 							}
 						}
@@ -216,8 +244,8 @@ export default function usePages<T, U, V = unknown, X = T>({
 						for (let i = 0; i < aChunk.length; i++) {
 							const item = aChunk[i];
 
-							const cached = data.transformedItems.get(item);
-							if (cached) {
+							const cached = transformedItemsCache.get(item);
+							if (cached !== undefined) {
 								newItems.push(cached);
 								continue;
 							}
@@ -227,17 +255,18 @@ export default function usePages<T, U, V = unknown, X = T>({
 							const promise = itemsConfig.transformItem!(item, i, aChunk);
 							newItems.push(promise);
 
-							data.transformedItems.set(item, promise);
+							transformedItemsCache.set(item, promise);
 							if (promise instanceof Promise) {
 								promises.push(
 									promise.then((promiseData) => {
-										data.transformedItems.set(item, promiseData);
+										transformedItemsCache.set(item, promiseData);
 									}),
 								);
 							}
 						}
 
 						await Promise.all(promises);
+						if (isStale()) return [];
 					}
 				}
 
@@ -245,50 +274,90 @@ export default function usePages<T, U, V = unknown, X = T>({
 			};
 
 			// Transform items here
-			const transformedItems = await getTransformedItems(newItems);
+			const transformedItems = await getTransformedItems(rawItems);
+			if (isStale()) return;
 
 			const prefixItemsTransformed = data.prefixItems?.length
 				? await getTransformedItems(data.prefixItems)
 				: undefined;
+			if (isStale()) return;
 
 			const suffixItemsTransformed = data.suffixItems?.length
 				? await getTransformedItems(data.suffixItems)
 				: undefined;
+			if (isStale()) return;
 
 			if (
 				itemsConfig?.replacementItems === null ||
 				data.prefixItems === null ||
 				data.suffixItems === null
 			) {
-				setDisplayItems(
-					await getItems(
-						transformedItems,
-						data.pageNumber,
-						prefixItemsTransformed,
-						suffixItemsTransformed,
-						!data.hasNextPage,
-					),
-				);
+				if (!isStale()) {
+					pageData.value = {
+						...data,
+						items: [...rawItems],
+						transformedItems: transformedItemsCache,
+					};
+					setAllItems(getAllItems(rawItems, data.prefixItems, data.suffixItems));
+
+					setDisplayItems(
+						await getItems(
+							transformedItems,
+							data.hasNextPage,
+							data.pageNumber,
+							prefixItemsTransformed,
+							suffixItemsTransformed,
+							!data.hasNextPage,
+						),
+					);
+				}
 				return;
 			}
 
 			if (itemsConfig?.replacementItems) {
-				setDisplayItems(
-					await getItems(
-						transformedItems,
-						data.pageNumber,
-						prefixItemsTransformed,
-						suffixItemsTransformed,
-						!data.hasNextPage,
-					),
-				);
-				requestInProgress.value = false;
-				setLoading(false);
+				if (!isStale()) {
+					pageData.value = {
+						...data,
+						items: [...rawItems],
+						transformedItems: transformedItemsCache,
+					};
+					setAllItems(getAllItems(rawItems, data.prefixItems, data.suffixItems));
+
+					setDisplayItems(
+						await getItems(
+							transformedItems,
+							data.hasNextPage,
+							data.pageNumber,
+							prefixItemsTransformed,
+							suffixItemsTransformed,
+							!data.hasNextPage,
+						),
+					);
+					requestInProgress.value = false;
+					setLoading(false);
+				}
+
 				return;
 			}
 
-			pageData.value = { ...data, items: newItems };
-			let currPageData = { ...data, items: newItems };
+			// Build accumulated items, starting fresh from rawItems (not pageData.value.items)
+			// to avoid duplicating entries across re-renders
+			let currPageData: PageData<T, U, X> = {
+				...data,
+				items: [...rawItems],
+				transformedItems: transformedItemsCache,
+			};
+
+			if (currPageData.items.length === 0) {
+				currPageData = {
+					...currPageData,
+					nextCursor: undefined,
+					hasNextPage: undefined,
+				};
+			}
+			let accTransformedItems = [...transformedItems];
+
+			pageData.value = currPageData;
 
 			const targetLength =
 				paging.method === "pagination"
@@ -304,33 +373,47 @@ export default function usePages<T, U, V = unknown, X = T>({
 					!targetLength ||
 					(
 						await getItems(
-							transformedItems,
+							accTransformedItems,
+							currPageData.hasNextPage,
 							undefined,
 							prefixItemsTransformed,
 							suffixItemsTransformed,
 						)
 					).length < targetLength ||
 					paging.immediatelyLoadAllData) &&
-				!updateQueued.value &&
-				!refreshToStartQueued.value &&
-				!resetNowQueued.value &&
+				!isStale() &&
 				(!retry || retry.count >= retryCount)
 			) {
+				if (isStale()) break;
+
 				try {
 					const nextPageData = await getNextPage(currPageData);
+					if (isStale()) break;
 
 					const nextTransformedItems = await getTransformedItems(nextPageData.items);
+					if (isStale()) break;
 
+					// Only append new items — do NOT spread currPageData.items again
 					currPageData = {
 						...nextPageData,
 						items: [...currPageData.items, ...nextPageData.items],
+						transformedItems: transformedItemsCache,
 					};
-					transformedItems.push(...nextTransformedItems);
-					if (itemsConfig?.shouldAlwaysUpdate) {
+					accTransformedItems = [...accTransformedItems, ...nextTransformedItems];
+
+					if (itemsConfig?.shouldAlwaysUpdate && !isStale()) {
 						pageData.value = currPageData;
+						setAllItems(
+							getAllItems(
+								currPageData.items,
+								currPageData.prefixItems,
+								currPageData.suffixItems,
+							),
+						);
 						setDisplayItems(
 							await getItems(
-								transformedItems,
+								accTransformedItems,
+								currPageData.hasNextPage,
 								currPageData.pageNumber,
 								prefixItemsTransformed,
 								suffixItemsTransformed,
@@ -347,11 +430,19 @@ export default function usePages<T, U, V = unknown, X = T>({
 				}
 			}
 
-			pageData.value = currPageData;
-			if (!updateQueued.value && !refreshToStartQueued.value && !resetNowQueued.value) {
+			if (!isStale()) {
+				pageData.value = currPageData;
+				setAllItems(
+					getAllItems(
+						currPageData.items,
+						currPageData.prefixItems,
+						currPageData.suffixItems,
+					),
+				);
 				setDisplayItems(
 					await getItems(
-						transformedItems,
+						accTransformedItems,
+						currPageData.hasNextPage,
 						currPageData.pageNumber,
 						prefixItemsTransformed,
 						suffixItemsTransformed,
@@ -359,39 +450,65 @@ export default function usePages<T, U, V = unknown, X = T>({
 				);
 			}
 		} catch (err) {
-			setError(err as V);
+			if (!isStale()) {
+				setError(err as V);
+			}
 		} finally {
-			if (
-				!updateQueued.value &&
-				!refreshToStartQueued.value &&
-				!resetNowQueued.value &&
-				itemsConfig?.replacementItems !== null &&
-				itemsConfig?.prefixItems !== null &&
-				itemsConfig?.suffixItems !== null
-			) {
-				setLoading(false);
-			}
+			// Only update UI state if this call is still the latest
+			if (!isStale()) {
+				if (
+					itemsConfig?.replacementItems !== null &&
+					itemsConfig?.prefixItems !== null &&
+					itemsConfig?.suffixItems !== null
+				) {
+					setLoading(false);
+				}
 
-			if (!pageData.value.hasNextPage) {
-				loadAll.value = false;
-			}
+				if (pageData.value.hasNextPage === false) {
+					loadAll.value = false;
+				}
 
-			requestInProgress.value = false;
+				requestInProgress.value = false;
+			}
 		}
 	};
 
-	// Initial load
+	const requestHandleItems = (
+		data: PageData<T, U, X>,
+		queuedAction: "update" | "refreshFirst" | "reset" = "update",
+	) => {
+		if (requestInProgress.value) {
+			if (queuedAction === "reset") {
+				resetNowQueued.value = true;
+			} else if (queuedAction === "refreshFirst") {
+				// Queue dep-change refreshes — shouldAlwaysUpdate handles progressive display
+				// so the filter is visible as each batch loads without needing a new fetch.
+				// Immediately interrupting here causes two concurrent requests for the same
+				// initial cursor (e.g. feature flags resolving on the first render).
+				refreshToStartQueued.value = true;
+			} else {
+				// "update" = user-triggered actions (setPageNumber, removeItem).
+				// Interrupt current run so UI responds immediately.
+				return handleItems(data);
+			}
+
+			return;
+		}
+
+		return handleItems(data);
+	};
+
+	// Initial load / refresh to first page
 	useEffect(() => {
-		if (!requestInProgress.value) {
-			handleItems({
+		requestHandleItems(
+			{
 				...pageData.value,
 				pageNumber: 1,
 				prefixItems: itemsConfig?.prefixItems,
 				suffixItems: itemsConfig?.suffixItems,
-			});
-		} else {
-			refreshToStartQueued.value = true;
-		}
+			},
+			"refreshFirst",
+		);
 	}, [
 		...(dependencies?.refreshToFirstPage ?? []),
 		paging.method,
@@ -402,30 +519,25 @@ export default function usePages<T, U, V = unknown, X = T>({
 
 	// Reset effect
 	useDidMountEffect(() => {
-		if (!requestInProgress.value) {
-			handleItems({
+		requestHandleItems(
+			{
 				items: [],
 				transformedItems: new Map(),
 				pageNumber: 1,
 				prefixItems: itemsConfig?.prefixItems,
 				suffixItems: itemsConfig?.suffixItems,
-			});
-		} else {
-			resetNowQueued.value = true;
-		}
+			},
+			"reset",
+		);
 	}, [...(dependencies?.reset ?? [])]);
 
 	// Refresh page effect
 	useDidMountEffect(() => {
-		if (!requestInProgress.value) {
-			handleItems({
-				...pageData.value,
-				prefixItems: itemsConfig?.prefixItems,
-				suffixItems: itemsConfig?.suffixItems,
-			});
-		} else {
-			updateQueued.value = true;
-		}
+		requestHandleItems({
+			...pageData.value,
+			prefixItems: itemsConfig?.prefixItems,
+			suffixItems: itemsConfig?.suffixItems,
+		});
 	}, [
 		...(dependencies?.refreshPage ?? []),
 		paging.method === "loadMore" && paging.initialCount,
@@ -434,48 +546,44 @@ export default function usePages<T, U, V = unknown, X = T>({
 		disabled,
 	]);
 
-	// Queue processing
+	// Queue processing — only fires when a request finishes
 	useEffect(() => {
-		if (!requestInProgress.value) {
-			const isUpdateQueued = updateQueued.value;
-			const isRefreshToFirstPageQueued = refreshToStartQueued.value;
+		if (requestInProgress.value) return;
 
-			const isResetQueued = resetNowQueued.value;
-			const isLoadAllQueued = loadAllQueued.value;
-			updateQueued.value = false;
-			refreshToStartQueued.value = false;
-			resetNowQueued.value = false;
-			loadAllQueued.value = false;
+		const isUpdateQueued = updateQueued.value;
+		const isRefreshToFirstPageQueued = refreshToStartQueued.value;
+		const isResetQueued = resetNowQueued.value;
+		const isLoadAllQueued = loadAllQueued.value;
 
-			if (isResetQueued) {
-				handleItems({
-					items: [],
-					transformedItems: new Map(),
-					pageNumber: 1,
-					prefixItems: itemsConfig?.prefixItems,
-					suffixItems: itemsConfig?.suffixItems,
-				});
-			} else if (isRefreshToFirstPageQueued) {
-				handleItems({
-					...pageData.value,
-					pageNumber: 1,
-					prefixItems: itemsConfig?.prefixItems,
-					suffixItems: itemsConfig?.suffixItems,
-				});
-			} else if (isUpdateQueued) {
-				handleItems({
-					...pageData.value,
-					pageNumber: 1,
-					prefixItems: itemsConfig?.prefixItems,
-					suffixItems: itemsConfig?.suffixItems,
-				});
-			} else if (isLoadAllQueued) {
-				loadAll.value = true;
+		updateQueued.value = false;
+		refreshToStartQueued.value = false;
+		resetNowQueued.value = false;
+		loadAllQueued.value = false;
 
-				handleItems({
-					...pageData.value,
-				});
-			}
+		if (isResetQueued) {
+			handleItems({
+				items: [],
+				transformedItems: new Map(),
+				pageNumber: 1,
+				prefixItems: itemsConfig?.prefixItems,
+				suffixItems: itemsConfig?.suffixItems,
+			});
+		} else if (isRefreshToFirstPageQueued) {
+			handleItems({
+				...pageData.value,
+				pageNumber: 1,
+				prefixItems: itemsConfig?.prefixItems,
+				suffixItems: itemsConfig?.suffixItems,
+			});
+		} else if (isUpdateQueued) {
+			handleItems({
+				...pageData.value,
+				prefixItems: itemsConfig?.prefixItems,
+				suffixItems: itemsConfig?.suffixItems,
+			});
+		} else if (isLoadAllQueued) {
+			loadAll.value = true;
+			handleItems({ ...pageData.value });
 		}
 	}, [requestInProgress.value]);
 
@@ -491,7 +599,7 @@ export default function usePages<T, U, V = unknown, X = T>({
 		error,
 		hasAnyItems,
 		maxPageNumber,
-		allItems: pageData.value.items,
+		allItems,
 		shouldBeDisabled,
 		fetchedAllPages:
 			Array.isArray(itemsConfig?.replacementItems) || pageData.value.hasNextPage === false,
@@ -524,7 +632,7 @@ export default function usePages<T, U, V = unknown, X = T>({
 					}
 				}
 
-				handleItems({
+				requestHandleItems({
 					...pageData.value,
 					items: pageData.value.items.filter((i) => i !== targetValue),
 				});
@@ -532,36 +640,34 @@ export default function usePages<T, U, V = unknown, X = T>({
 			[pageData.value],
 		),
 		reset: () => {
-			if (!requestInProgress.value) {
-				return handleItems({
+			requestHandleItems(
+				{
 					items: [],
 					transformedItems: new Map(),
 					pageNumber: 1,
 					prefixItems: itemsConfig?.prefixItems,
 					suffixItems: itemsConfig?.suffixItems,
-				});
-			}
-
-			resetNowQueued.value = true;
+				},
+				"reset",
+			);
 		},
+
 		setPageNumber: useCallbackSignal(
 			(pageNumber: number) => {
-				handleItems({
+				requestHandleItems({
 					...pageData.value,
 					pageNumber,
 				});
 			},
 			[pageData.value],
 		),
+
 		loadAllItems: useCallbackSignal(() => {
-			if (!pageData.value.hasNextPage) return;
+			if (pageData.value.hasNextPage === false) return;
+			loadAll.value = true;
 
 			if (!requestInProgress.value) {
-				loadAll.value = true;
-
-				handleItems({
-					...pageData.value,
-				});
+				handleItems({ ...pageData.value });
 			} else {
 				loadAllQueued.value = true;
 			}
