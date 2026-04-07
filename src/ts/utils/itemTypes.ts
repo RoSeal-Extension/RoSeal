@@ -649,6 +649,10 @@ export const assetTypes = [
 		isWearable: true,
 		isPartOfHead: true,
 	},
+	{
+		assetType: "VoxelFragment",
+		assetTypeId: 91,
+	},
 ] satisfies AssetTypeData[];
 
 export const bundleTypes = [
