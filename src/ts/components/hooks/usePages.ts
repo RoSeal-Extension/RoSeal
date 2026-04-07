@@ -171,6 +171,22 @@ export default function usePages<T, U, V = unknown, X = T>({
 		return combinedItems;
 	};
 
+	const setAllItemsStable = (nextItems: T[]) => {
+		setAllItems((prevItems) => {
+			if (prevItems.length !== nextItems.length) {
+				return nextItems;
+			}
+
+			for (let i = 0; i < prevItems.length; i++) {
+				if (prevItems[i] !== nextItems[i]) {
+					return nextItems;
+				}
+			}
+
+			return prevItems;
+		});
+	};
+
 	// Enhanced handleItems: includes transformation
 	const handleItems = async (data: PageData<T, U, X>) => {
 		if (disabled) return;
@@ -178,9 +194,12 @@ export default function usePages<T, U, V = unknown, X = T>({
 		// Stamp this call; if a newer call starts, this one will bail out
 		const callId = ++currentCallId.current;
 		const isStale = () => callId !== currentCallId.current;
+		const isLocalRefresh = data.items.length > 0 && !loadAll.value;
 
 		requestInProgress.value = true;
-		setLoading(true);
+		if (!isLocalRefresh) {
+			setLoading(true);
+		}
 
 		// Capture a local reference to the transformedItems map for this call
 		const transformedItemsCache = data.transformedItems;
@@ -298,7 +317,7 @@ export default function usePages<T, U, V = unknown, X = T>({
 						items: [...rawItems],
 						transformedItems: transformedItemsCache,
 					};
-					setAllItems(getAllItems(rawItems, data.prefixItems, data.suffixItems));
+					setAllItemsStable(getAllItems(rawItems, data.prefixItems, data.suffixItems));
 
 					setDisplayItems(
 						await getItems(
@@ -321,7 +340,7 @@ export default function usePages<T, U, V = unknown, X = T>({
 						items: [...rawItems],
 						transformedItems: transformedItemsCache,
 					};
-					setAllItems(getAllItems(rawItems, data.prefixItems, data.suffixItems));
+					setAllItemsStable(getAllItems(rawItems, data.prefixItems, data.suffixItems));
 
 					setDisplayItems(
 						await getItems(
@@ -403,7 +422,7 @@ export default function usePages<T, U, V = unknown, X = T>({
 
 					if (itemsConfig?.shouldAlwaysUpdate && !isStale()) {
 						pageData.value = currPageData;
-						setAllItems(
+						setAllItemsStable(
 							getAllItems(
 								currPageData.items,
 								currPageData.prefixItems,
@@ -432,7 +451,7 @@ export default function usePages<T, U, V = unknown, X = T>({
 
 			if (!isStale()) {
 				pageData.value = currPageData;
-				setAllItems(
+				setAllItemsStable(
 					getAllItems(
 						currPageData.items,
 						currPageData.prefixItems,
