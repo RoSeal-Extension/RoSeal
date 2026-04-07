@@ -523,7 +523,7 @@ span.icon-roseal-hidden-label::after {
 [data-rosealfe-avataritemlists] {
     #avatar-web-app[data-has-item-lists] #horizontal-tabs {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%/7), 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(100%/8), 1fr));
         margin: 0;
 
         &::before {
