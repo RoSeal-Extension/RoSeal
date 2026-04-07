@@ -13,9 +13,9 @@ import { getMessage } from "src/ts/helpers/i18n/getMessage";
 export default function PostAvatarButton() {
 	const [showModal, setShowModal] = useState(false);
 	const [currentAvatar, setCurrentAvatar] = useState<ReactAvatarEditorPageAvatar>();
-	const [isAccessible, setIsAccessible] = useState(true);
+	const [isAccessible, setIsAccessible] = useState<boolean>();
 	const [lookPreview, lookPreviewFetched, error] = usePromise(() => {
-		if (!currentAvatar || !isAccessible) return;
+		if (!currentAvatar || isAccessible === false) return;
 
 		return previewUserLookCreation({
 			assets: currentAvatar.assets,
