@@ -3484,7 +3484,7 @@
 		},
 		"homeFriendsRows": {
 			"name": {
-				"$message": "Override the maximum amount of freinds rows on your home page",
+				"$message": "Override the maximum amount of friends rows on your home page",
 				"$context": ""
 			},
 			"description": {
