@@ -642,7 +642,7 @@ export default function usePages<T, U, V = unknown, X = T>({
 		removeItem: useCallbackSignal(
 			(item: T) => {
 				let targetValue = item;
-				if (itemsConfig?.transformItem) {
+				if (itemsConfig?.transformItem || itemsConfig?.transformItems) {
 					for (const [key, value] of pageData.value.transformedItems) {
 						if (value === item) {
 							targetValue = key;
@@ -651,10 +651,33 @@ export default function usePages<T, U, V = unknown, X = T>({
 					}
 				}
 
-				requestHandleItems({
+				const matchesTarget = (value: T) => value === targetValue || value === item;
+				const filterList = (arr?: T[] | null) =>
+					arr == null ? arr : arr.filter((value) => !matchesTarget(value));
+
+				const nextItems = pageData.value.items.filter((value) => !matchesTarget(value));
+				const nextPrefixItems = filterList(pageData.value.prefixItems);
+				const nextSuffixItems = filterList(pageData.value.suffixItems);
+
+				const nextTransformedItems = new Map(pageData.value.transformedItems);
+				for (const [key, value] of nextTransformedItems) {
+					if (matchesTarget(key) || value === item) {
+						nextTransformedItems.delete(key);
+					}
+				}
+
+				const nextPageData: PageData<T, U, X> = {
 					...pageData.value,
-					items: pageData.value.items.filter((i) => i !== targetValue),
-				});
+					items: nextItems,
+					prefixItems: nextPrefixItems,
+					suffixItems: nextSuffixItems,
+					transformedItems: nextTransformedItems,
+				};
+
+				pageData.value = nextPageData;
+				setAllItemsStable(getAllItems(nextItems, nextPrefixItems, nextSuffixItems));
+
+				requestHandleItems(nextPageData);
 			},
 			[pageData.value],
 		),
