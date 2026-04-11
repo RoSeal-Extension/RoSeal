@@ -15,6 +15,7 @@ import {
 import {
 	acceptUserFriendRequest,
 	declineUserFriendRequest,
+	getUserFriendStatus,
 	getUserTrustedFriendStatus,
 	requestUserFriendship,
 	type UserFriendRequestData,
@@ -80,7 +81,7 @@ export default function FriendCard({
 	currentTab,
 	isMyProfile,
 	friendPresence: _friendPresence,
-	isFriends,
+	isFriends: _isFriends,
 	friendSince,
 	showSendFriendRequest,
 	mutualFriends,
@@ -164,6 +165,18 @@ export default function FriendCard({
 			return universeData?.[friendRequest.sourceUniverseId];
 		}
 	}, [friendRequest?.sourceUniverseId, universeData, _sourceUniverse]);
+
+	const [isFriends] = usePromise(() => {
+		if (_isFriends !== undefined) {
+			return _isFriends;
+		}
+
+		if (currentTab === "followers") {
+			return getUserFriendStatus({
+				userId: id,
+			}).then((res) => res.status === "Friends");
+		}
+	}, [_isFriends, id, currentTab]);
 
 	const [isMyTrustedConnection] = usePromise(() => {
 		if (!isMyProfile || !isFriends || currentTab === "trusted-friends") return;
@@ -499,7 +512,7 @@ export default function FriendCard({
 						isMyProfile={isMyProfile}
 						tabId={currentTab}
 						userId={id}
-						isFriends={isFriends && !menuJustFriendsDate}
+						isFriends={isFriends === true && !menuJustFriendsDate}
 						isDeleted={profileData?.isDeleted && !menuJustFriendsDate}
 						hideCard={removeCard}
 						showOtherOptions={extendedFriendCardMenuEnabled && !menuJustFriendsDate}

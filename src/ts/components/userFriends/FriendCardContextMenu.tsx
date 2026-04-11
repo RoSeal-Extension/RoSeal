@@ -34,8 +34,8 @@ export default function FriendCardContextMenu({
 	onClickGetFriendDate,
 	hideCard,
 }: FriendCardContextMenuProps) {
-	const [isFriends] = usePromise(() => _isFriends, [userId]);
-	const [isDeleted] = usePromise(() => _isDeleted, [userId]);
+	const [isFriends] = usePromise(() => _isFriends, [userId, _isFriends]);
+	const [isDeleted] = usePromise(() => _isDeleted, [userId, _isDeleted]);
 
 	const showGenericError = () => warning(getMessage("friends.actions.error.generic"));
 
