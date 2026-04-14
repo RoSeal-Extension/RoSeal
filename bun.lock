@@ -12,7 +12,7 @@
         "@phosphor-icons/react": "2.1.10",
         "@preact/compat": "17.1.2",
         "@preact/signals": "2.9.0",
-        "@roseal/http-client": "github:RoSeal-Extension/HTTPClient#0.2.0",
+        "@roseal/http-client": "github:RoSeal-Extension/HTTPClient#0.3.7",
         "@types/d3-drag": "3.0.7",
         "@types/react-simple-maps": "3.0.6",
         "@types/tinycolor2": "1.4.6",
@@ -314,7 +314,7 @@
 
     "@restart/hooks": ["@restart/hooks@0.4.16", "", { "dependencies": { "dequal": "^2.0.3" }, "peerDependencies": { "react": ">=16.8.0" } }, "sha512-f7aCv7c+nU/3mF7NWLtVVr0Ra80RqsO89hO72r+Y/nvQr5+q0UFGkocElTH6MJApvReVh6JHUFYn2cw1WdHF3w=="],
 
-    "@roseal/http-client": ["@roseal/http-client@github:RoSeal-Extension/HTTPClient#b84a323", { "dependencies": { "json-bigint-native": "^1.2.0", "parse-roblox-errors": "^1.1.13", "publicsuffix-json": "github:fbraz3/publicsuffix-json#1b8bf5e", "roblox-bat": "^0.6.3" } }, "RoSeal-Extension-HTTPClient-b84a323", "sha512-Anaw9fyj7k3i+evkTCN1xXwE3Sa429gK0qKOv+z+/Jhq/67EwlHnbPh4Iu2UTT9LEJBxclKnJrZECCqEIeWtBg=="],
+    "@roseal/http-client": ["@roseal/http-client@github:RoSeal-Extension/HTTPClient#bb883c7", { "dependencies": { "json-bigint-native": "^1.2.0", "parse-roblox-errors": "^1.2.1", "publicsuffix-json": "github:fbraz3/publicsuffix-json#1217edb", "roblox-bat": "^0.6.5" } }, "RoSeal-Extension-HTTPClient-bb883c7", "sha512-Ej0NAN5C9QUdBpIGY/QCAHf1wcf1+GRU8daxon5/eJFfOsjnrUM4O7HXcjT4krpa2zibsyaely5lBgol6hHDmQ=="],
 
     "@svgr/babel-plugin-add-jsx-attribute": ["@svgr/babel-plugin-add-jsx-attribute@8.0.0", "", { "peerDependencies": { "@babel/core": "^7.0.0-0" } }, "sha512-b9MIk7yhdS1pMCZM8VeNfUlSKVRhsHZNMl5O9SfaX0l0t5wjdgu4IDzGB8bpnGBBOjGST3rRFVsaaEtI4W6f7g=="],
 
@@ -970,7 +970,7 @@
 
     "psl": ["psl@1.15.0", "", { "dependencies": { "punycode": "^2.3.1" } }, "sha512-JZd3gMVBAVQkSs6HdNZo9Sdo0LNcQeMNP3CozBJb3JYC/QUYZTnKxP+f8oWRX4rHP5EurWxqAHTSwUCjlNKa1w=="],
 
-    "publicsuffix-json": ["publicsuffix-json@github:fbraz3/publicsuffix-json#1b8bf5e", {}, "fbraz3-publicsuffix-json-1b8bf5e", "sha512-PvXcvS+8mF/mMxWbumBUMoMwVRCOQEFrjT5aR8NnMOoa07ZGrpTaz6XZwS6du7N/N/PlCWpqoIfviXrnIDGBLA=="],
+    "publicsuffix-json": ["publicsuffix-json@github:fbraz3/publicsuffix-json#1217edb", {}, "fbraz3-publicsuffix-json-1217edb", "sha512-xeqUDswNf1bcCZyvTe0KeLsiryz6yvOPuWW3wIvYFZpfYBtt36n4bzgNe01VR9PlcjzQDr89mu8HhbJMxFtCQw=="],
 
     "punycode": ["punycode@2.3.1", "", {}, "sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg=="],
 
