@@ -703,11 +703,13 @@ export default function FriendsTab({
 			{!hasAnyItems &&
 				!loading &&
 				search === "" &&
-				typeFilter === DEFAULT_ALL_CONNECTION_TYPE.id && (
+				typeFilter === DEFAULT_ALL_CONNECTION_TYPE.id &&
+				statusFilter === "All" && (
 					<div className="section-content-off">
 						{getMessage(`friends.friends.noItems.${isMyProfile ? "you" : "someone"}`)}
 					</div>
 				)}
+
 			{!loading &&
 				items.length === 0 &&
 				(typeFilter !== DEFAULT_ALL_CONNECTION_TYPE.id ||
