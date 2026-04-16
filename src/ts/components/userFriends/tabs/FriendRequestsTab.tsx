@@ -405,6 +405,7 @@ export default function FriendRequestsTab({
 				filters,
 				hasSetFilters,
 				shouldRequestProfilePlatform,
+				sortOrder,
 			],
 		},
 	});
