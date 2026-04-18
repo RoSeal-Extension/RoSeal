@@ -144,17 +144,19 @@ export const SYNC_THEME_ENABLED_LOCALSTORAGE_KEY = "syncThemeEnabled";
 export const NULL_TIME = "0001-01-01T00:00:00";
 
 export const APPLICATION_BINARY_TYPES = [
-	"MacPlayer",
-	"MacPlayerCJV",
-	"MacStudio",
-	"MacStudioCJV",
 	"WindowsPlayer",
+	"WindowsStudio64",
+	"MacPlayer",
+	"MacStudio",
+	"GoogleAndroidApp",
+	"GoogleAndroidAppVNG",
+	"IOSAppVNG",
+	"MacPlayerCJV",
+	"MacStudioCJV",
 	"WindowsPlayerCJV",
 	"WindowsStudio",
 	"WindowsStudioCJV",
-	"WindowsStudio64",
 	"WindowsStudio64CJV",
-	"GoogleAndroidApp",
 	"AmazonAndroidApp",
 	"IOSApp",
 	"XboxApp",
@@ -162,7 +164,12 @@ export const APPLICATION_BINARY_TYPES = [
 	"QuestVRApp",
 	"PS5App",
 	"UWPApp",
+	"SamsungAndroidApp",
+	"PCGDK",
+	"IOSAppCJV",
+	"AndroidAppCJV",
 ] as const;
+
 
 export const TEST_PLACE_ID = 1818 as const;
 export const TEST_RCC_CHANNEL_NAME = "z" as const;
