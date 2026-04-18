@@ -3,6 +3,7 @@ import MdOutlineHMD from "@material-symbols/svg-400/outlined/head_mounted_device
 import MdOutlineSmartphone from "@material-symbols/svg-400/outlined/mobile.svg";
 import MdOutlineConsole from "@material-symbols/svg-400/outlined/sports_esports.svg";
 import MdOutlineTablet from "@material-symbols/svg-400/outlined/tablet.svg";
+import MdOutlineTV from "@material-symbols/svg-400/outlined/tv.svg";
 import type { JSX } from "preact/jsx-runtime";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getUniversePlayableDevices } from "src/ts/utils/joinData";
@@ -28,7 +29,7 @@ export default function ExperiencePlayableDevices({ universeId }: ExperiencePlay
 		[universeId, authenticatedUser?.userId, authenticatedUser?.isUnder13],
 	);
 	const icons = deviceTypes?.map((deviceType) => {
-		let icon: JSX.Element;
+		let icon: JSX.Element | undefined;
 		switch (deviceType) {
 			case "Desktop": {
 				icon = <MdOutlineComputer className="roseal-icon" />;
@@ -48,6 +49,10 @@ export default function ExperiencePlayableDevices({ universeId }: ExperiencePlay
 			}
 			case "VR": {
 				icon = <MdOutlineHMD className="roseal-icon" />;
+				break;
+			}
+			case "TV": {
+				icon = <MdOutlineTV className="roseal-icon" />;
 				break;
 			}
 		}

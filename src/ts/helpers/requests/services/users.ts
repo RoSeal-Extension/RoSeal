@@ -249,6 +249,7 @@ export type UserProfileInsightMutualFriends = {
 export type UserProfileInsightOfflineFrequents = {
 	offlineFrequentsInsight: {
 		havePlayedTogether: boolean;
+		mostFrequentUniverseId?: number;
 	};
 	insightCase: 1;
 };

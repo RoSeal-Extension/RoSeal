@@ -227,7 +227,7 @@ export async function getMatchmadeServerData({
 				type: "cookies",
 				value: true,
 			},
-			overridePlatformType,
+			overridePlatformType: "TV",
 			camelizeResponse: true,
 		})
 	).body;

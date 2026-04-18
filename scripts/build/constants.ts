@@ -180,6 +180,11 @@ export function getUserAgentOverrides(robloxVersion = "0") {
 			platformType: "VR",
 			deviceType: "VR",
 		},
+		{
+			userAgent: `(1MB; 0x0; 0x0; 0x0; ; 0) ROBLOX Android TV RobloxApp/${robloxVersion} (GlobalDist; GooglePlayStore)`,
+			platformType: "TV",
+			deviceType: "TV",
+		},
 		/*
 		{
 			userAgent: "Roblox/WinUWP ROBLOX UWP App 1.0.0",

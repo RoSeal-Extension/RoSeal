@@ -144,6 +144,11 @@ export function getDeviceMetaSync(el?: HTMLMetaElement): DeviceMeta | undefined 
 			break;
 		}
 
+		case "tv": {
+			deviceType = "TV";
+			break;
+		}
+
 		default: {
 			deviceType = "Desktop";
 			break;

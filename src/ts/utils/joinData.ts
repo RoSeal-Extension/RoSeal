@@ -1,4 +1,4 @@
-import type { PlatformType } from "scripts/build/constants";
+import type { DeviceType, PlatformType } from "scripts/build/constants";
 import { DEFAULT_RELEASE_CHANNEL_NAME } from "../constants/misc";
 import { getOrSetCache, removeCache } from "../helpers/cache";
 import { getMessage } from "../helpers/i18n/getMessage";
@@ -388,24 +388,28 @@ export function getUniversePlayableDevices(universeId: number, userId: number, i
 					universeId,
 				})
 					.then((data) => {
-						const PlatformTypes: PlatformType[] = [];
+						const deviceTypes: DeviceType[] = [];
+
 						if (data.desktopEnabled) {
-							PlatformTypes.push("Desktop");
+							deviceTypes.push("Desktop");
 						}
 						if (data.mobileEnabled) {
-							PlatformTypes.push("Phone");
+							deviceTypes.push("Phone");
 						}
 						if (data.tabletEnabled) {
-							PlatformTypes.push("Tablet");
+							deviceTypes.push("Tablet");
 						}
 						if (data.consoleEnabled) {
-							PlatformTypes.push("Console");
+							deviceTypes.push("Console");
 						}
 						if (data.vrEnabled) {
-							PlatformTypes.push("VR");
+							deviceTypes.push("VR");
+						}
+						if (data.tvEnabled) {
+							deviceTypes.push("TV");
 						}
 
-						return PlatformTypes;
+						return deviceTypes;
 					})
 					.catch(() => []),
 			),

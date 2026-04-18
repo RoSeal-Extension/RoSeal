@@ -7697,6 +7697,10 @@
 		"VR": {
 			"$message": "VR",
 			"$context": ""
+		},
+		"TV": {
+			"$message": "TV",
+			"$context": ""
 		}
 	},
 	"assetTypes": {

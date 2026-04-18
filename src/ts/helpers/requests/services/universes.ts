@@ -645,6 +645,7 @@ export type OpenCloudUniverse = {
 	tabletEnabled: boolean;
 	consoleEnabled: boolean;
 	vrEnabled: boolean;
+	tvEnabled?: boolean;
 };
 
 export type ExperienceNotificationPreferences = {
