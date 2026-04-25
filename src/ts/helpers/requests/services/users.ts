@@ -263,6 +263,7 @@ export enum FriendshipOriginSource {
 	QR_CODE = 6,
 	PROFILE_SHARE = 7,
 	PHONE_CONTACT_IMPORTER = 8,
+	FRIEND_TOKEN = 9,
 	FRIEND_RECOMMENDATIONS = 10,
 }
 
