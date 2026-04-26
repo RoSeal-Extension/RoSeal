@@ -18,11 +18,6 @@ import {
 	AVATAR_ITEM_LISTS_STORAGE_KEY,
 	BYPASS_R6_RESTRICTION_MODAL_LOCALSTORAGE_KEY,
 } from "src/ts/constants/avatar";
-import {
-	COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
-	COMMUNITY_SHOUT_NOTIFICATIONS_FEATURE_ID,
-	COMMUNITY_SHOUT_NOTIFICATIONS_STORAGE_KEY,
-} from "src/ts/constants/communities";
 import { DEVEX_FIAT_CURRENCIES } from "src/ts/constants/devexRates";
 import { PRIVATE_NOTE_STORAGE_KEY } from "src/ts/constants/experiences";
 import {
@@ -2332,15 +2327,6 @@ export const sections = [
 						},
 					},
 					{
-						id: "communityWallTradeLinks",
-						type: "Regular",
-						component: {
-							type: "Toggle",
-							defaultValue: true,
-						},
-						deprecated: true,
-					},
-					{
 						id: "searchGroupStore",
 						type: "Regular",
 						component: {
@@ -2348,15 +2334,6 @@ export const sections = [
 							defaultValue: true,
 						},
 						hasCSS: true,
-					},
-					{
-						id: "disableGroupWallInfiniteScrolling",
-						type: "Regular",
-						component: {
-							type: "Toggle",
-							defaultValue: false,
-						},
-						deprecated: true,
 					},
 					{
 						id: "showGroupCreatedDate",
@@ -3621,35 +3598,6 @@ export const sections = [
 								},
 							],
 						},
-					},
-					{
-						type: "Regular",
-						id: COMMUNITY_SHOUT_NOTIFICATIONS_FEATURE_ID,
-						component: {
-							type: "Toggle",
-							defaultValue: false,
-						},
-						permissions: {
-							required: {
-								permissions: ["notifications"],
-							},
-						},
-						storageKeys: {
-							main: [COMMUNITY_SHOUT_NOTIFICATIONS_STORAGE_KEY],
-						},
-						subfeatures: {
-							items: [
-								{
-									type: "Regular",
-									id: COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
-									component: {
-										type: "Toggle",
-										defaultValue: false,
-									},
-								},
-							],
-						},
-						deprecated: true,
 					},
 				],
 			},

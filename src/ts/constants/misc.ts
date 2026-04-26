@@ -80,6 +80,7 @@ export const PERSIST_TRANSACTIONS_SELECTION_LOCALSTORAGE_KEY = "persistTransacti
 export const PREMIUM_STATUS_BUTTON_ACKNOWLEDGED_LOCALSTORAGE_KEY =
 	"premiumStatusButtonAcknowledged";
 export const PREMIUM_MEMBERSHIP_STATUS_SESSION_CACHE_STORAGE_KEY = "cache.premiumMembership";
+export const ROBLOX_MEMBERSHIP_STATUS_SESSION_CACHE_STORAGE_KEY = "cache.robloxSubscription";
 
 export const animalTextCount = {
 	seal: 1,
@@ -169,7 +170,6 @@ export const APPLICATION_BINARY_TYPES = [
 	"IOSAppCJV",
 	"AndroidAppCJV",
 ] as const;
-
 
 export const TEST_PLACE_ID = 1818 as const;
 export const TEST_RCC_CHANNEL_NAME = "z" as const;

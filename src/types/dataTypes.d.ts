@@ -139,9 +139,6 @@ export type DOMCommunicationMessageDataTypes = {
 	"group.list.update": {
 		args: undefined;
 	};
-	"group.wall.paginate": {
-		args: boolean;
-	};
 	"experiments.discovered": {
 		args: {
 			type: "ixp" | "guac" | "clientSettings";
@@ -347,20 +344,6 @@ export type DOMCommunicationInvokeDataTypes = {
 			reason: DefaultError;
 		};
 	};
-	"group.wall.setupPagination": {
-		args: void;
-		res: {
-			data: void;
-			reason: DefaultError;
-		};
-	};
-	"group.wall.canLoadNextPage": {
-		args: void;
-		res: {
-			data: boolean;
-			reason: DefaultError;
-		};
-	};
 	checkBlockedUniverses: {
 		args: {
 			ids: number[];
@@ -368,13 +351,6 @@ export type DOMCommunicationInvokeDataTypes = {
 		};
 		res: {
 			data: number[];
-			reason: DefaultError;
-		};
-	};
-	"group.wall.onReady": {
-		args: void;
-		res: {
-			data: boolean;
 			reason: DefaultError;
 		};
 	};

@@ -44,11 +44,6 @@ import {
 	VERSION_STORAGE_KEY,
 } from "../constants/misc";
 import {
-	COMMUNITY_SHOUT_NOTIFICATIONS_ALARM_NAME,
-	COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
-	COMMUNITY_SHOUT_NOTIFICATIONS_NOTIFICATION_PREFIX,
-} from "../constants/communities";
-import {
 	TRADING_NOTIFICATIONS_ALARM_NAME,
 	TRADING_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
 	TRADING_NOTIFICATIONS_NOTIFICATION_PREFIX,
@@ -526,12 +521,7 @@ function handleNotificationsChange() {
 		const split = notificationId.split(":");
 		if (!split[1]) return;
 
-		if (notificationId.startsWith(COMMUNITY_SHOUT_NOTIFICATIONS_NOTIFICATION_PREFIX)) {
-			browser.tabs.create({
-				url: getGroupProfileLink(Number.parseInt(split[1], 10)),
-				active: true,
-			});
-		} else if (notificationId.startsWith(FRIENDS_PRESENCE_NOTIFICATIONS_NOTIFICATION_PREFIX)) {
+		if (notificationId.startsWith(FRIENDS_PRESENCE_NOTIFICATIONS_NOTIFICATION_PREFIX)) {
 			browser.tabs.create({
 				url: getUserProfileLink(Number.parseInt(split[1], 10)),
 				active: true,
@@ -704,16 +694,6 @@ featureValueIsLater(FRIENDS_LAST_SEEN_BACKGROUND_CHECKS_FEATURE_ID, true, async 
 		});
 	}
 	return () => browser.alarms.clear(USER_ONLINE_FRIENDS_FETCH_ALARM_NAME);
-});
-
-// Shout notifications
-featureValueIsLater(COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID, true, async () => {
-	if (!(await browser.alarms.get(COMMUNITY_SHOUT_NOTIFICATIONS_ALARM_NAME))) {
-		await browser.alarms.create(COMMUNITY_SHOUT_NOTIFICATIONS_ALARM_NAME, {
-			periodInMinutes: 20,
-		});
-	}
-	return () => browser.alarms.clear(COMMUNITY_SHOUT_NOTIFICATIONS_ALARM_NAME);
 });
 
 // Trade notifications

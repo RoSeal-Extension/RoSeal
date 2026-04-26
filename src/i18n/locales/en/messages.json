@@ -40,11 +40,6 @@
 				}
 			}
 		},
-		"communityShout": {
-			"context": {
-				"$message": "RoSeal Community Shout Notifier"
-			}
-		},
 		"trades": {
 			"context": {
 				"$message": "RoSeal Trade Notifier"
@@ -2608,11 +2603,6 @@
 				"$message": "Show DevExable currency amount"
 			}
 		},
-		"communityWallTradeLinks": {
-			"name": {
-				"$message": "Show \"Trade\" button next to the poster's username on trading Communities walls"
-			}
-		},
 		"viewExperienceTopSongs": {
 			"name": {
 				"$message": "View top songs played in an experience"
@@ -2685,22 +2675,6 @@
 				},
 				"description": {
 					"$message": "When enabled, the extension will check for friend activity updates in the background. This will also show your presence as online while the browser is open."
-				}
-			}
-		},
-		"communityShoutNotifications": {
-			"name": {
-				"$message": "Community Shout notifications"
-			},
-			"description": {
-				"$message": "When enabled, allows you to be notified about new Community shouts of communities you are following."
-			},
-			"backgroundChecks": {
-				"name": {
-					"$message": "Run background checks"
-				},
-				"description": {
-					"$message": "When enabled, the extension will check for new community shouts in the background. This will also show your presence as online while the browser is open."
 				}
 			}
 		},
@@ -3649,16 +3623,6 @@
 		"viewUserGroupJoinRequests": {
 			"name": {
 				"$message": "View communities that you have pending join requests to",
-				"$context": ""
-			}
-		},
-		"disableGroupWallInfiniteScrolling": {
-			"name": {
-				"$message": "Disable infinite scrolling on community walls",
-				"$context": ""
-			},
-			"description": {
-				"$message": "When enabled, forces community walls to use numbered pages instead of infinite scrolling.",
 				"$context": ""
 			}
 		},
@@ -7037,14 +7001,6 @@
 				"$context": "Placeholder text for the search button in the community store"
 			}
 		},
-		"shoutNotifications": {
-			"enable": {
-				"$message": "Turn on Notifications"
-			},
-			"disable": {
-				"$message": "Turn off Notifications"
-			}
-		},
 		"joined": {
 			"$context": "Label for when the user joined the community",
 			"$message": "Joined {date}"
@@ -7053,13 +7009,6 @@
 			"requestToJoin": {
 				"$message": "Request to Join Community",
 				"$context": "Join community button text when the group is not publicly open"
-			}
-		},
-		"wall": {
-			"post": {
-				"trade": {
-					"$message": "Trade"
-				}
 			}
 		},
 		"pendingGroups": {
@@ -11819,6 +11768,17 @@
 		},
 		"premiumStatus": {
 			"$context": "Premium status",
+			"plus": {
+				"$context": "Plus version of the title",
+				"expired": {
+					"$message": "Roblox Plus expired",
+					"$context": ""
+				},
+				"active": {
+					"$message": "Roblox Plus active",
+					"$context": ""
+				}
+			},
 			"title": {
 				"$context": "Title",
 				"expired": {

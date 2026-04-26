@@ -1,19 +1,14 @@
 import { signal } from "@preact/signals";
-import { render } from "preact";
 import ItemContextMenu from "src/ts/components/core/ItemContextMenu";
 import GroupAgentId from "src/ts/components/group/AgentId";
-import CommunityShoutNotificationsToggle from "src/ts/components/group/CommunityShoutNotificationsToggle";
 import GroupCreated from "src/ts/components/group/CreatedDate";
 import DNDList from "src/ts/components/group/DNDList";
 import GroupStoreSearch from "src/ts/components/group/GroupStoreSearch";
 import CommunityJoinedDate from "src/ts/components/group/JoinedDate";
 import PendingGroupsList from "src/ts/components/group/PendingGroupsList";
 import GroupsTypeSwitch from "src/ts/components/group/TypeSwitch";
-import GroupWallPaginator from "src/ts/components/group/WallPaginator";
 import BlockCreatorButton from "src/ts/components/item/BlockCreatorButton";
 import ViewIconAssetButton from "src/ts/components/item/ViewIconAssetButton";
-import { ROBLOX_COMMUNITIES } from "src/ts/constants/robloxCommunities";
-import { invokeMessage } from "src/ts/helpers/communication/dom";
 import { modifyItemContextMenu } from "src/ts/helpers/contextMenus";
 import { getLangNamespace } from "src/ts/helpers/domInvokes";
 import {
@@ -35,12 +30,7 @@ import { getDeviceMeta } from "src/ts/utils/context";
 import { renderMentions } from "src/ts/utils/description";
 import { setActiveGroup } from "src/ts/utils/groups";
 import { determineCanJoinUser } from "src/ts/utils/joinData";
-import {
-	formatSeoName,
-	getGroupProfileLink,
-	getListCreationsLink,
-	getUserTradeLink,
-} from "src/ts/utils/links";
+import { formatSeoName, getGroupProfileLink, getListCreationsLink } from "src/ts/utils/links";
 import { GROUP_DETAILS_REGEX, USER_PROFILE_REGEX } from "src/ts/utils/regex";
 import { renderAfter, renderAppend, renderAsContainer, renderBefore } from "src/ts/utils/render";
 import { getPath, getPathFromMaybeUrl } from "src/ts/utils/url";
@@ -52,44 +42,6 @@ export default {
 	fn: ({ regexMatches }) => {
 		const groupId = signal(Number.parseInt(regexMatches![0][2], 10));
 		const groupName = signal(regexMatches![0][4].replaceAll("-", " "));
-
-		featureValueIs("communityWallTradeLinks", true, () =>
-			watch<HTMLAnchorElement>(".group-comments-container .content-emphasis", (userLink) => {
-				if (!ROBLOX_COMMUNITIES.TradeCommunities.includes(groupId.value)) return;
-
-				const link = userLink.href;
-				if (!link) return;
-
-				const path = getPathFromMaybeUrl(link);
-				const match = USER_PROFILE_REGEX.exec(path.realPath);
-				if (match) {
-					const userId = Number.parseInt(match[1], 10);
-					renderAfter(
-						<a
-							className="text-link user-trade-link text-label-medium"
-							href={getUserTradeLink(userId)}
-						>
-							{getMessage("group.wall.post.trade")}
-						</a>,
-						userLink,
-					);
-				}
-			}),
-		);
-
-		featureValueIs("communityShoutNotifications", true, () =>
-			watch("#group-shout .container-header > h2", (h2) => {
-				if (h2.parentElement?.querySelector(".group-announcements-notifications-icon"))
-					return;
-				h2.parentElement?.classList.add("flex", "items-center", "justify-between");
-				h2.classList.add("grow-1");
-
-				renderAfter(
-					() => <CommunityShoutNotificationsToggle communityId={groupId.value} />,
-					h2,
-				);
-			}),
-		);
 
 		featureValueIs("showRequestToJoinCommunity", true, () => {
 			const expectedText = getLangNamespace("Feature.Groups").then(
@@ -106,19 +58,6 @@ export default {
 				});
 			});
 		});
-
-		featureValueIs("disableGroupWallInfiniteScrolling", true, () =>
-			invokeMessage("group.wall.setupPagination", undefined).then(() => {
-				watch("group-wall", (wall) => {
-					const previousPaginator = wall.querySelector("#group-wall-paginate");
-					if (previousPaginator) {
-						render(null, previousPaginator);
-					}
-
-					renderAppend(<GroupWallPaginator />, wall);
-				});
-			}),
-		);
 
 		featureValueIs("showCommunityJoinedDate", true, () => {
 			let currentContainer: HTMLElement | undefined;

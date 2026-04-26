@@ -26,11 +26,6 @@ import { ACCOUNTS_FEATURE_ID } from "src/ts/constants/accountsManager";
 import { ACCOUNT_TRACKING_PREVENTION_FEATURE_ID } from "src/ts/constants/accountTrackingPrevention";
 import { AGREEMENTS_STORAGE_KEY, DISMISSED_ALERTS_STORAGE_KEY } from "src/ts/constants/alerts";
 import {
-	COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
-	COMMUNITY_SHOUT_NOTIFICATIONS_FEATURE_ID,
-	COMMUNITY_SHOUT_NOTIFICATIONS_FETCHED_SESSION_CACHE_STORAGE_KEY,
-} from "src/ts/constants/communities";
-import {
 	FRIENDS_LAST_SEEN_BACKGROUND_CHECKS_FEATURE_ID,
 	FRIENDS_LAST_SEEN_FEATURE_ID,
 	FRIENDS_LAST_SEEN_STORAGE_KEY,
@@ -162,7 +157,6 @@ import {
 } from "src/ts/utils/thumbnails";
 import twemoji from "src/ts/utils/twemoji";
 import { getPath, getPathFromMaybeUrl } from "src/ts/utils/url";
-import { fetchCommunityShoutsAndUpdateData } from "../../background-alarms/fetchCommunityShouts";
 import {
 	fetchOnlineFriendsAndUpdateData,
 	handleFriendsPresenceNotifications,
@@ -234,22 +228,6 @@ export default {
 					[ROBUX_HISTORY_STORAGE_KEY]: storageValue,
 				});
 			}),
-		);
-
-		featureValueIs(COMMUNITY_SHOUT_NOTIFICATIONS_FEATURE_ID, true, () =>
-			featureValueIs(COMMUNITY_SHOUT_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID, false, () =>
-				getAuthenticatedUser().then((authenticatedUser) => {
-					if (!authenticatedUser) return;
-
-					getTimedStorage(
-						COMMUNITY_SHOUT_NOTIFICATIONS_FETCHED_SESSION_CACHE_STORAGE_KEY,
-						"session",
-						1200_000,
-						fetchCommunityShoutsAndUpdateData,
-						authenticatedUser.userId,
-					);
-				}),
-			),
 		);
 
 		featureValueIs(TRADING_NOTIFICATIONS_FEATURE_ID, true, () =>

@@ -490,14 +490,6 @@ const featureKeys = [
 		},
 	},
 	{
-		id: "DisableGroupWallInfiniteScrolling",
-		newId: "disableGroupWallInfiniteScrolling",
-		component: {
-			type: "Toggle",
-			defaultValue: false,
-		},
-	},
-	{
 		id: "CreatorMarketplaceViewOffSaleAssetPage",
 		newId: "viewOffsaleStoreItems",
 		component: {
