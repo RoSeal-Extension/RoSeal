@@ -29,7 +29,8 @@ export default function CreatePrivateServerModal({
 	setShow,
 	onCreate,
 }: CreatePrivateServerModalProps) {
-	const { universeId, universeName, privateServerPrice, sellerName } = useServersTabContext();
+	const { universeId, universeName, userPrivateServerPrice, sellerName, privateServerPrice } =
+		useServersTabContext();
 	const [serverName, setServerName] = useState("");
 	const [unsubscribeAutomatically, setUnsubscribeAutomatically] = useState(false);
 	const [createdServer, setCreatedServer] = useState<PlacePrivateServer>();
@@ -142,12 +143,12 @@ export default function CreatePrivateServerModal({
 							? getMessage(
 									"experience.servers.createPrivateServerModal.purchaseComplete.body",
 									{
-										isMonthly: privateServerPrice !== 0,
+										isMonthly: userPrivateServerPrice !== 0,
 										universeName,
 										sellerName,
 										price: (
 											<RobuxView
-												priceInRobux={privateServerPrice}
+												priceInRobux={userPrivateServerPrice}
 												isForSale
 											/>
 										),
@@ -158,11 +159,11 @@ export default function CreatePrivateServerModal({
 									{
 										price: (
 											<RobuxView
-												priceInRobux={privateServerPrice}
+												priceInRobux={userPrivateServerPrice}
 												isForSale
 											/>
 										),
-										isMonthly: privateServerPrice !== 0,
+										isMonthly: userPrivateServerPrice !== 0,
 									},
 								)}
 					</span>
@@ -211,7 +212,7 @@ export default function CreatePrivateServerModal({
 								</p>
 							</div>
 						</div>
-						{privateServerPrice !== 0 && privateServerPrice !== null && (
+						{userPrivateServerPrice !== 0 && userPrivateServerPrice !== null && (
 							<div className="modal-list-item private-server-unsubscribe-automatically-input">
 								<span className="text-label">
 									{getMessage(
@@ -242,7 +243,7 @@ export default function CreatePrivateServerModal({
 				{showFreeServerList && (
 					<FreePrivateServersList setEnableCreateButton={setHasDisabledAServer} />
 				)}
-				{privateServerPrice !== 0 && (
+				{userPrivateServerPrice !== 0 && (
 					<p className="rbx-private-server-renewal-disclosure">
 						{getMessage(
 							"experience.servers.createPrivateServerModal.renewalDisclosure",

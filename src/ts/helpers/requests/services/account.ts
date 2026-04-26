@@ -176,6 +176,7 @@ export type GetCurrentAuthenticatedUserResponse = {
 	id: number;
 	name: string;
 	displayName: string;
+	hasRobloxSubscription: boolean;
 };
 
 export type TransactionAgent = {
@@ -707,6 +708,30 @@ export type UserDevExableRobuxAmount = {
 	updatedUtc: string;
 };
 
+export type ListUserSubscriptionProductType = "CurrencySubscription" | "Blackbird";
+
+export type ListUserSubscriptionsRequest = {
+	productType: ListUserSubscriptionProductType;
+	resultsPerPage: number;
+};
+
+export type ListedUserSubscriptionKey = {
+	type: ListUserSubscriptionProductType;
+	id: string;
+};
+
+export type ListedUserSubscription = {
+	productKey: ListedUserSubscriptionKey;
+	expirationTimestampMs: number | null;
+	nextRenewalTimestampMs: number | null;
+};
+
+export type ListUserSubscriptionsResponse = {
+	subscriptions: ListedUserSubscription[];
+	hasMore: boolean;
+	cursor: string | null;
+};
+
 export async function getCurrentAuthenticatedUser() {
 	return (
 		await httpClient.httpRequest<GetCurrentAuthenticatedUserResponse>({
@@ -951,6 +976,20 @@ export async function getUserSubscriptionsDetails({ userId }: GetUserSubscriptio
 
 		throw err;
 	}
+}
+
+export async function listUserSubscriptions(request: ListUserSubscriptionsRequest) {
+	return (
+		await httpClient.httpRequest<ListUserSubscriptionsResponse>({
+			url: getRobloxUrl("apis", "/subscriptions/v2/user/subscriptions"),
+			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+			errorHandling: "BEDEV2",
+		})
+	).body;
 }
 
 export async function userHeartbeatPulse(request: HeartbeatPulseRequest) {

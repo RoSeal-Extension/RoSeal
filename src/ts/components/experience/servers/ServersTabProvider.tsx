@@ -25,6 +25,7 @@ export type ServersTabContextData = {
 	dataCenters?: RobloxGroupedDataCenterWithDistance[];
 	canManagePlace: boolean;
 	privateServerPrice: number | null;
+	userPrivateServerPrice: number | null;
 	canCreatePrivateServer: boolean;
 	canPreCreatePrivateServer: boolean;
 	preopenPrivateServerCreateModal: boolean;

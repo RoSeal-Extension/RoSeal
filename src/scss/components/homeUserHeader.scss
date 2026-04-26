@@ -76,6 +76,18 @@
         }
     }
 
+    .icon-regular-roblox-plus {
+        &.subscription-icon-medium {
+            height: 27.99px;
+            width: 27.99px;
+        }
+
+        &.subscription-icon-small {
+            height: 16px;
+            width: 16px;
+        }
+    }
+
     .home-header-content {
         width: 75%;
         width: calc(100% - 180px - 36px);
@@ -84,12 +96,12 @@
         h1 {
             margin: 36px 0 12px;
 
-            .icon-premium-medium {
+            .subscription-icon-medium {
                 display: inline-block;
                 margin-bottom: 5px;
             }
 
-            .icon-premium-small {
+            .subscription-icon-small {
                 display: none;
             }
         }
@@ -101,12 +113,12 @@
             h1 {
                 margin: 12px 0 6px;
 
-                .icon-premium-medium {
+                .subscription-icon-medium {
                     display: inline-block;
                     margin-bottom: 5px;
                 }
 
-                .icon-premium-small {
+                .subscription-icon-small {
                     display: none;
                 }
             }
@@ -133,11 +145,11 @@
             h1 {
                 max-width: calc(100% - 52px - 12px);
 
-                .icon-premium-medium {
+                .subscription-icon-medium {
                     display: none;
                 }
 
-                .icon-premium-small {
+                .subscription-icon-small {
                     display: inline-block;
                 }
             }
@@ -191,8 +203,8 @@
         }
 
         .verified-badge-container,
-        .icon-premium-small,
-        .icon-premium-medium {
+        .subscription-icon-small,
+        .subscription-icon-medium {
             margin-left: 4px;
         }
     }

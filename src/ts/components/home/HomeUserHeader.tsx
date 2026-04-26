@@ -137,11 +137,19 @@ export default function HomeUserHeader() {
 									: greetingName}
 							</a>
 							{includeBadges &&
+								authenticatedUser.hasPlus &&
+								!authenticatedUser.hasVerifiedBadge && (
+									<div className="user-icon-container">
+										<span className="icon icon-regular-roblox-plus medium-icon subscription-icon-medium" />
+										<span className="icon icon-regular-roblox-plus small-icon subscription-icon-small" />
+									</div>
+								)}
+							{includeBadges &&
 								authenticatedUser.hasPremium &&
 								!authenticatedUser.hasVerifiedBadge && (
 									<div className="user-icon-container">
-										<span className="medium-icon icon-premium-medium" />
-										<span className="small-icon icon-premium-small" />
+										<span className="medium-icon icon-premium-medium subscription-icon-medium" />
+										<span className="small-icon icon-premium-small subscription-icon-small" />
 									</div>
 								)}
 							{includeBadges && authenticatedUser.hasVerifiedBadge && (

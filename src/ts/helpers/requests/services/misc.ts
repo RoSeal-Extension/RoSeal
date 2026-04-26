@@ -188,7 +188,7 @@ export type UserProfileHeaderProfileComponent = {
 	isPremium: boolean;
 	isVerified: boolean;
 	isRobloxAdmin: boolean;
-	isBlackbird?: boolean;
+	isRobloxPlus?: boolean;
 	counts: {
 		friendsCount: number;
 		followersCount: number;

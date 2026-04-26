@@ -25,7 +25,7 @@ export default function CancelPrivateServerModal({
 	setOpen,
 	onCancel,
 }: CancelPrivateServerModalProps) {
-	const { privateServerPrice } = useServersTabContext();
+	const { userPrivateServerPrice, privateServerPrice } = useServersTabContext();
 
 	return (
 		<SimpleModal
@@ -38,14 +38,14 @@ export default function CancelPrivateServerModal({
 				{
 					type: "neutral",
 					text: getMessage(
-						`experience.servers.cancelPrivateServerModal.buttons.neutral.${privateServerPrice === 0 ? "free" : "paid"}`,
+						`experience.servers.cancelPrivateServerModal.buttons.neutral.${userPrivateServerPrice === 0 ? "free" : "paid"}`,
 					),
 					onClick: () => setOpen(false),
 				},
 				{
 					type: "action",
 					text: getMessage(
-						`experience.servers.cancelPrivateServerModal.buttons.action.${privateServerPrice === 0 ? "free" : "paid"}`,
+						`experience.servers.cancelPrivateServerModal.buttons.action.${userPrivateServerPrice === 0 ? "free" : "paid"}`,
 					),
 					onClick: () => {
 						if (privateServerPrice === 0) {
@@ -83,7 +83,7 @@ export default function CancelPrivateServerModal({
 				},
 			]}
 		>
-			{privateServerPrice === 0
+			{userPrivateServerPrice === 0
 				? getMessage("experience.servers.cancelPrivateServerModal.body.free")
 				: getMessage("experience.servers.cancelPrivateServerModal.body.paid", {
 						date: getRegularTime(expirationDate),

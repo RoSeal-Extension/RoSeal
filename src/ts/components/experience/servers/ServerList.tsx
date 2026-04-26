@@ -80,7 +80,6 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 		placeId,
 		canCreatePrivateServer,
 		canPreCreatePrivateServer,
-		privateServerPrice,
 		privateServerLimit,
 		universeName,
 		userRobuxAmount,
@@ -99,6 +98,7 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 		regionFiltersEnabled,
 		privateServerRowsEnabled,
 		activatePreferredServer,
+		userPrivateServerPrice,
 		setThumbnailHashToPlayerTokens,
 	} = useServersTabContext();
 
@@ -442,7 +442,7 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 	}, [allItems, activatePreferredServer.value, dataCenters, type]);
 
 	useEffect(() => {
-		if (!items || privateServerPrice === 0) return;
+		if (!items || userPrivateServerPrice === 0) return;
 
 		let cancel = false;
 
@@ -475,7 +475,7 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 		return () => {
 			cancel = true;
 		};
-	}, [items]);
+	}, [items, userPrivateServerPrice]);
 
 	useEffect(() => {
 		if (!showServerLikelyBotted) return;
@@ -631,7 +631,7 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 							}}
 						/>
 					}
-					priceInRobux={privateServerPrice}
+					priceInRobux={userPrivateServerPrice}
 					userRobuxAmount={userRobuxAmount}
 					robuxPackage={robuxUpsellPackage}
 					setShow={setShowBuyRobuxPackage}
@@ -790,7 +790,7 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 							{getMessage("experience.servers.private.price", {
 								priceInRobux: (
 									<RobuxView
-										priceInRobux={privateServerPrice}
+										priceInRobux={userPrivateServerPrice}
 										isForSale
 										useTextRobuxForFree
 									/>
@@ -810,7 +810,7 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 								totalServersByUser >= privateServerLimit
 							}
 							onClick={() => {
-								if ((privateServerPrice ?? 0) > (userRobuxAmount ?? 0)) {
+								if ((userPrivateServerPrice ?? 0) > (userRobuxAmount ?? 0)) {
 									setShowBuyRobuxPackage(true);
 								} else {
 									setShowCreatePrivateServerModal(true);

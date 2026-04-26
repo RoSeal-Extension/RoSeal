@@ -93,6 +93,7 @@ export default function Server({
 		dataCenters,
 		placeId,
 		privateServerPrice,
+		userPrivateServerPrice,
 		userRobuxAmount,
 		userLatLong,
 		thumbnailHashToPlayerTokens,
@@ -185,7 +186,12 @@ export default function Server({
 	const isExpiredDueToInsufficientFunds = ownerDetails?.subscription.hasInsufficientFunds;
 	const isExpiredDueToPriceChange = ownerDetails?.subscription.hasPriceChanged;
 	const isInactive = item.type === "private" && !item.accessCode;
-	const isFreeServer = privateServerPrice === 0;
+
+	const isFreeServer =
+		(!authenticatedUser?.hasPlus &&
+			item.type === "private" &&
+			item.owner.id === authenticatedUser?.userId) ||
+		privateServerPrice === 0;
 
 	const canClickServerDebugInfo = showServerDebugInfo !== "idOnly" && !shouldUseStack;
 
@@ -390,7 +396,8 @@ export default function Server({
 								});
 						}
 						if (
-							(userRobuxAmount ?? 0) < (privateServerPrice ?? 0) &&
+							!isFreeServer &&
+							(userRobuxAmount ?? 0) < (userPrivateServerPrice ?? 0) &&
 							isSubscriptionExpired
 						) {
 							setShowBuyRobuxPackage(true);

@@ -71,6 +71,7 @@ export type ServersTabContentProps = Omit<
 	| "privateServerRowsEnabled"
 	| "setCalculateServerDistance"
 	| "preferredServerButtonEnabled"
+	| "userPrivateServerPrice"
 >;
 
 export default function ServersTabContent(data: ServersTabContentProps) {
@@ -164,6 +165,8 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 	const [onlineFriends] = useOnlineFriends();
 	const [authenticatedUser] = useAuthenticatedUser();
 	const [dataCentersWithoutDistance] = usePromise(getRobloxDataCenters, []);
+	const userPrivateServerPrice = authenticatedUser?.hasPlus ? 0 : data.privateServerPrice;
+
 	const [channelData] = usePromise(
 		() =>
 			authenticatedUser &&
@@ -212,14 +215,14 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 		[],
 	);
 	const [robuxAndPackage] = usePromise(async () => {
-		if (!data.privateServerPrice) return;
+		if (!userPrivateServerPrice) return;
 
 		const { robux } = await getUserRobuxAmount();
-		if (robux >= data.privateServerPrice) return [robux, undefined] as const;
+		if (robux >= userPrivateServerPrice) return [robux, undefined] as const;
 
 		try {
 			const robuxPackage = await getRobuxUpsellPackage({
-				attemptRobuxAmount: data.privateServerPrice,
+				attemptRobuxAmount: userPrivateServerPrice,
 				upsellPlatform: "WEB",
 				userRobuxBalance: robux,
 			});
@@ -228,7 +231,7 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 		} catch {
 			return [robux, undefined] as const;
 		}
-	}, [data.privateServerPrice]);
+	}, [userPrivateServerPrice]);
 
 	const [userLatLong, setUserLatLong] = useState<[number, number] | undefined>(undefined);
 	const dataCenters = useMemo(() => {
@@ -317,6 +320,7 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 		<ServersTabContext.Provider
 			value={{
 				...data,
+				userPrivateServerPrice,
 				dataCenters: dataCenters ?? undefined,
 				userRobuxAmount: robuxAndPackage?.[0],
 				robuxUpsellPackage: robuxAndPackage?.[1],

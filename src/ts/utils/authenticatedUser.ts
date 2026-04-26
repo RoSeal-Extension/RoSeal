@@ -9,7 +9,7 @@ export type AuthenticatedUser = {
 	created: Date;
 	hasPremium: boolean;
 	hasVerifiedBadge: boolean;
-	hasBlackbird: boolean;
+	hasPlus: boolean;
 };
 
 const USER_DATA_SELECTOR = 'meta[name="user-data"]';
@@ -43,7 +43,7 @@ export function getAuthenticatedUserSync(
 			created: new Date(dataset.created!),
 			hasPremium: dataset.ispremiumuser?.toLowerCase() === "true",
 			hasVerifiedBadge: dataset.hasverifiedbadge?.toLowerCase() === "true",
-			hasBlackbird: dataset.membership?.toLowerCase() === "blackbird",
+			hasPlus: dataset.membership?.toLowerCase() === "blackbird",
 		};
 	}
 

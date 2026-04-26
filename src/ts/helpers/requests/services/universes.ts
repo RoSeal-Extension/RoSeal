@@ -1057,7 +1057,7 @@ export async function getExperienceDetailedGuidelines(
 					method: "POST",
 					url: getRobloxUrl(
 						"apis",
-						"/experience-guidelines-service/v1beta1/detailed-guidelines",
+						"/experience-guidelines-service/v2beta1/detailed-guidelines",
 					),
 					body: {
 						type: "json",

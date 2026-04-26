@@ -29,6 +29,7 @@ export default {
 				hasVerifiedBadge: data.hasVerifiedBadge,
 				created: new Date(data.created),
 				hasPremium: data.isPremium,
+				hasPlus: data.hasRobloxSubscription === true,
 				username: data.name,
 				displayName: data.displayName,
 			};

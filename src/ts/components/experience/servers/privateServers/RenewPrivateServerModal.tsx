@@ -20,7 +20,8 @@ export default function RenewPrivateServerModal({
 	setShow,
 	onRenew,
 }: RenewPrivateServerModalProps) {
-	const { universeName, sellerName, privateServerPrice } = useServersTabContext();
+	const { universeName, sellerName, userPrivateServerPrice, privateServerPrice } =
+		useServersTabContext();
 
 	return (
 		<SimpleModal
@@ -67,7 +68,7 @@ export default function RenewPrivateServerModal({
 			</p>
 			<p className="renew-server-modal-body-text">
 				{getMessage("experience.servers.renewPrivateServerModal.body.two", {
-					price: <RobuxView priceInRobux={privateServerPrice} isForSale />,
+					price: <RobuxView priceInRobux={userPrivateServerPrice} isForSale />,
 				})}
 			</p>
 		</SimpleModal>
