@@ -498,20 +498,20 @@ export default function usePages<T, U, V = unknown, X = T>({
 	) => {
 		if (requestInProgress.value) {
 			if (queuedAction === "reset") {
-				resetNowQueued.value = true;
-			} else if (queuedAction === "refreshFirst") {
+				// Interrupt for reset since it's destructive
+				return handleItems(data);
+			}
+			if (queuedAction === "refreshFirst") {
 				// Queue dep-change refreshes — shouldAlwaysUpdate handles progressive display
 				// so the filter is visible as each batch loads without needing a new fetch.
 				// Immediately interrupting here causes two concurrent requests for the same
 				// initial cursor (e.g. feature flags resolving on the first render).
 				refreshToStartQueued.value = true;
-			} else {
-				// "update" = user-triggered actions (setPageNumber, removeItem).
-				// Interrupt current run so UI responds immediately.
-				return handleItems(data);
+				return;
 			}
-
-			return;
+			// "update" = user-triggered actions (setPageNumber, removeItem).
+			// Interrupt current run so UI responds immediately.
+			return handleItems(data);
 		}
 
 		return handleItems(data);
@@ -682,6 +682,7 @@ export default function usePages<T, U, V = unknown, X = T>({
 			[pageData.value],
 		),
 		reset: () => {
+			loadAll.value = false;
 			requestHandleItems(
 				{
 					items: [],

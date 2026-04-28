@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { FRIEND_REQUESTS_FILTER_SORTS } from "src/ts/constants/friends";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { profileInsightsProcessor } from "src/ts/helpers/processors/profileInsightsProcessor";
 import type { SortOrder } from "src/ts/helpers/requests/services/badges";
 import { multiGetProfileComponentsData } from "src/ts/helpers/requests/services/misc";
 import {
@@ -29,7 +30,6 @@ import FriendRequestFilters from "../modals/FriendRequestFilters";
 import IgnoreAllFriendRequestsModal from "../modals/IgnoreFriendRequestModal";
 import type { SourceUniverseData } from "../Page";
 import FriendsPageTitle from "../PageTitle";
-import { profileInsightsProcessor } from "src/ts/helpers/processors/profileInsightsProcessor";
 
 export type FriendRequestsTabProps = {
 	userId: number;
@@ -391,9 +391,19 @@ export default function FriendRequestsTab({
 				limit: 100,
 				cursor: pageData.nextCursor,
 			}).then((data) => {
+				// Remove duplicate friend requests
+				const uniqueItems: UserFriendRequest[] = [];
+				const seenIds = new Set<number>();
+				for (const request of data.data) {
+					if (!seenIds.has(request.id)) {
+						seenIds.add(request.id);
+						uniqueItems.push(request);
+					}
+				}
+
 				return {
 					...pageData,
-					items: data.data,
+					items: uniqueItems,
 					nextCursor: data.nextPageCursor || undefined,
 					hasNextPage: data.nextPageCursor !== null,
 				};
