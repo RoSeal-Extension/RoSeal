@@ -9,6 +9,8 @@ export function useTheme() {
 
 	useEffect(() => {
 		watchOnce("body").then((body) => {
+			body.classList.remove("system-theme");
+
 			theme.value = body.classList.contains("dark-theme") ? "dark" : "light";
 
 			watchAttributes(body, () => {

@@ -195,6 +195,14 @@
         width: 100px;
         height: 100px;
     }
+
+    .game-sort-carousel-wrapper {
+        transition: padding-bottom 0.1s ease-in;
+    }
+
+    .game-sort-carousel-wrapper:has([data-testid="game-tile-hover-game-tile-contents"] .regular-play-button) {
+        padding-bottom: 6px;
+    }
 }
 
 .roseal-friend-tile-dropdown {
