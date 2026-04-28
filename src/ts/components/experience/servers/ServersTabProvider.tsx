@@ -56,6 +56,7 @@ export type ServersTabContextData = {
 	excludeFullServersDefaultEnabled: boolean;
 	privateServerRowsEnabled: boolean;
 	preferredServerButtonEnabled: boolean;
+	showServerUptimeEnabled: boolean;
 
 	preferredServerRegionLatLong?: [number, number];
 	tryGetServerInfoEnabled: FeatureValue<

@@ -66,6 +66,7 @@ export type MinimalServerJoinData = {
 			version: string;
 			channelName: string;
 			placeVersion?: number;
+			startedMs?: number;
 			likelyCreatedByRobloxStaff: boolean;
 		};
 		sessionInfo: {
@@ -139,8 +140,9 @@ export async function tryGetServerJoinData<
 							channelName:
 								response.joinScript.channelName?.toLowerCase() ||
 								DEFAULT_RELEASE_CHANNEL_NAME,
-							// if channel includes any uppercase letters
 							placeVersion: response.joinScript.placeVersion,
+							startedMs: response.joinScript.serverClaimedTime,
+							// if channel includes any uppercase letters
 							likelyCreatedByRobloxStaff: /[A-Z]/.test(
 								response.joinScript.channelName,
 							),

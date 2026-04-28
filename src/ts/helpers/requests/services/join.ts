@@ -103,6 +103,7 @@ export type JoinScript = {
 	translationDisplayMode: string;
 	imageTranslationContentVariantType: string;
 	placeVersion?: number;
+	serverClaimedTime?: number;
 };
 
 export type CreatorBan = {

@@ -1837,6 +1837,12 @@
 					"$message": "By"
 				}
 			},
+			"uptime": {
+				"$context": "Server uptime text",
+				"text": {
+					"$message": "Uptime: {time}"
+				}
+			},
 			"placeVersion": {
 				"$context": "Place version stat",
 				"text": {
@@ -4232,6 +4238,11 @@
 				"showServerPlaceVersion": {
 					"name": {
 						"$message": "Show server place version"
+					}
+				},
+				"showServerUptime": {
+					"name": {
+						"$message": "Show server uptime"
 					}
 				},
 				"showServerDistance": {
@@ -8993,6 +9004,10 @@
 						"yes": {
 							"$message": "Yes"
 						}
+					},
+					"uptime": {
+						"$context": "Server uptime",
+						"$message": "Uptime"
 					}
 				},
 				"errors": {
@@ -9467,6 +9482,10 @@
 					"distance": {
 						"$message": "{distance} away",
 						"$context": "Estimated distance to authenticated user"
+					},
+					"uptime": {
+						"$message": "Uptime: {time}",
+						"$context": "How long the server has been online"
 					},
 					"placeVersion": {
 						"$message": "Place Version: {placeVersion}",

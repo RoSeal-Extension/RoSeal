@@ -1,4 +1,5 @@
 import MdOutlineCloudSync from "@material-symbols/svg-400/outlined/cloud_sync-fill.svg";
+import MdOutlineTimer from "@material-symbols/svg-400/outlined/timer-fill.svg";
 import MdOutlineDns from "@material-symbols/svg-400/outlined/dns-fill.svg";
 import MdOutlineHistory from "@material-symbols/svg-400/outlined/history-fill.svg";
 import MdOutlinePolyline from "@material-symbols/svg-400/outlined/polyline-fill.svg";
@@ -29,6 +30,7 @@ import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	asLocaleString,
 	distanceFormat,
+	getAbsoluteTime,
 	getShortRelativeTime,
 } from "src/ts/helpers/i18n/intlFormats";
 import { RESTError } from "src/ts/helpers/requests/main";
@@ -62,6 +64,8 @@ import RenewPrivateServerModal from "./privateServers/RenewPrivateServerModal";
 import type { ServerWithJoinData } from "./ServerList";
 import { useServersTabContext } from "./ServersTabProvider";
 import { getLocalizedRegionName } from "./utils";
+import { getFormattedDuration } from "../../utils/getFormattedDuration";
+import Tooltip from "../../core/Tooltip";
 
 export type ServerListType = "private" | "public" | "friends";
 
@@ -112,6 +116,7 @@ export default function Server({
 		showConnectionsInServerEnabled,
 		showServerLocationEnabled,
 		showServerConnectionSpeedEnabled,
+		showServerUptimeEnabled,
 		setUserLatLong,
 	} = useServersTabContext();
 
@@ -188,7 +193,7 @@ export default function Server({
 	const isInactive = item.type === "private" && !item.accessCode;
 
 	const isFreeServer =
-		(!authenticatedUser?.hasPlus &&
+		(authenticatedUser?.hasPlus &&
 			item.type === "private" &&
 			item.owner.id === authenticatedUser?.userId) ||
 		privateServerPrice === 0;
@@ -209,6 +214,16 @@ export default function Server({
 
 	const isSecretlyRestrictedServer =
 		item.joinData?.data !== undefined && item.joinData?.data?.sessionInfo?.gameId !== item.id;
+
+	const startTime = useMemo(() => {
+		if (!showServerUptimeEnabled) return;
+		const time = item.joinData?.data?.rcc.startedMs;
+
+		if (!time) return;
+		const date = new Date(time);
+
+		return [getFormattedDuration(new Date(date), new Date()), getAbsoluteTime(date)];
+	}, [item.joinData?.data?.rcc.startedMs, showServerUptimeEnabled]);
 
 	const privateServerRenewalData = useMemo(() => {
 		if (isFreeServer || !showServerExpiringDateEnabled) return;
@@ -592,6 +607,26 @@ export default function Server({
 							),
 						})}
 					</span>
+				</div>
+			)}
+			{startTime !== undefined && showServerUptimeEnabled && (
+				<div className="server-uptime-info server-info">
+					<span className="info-icon">
+						<MdOutlineTimer className="roseal-icon" />
+					</span>
+					<Tooltip
+						button={
+							<span>
+								{getMessage("experience.servers.server.stats.uptime", {
+									time: startTime[0],
+								})}
+							</span>
+						}
+						includeContainerClassName={false}
+						containerClassName="info-text"
+					>
+						{startTime[1]}
+					</Tooltip>
 				</div>
 			)}
 			{placeVersion !== undefined && showServerPlaceVersionEnabled && (

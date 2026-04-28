@@ -1471,14 +1471,14 @@ roseal-font {
     }
 }
 
-#premium-status-info {
+#subscription-status-info {
     display: inline-block;
     margin-left: 5px;
     margin-top: 2px;
 }
 
-.premium-status-info-tooltip {
-    .premium-info {
+.subscription-status-info-tooltip {
+    .subscription {
         margin-top: 0.4em;
     }
 
@@ -1490,12 +1490,12 @@ roseal-font {
     }
 }
 
-#premium-status-info {
+#subscription-status-info {
     .btn-generic-navigation {
         position: relative;
     }
 
-    #nav-premium-status-icon-dot {
+    #nav-subscription-status-icon-dot {
         position: absolute;
         bottom: 0;
         right: 0;
@@ -1510,7 +1510,7 @@ roseal-font {
 }
 
 [data-rosealfe-premiumstatusnavbar] {
-    &:has(#premium-status-info) {
+    &:has(#subscription-status-info) {
         .rbx-upgrade-now {
             display: none;
         }

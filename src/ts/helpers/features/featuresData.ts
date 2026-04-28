@@ -1350,6 +1350,14 @@ export const sections = [
 											},
 											{
 												type: "Regular",
+												id: "improvedExperienceServersTab.tryGetServerInfo.showServerUptime",
+												component: {
+													type: "Toggle",
+													defaultValue: true,
+												},
+											},
+											{
+												type: "Regular",
 												id: "improvedExperienceServersTab.tryGetServerInfo.showServerPlaceVersion",
 												component: {
 													type: "Toggle",

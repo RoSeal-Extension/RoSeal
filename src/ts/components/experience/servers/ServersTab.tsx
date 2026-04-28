@@ -72,6 +72,7 @@ export type ServersTabContentProps = Omit<
 	| "setCalculateServerDistance"
 	| "preferredServerButtonEnabled"
 	| "userPrivateServerPrice"
+	| "showServerUptimeEnabled"
 >;
 
 export default function ServersTabContent(data: ServersTabContentProps) {
@@ -157,6 +158,10 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 	);
 	const [preferredServerButtonEnabled] = useFeatureValue(
 		"improvedExperienceServersTab.tryGetServerInfo.preferredServerButton",
+		false,
+	);
+	const [showServerUptimeEnabled] = useFeatureValue(
+		"improvedExperienceServersTab.tryGetServerInfo.showServerUptime",
 		false,
 	);
 
@@ -353,6 +358,8 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 				showServerConnectionSpeedEnabled: showServerConnectionSpeedEnabled === true,
 				privateServerRowsEnabled: privateServerRowsEnabled === true,
 				preferredServerButtonEnabled: preferredServerButtonEnabled === true,
+				showServerUptimeEnabled: showServerUptimeEnabled === true,
+
 				setCalculateServerDistance,
 				setPromptLocationPermission,
 				setUserLatLong: (latLong) => {

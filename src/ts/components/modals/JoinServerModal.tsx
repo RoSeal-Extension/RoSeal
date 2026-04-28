@@ -1,4 +1,5 @@
 import MdOutlineHistory from "@material-symbols/svg-400/outlined/history-fill.svg";
+import MdOutlineTimer from "@material-symbols/svg-400/outlined/timer-fill.svg";
 import MdOutlineProgressActivity from "@material-symbols/svg-400/outlined/progress_activity-fill.svg";
 import MdOutlineTVRemote from "@material-symbols/svg-400/outlined/tv_remote-fill.svg";
 import MdOutlineComputer from "@material-symbols/svg-400/outlined/computer-fill.svg";
@@ -8,7 +9,7 @@ import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { DEFAULT_RELEASE_CHANNEL_NAME } from "src/ts/constants/misc";
 import { getMessage, getMessageKeysWithPrefix } from "src/ts/helpers/i18n/getMessage";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { asLocaleString, getAbsoluteTime } from "src/ts/helpers/i18n/intlFormats";
 import { onNotificationType } from "src/ts/helpers/notifications";
 import { profileProcessor } from "src/ts/helpers/processors/profileProcessor";
 import {
@@ -37,6 +38,8 @@ import { getLocalizedRegionName } from "../experience/servers/utils";
 import useFeatureValue from "../hooks/useFeatureValue";
 import usePromise from "../hooks/usePromise";
 import { randomArrItem } from "src/ts/utils/random";
+import Tooltip from "../core/Tooltip";
+import { getFormattedDuration } from "../utils/getFormattedDuration";
 
 export type JoinServerModalProps = {
 	data: Signal<CurrentServerJoinMetadata | undefined | null>;
@@ -398,6 +401,14 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 	}, [data.value]);
 
 	const placeVersion = joinData?.data?.rcc.placeVersion;
+	const startTime = useMemo(() => {
+		const time = joinData?.data?.rcc.startedMs;
+
+		if (!time) return;
+		const date = new Date(time);
+
+		return [getFormattedDuration(new Date(date), new Date()), getAbsoluteTime(date)];
+	}, [joinData?.data?.rcc.startedMs]);
 
 	const shouldShowCard = !!(
 		data.value &&
@@ -478,6 +489,26 @@ export default function JoinServerModal({ data, resolveOnJoin }: JoinServerModal
 							<span className="stat-text">
 								{getLocalizedRegionName(dataCenter.location)}
 							</span>
+						</li>
+					)}
+					{startTime !== undefined && (
+						<li className="stat-item">
+							<span className="stat-icon">
+								<MdOutlineTimer className="roseal-icon" />
+							</span>
+							<Tooltip
+								includeContainerClassName={false}
+								containerClassName="stat-text"
+								button={
+									<span>
+										{getMessage("joinModal.serverInfo.uptime.text", {
+											time: startTime[0],
+										})}
+									</span>
+								}
+							>
+								{startTime[1]}
+							</Tooltip>
 						</li>
 					)}
 					{placeVersion !== undefined && (

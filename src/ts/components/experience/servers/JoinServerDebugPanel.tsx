@@ -1,7 +1,7 @@
 import { useMemo, useState } from "preact/hooks";
 import { DEFAULT_RELEASE_CHANNEL_NAME, TEST_RCC_CHANNEL_NAME } from "src/ts/constants/misc";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { asLocaleString, getAbsoluteTime } from "src/ts/helpers/i18n/intlFormats";
 import {
 	getMatchmadeServerData,
 	getServerInstanceData,
@@ -18,6 +18,8 @@ import TextInput from "../../core/TextInput";
 import usePromise from "../../hooks/usePromise";
 import { useServersTabContext } from "./ServersTabProvider";
 import { getLocalizedRegionName } from "./utils";
+import { getFormattedDuration } from "../../utils/getFormattedDuration";
+import Tooltip from "../../core/Tooltip";
 
 export default function JoinServerDebugPanel() {
 	const [deviceMeta] = usePromise(getDeviceMeta, []);
@@ -157,6 +159,15 @@ export default function JoinServerDebugPanel() {
 			}
 		}
 	}, [serverData?.data?.datacenter.id, dataCenters]);
+
+	const startTime = useMemo(() => {
+		const time = serverData?.data?.rcc.startedMs;
+
+		if (!time) return;
+		const date = new Date(time);
+
+		return [getFormattedDuration(new Date(date), new Date()), getAbsoluteTime(date)];
+	}, [serverData?.data?.rcc.startedMs]);
 
 	return (
 		<div className="section debug-join-panel">
@@ -304,7 +315,21 @@ export default function JoinServerDebugPanel() {
 									</span>
 								</li>
 							)}
-							{serverData?.data?.rcc?.likelyCreatedByRobloxStaff && (
+							{!!startTime && (
+								<li className="server-uptime-info server-info">
+									<span className="info-label">
+										{getMessage("experience.servers.joinDebug.data.uptime")}
+									</span>
+									<Tooltip
+										button={<span>{startTime[0]}</span>}
+										includeContainerClassName={false}
+										containerClassName="info-text"
+									>
+										{startTime[1]}
+									</Tooltip>
+								</li>
+							)}
+							{serverData.data.rcc.likelyCreatedByRobloxStaff && (
 								<li className="server-created-by-staff-info server-info">
 									<span className="info-label">
 										{getMessage(
