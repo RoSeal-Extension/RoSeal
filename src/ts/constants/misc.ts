@@ -79,6 +79,7 @@ export const PERSIST_TRANSACTIONS_SELECTION_LOCALSTORAGE_KEY = "persistTransacti
 
 export const PREMIUM_STATUS_BUTTON_ACKNOWLEDGED_LOCALSTORAGE_KEY =
 	"premiumStatusButtonAcknowledged";
+export const PLUS_STATUS_BUTTON_ACKNOWLEDGED_LOCALSTORAGE_KEY = "plusStatusButtonAcknowledged";
 export const PREMIUM_MEMBERSHIP_STATUS_SESSION_CACHE_STORAGE_KEY = "cache.premiumMembership";
 export const ROBLOX_MEMBERSHIP_STATUS_SESSION_CACHE_STORAGE_KEY = "cache.robloxSubscription";
 

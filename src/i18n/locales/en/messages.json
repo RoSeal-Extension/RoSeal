@@ -11788,14 +11788,28 @@
 		"premiumStatus": {
 			"$context": "Premium status",
 			"plus": {
-				"$context": "Plus version of the title",
-				"expired": {
-					"$message": "Roblox Plus expired",
-					"$context": ""
+				"title": {
+					"$context": "Plus title",
+					"expired": {
+						"$message": "Roblox Plus expired",
+						"$context": ""
+					},
+					"active": {
+						"$message": "Roblox Plus active",
+						"$context": ""
+					}
 				},
-				"active": {
-					"$message": "Roblox Plus active",
-					"$context": ""
+				"planName": {
+					"$context": "Plan name",
+					"$message": "Roblox Plus"
+				},
+				"expires": {
+					"$context": "Expiration time left",
+					"$message": "Expires {time}"
+				},
+				"renews": {
+					"$context": "Renewal date",
+					"$message": "Renews {time}"
 				}
 			},
 			"title": {
@@ -11824,13 +11838,13 @@
 				"$context": "Expiration time left",
 				"$message": "Expires {time}"
 			},
-			"lifetime": {
-				"$context": "Lifetime status",
-				"$message": "Lifetime"
-			},
 			"renews": {
 				"$context": "Renewal date",
 				"$message": "Renews {time}"
+			},
+			"lifetime": {
+				"$context": "Lifetime status",
+				"$message": "Lifetime"
 			},
 			"links": {
 				"subscriptions": {
@@ -11839,6 +11853,10 @@
 				},
 				"premium": {
 					"$message": "Premium",
+					"$context": ""
+				},
+				"plus": {
+					"$message": "Plus",
 					"$context": ""
 				}
 			}

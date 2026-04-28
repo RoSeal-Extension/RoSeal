@@ -343,6 +343,10 @@ export function getPremiumMembershipLink() {
 	return getLink("www", "/premium/membership");
 }
 
+export function getPlusMembershipLink() {
+	return getLink("www", "/plus");
+}
+
 export function getTradesLink(tab?: string) {
 	return getLink("www", `/trades${tab !== undefined ? `?tab=${tab}` : ""}`);
 }
