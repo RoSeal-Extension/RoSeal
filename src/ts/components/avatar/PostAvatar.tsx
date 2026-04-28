@@ -19,13 +19,21 @@ export default function PostAvatarButton() {
 
 		return previewUserLookCreation({
 			assets: currentAvatar.assets,
-		}).catch((err) => {
-			if (err && err instanceof RESTError && err.errors?.[0].code === 1) {
-				setIsAccessible(false);
-			}
+		})
+			.then((data) => {
+				setIsAccessible(true);
 
-			throw err;
-		});
+				return data;
+			})
+			.catch((err) => {
+				if (err && err instanceof RESTError && err.errors?.[0].code === 1) {
+					setIsAccessible(false);
+				} else {
+					setIsAccessible(true);
+				}
+
+				throw err;
+			});
 	}, [currentAvatar]);
 
 	useEffect(() => addMessageListener("avatar.avatarUpdated", setCurrentAvatar), []);
