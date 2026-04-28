@@ -100,7 +100,7 @@
 				"img/*",
 				"html/popup.html"
 			],
-			"matches": ["*://{ROBLOX_DOMAIN('*')}/*"]
+			"matches": ["https://{ROBLOX_DOMAIN('www')}/*", "https://{ROBLOX_DOMAIN('create')}/*"]
 		}
 	]
 }
