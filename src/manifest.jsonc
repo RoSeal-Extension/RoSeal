@@ -58,7 +58,7 @@
 
 	"content_scripts": [
 		{
-			"matches": ["https://{ROSEAL_WWW_URL}/*"],
+			"matches": ["{ROSEAL_WWW_URL}/*"],
 			"js": ["js/roseal.js"],
 			"all_frames": true,
 			"run_at": "document_start"
