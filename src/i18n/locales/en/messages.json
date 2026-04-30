@@ -2920,6 +2920,11 @@
 					"$message": "Separate Body assets into their own tab"
 				}
 			},
+			"separateMakeupTab": {
+				"name": {
+					"$message": "Separate Makeup assets into their own tab"
+				}
+			},
 			"showTotalValue": {
 				"name": {
 					"$message": "Show the total value of the user's outfit and emotes next to the Currently Wearing header"
