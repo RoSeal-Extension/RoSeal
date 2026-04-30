@@ -55,6 +55,7 @@ export type AssetTypeData = {
 	meta?: {
 		order: number;
 	};
+	isMakeup?: boolean;
 };
 
 export const assetTypes = [
@@ -548,20 +549,19 @@ export const assetTypes = [
 		assetTypeId: 76,
 		lockedLimit: 1,
 		isLayered: true,
-		isPartOfHead: true,
 		is3D: true,
 		meta: {
 			order: 1,
 		},
 		isAvatarAsset: true,
 		isWearable: true,
+		isMakeup: true,
 	},
 	{
 		assetType: "EyelashAccessory",
 		alternativeTypes: ["Eyelash Accessory"],
 		assetTypeId: 77,
 		isLayered: true,
-		isPartOfHead: true,
 		lockedLimit: 1,
 		is3D: true,
 		meta: {
@@ -569,6 +569,7 @@ export const assetTypes = [
 		},
 		isAvatarAsset: true,
 		isWearable: true,
+		isMakeup: true,
 	},
 	{
 		assetType: "MoodAnimation",
@@ -629,7 +630,7 @@ export const assetTypes = [
 		is3D: true,
 		isAvatarAsset: true,
 		isWearable: true,
-		isPartOfHead: true,
+		isMakeup: true,
 	},
 	{
 		assetType: "LipMakeup",
@@ -638,7 +639,7 @@ export const assetTypes = [
 		isAvatarAsset: true,
 		is3D: true,
 		isWearable: true,
-		isPartOfHead: true,
+		isMakeup: true,
 	},
 	{
 		assetType: "EyeMakeup",
@@ -647,11 +648,15 @@ export const assetTypes = [
 		isAvatarAsset: true,
 		is3D: true,
 		isWearable: true,
-		isPartOfHead: true,
+		isMakeup: true,
 	},
 	{
 		assetType: "VoxelFragment",
 		assetTypeId: 91,
+	},
+	{
+		assetType: "AvatarBackground",
+		assetTypeId: 92,
 	},
 ] satisfies AssetTypeData[];
 

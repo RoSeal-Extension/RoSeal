@@ -333,22 +333,27 @@ const inventoryItemCategories = [
 				value: "heads/mood-animations",
 			},
 			{
-				value: "heads/eyebrows",
-			},
-			{
-				value: "heads/eyelashes",
-			},
-			{
 				value: "heads/dynamic-heads-asset",
 			},
+		],
+	},
+	{
+		id: "makeup",
+		values: [
 			{
-				value: "heads/face-makeup",
+				value: "makeup/eyebrows",
 			},
 			{
-				value: "heads/lip-makeup",
+				value: "makeup/eyelashes",
 			},
 			{
-				value: "heads/eye-makeup",
+				value: "makeup/faces",
+			},
+			{
+				value: "makeup/lips",
+			},
+			{
+				value: "makeup/eyes",
 			},
 		],
 	},
@@ -487,22 +492,27 @@ const favoriteItemCategories = [
 				value: "heads/mood-animations",
 			},
 			{
-				value: "heads/eyebrows",
-			},
-			{
-				value: "heads/eyelashes",
-			},
-			{
 				value: "heads/dynamic-heads-asset",
 			},
+		],
+	},
+	{
+		id: "makeup",
+		values: [
 			{
-				value: "heads/face-makeup",
+				value: "makeup/eyebrows",
 			},
 			{
-				value: "heads/lip-makeup",
+				value: "makeup/eyelashes",
 			},
 			{
-				value: "heads/eye-makeup",
+				value: "makeup/faces",
+			},
+			{
+				value: "makeup/lips",
+			},
+			{
+				value: "makeup/eyes",
 			},
 		],
 	},
@@ -2140,6 +2150,14 @@ export const sections = [
 									component: {
 										type: "Toggle",
 										defaultValue: false,
+									},
+								},
+								{
+									type: "Regular",
+									id: "improvedUserCurrentlyWearing.separateMakeupTab",
+									component: {
+										type: "Toggle",
+										defaultValue: true,
 									},
 								},
 								{

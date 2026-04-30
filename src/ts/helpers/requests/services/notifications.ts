@@ -526,7 +526,11 @@ export type ListedStreamNotification = {
 	metadataCollection: [1];
 	eventCount: number;
 	content: {
-		notificationType: "ExperienceInvitation" | "SpecialItem";
+		notificationType:
+			| "ExperienceInvitation"
+			| "SpecialItem"
+			| "MarketplaceInactiveUser"
+			| "MarketplaceSpringSale";
 		currentState: "default";
 	};
 };

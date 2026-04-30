@@ -115,7 +115,11 @@ export default {
 					const data = (await res.json()) as ListedStreamNotification[];
 					for (let i = 0; i < data.length; i++) {
 						const item = data[i];
-						if (item.content?.notificationType === "SpecialItem") {
+						if (
+							item.content?.notificationType === "SpecialItem" ||
+							item.content?.notificationType === "MarketplaceInactiveUser" ||
+							item.content?.notificationType === "MarketplaceSpringSale"
+						) {
 							data.splice(i, 1);
 							i--;
 						}

@@ -25,7 +25,7 @@ export type UserProfileCurrentlyWearingProps = {
 	userId: number;
 };
 
-type ActiveTab = "assets" | "emotes" | "animations" | "bodyParts";
+type ActiveTab = "assets" | "emotes" | "animations" | "bodyParts" | "makeup";
 type EmoteWithDetails = AvatarEmote & {
 	details?: LookItemDetails<MarketplaceItemType>;
 	showBundle?: boolean;
@@ -46,6 +46,10 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 	);
 	const [separateBodyParts] = useFeatureValue(
 		"improvedUserCurrentlyWearing.separateBodyPartsTab",
+		false,
+	);
+	const [separateMakeup] = useFeatureValue(
+		"improvedUserCurrentlyWearing.separateMakeupTab",
 		false,
 	);
 	const [showTotalValue] = useFeatureValue("improvedUserCurrentlyWearing.showTotalValue", false);
@@ -86,82 +90,95 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 		});
 	}, [avatar?.assets, avatar?.emotes]);
 
-	const [wearingAssets, wearingAnimations, emotes, bodyParts, totalValue] = useMemo(() => {
-		if (!avatar) return [[], [], [], [], 0];
+	const [wearingAssets, wearingAnimations, emotes, bodyParts, makeup, totalValue] =
+		useMemo(() => {
+			if (!avatar) return [[], [], [], [], [], 0];
 
-		const assets: AssetWithDetails[] = [];
-		const animations: AssetWithDetails[] = [];
-		const bodyParts: AssetWithDetails[] = [];
-		const emotes: EmoteWithDetails[] = [];
+			const assets: AssetWithDetails[] = [];
+			const animations: AssetWithDetails[] = [];
+			const bodyParts: AssetWithDetails[] = [];
+			const makeup: AssetWithDetails[] = [];
+			const emotes: EmoteWithDetails[] = [];
 
-		const totalValueItems = new Set<LookItemDetails<MarketplaceItemType>>();
+			const totalValueItems = new Set<LookItemDetails<MarketplaceItemType>>();
 
-		const assetIdToItem: Record<number, LookItemDetails<MarketplaceItemType>> = {};
-		if (purchaseDetails?.look.items) {
-			for (const item of purchaseDetails.look.items) {
-				if (item.itemType === "Asset") {
-					assetIdToItem[item.id] = item;
-				} else if (item.itemType === "Bundle") {
-					if (item.assetsInBundle)
-						for (const item2 of item.assetsInBundle) {
-							assetIdToItem[item2.id] = item;
-						}
+			const assetIdToItem: Record<number, LookItemDetails<MarketplaceItemType>> = {};
+			if (purchaseDetails?.look.items) {
+				for (const item of purchaseDetails.look.items) {
+					if (item.itemType === "Asset") {
+						assetIdToItem[item.id] = item;
+					} else if (item.itemType === "Bundle") {
+						if (item.assetsInBundle)
+							for (const item2 of item.assetsInBundle) {
+								assetIdToItem[item2.id] = item;
+							}
+					}
 				}
 			}
-		}
 
-		for (const item of avatar.assets) {
-			const type = getAssetTypeData(item.assetType.id);
+			for (const item of avatar.assets) {
+				const type = getAssetTypeData(item.assetType.id);
 
-			const shouldInclude = !type?.isUsuallyTemplate && !RTHRO_ASSET_IDS.includes(item.id);
+				const shouldInclude =
+					!type?.isUsuallyTemplate && !RTHRO_ASSET_IDS.includes(item.id);
 
-			const details = assetIdToItem[item.id];
-			const newAsset = {
-				...item,
-				details,
-				showBundle: shouldInclude,
-			};
+				const details = assetIdToItem[item.id];
+				const newAsset = {
+					...item,
+					details,
+					showBundle: shouldInclude,
+				};
 
-			const isAnimation = type?.isAnimated && type.assetType !== emoteAssetTypeName;
-			const isBodyPart = type?.isBodyPart || type?.isPartOfHead;
+				const isAnimation = type?.isAnimated && type.assetType !== emoteAssetTypeName;
+				const isBodyPart = type?.isBodyPart || type?.isPartOfHead;
+				const isMakeup = type?.isMakeup;
 
-			if (isAnimation && separateAnimations) {
-				animations.push(newAsset);
-			} else if (isBodyPart && separateBodyParts) {
-				bodyParts.push(newAsset);
-			} else {
-				assets.push(newAsset);
+				if (isAnimation && separateAnimations) {
+					animations.push(newAsset);
+				} else if (isBodyPart && separateBodyParts) {
+					bodyParts.push(newAsset);
+				} else if (isMakeup && separateMakeup) {
+					makeup.push(newAsset);
+				} else {
+					assets.push(newAsset);
+				}
+
+				if (
+					shouldInclude &&
+					details?.priceInRobux &&
+					(!isAnimation || showTotalValueIncludesAnimations)
+				) {
+					totalValueItems.add(details);
+				}
 			}
 
-			if (
-				shouldInclude &&
-				details?.priceInRobux &&
-				(!isAnimation || showTotalValueIncludesAnimations)
-			) {
-				totalValueItems.add(details);
+			for (const item of avatar.emotes) {
+				const details = assetIdToItem[item.assetId];
+				emotes.push({
+					...item,
+					details,
+					showBundle: true,
+				});
+
+				if (details?.priceInRobux && showTotalValueIncludesEmotes) {
+					totalValueItems.add(details);
+				}
 			}
-		}
 
-		for (const item of avatar.emotes) {
-			const details = assetIdToItem[item.assetId];
-			emotes.push({
-				...item,
-				details,
-				showBundle: true,
-			});
-
-			if (details?.priceInRobux && showTotalValueIncludesEmotes) {
-				totalValueItems.add(details);
+			let totalValue = 0;
+			for (const item of totalValueItems) {
+				totalValue += item.priceInRobux!;
 			}
-		}
 
-		let totalValue = 0;
-		for (const item of totalValueItems) {
-			totalValue += item.priceInRobux!;
-		}
-
-		return [assets, animations, emotes, bodyParts, totalValue];
-	}, [avatar?.assets, purchaseDetails, separateAnimations]);
+			return [assets, animations, emotes, bodyParts, makeup, totalValue];
+		}, [
+			avatar?.assets,
+			purchaseDetails,
+			separateAnimations,
+			separateBodyParts,
+			separateMakeup,
+			showEmotes,
+		]);
 
 	const tabs = useMemo(() => {
 		const tabs = [];
@@ -177,6 +194,12 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 			});
 		}
 
+		if (makeup.length && separateMakeup) {
+			tabs.push({
+				id: "makeup",
+				label: getMessage("user.avatar.tabs.makeup"),
+			});
+		}
 		if (wearingAnimations.length && separateAnimations) {
 			tabs.push({
 				id: "animations",
@@ -191,7 +214,7 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 			});
 
 		return tabs;
-	}, [emotes, wearingAnimations, bodyParts]);
+	}, [emotes, wearingAnimations, bodyParts, makeup]);
 
 	const h2HeaderRef = useRef<HTMLDivElement>(null);
 
@@ -235,7 +258,9 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 				? wearingAnimations
 				: activeTab === "bodyParts"
 					? bodyParts
-					: undefined
+					: activeTab === "makeup"
+						? makeup
+						: undefined
 	)?.map((asset) => (
 		<div key={asset.id} className="carousel-item">
 			<MarketplaceCard
@@ -292,6 +317,15 @@ export default function UserProfileCurrentlyWearing({ userId }: UserProfileCurre
 				</ItemCarousel>
 			)}
 			{activeTab === "bodyParts" && separateBodyParts && (
+				<ItemCarousel
+					className="roseal-body-parts-container carousel-container"
+					innerClassName="carousel"
+					onlyXScroll
+				>
+					{assetTabContent}
+				</ItemCarousel>
+			)}
+			{activeTab === "makeup" && separateMakeup && (
 				<ItemCarousel
 					className="roseal-body-parts-container carousel-container"
 					innerClassName="carousel"

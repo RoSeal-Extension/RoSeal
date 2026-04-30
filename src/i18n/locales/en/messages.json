@@ -4118,11 +4118,11 @@
 					"$message": "Mood Animations",
 					"$context": ""
 				},
-				"heads/eyebrows": {
+				"makeup/eyebrows": {
 					"$message": "Eyebrows",
 					"$context": ""
 				},
-				"heads/eyelashes": {
+				"makeup/eyelashes": {
 					"$message": "Eyelashes",
 					"$context": ""
 				},
@@ -4130,16 +4130,16 @@
 					"$message": "Dynamic Heads (Asset)",
 					"$context": ""
 				},
-				"heads/face-makeup": {
-					"$message": "Face Makeup",
+				"makeup/faces": {
+					"$message": "Faces",
 					"$context": ""
 				},
-				"heads/lip-makeup": {
-					"$message": "Lip Makeup",
+				"makeup/lips": {
+					"$message": "Lips",
 					"$context": ""
 				},
-				"heads/eye-makeup": {
-					"$message": "Eye Makeup",
+				"makeup/eyes": {
+					"$message": "Eyes",
 					"$context": ""
 				},
 				"meshparts": {
@@ -4750,11 +4750,11 @@
 					"$message": "Mood Animations",
 					"$context": ""
 				},
-				"heads/eyebrows": {
+				"makeup/eyebrows": {
 					"$message": "Eyebrows",
 					"$context": ""
 				},
-				"heads/eyelashes": {
+				"makeup/eyelashes": {
 					"$message": "Eyelashes",
 					"$context": ""
 				},
@@ -4762,16 +4762,16 @@
 					"$message": "Dynamic Heads (Asset)",
 					"$context": ""
 				},
-				"heads/face-makeup": {
-					"$message": "Face Makeup",
+				"makeup/faces": {
+					"$message": "Faces",
 					"$context": ""
 				},
-				"heads/lip-makeup": {
-					"$message": "Lip Makeup",
+				"makeup/lips": {
+					"$message": "Lips",
 					"$context": ""
 				},
-				"heads/eye-makeup": {
-					"$message": "Eye Makeup",
+				"makeup/eyes": {
+					"$message": "Eyes",
 					"$context": ""
 				},
 				"meshparts": {
@@ -7840,15 +7840,23 @@
 				"$message": "Dynamic Heads (Asset)"
 			},
 			"88": {
-				"$message": "Face Makeup",
+				"$message": "Faces",
 				"$context": ""
 			},
 			"89": {
-				"$message": "Lip Makeup",
+				"$message": "Lips",
 				"$context": ""
 			},
 			"90": {
-				"$message": "Eye Makeup",
+				"$message": "Eyes",
+				"$context": ""
+			},
+			"91": {
+				"$message": "Voxel Fragment",
+				"$context": ""
+			},
+			"92": {
+				"$message": "Avatar Background",
 				"$context": ""
 			}
 		},
@@ -8184,6 +8192,14 @@
 			"90": {
 				"$message": "Makeup | Eyes",
 				"$context": ""
+			},
+			"91": {
+				"$message": "Voxel Fragment",
+				"$context": ""
+			},
+			"92": {
+				"$message": "Avatar Background",
+				"$context": ""
 			}
 		}
 	},
@@ -8368,6 +8384,10 @@
 				"$message": "Accessories",
 				"$context": "Accessories category"
 			},
+			"makeup": {
+				"$message": "Makeup",
+				"$context": "Makeup category"
+			},
 			"privateServers": {
 				"$message": "Private Servers",
 				"$context": "Private Servers category"
@@ -8550,6 +8570,10 @@
 				"bodyParts": {
 					"$message": "Body",
 					"$context": "View body parts tab"
+				},
+				"makeup": {
+					"$message": "Makeup",
+					"$context": "View makeup tab"
 				}
 			},
 			"currentlyWearing": {
