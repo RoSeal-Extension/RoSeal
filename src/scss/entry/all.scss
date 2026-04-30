@@ -1491,6 +1491,10 @@ roseal-font {
 }
 
 #subscription-status-info {
+    #nav-subscription-status-icon {
+        position: relative;
+        float: left;
+    }
     .icon-regular-roblox-plus {
         width: 27.999px;
         height: 27.999px;

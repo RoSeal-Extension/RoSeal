@@ -188,7 +188,7 @@ export default function PremiumStatusButton() {
 					>
 						<span id="nav-subscription-status-icon" className="rbx-menu-item">
 							{isPlus ? (
-								<span className="icon-regular-roblox-plus icon" />
+								<span className="icon-regular-roblox-plus icon roseal-icon" />
 							) : (
 								<Icon name="premium" size="medium" />
 							)}
