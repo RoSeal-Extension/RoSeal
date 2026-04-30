@@ -1478,12 +1478,12 @@ roseal-font {
 }
 
 .subscription-status-info-tooltip {
-    .subscription {
-        margin-top: 0.4em;
+    .tooltip-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
     }
-
     .help-links {
-        margin-top: 1em;
         display: flex;
         justify-content: space-around;
         gap: 0.8em;
@@ -1491,6 +1491,10 @@ roseal-font {
 }
 
 #subscription-status-info {
+    .icon-regular-roblox-plus {
+        width: 27.999px;
+        height: 27.999px;
+    }
     .btn-generic-navigation {
         position: relative;
     }

@@ -58,6 +58,7 @@ export default function PremiumStatusButton() {
 					productType: "Blackbird",
 					resultsPerPage: 1,
 				}).then((data) => data.subscriptions[0]),
+			authenticatedUser.userId,
 		);
 	}, [authenticatedUser?.userId]);
 
@@ -186,7 +187,11 @@ export default function PremiumStatusButton() {
 						}}
 					>
 						<span id="nav-subscription-status-icon" className="rbx-menu-item">
-							<Icon name={isPlus ? "plus" : "premium"} size="medium" />
+							{isPlus ? (
+								<span className="icon-regular-roblox-plus icon" />
+							) : (
+								<Icon name="premium" size="medium" />
+							)}
 						</span>
 						{showAlertCircle && !alertCircleDismissed && (
 							<span id="nav-subscription-status-icon-dot" className="rbx-menu-item">
@@ -196,8 +201,8 @@ export default function PremiumStatusButton() {
 					</button>
 				}
 			>
-				{isPlus && plusSubscription && (
-					<>
+				{plusSubscription && (
+					<div className="subscription-info-container">
 						<div className="container-header">
 							<span>
 								{getMessage(
@@ -226,10 +231,10 @@ export default function PremiumStatusButton() {
 								)}
 							</div>
 						</div>
-					</>
+					</div>
 				)}
-				{(isPremium || (isPlus && premiumExpiresSoon)) && premiumSubscription && (
-					<>
+				{premiumSubscription && (
+					<div className="subscription-info-container">
 						<div className="container-header">
 							<span>
 								{getMessage(
@@ -280,7 +285,7 @@ export default function PremiumStatusButton() {
 										)}
 							</div>
 						</div>
-					</>
+					</div>
 				)}
 				<ul className="help-links">
 					{isPlus && (
@@ -290,23 +295,18 @@ export default function PremiumStatusButton() {
 							</a>
 						</li>
 					)}
-					{isPremium && (
-						<>
-							<li className="help-link">
-								<a className="text-link" href={getPremiumMembershipLink()}>
-									{getMessage("navigation.premiumStatus.links.premium")}
-								</a>
-							</li>
-							<li className="help-link">
-								<a
-									className="text-link"
-									href={getRobloxSettingsLink("subscriptions")}
-								>
-									{getMessage("navigation.premiumStatus.links.subscriptions")}
-								</a>
-							</li>
-						</>
+					{premiumSubscription && (
+						<li className="help-link">
+							<a className="text-link" href={getPremiumMembershipLink()}>
+								{getMessage("navigation.premiumStatus.links.premium")}
+							</a>
+						</li>
 					)}
+					<li className="help-link">
+						<a className="text-link" href={getRobloxSettingsLink("subscriptions")}>
+							{getMessage("navigation.premiumStatus.links.subscriptions")}
+						</a>
+					</li>
 				</ul>
 			</Tooltip>
 		)

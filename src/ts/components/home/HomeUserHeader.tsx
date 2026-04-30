@@ -146,7 +146,8 @@ export default function HomeUserHeader() {
 								)}
 							{includeBadges &&
 								authenticatedUser.hasPremium &&
-								!authenticatedUser.hasVerifiedBadge && (
+								!authenticatedUser.hasVerifiedBadge &&
+								!authenticatedUser.hasPlus && (
 									<div className="user-icon-container">
 										<span className="medium-icon icon-premium-medium subscription-icon-medium" />
 										<span className="small-icon icon-premium-small subscription-icon-small" />

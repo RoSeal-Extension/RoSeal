@@ -3674,6 +3674,14 @@ export const sections = [
 					},
 					{
 						type: "Regular",
+						id: "fixRobloxPlusOnLinux",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
+					},
+					{
+						type: "Regular",
 						id: "fixRobloxKingmakerAccountSwitching",
 						component: {
 							type: "Toggle",

@@ -27,6 +27,7 @@ import {
 import {
 	ACCOUNTS_RULES_END_ID,
 	ACCOUNTS_RULES_START_ID,
+	LINUX_USER_AGENT_FIX_RULE_ID,
 	STATIC_RULES_START_ID,
 } from "../constants/dnrRules";
 import { ACCOUNT_TRACKING_PREVENTION_FEATURE_ID } from "../constants/accountTrackingPrevention";
@@ -84,7 +85,6 @@ import { keepAliveServiceWorker } from "../utils/background/misc";
 import { getRobloxUrl } from "../utils/baseUrls" with { type: "macro" };
 import { deepLinksParser } from "../utils/deepLinks";
 import {
-	getGroupProfileLink,
 	getHomePageUrl,
 	getRoSealSettingsLink,
 	getTradesLink,
@@ -102,6 +102,7 @@ import {
 import { getPath } from "../utils/url";
 import { getUserById } from "../helpers/requests/services/users";
 import { ROSEAL_TRACKING_HEADER_NAME } from "scripts/build/constants";
+import { COOKIE_HEADER_NAME, USER_AGENT_HEADER_NAME } from "node_modules/@roseal/http-client/src";
 
 // Listeners and stuff
 if ("setAccessLevel" in browser.storage.session && import.meta.env.TARGET_BASE !== "firefox")
@@ -622,7 +623,7 @@ async function updateAccountIdsCookies() {
 					type: "modifyHeaders",
 					requestHeaders: [
 						{
-							header: "cookie",
+							header: COOKIE_HEADER_NAME,
 							operation: "append",
 							value: cookieValue,
 						},
@@ -652,6 +653,41 @@ async function updateAccountIdsCookies() {
 			removeRuleIds: allRuleIds,
 		});
 }
+
+featureValueIsLater("fixRobloxPlusOnLinux", true, async () => {
+	if (!navigator.userAgent.includes("Linux")) return () => {};
+
+	await browser.declarativeNetRequest
+		.updateSessionRules({
+			addRules: [
+				{
+					id: LINUX_USER_AGENT_FIX_RULE_ID,
+					priority: 2,
+					action: {
+						type: "modifyHeaders",
+						requestHeaders: [
+							{
+								header: USER_AGENT_HEADER_NAME,
+								operation: "append",
+								value: "(like Windows)",
+							},
+						],
+					},
+					condition: {
+						urlFilter: `||${getRobloxUrl("apis")}/subscriptions/v2/`,
+						resourceTypes: ["xmlhttprequest"],
+					},
+				},
+			],
+		})
+		.catch(() => {});
+
+	return () => {
+		browser.declarativeNetRequest.updateSessionRules({
+			removeRuleIds: [LINUX_USER_AGENT_FIX_RULE_ID],
+		});
+	};
+});
 
 onStorageValueUpdate([UNENCRYPTED_ACCOUNTS_STORAGE_KEY], () => {
 	featureValueIs(ACCOUNTS_FEATURE_ID, true, updateAccountIdsCookies);
