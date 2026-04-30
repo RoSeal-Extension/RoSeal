@@ -212,7 +212,9 @@ export default function PremiumStatusButton() {
 						</div>
 						<div className="subscription-info">
 							<div className="font-bold text-emphasis">
-								<span>{getMessage("navigation.premiumStatus.plus.planName")}</span>
+								<span className="plan-name">
+									{getMessage("navigation.premiumStatus.plus.planName")}
+								</span>
 							</div>
 							<div
 								className={classNames({
@@ -244,7 +246,7 @@ export default function PremiumStatusButton() {
 						</div>
 						<div className="subscription-info">
 							<div className="font-bold text-emphasis">
-								<span>
+								<span className="plan-name">
 									{hasLegacyBC
 										? getMessage("navigation.premiumStatus.planName.daily", {
 												robuxStipend: (

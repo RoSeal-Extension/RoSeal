@@ -7,7 +7,7 @@ import type {
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../../helpers/cache.ts";
 import { renderGenericChallenge } from "../../domInvokes.ts";
-import { httpClient } from "../main.ts";
+import { httpClient, ROBLOX_UNIVERSE_ID_HEADER_NAME } from "../main.ts";
 import type { SortOrder } from "./badges.ts";
 
 export type GetUserByIdRequest = {
@@ -628,6 +628,20 @@ export type UpdateInExperienceProfileSettings = {
 	userProfileSettings: InExperienceProfileSettingsInner;
 };
 
+export type ListUserFriendsWhoPlayedRequest = {
+	userId: number;
+	universeId: number;
+};
+
+export type UserFriendWhoPlayed = {
+	friendUserId: number;
+	lastPlayedTimestamp: string | null;
+};
+
+export type ListUserFriendsWhoPlayedResponse = {
+	data: UserFriendWhoPlayed[];
+};
+
 export function getUserPremiumStatus({ userId, overrideCache }: GetUserByIdRequest) {
 	return getOrSetCache({
 		key: ["users", userId, "premiumStatus"],
@@ -1196,6 +1210,26 @@ export async function listUserOnlineFriends({ userId, userSort }: LegacyListUser
 				type: "cookies",
 				value: true,
 			},
+			camelizeResponse: true,
+		})
+	).body;
+}
+
+export async function listUserFriendsWhoPlayed({
+	userId,
+	universeId,
+}: ListUserFriendsWhoPlayedRequest) {
+	return (
+		await httpClient.httpRequest<ListUserFriendsWhoPlayedResponse>({
+			url: `${getRobloxUrl("friends")}/v1/users/${userId}/friendsWhoPlayed`,
+			headers: {
+				[ROBLOX_UNIVERSE_ID_HEADER_NAME]: universeId,
+			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+			bypassCORS: true,
 			camelizeResponse: true,
 		})
 	).body;

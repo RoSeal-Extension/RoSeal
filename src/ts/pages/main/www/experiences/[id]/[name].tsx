@@ -15,6 +15,7 @@ import ExperienceCreatedDate from "src/ts/components/experience/CreatedDate";
 import ExperienceDevStats from "src/ts/components/experience/DevStats";
 import ExperienceEventsTab from "src/ts/components/experience/events/Tab";
 import ExperienceTopSongsList from "src/ts/components/experience/ExperienceTopSongsList";
+import FriendsWhoPlayedGame from "src/ts/components/experience/FriendsWhoPlayed";
 import ExperienceLinks from "src/ts/components/experience/links/LinkList";
 import PlacesTab from "src/ts/components/experience/places/Tab";
 import ExperiencePlayableDevices from "src/ts/components/experience/PlayableDevices";
@@ -720,6 +721,12 @@ export default {
 					}
 				}),
 			),
+		);
+
+		featureValueIs("viewGameFriendsPlayed", true, () =>
+			watchOnce("#game-details-carousel-container").then((container) => {
+				renderAfter(<FriendsWhoPlayedGame universeId={universeId} />, container);
+			}),
 		);
 
 		featureValueIs("easyExperienceAltText", true, () => {

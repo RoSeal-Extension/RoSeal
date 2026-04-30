@@ -2075,3 +2075,57 @@ end of legacy code
 .preferred-region-btn.searching .roseal-icon {
     animation: region-spin 2s infinite;
 }
+
+#friends-who-played-container {
+    position: absolute;
+    top: calc(100% - 32px);
+
+    .game-friends-social-count {
+        margin-top: 20px;
+        width: fit-content;
+        border-radius: 999px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 6px 12px;
+        gap: 4px;
+        background-color: var(--RS_SECONDARY-BACKGROUND-COLOR);
+        color: var(--RS_SECONDARY-TEXT-COLOR);
+
+        .count-text {
+            font-size: 12px;
+            font-weight: 700;
+        }
+    }
+}
+
+.friends-played-modal {
+    .friend-list {
+        max-height: 600px;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+
+        .friend-item {
+            display: flex;
+            gap: 0.5em;
+            align-items: center;
+
+            .friend-thumbnail {
+                width: 60px;
+                height: 60px;
+                flex-shrink: 0;
+            }
+
+            .friend-username {
+                color: var(--RS_TEXT-SECONDARY-COLOR);
+                font-size: 12px;
+            }
+
+            .friend-last-played-date {
+                margin-left: auto;
+            }
+        }
+    }
+}

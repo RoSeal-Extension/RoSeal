@@ -657,6 +657,7 @@ export const assetTypes = [
 	{
 		assetType: "AvatarBackground",
 		assetTypeId: 92,
+		isAvatarAsset: true,
 	},
 ] satisfies AssetTypeData[];
 

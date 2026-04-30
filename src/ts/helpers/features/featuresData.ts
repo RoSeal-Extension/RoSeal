@@ -1136,6 +1136,14 @@ export const sections = [
 					},
 					{
 						type: "Regular",
+						id: "viewGameFriendsPlayed",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
+					},
+					{
+						type: "Regular",
 						id: "experiencePrivateNotes",
 						component: {
 							type: "Toggle",

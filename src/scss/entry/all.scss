@@ -1482,6 +1482,12 @@ roseal-font {
         display: flex;
         flex-direction: column;
         gap: 1em;
+
+        .plan-name {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
     .help-links {
         display: flex;

@@ -3248,6 +3248,12 @@
 				"$context": ""
 			}
 		},
+		"viewGameFriendsPlayed": {
+			"name": {
+				"$context": "",
+				"$message": "View which of your Friends have played an experience"
+			}
+		},
 		"experiencePrivateNotes": {
 			"name": {
 				"$message": "Experience private notes",
@@ -9698,6 +9704,28 @@
 				"$context": "Success message shown in a popup when the user clicks the copy experience link button"
 			},
 			"$context": "Copy experience link button in the experience context menu"
+		},
+		"friendsPlayed": {
+			"$context": "Button to show how many friends have played a game",
+			"buttonText": {
+				"$message": "{count} {countNum, plural, =1 {Friend} other {Friends}} played"
+			},
+			"modal": {
+				"$context": "Modal shown when clicked on the played text",
+				"title": {
+					"$message": "{sealEmoji} {count} {countNum, plural, =1 {Friend} other {Friends}} Who Played This"
+				},
+				"body": {
+					"item": {
+						"username": {
+							"$message": "@{username}"
+						},
+						"lastPlayed": {
+							"$message": "{time} ago"
+						}
+					}
+				}
+			}
 		},
 		"voting": {
 			"recentUpVoteRatio": {

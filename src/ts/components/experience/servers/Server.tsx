@@ -188,8 +188,10 @@ export default function Server({
 	}, [item.players, item.playerTokens, shouldUseStack]);
 
 	const isSubscriptionExpired = ownerDetails?.subscription.expired === true;
-	const isExpiredDueToInsufficientFunds = ownerDetails?.subscription.hasInsufficientFunds;
-	const isExpiredDueToPriceChange = ownerDetails?.subscription.hasPriceChanged;
+	const isExpiredDueToInsufficientFunds =
+		isSubscriptionExpired && ownerDetails?.subscription.hasInsufficientFunds;
+	const isExpiredDueToPriceChange =
+		isSubscriptionExpired && ownerDetails?.subscription.hasPriceChanged;
 	const isInactive = item.type === "private" && !item.accessCode;
 
 	const isFreeServer =
