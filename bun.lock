@@ -51,7 +51,7 @@
         "react-tiny-virtual-list": "2.2.0",
         "react-toastify": "11.1.0",
         "roblox-bat": "0.6.5",
-        "roblox-deeplink-parser": "0.1.34",
+        "roblox-deeplink-parser": "0.1.35",
         "tinycolor2": "1.6.0",
         "usehooks-ts": "3.1.1",
         "zod": "4.4.1",
@@ -1044,7 +1044,7 @@
 
     "roblox-bat": ["roblox-bat@0.6.5", "", {}, "sha512-aHcCSTT92uze1u4zKyG6AUR+IGzTTBnVSAZj6U/a9wIhQT7aid0iKrVu2ts4RXD+hMrV0xSN9YnpCR6hhQkW9Q=="],
 
-    "roblox-deeplink-parser": ["roblox-deeplink-parser@0.1.34", "", {}, "sha512-OAlVYEu41Ldtg/aCNZC070xzKoJUNq3nVAdql1CgcN2EuERgVBkcKTrHUXM2jdckQlPn8YuvtZYki4FKvc5SkA=="],
+    "roblox-deeplink-parser": ["roblox-deeplink-parser@0.1.35", "", {}, "sha512-mHxwwBdDHJPd58AaAnm0U1dqBHHnanDo1X9BlMiQZL/WYvutrn37SdpP0QoQAvcPuheyY6O5vefMa2X7DDGtiw=="],
 
     "run-applescript": ["run-applescript@7.1.0", "", {}, "sha512-DPe5pVFaAsinSaV6QjQ6gdiedWDcRCbUuiQfQa2wmWV7+xC9bGulGI8+TdRmoFkAPaBXk8CrAbnlY2ISniJ47Q=="],
 
