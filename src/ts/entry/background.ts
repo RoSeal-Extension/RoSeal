@@ -655,7 +655,7 @@ async function updateAccountIdsCookies() {
 }
 
 featureValueIsLater("fixRobloxPlusOnLinux", true, async () => {
-	if (!navigator.userAgent.includes("Linux")) return () => {};
+	if (!navigator.userAgent?.includes("Linux")) return () => {};
 
 	await browser.declarativeNetRequest
 		.updateSessionRules({
@@ -668,8 +668,8 @@ featureValueIsLater("fixRobloxPlusOnLinux", true, async () => {
 						requestHeaders: [
 							{
 								header: USER_AGENT_HEADER_NAME,
-								operation: "append",
-								value: "(like Windows)",
+								operation: "set",
+								value: `${navigator.userAgent} (like Windows)`,
 							},
 						],
 					},
