@@ -675,7 +675,7 @@ featureValueIsLater("fixRobloxPlusOnLinux", true, async () => {
 					},
 					condition: {
 						urlFilter: `||${getRobloxUrl("apis")}/subscriptions/v2/`,
-						resourceTypes: ["xmlhttprequest"],
+						resourceTypes: ["xmlhttprequest", "main_frame", "sub_frame"],
 					},
 				},
 			],
