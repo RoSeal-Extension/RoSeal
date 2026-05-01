@@ -391,23 +391,14 @@ export default function FriendRequestsTab({
 				limit: 100,
 				cursor: pageData.nextCursor,
 			}).then((data) => {
-				// Remove duplicate friend requests
-				const uniqueItems: UserFriendRequest[] = [];
-				const seenIds = new Set<number>();
-				for (const request of data.data) {
-					if (!seenIds.has(request.id)) {
-						seenIds.add(request.id);
-						uniqueItems.push(request);
-					}
-				}
-
 				return {
 					...pageData,
-					items: uniqueItems,
+					items: data.data,
 					nextCursor: data.nextPageCursor || undefined,
 					hasNextPage: data.nextPageCursor !== null,
 				};
 			}),
+
 		dependencies: {
 			reset: [userId],
 			refreshToFirstPage: [

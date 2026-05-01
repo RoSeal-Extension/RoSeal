@@ -1482,6 +1482,7 @@ roseal-font {
         display: flex;
         flex-direction: column;
         gap: 1em;
+        max-width: fit-content !important;
 
         .plan-name {
             display: flex;

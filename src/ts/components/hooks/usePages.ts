@@ -111,6 +111,20 @@ export default function usePages<T, U, V = unknown, X = T>({
 		if (suffixItems?.length && (!hasNextPage || includeSuffixItems)) {
 			newArr.push(...suffixItems);
 		}
+
+		// Deduplicate before sorting to prevent duplicate entries from being sorted
+		if (itemsConfig?.sortItems || itemsConfig?.filterItem) {
+			const seenObjects = new Set<X>();
+			const deduped: X[] = [];
+			for (const item of newArr) {
+				if (!seenObjects.has(item)) {
+					seenObjects.add(item);
+					deduped.push(item);
+				}
+			}
+			newArr = deduped;
+		}
+
 		if (itemsConfig?.sortItems) {
 			newArr = await itemsConfig.sortItems(newArr);
 		}
@@ -413,12 +427,62 @@ export default function usePages<T, U, V = unknown, X = T>({
 					if (isStale()) break;
 
 					// Only append new items — do NOT spread currPageData.items again
+					// Deduplicate based on object identity and ID (for when objects are recreated)
+					const seenIds = new Set<string | number>();
+					const seenObjects = new Set<T>();
+
+					// Mark already seen items
+					for (const item of currPageData.items) {
+						seenObjects.add(item);
+						if (typeof item === "object" && item !== null && "id" in item) {
+							const id = (item as Record<string, unknown>).id;
+							if (typeof id === "string" || typeof id === "number") {
+								seenIds.add(id);
+							}
+						}
+					}
+
+					const deduplicatedNextItems: T[] = [];
+					const deduplicatedNextTransformedItems: X[] = [];
+
+					for (let i = 0; i < nextPageData.items.length; i++) {
+						const item = nextPageData.items[i];
+						let isDuplicate = seenObjects.has(item);
+
+						if (
+							!isDuplicate &&
+							typeof item === "object" &&
+							item !== null &&
+							"id" in item
+						) {
+							const id = (item as Record<string, unknown>).id;
+							if (typeof id === "string" || typeof id === "number") {
+								isDuplicate = seenIds.has(id);
+							}
+						}
+
+						if (!isDuplicate) {
+							seenObjects.add(item);
+							if (typeof item === "object" && item !== null && "id" in item) {
+								const id = (item as Record<string, unknown>).id;
+								if (typeof id === "string" || typeof id === "number") {
+									seenIds.add(id);
+								}
+							}
+							deduplicatedNextItems.push(item);
+							deduplicatedNextTransformedItems.push(nextTransformedItems[i]);
+						}
+					}
+
 					currPageData = {
 						...nextPageData,
-						items: [...currPageData.items, ...nextPageData.items],
+						items: [...currPageData.items, ...deduplicatedNextItems],
 						transformedItems: transformedItemsCache,
 					};
-					accTransformedItems = [...accTransformedItems, ...nextTransformedItems];
+					accTransformedItems = [
+						...accTransformedItems,
+						...deduplicatedNextTransformedItems,
+					];
 
 					if (itemsConfig?.shouldAlwaysUpdate && !isStale()) {
 						pageData.value = currPageData;
