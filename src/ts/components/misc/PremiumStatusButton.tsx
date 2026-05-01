@@ -110,7 +110,8 @@ export default function PremiumStatusButton() {
 		);
 	}, [premiumSubscription?.subscriptionProductModel.expiration]);
 	const plusExpiresSoon = useMemo(() => {
-		if (!plusSubscription?.expirationTimestampMs) return false;
+		if (!plusSubscription?.expirationTimestampMs || plusSubscription?.nextRenewalTimestampMs)
+			return false;
 
 		return differenceInDays(new Date(plusSubscription.expirationTimestampMs), new Date()) <= 3;
 	}, [plusSubscription?.expirationTimestampMs]);
@@ -225,8 +226,8 @@ export default function PremiumStatusButton() {
 									`navigation.premiumStatus.plus.${plusSubscription.nextRenewalTimestampMs ? "renews" : "expires"}`,
 									{
 										time: getShortRelativeTime(
-											plusSubscription.expirationTimestampMs ||
-												plusSubscription.nextRenewalTimestampMs ||
+											plusSubscription.nextRenewalTimestampMs ||
+												plusSubscription.expirationTimestampMs ||
 												0,
 										),
 									},

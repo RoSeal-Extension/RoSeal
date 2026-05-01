@@ -40,12 +40,12 @@ export default function PostAvatarButton() {
 
 	const isRESTError = error && error instanceof RESTError;
 	const onClickButton = useCallback(() => {
-		if (!lookPreviewFetched || !currentAvatar) return;
+		if (!isAccessible || !currentAvatar) return;
 
 		setShowModal((show) => !show);
-	}, [error, lookPreview, lookPreviewFetched]);
+	}, [error, lookPreview, isAccessible]);
 
-	if (!currentAvatar || !lookPreviewFetched || !isAccessible) {
+	if (!currentAvatar || !isAccessible) {
 		return null;
 	}
 
