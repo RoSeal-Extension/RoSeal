@@ -1029,6 +1029,7 @@ export type CreateUserLookRequest = {
 	description: string;
 	assets: ListedUserLookItem[];
 	avatarProperties: LookAvatarProperties;
+	displayProperties?: LookDisplayProperties;
 };
 
 export type CreateUserLookResponse = {
