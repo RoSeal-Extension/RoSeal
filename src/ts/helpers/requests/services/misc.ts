@@ -300,7 +300,13 @@ export type ProfileComponentAction =
 	| "AddTrustedConnection"
 	| "AddIncomingTrustedConnection"
 	| "RemoveTrustedConnection"
-	| "PendingTrustedConnection";
+	| "PendingTrustedConnection"
+	| "PendingIncomingTrustedConnection"
+	| "EditEmotes"
+	| "EditAppearance"
+	| "CurrencyTransfer"
+	| "AddTrustedConnectionViaLink"
+	| "SwitchAvatar";
 
 export type ProfileComponentButton = {
 	type: string;

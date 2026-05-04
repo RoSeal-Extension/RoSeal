@@ -2077,12 +2077,15 @@ end of legacy code
 }
 
 #friends-who-played-container {
-    position: absolute;
-    top: calc(100% - 32px);
+    @media (min-width: 987px) {
+        position: absolute;
+        top: calc(100% - 32px);
+    }
 
     .game-friends-social-count {
         margin-top: 20px;
         width: fit-content;
+
         border-radius: 999px;
         display: flex;
         justify-content: center;
