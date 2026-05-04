@@ -3,6 +3,7 @@ import SimpleModal from "../../core/modal/SimpleModal";
 import { useCallback, useEffect, useState } from "preact/hooks";
 import {
 	createUserLook,
+	LookPreview,
 	type CreateUserLookResponse,
 } from "src/ts/helpers/requests/services/marketplace";
 import { RESTError } from "@roseal/http-client";
@@ -14,10 +15,16 @@ import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 export type PostAvatarModalProps = {
 	show: boolean;
 	avatar: ReactAvatarEditorPageAvatar;
+	lookPreview?: LookPreview;
 	setShow: (value: boolean) => void;
 };
 
-export default function PostAvatarModal({ show, avatar, setShow }: PostAvatarModalProps) {
+export default function PostAvatarModal({
+	show,
+	avatar,
+	lookPreview,
+	setShow,
+}: PostAvatarModalProps) {
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -44,17 +51,35 @@ export default function PostAvatarModal({ show, avatar, setShow }: PostAvatarMod
 
 		setErrorMessage(undefined);
 		setLoading(true);
+
+		const bodyColors = {...avatar.bodyColors};
+		for (const key in bodyColors) {
+			bodyColors[key as keyof typeof bodyColors] = bodyColors[key as keyof typeof bodyColors].replace("#", "")
+		}
+
+		const assetIdToBundleId = new Map<number, string>();
+		if (lookPreview?.items) {
+			for (const item of lookPreview.items) {
+				if (item.itemType === "Bundle" && item.assetsInBundle) {
+					for (const item2 of item.assetsInBundle) {
+						assetIdToBundleId.set(item2.id, item.id.toString())
+					}
+				}
+			}
+		}
+
+
 		createUserLook({
 			name,
 			description,
 			assets: avatar.assets.map((asset) => ({
 				id: asset.id,
 				meta: asset.meta,
-				headShape: "Invalid",
+				bundleId: assetIdToBundleId.get(asset.id)
 			})),
 			avatarProperties: {
 				playerAvatarType: avatar.avatarType,
-				bodyColor3s: avatar.bodyColors,
+				bodyColor3s: bodyColors,
 				scale: {
 					bodyType: avatar.scales.bodyType.value / 100,
 					// sometimes "depth" is undefined...

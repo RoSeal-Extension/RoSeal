@@ -82,7 +82,12 @@ export default function PostAvatarButton() {
 
 	return (
 		<>
-			<PostAvatarModal show={showModal} setShow={setShowModal} avatar={currentAvatar} />
+			<PostAvatarModal
+				show={showModal}
+				setShow={setShowModal}
+				avatar={currentAvatar}
+				lookPreview={lookPreview?.look}
+			/>
 			{button}
 		</>
 	);
