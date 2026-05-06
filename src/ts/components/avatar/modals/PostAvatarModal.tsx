@@ -3,7 +3,7 @@ import SimpleModal from "../../core/modal/SimpleModal";
 import { useCallback, useEffect, useState } from "preact/hooks";
 import {
 	createUserLook,
-	LookPreview,
+	type LookPreview,
 	type CreateUserLookResponse,
 } from "src/ts/helpers/requests/services/marketplace";
 import { RESTError } from "@roseal/http-client";
@@ -52,9 +52,11 @@ export default function PostAvatarModal({
 		setErrorMessage(undefined);
 		setLoading(true);
 
-		const bodyColors = {...avatar.bodyColors};
+		const bodyColors = { ...avatar.bodyColors };
 		for (const key in bodyColors) {
-			bodyColors[key as keyof typeof bodyColors] = bodyColors[key as keyof typeof bodyColors].replace("#", "")
+			bodyColors[key as keyof typeof bodyColors] = bodyColors[
+				key as keyof typeof bodyColors
+			].replace("#", "");
 		}
 
 		const assetIdToBundleId = new Map<number, string>();
@@ -62,12 +64,11 @@ export default function PostAvatarModal({
 			for (const item of lookPreview.items) {
 				if (item.itemType === "Bundle" && item.assetsInBundle) {
 					for (const item2 of item.assetsInBundle) {
-						assetIdToBundleId.set(item2.id, item.id.toString())
+						assetIdToBundleId.set(item2.id, item.id.toString());
 					}
 				}
 			}
 		}
-
 
 		createUserLook({
 			name,
@@ -75,7 +76,7 @@ export default function PostAvatarModal({
 			assets: avatar.assets.map((asset) => ({
 				id: asset.id,
 				meta: asset.meta,
-				bundleId: assetIdToBundleId.get(asset.id)
+				bundleId: assetIdToBundleId.get(asset.id),
 			})),
 			avatarProperties: {
 				playerAvatarType: avatar.avatarType,
