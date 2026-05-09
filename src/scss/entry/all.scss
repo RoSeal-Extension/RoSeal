@@ -1647,6 +1647,10 @@ roseal-font {
                     background-color: rgba(187, 194, 209, 0.08);
                 }
             }
+
+            body:has(#developer-product-details-container) & {
+                font-weight: 300;
+            }
         }
     }
 }
@@ -1873,6 +1877,41 @@ roseal-font {
 
         .icon-default-logo-r {
             zoom: 80%;
+        }
+    }
+}
+
+#developer-product-details-container {
+    .item-info-row-container,
+    .item-field-container {
+        flex-direction: row;
+        margin-top: 12px;
+        display: flex;
+
+        .text-label {
+            min-width: 120px;
+            max-width: 120px;
+            display: flex;
+            flex-direction: row;
+            font-weight: 500;
+            margin: 0px;
+            letter-spacing: inherit;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 140%;
+            text-decoration: none;
+            font-style: normal;
+
+            .light-theme & {
+                color: #353741;
+            }
+            .dark-theme & {
+                color: #bcbec8;
+            }
+        }
+
+        .font-body {
+            font-weight: 300;
         }
     }
 }

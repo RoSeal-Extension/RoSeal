@@ -4,7 +4,6 @@ import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleLowerCase, getShortRelativeTime } from "src/ts/helpers/i18n/intlFormats";
 import { getAssetById, multigetDevelopAssetsByIds } from "src/ts/helpers/requests/services/assets";
 import { getBadgeById } from "src/ts/helpers/requests/services/badges";
-import { getDeveloperProductById } from "src/ts/helpers/requests/services/developerProducts";
 import type {
 	AnyItemType,
 	LiterallyAnyItemType,
@@ -28,6 +27,7 @@ import { escapeRegExp } from "src/ts/utils/regex";
 import { thumbnailProcessor } from "src/ts/helpers/processors/thumbnailProcessor";
 import { httpClient } from "src/ts/helpers/requests/main";
 import { getHashUrl, parseResizeThumbnailUrl } from "src/ts/utils/thumbnails";
+import { getDeveloperProductByProductId } from "src/ts/helpers/requests/services/developerProducts";
 
 export type ItemUpdatedCreatedProps = {
 	itemType: LiterallyAnyItemType;
@@ -183,8 +183,8 @@ export default function ItemUpdatedCreated({
 		}
 
 		if (itemType === "DeveloperProduct") {
-			return getDeveloperProductById({
-				developerProductId: itemId,
+			return getDeveloperProductByProductId({
+				productId: itemId,
 			});
 		}
 

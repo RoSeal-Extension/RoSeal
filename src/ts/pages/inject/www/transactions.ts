@@ -1,19 +1,10 @@
-import type { Attributes, ComponentChildren, ComponentType } from "preact";
 import { watch } from "src/ts/helpers/elements.ts";
-import {
-	featureValueIsInject,
-	getFeatureValueInject,
-} from "src/ts/helpers/features/helpersInject.ts";
-import { getFlagInject } from "src/ts/helpers/flags/flagsInject.ts";
+import { getFeatureValueInject } from "src/ts/helpers/features/helpersInject.ts";
 import { hijackCreateElement, hijackState } from "src/ts/helpers/hijack/react.ts";
 import type { Page } from "src/ts/helpers/pages/handleMainPages.ts";
 import type { Transaction, UserTransaction } from "src/ts/helpers/requests/services/account.ts";
-import { getDeveloperProductDetailsLink } from "src/ts/utils/links.ts";
 import { GROUP_CONFIGURE_REGEX, TRANSACTIONS_REGEX } from "src/ts/utils/regex.ts";
 import { addMessageListener } from "../../../helpers/communication/dom.ts";
-
-const DEV_PRODUCT_REGEX = /DEVPRODUCT_(\d+)_(\d+)_(.+)/;
-
 export default {
 	id: "transactions",
 	regex: [TRANSACTIONS_REGEX, GROUP_CONFIGURE_REGEX],
@@ -29,21 +20,9 @@ export default {
 
 		let enableFreeItems = false;
 		let enablePrivateServers = false;
-		let enableViewDeveloperProducts = false;
 
 		const filterItems = (transactions: Transaction<"Purchase" | "Sale">[]) => {
 			const items = transactions.filter((item) => {
-				if (
-					enableViewDeveloperProducts &&
-					(item.transactionType === "Purchase" || item.transactionType === "Sale")
-				) {
-					if (
-						item.details?.type === "DeveloperProduct" &&
-						!item.details.name?.startsWith("DEVPRODUCT_")
-					) {
-						item.details.name = `DEVPRODUCT_${item.details.id}_${item.details.place!.universeId}_${item.details.name}`;
-					}
-				}
 				if (enableFreeItems && item.currency.amount === 0) return false;
 				if (enablePrivateServers && item.details?.type === "PrivateServer") return false;
 
@@ -121,49 +100,6 @@ export default {
 					);
 				},
 			);
-		});
-
-		featureValueIsInject("viewExperienceDeveloperProducts", true, () => {
-			getFlagInject("developerProducts", "overrideTransactionsLink").then((value) => {
-				if (value) {
-					enableViewDeveloperProducts = true;
-
-					hijackCreateElement(
-						(_, __, child) =>
-							typeof child === "string" && DEV_PRODUCT_REGEX.test(child),
-						(createElement, type, props, child, ...other) => {
-							const [, id, name] = (child as string).match(DEV_PRODUCT_REGEX)!;
-							const content = (child as string).replace(DEV_PRODUCT_REGEX, "$3");
-
-							const url = getDeveloperProductDetailsLink(
-								Number.parseInt(id, 10),
-								name,
-							);
-							if (props && "url" in props) {
-								props.url = url;
-							} else {
-								return createElement(
-									"a" as unknown as ComponentType,
-									{
-										className: "text-link text-overflow",
-										href: url,
-									} as Attributes,
-									content,
-									...(other as ComponentChildren[]),
-								);
-							}
-
-							return createElement(
-								type as ComponentType,
-								props,
-								content,
-								...(other as ComponentChildren[]),
-							);
-						},
-					);
-					if (oldState) setState?.(filterItems(oldState));
-				}
-			});
 		});
 	},
 } satisfies Page;

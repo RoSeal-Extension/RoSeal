@@ -909,6 +909,14 @@ export const sections = [
 					},
 					{
 						type: "Regular",
+						id: "developerProductCreatedUpdated",
+						component: {
+							type: "Toggle",
+							defaultValue: true,
+						},
+					},
+					{
+						type: "Regular",
 						id: "experienceStoreFiltering",
 						component: {
 							type: "Toggle",

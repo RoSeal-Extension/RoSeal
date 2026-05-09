@@ -15,6 +15,7 @@ export type DeveloperProductPropsDetails = {
 	displayIcon?: number | null;
 	priceInRobux: number | null;
 	isForSale: boolean;
+	universeId: number;
 };
 
 export type DeveloperProductProps = DeveloperProductPropsDetails & {
@@ -22,17 +23,18 @@ export type DeveloperProductProps = DeveloperProductPropsDetails & {
 };
 
 export default function DeveloperProduct({
-	developerProductId,
 	displayName,
 	displayIcon,
 	priceInRobux,
 	isForSale,
 	pendingTransactions,
+	universeId,
+	productId,
 }: DeveloperProductProps) {
 	return (
 		<div className="store-card">
 			<a
-				href={getDeveloperProductDetailsLink(developerProductId, displayName)}
+				href={getDeveloperProductDetailsLink(universeId, productId!)}
 				className="gear-passes-asset store-card-link"
 			>
 				<Thumbnail

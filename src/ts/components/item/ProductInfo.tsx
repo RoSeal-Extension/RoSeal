@@ -18,6 +18,7 @@ export type ItemProductInfoProps = {
 };
 
 export type WithProductInfo = {
+	targetId?: number | undefined;
 	collectibleItemId?: string | null;
 	collectibleProductId?: string | null;
 	productId?: string | number;
@@ -70,6 +71,17 @@ export default function ItemProductInfo({ itemId, itemType, isAvatarItem }: Item
 
 	return (
 		<>
+			{itemType === "DeveloperProduct" && !!data?.targetId && (
+				<ItemField
+					useNewClasses={isAvatarItem}
+					title={getMessage("item.developerProductId")}
+					id="developer-product-id-field"
+				>
+					<div className="field-content">
+						<span className="text font-body">{data.targetId}</span>
+					</div>
+				</ItemField>
+			)}
 			{!!data?.productId && (
 				<ItemField
 					useNewClasses={isAvatarItem}

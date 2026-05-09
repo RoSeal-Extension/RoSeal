@@ -158,14 +158,8 @@ export function getConfigurePrivateServerLink(privateServerId: number) {
 	return getLink("www", `/private-server/configure/${privateServerId}`);
 }
 
-export function getDeveloperProductDetailsLink(
-	developerProductId: number,
-	developerProductName = "unnamed",
-) {
-	return getLink(
-		"www",
-		`/developer-products/${developerProductId}/${formatSeoName(developerProductName)}`,
-	);
+export function getDeveloperProductDetailsLink(universeId: number, developerProductId: number) {
+	return getLink("www", `/developer-product/${universeId}/product/${developerProductId}`);
 }
 
 export function getPassDetailsLink(passId: number, passName = "unnamed") {

@@ -2,7 +2,9 @@
 	"$schema": "../../../../src/types/schemas/i18nFile.json",
 	"manifest": {
 		"$context": "RoSeal extension manifest file",
-		"$types": ["manifest"],
+		"$types": [
+			"manifest"
+		],
 		"name": {
 			"$message": "RoSeal - Augmented Roblox Experience",
 			"$context": "The name of the extension as shown in chrome://extensions, or about:addons"
@@ -19,7 +21,10 @@
 		}
 	},
 	"notifications": {
-		"$types": ["background", "main"],
+		"$types": [
+			"background",
+			"main"
+		],
 		"$context": "Notification strings",
 		"startup": {
 			"context": {
@@ -2156,7 +2161,10 @@
 	},
 	"featurePermissions": {
 		"$context": "Feature permissions",
-		"$types": ["popup", "main"],
+		"$types": [
+			"popup",
+			"main"
+		],
 		"forOrigin": {
 			"$message": "Host access for {origin}",
 			"$context": "i.e. host access for https://www.roblox.com, this is not used at the moment, but may be used in the future"
@@ -3674,6 +3682,12 @@
 			},
 			"description": {
 				"$message": "Some limited-time items have a hidden timer that shows how long they will be available for sale.",
+				"$context": ""
+			}
+		},
+		"developerProductCreatedUpdated": {
+			"name": {
+				"$message": "Show created and updated date on developer products",
 				"$context": ""
 			}
 		},
@@ -6870,6 +6884,10 @@
 			"$message": "Product ID",
 			"$context": "Product ID field"
 		},
+		"developerProductId": {
+			"$message": "Developer Product ID",
+			"$context": "Developer Product ID field"
+		},
 		"sales": {
 			"$message": "Sales",
 			"$context": "Sales field"
@@ -7148,17 +7166,6 @@
 		"agentId": {
 			"$message": "Agent ID",
 			"$context": "Agent ID field under the created/group name/owner, internal number"
-		}
-	},
-	"developerProduct": {
-		"$context": "Developer Product page at /developer-products/ID/NAME",
-		"typeValue": {
-			"$message": "Developer Product",
-			"$context": "The value of the Type field"
-		},
-		"purchaseAssociatedExperience": {
-			"$message": "Purchase this Developer Product in: {experienceLink}",
-			"$context": "Link to the experience the developer product is associated with, displayed as a banner under the dev product image"
 		}
 	},
 	"badge": {

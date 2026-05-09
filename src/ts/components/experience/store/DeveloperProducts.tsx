@@ -3,7 +3,7 @@ import { useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleLowerCase, localeCompare } from "src/ts/helpers/i18n/intlFormats";
 import {
-	getDeveloperProductById,
+	getDeveloperProductByProductId,
 	listPendingDeveloperProductTransactions,
 	listStorePageDeveloperProducts,
 	listUniverseDeveloperProducts,
@@ -77,8 +77,8 @@ export default function DeveloperProducts({
 				}).then((data) =>
 					Promise.all(
 						data.developerProducts.map((item) =>
-							getDeveloperProductById({
-								developerProductId: item.developerProductId,
+							getDeveloperProductByProductId({
+								productId: item.productId!,
 							}).then((data) => ({
 								...item,
 								...data,
@@ -370,6 +370,7 @@ export default function DeveloperProducts({
 						<li className="list-item" key={product.developerProductId}>
 							<DeveloperProduct
 								{...product}
+								universeId={universeId}
 								pendingTransactions={pendingTransactions?.filter((item) =>
 									item.actionArgs.some(
 										(item) =>

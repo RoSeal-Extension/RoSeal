@@ -9,7 +9,14 @@ const allElements = signal<AllElementsItem[]>([]);
 let currentWatcher: (() => void) | undefined;
 
 export async function modifyItemStats<T extends VNode | (() => VNode)>(
-	type: "Group" | "User" | "Item" | "Experience" | "Look" | "ExperienceEvent",
+	type:
+		| "Group"
+		| "User"
+		| "Item"
+		| "Experience"
+		| "Look"
+		| "ExperienceEvent"
+		| "DeveloperProduct",
 	_elements: T | T[],
 	order = 0,
 ) {
@@ -57,6 +64,18 @@ export async function modifyItemStats<T extends VNode | (() => VNode)>(
 			alreadyHandled.add(container);
 			renderIn(() => allElements.value.map((item) => item[0]), container);
 		});
+	} else if (type === "DeveloperProduct") {
+		currentWatcher = watch(
+			"#developer-product-details-container .metadata-container .metadata-row-container:nth-last-of-type(2)",
+			(container) => {
+				if (alreadyHandled.has(container)) {
+					return;
+				}
+				alreadyHandled.add(container);
+
+				renderAfter(() => allElements.value.map((item) => item[0]), container);
+			},
+		);
 	} else if (type === "Item") {
 		currentWatcher = watch("#item-details", (container) => {
 			if (

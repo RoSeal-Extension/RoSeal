@@ -57,10 +57,9 @@ export async function modifyItemContextMenu<T extends VNode | (() => VNode)>(
 		isAvatarItemPage && hasReactContextMenu
 			? "#item-details-container .item-details-info-header .right"
 			: "#item-details-container > .section-content, #item-container > .section-content"
-	}, .profile-header:not(.hidden) .profile-header-content, .group-header .group-menu, .group-profile-header-info .actions-container, .look-name-container, .profile-header-buttons, .user-profile-header-info > .flex.gap-small > div > div:has(#user-profile-header-contextual-menu-button)`;
-	console.log("FINDING");
+	}, .profile-header:not(.hidden) .profile-header-content, .group-header .group-menu, .group-profile-header-info .actions-container, .look-name-container, .profile-header-buttons, .user-profile-header-info > .flex.gap-small > div > div:has(#user-profile-header-contextual-menu-button), #developer-product-details-container .product-title-container`;
 	const container = await watchOnce(containerSelector);
-	console.log("RETARD FOUND", container);
+	console.log(container);
 
 	// Inner context menu, for avatar items we get the inner .item-context-menu
 	// profile-header-more is a className in the react profile header
@@ -71,7 +70,7 @@ export async function modifyItemContextMenu<T extends VNode | (() => VNode)>(
 					? ".right .item-context-menu"
 					: "#item-context-menu > .item-context-menu"
 				: "#item-context-menu"
-		}, .profile-header-more, .group-header .group-menu .btn-generic-more-sm, .look-context-menu, .profile-header-buttons .profile-header-more-icon, [data-testid="MoreHorizIcon"], #user-profile-header-contextual-menu-button`,
+		}, .profile-header-more, .group-header .group-menu .btn-generic-more-sm, .look-context-menu, .profile-header-buttons .profile-header-more-icon, [data-testid="MoreHorizIcon"], #user-profile-header-contextual-menu-button, [aria-label="developer-product-details-menu"]`,
 	);
 
 	const isExperience = container.classList.contains("game-calls-to-action");
@@ -86,7 +85,7 @@ export async function modifyItemContextMenu<T extends VNode | (() => VNode)>(
 				hasReactContextMenu && isAvatarItemPage
 					? " #game-instance-dropdown-menu .dropdown-menu,"
 					: " #item-context-menu .popover .dropdown-menu,"
-			} .profile-header-more .dropdown-menu, .group-header .group-menu .popover .dropdown-menu${isLook ? ", #game-instance-dropdown-menu .dropdown-menu" : ""}, .MuiPopover-root ul, .foundation-web-portal-zindex[style*="--radix-popper"] .foundation-web-menu > .padding-small`,
+			} .profile-header-more .dropdown-menu, .group-header .group-menu .popover .dropdown-menu${isLook ? ", #game-instance-dropdown-menu .dropdown-menu" : ""}, .MuiPopover-root ul, .foundation-web-portal-zindex[style*="--radix-popper"] .foundation-web-menu > .padding-small, body:has(#developer-product-details-container) .MuiPopover-root ul `,
 			(dropdownMenu) => {
 				dropdownMenu.classList.add("flex-dropdown-menu");
 				if (containerContextMenus?.[1]) {

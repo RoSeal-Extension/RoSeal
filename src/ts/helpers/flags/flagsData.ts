@@ -3,7 +3,6 @@ export type FlagsData = {
 		showRolimonsLink: boolean;
 	};
 	developerProducts: {
-		overrideTransactionsLink: boolean;
 		experienceStoreOffSaleOffByDefault: boolean;
 	};
 	onboarding: {
@@ -20,7 +19,6 @@ export const flagsData: FlagsData = {
 	},
 	developerProducts: {
 		experienceStoreOffSaleOffByDefault: false,
-		overrideTransactionsLink: true,
 	},
 	onboarding: {
 		showOnboarding: true,

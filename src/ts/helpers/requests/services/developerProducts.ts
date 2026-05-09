@@ -2,29 +2,6 @@ import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { httpClient } from "../main.ts";
 import type { Agent, PriceInformation } from "./assets.ts";
 
-export type GetDeveloperProductByIdRequest = {
-	developerProductId: number;
-};
-
-export type DeveloperProductDetails = {
-	id: number;
-	productTypeId: number;
-	isPublicDomain: boolean;
-	isForSale: boolean;
-	priceInRobux: number | null;
-	premiumPriceInRobux: number | null;
-	robloxProductId: number | null;
-	targetId: number;
-	assetTypeId: number | null;
-	creatorId: number;
-	assetGenres: number;
-	assetCategories: number;
-	affiliateFeePercentage: number | null;
-	isNew: boolean;
-	created: string;
-	updated: string;
-};
-
 export type GetDeveloperProductByProductIdRequest = {
 	productId: number;
 };
@@ -122,24 +99,6 @@ export type PendingDeveloperProductTransaction = {
 	}[];
 	action: "Purchase";
 };
-
-export async function getDeveloperProductById({
-	developerProductId,
-}: GetDeveloperProductByIdRequest) {
-	return (
-		await httpClient.httpRequest<DeveloperProductDetails>({
-			url: `${getRobloxUrl(
-				"apis",
-				"/developer-products",
-			)}/v1/developer-products/${developerProductId}`,
-			credentials: {
-				type: "cookies",
-				value: true,
-			},
-			errorHandling: "BEDEV2",
-		})
-	).body;
-}
 
 export async function getDeveloperProductByProductId({
 	productId,
