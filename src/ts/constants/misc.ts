@@ -170,6 +170,8 @@ export const APPLICATION_BINARY_TYPES = [
 	"PCGDK",
 	"IOSAppCJV",
 	"AndroidAppCJV",
+	"GoogleAndroidTVApp",
+	"RCCService",
 ] as const;
 
 export const TEST_PLACE_ID = 1818 as const;
