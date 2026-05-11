@@ -90,6 +90,10 @@
 
 .btn-view-thumbnail-asset {
     right: 2%;
+
+    #game-details-carousel-container:has(.game-preview-video-container.carousel-item-active) & {
+        bottom: 25%;
+    }
 }
 
 .btn-view-thumbnail-asset-container,
