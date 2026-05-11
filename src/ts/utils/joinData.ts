@@ -380,7 +380,12 @@ export async function determineCanJoinUser(
 	};
 }
 
-export function getUniversePlayableDevices(universeId: number, userId: number, isUnder13: boolean) {
+export function getUniversePlayableDevices(
+	universeId: number,
+	userId: number,
+	isUnder13: boolean,
+	checkTabletForTV?: boolean,
+) {
 	return getOrSetCache<PlatformType[]>({
 		key: ["universes", universeId, "playableDevices"],
 		fn: () =>
@@ -407,7 +412,7 @@ export function getUniversePlayableDevices(universeId: number, userId: number, i
 						if (data.vrEnabled) {
 							deviceTypes.push("VR");
 						}
-						if (data.tvEnabled) {
+						if (data.tvEnabled || (checkTabletForTV && data.tabletEnabled)) {
 							deviceTypes.push("TV");
 						}
 

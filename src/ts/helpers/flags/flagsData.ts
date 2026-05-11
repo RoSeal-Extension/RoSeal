@@ -11,6 +11,9 @@ export type FlagsData = {
 	homePage: {
 		blockSDUI: boolean;
 	};
+	supportedDevices: {
+		checkTabletForTV: boolean;
+	};
 };
 
 export const flagsData: FlagsData = {
@@ -25,5 +28,8 @@ export const flagsData: FlagsData = {
 	},
 	homePage: {
 		blockSDUI: false,
+	},
+	supportedDevices: {
+		checkTabletForTV: true,
 	},
 };

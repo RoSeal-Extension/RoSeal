@@ -11,6 +11,7 @@ import ExperienceField from "../core/items/ExperienceField";
 import Tooltip from "../core/Tooltip";
 import usePromise from "../hooks/usePromise";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import useFlag from "../hooks/useFlag";
 
 export type ExperiencePlayableDevicesProps = {
 	universeId: number;
@@ -18,16 +19,18 @@ export type ExperiencePlayableDevicesProps = {
 
 export default function ExperiencePlayableDevices({ universeId }: ExperiencePlayableDevicesProps) {
 	const [authenticatedUser] = useAuthenticatedUser();
-	const [deviceTypes] = usePromise(
-		() =>
-			authenticatedUser &&
-			getUniversePlayableDevices(
-				universeId,
-				authenticatedUser?.userId,
-				authenticatedUser?.isUnder13,
-			),
-		[universeId, authenticatedUser?.userId, authenticatedUser?.isUnder13],
-	);
+	const checkTabletForTV = useFlag("supportedDevices", "checkTabletForTV");
+	const [deviceTypes] = usePromise(() => {
+		if (!authenticatedUser) return;
+
+		return getUniversePlayableDevices(
+			universeId,
+			authenticatedUser?.userId,
+			authenticatedUser?.isUnder13,
+			checkTabletForTV,
+		);
+	}, [universeId, authenticatedUser?.userId, authenticatedUser?.isUnder13, checkTabletForTV]);
+
 	const icons = deviceTypes?.map((deviceType) => {
 		let icon: JSX.Element | undefined;
 		switch (deviceType) {
