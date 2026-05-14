@@ -27,7 +27,7 @@ export function onStringTyped(
 	}) as EventListenerOrEventListenerObject;
 
 	element.addEventListener("keydown", listener);
-	return () => document.removeEventListener("keydown", listener);
+	return () => element.removeEventListener("keydown", listener);
 }
 
 export type DeviceMeta = {
