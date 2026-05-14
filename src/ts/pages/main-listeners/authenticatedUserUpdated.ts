@@ -1,8 +1,8 @@
 import { signal } from "@preact/signals";
 import {
+	type AuthenticatedUser,
 	getAuthenticatedUser,
 	isAuthenticated,
-	type AuthenticatedUser,
 } from "src/ts/utils/authenticatedUser";
 import type { ContentBackgroundMessageListener } from "src/types/dataTypes.d.ts";
 

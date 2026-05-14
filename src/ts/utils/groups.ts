@@ -1,10 +1,10 @@
 import type { Signal } from "@preact/signals";
-import { modifyTitle } from "../helpers/elements";
-import { getGroupProfileLink } from "./links";
-import { sendMessage } from "../helpers/communication/dom";
 import { getOrSetCache } from "../helpers/cache";
+import { sendMessage } from "../helpers/communication/dom";
+import { modifyTitle } from "../helpers/elements";
 import { listGroupMembersV2 } from "../helpers/requests/services/groups";
 import { tryOpenCloudAuthRequest } from "./cloudAuth";
+import { getGroupProfileLink } from "./links";
 
 export function setActiveGroup(
 	groupId: Signal<number>,

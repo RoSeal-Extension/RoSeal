@@ -1,16 +1,16 @@
-import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
-import type { LiterallyAnyItemType } from "src/ts/helpers/requests/services/marketplace.ts";
-import useFeatureValue from "../../hooks/useFeatureValue.ts";
-import type { IntlMediaAsset } from "src/ts/helpers/requests/services/intl.ts";
-import Thumbnail from "../../core/Thumbnail.tsx";
-import { languageNamesFormat } from "src/ts/helpers/i18n/intlFormats.ts";
-import MentionLinkify from "../../core/MentionLinkify.tsx";
-import Linkify from "../../core/Linkify.tsx";
-import Tooltip from "../../core/Tooltip.tsx";
-import Icon from "../../core/Icon.tsx";
 import classNames from "classnames";
-import { LocalizedMetadataCarousel } from "./ItemCarousel.tsx";
+import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
+import { languageNamesFormat } from "src/ts/helpers/i18n/intlFormats.ts";
+import type { IntlMediaAsset } from "src/ts/helpers/requests/services/intl.ts";
+import type { LiterallyAnyItemType } from "src/ts/helpers/requests/services/marketplace.ts";
 import { getCreatorStoreAssetLink } from "src/ts/utils/links.ts";
+import Icon from "../../core/Icon.tsx";
+import Linkify from "../../core/Linkify.tsx";
+import MentionLinkify from "../../core/MentionLinkify.tsx";
+import Thumbnail from "../../core/Thumbnail.tsx";
+import Tooltip from "../../core/Tooltip.tsx";
+import useFeatureValue from "../../hooks/useFeatureValue.ts";
+import { LocalizedMetadataCarousel } from "./ItemCarousel.tsx";
 
 export type LocalizedMetadataItemProps = {
 	languageCode: string;

@@ -1,6 +1,6 @@
 import { getAvatarAssetLink } from "src/ts/utils/links";
-import Thumbnail from "../core/Thumbnail";
 import Icon from "../core/Icon";
+import Thumbnail from "../core/Thumbnail";
 
 export type CurrentlyWearingItemProps = {
 	assetId: number;

@@ -8,12 +8,12 @@ import { ComposableMap, Geographies, Geography, Sphere } from "react-simple-maps
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getMapLakesWorldData, getMapWorldData } from "src/ts/helpers/requests/services/misc";
+import { clamp } from "src/ts/utils/misc";
 import SimpleModal from "../../../core/modal/SimpleModal";
 import usePromise from "../../../hooks/usePromise";
 import type { RobloxGroupedDataCenterWithDistance } from "../ServersTabProvider";
-import ServerMapMarker from "./Marker";
 import { getDistanceLatLong } from "../utils";
-import { clamp } from "src/ts/utils/misc";
+import ServerMapMarker from "./Marker";
 
 export type RobloxGroupedDataCenterWithServerCount = RobloxGroupedDataCenterWithDistance & {
 	serverCount: number;

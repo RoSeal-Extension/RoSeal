@@ -1,12 +1,12 @@
+import classNames from "classnames";
+import { useMemo } from "preact/hooks";
 import type { ConnectionType } from "src/ts/constants/friends";
+import IconButton from "../core/IconButton";
 import {
 	getConnectionTypeDisplayDescription,
 	getConnectionTypeDisplayName,
 	getConnectionTypeIcon,
 } from "./utils/types";
-import { useMemo } from "preact/hooks";
-import classNames from "classnames";
-import IconButton from "../core/IconButton";
 
 export type FriendCardTypesItemProps = {
 	type: ConnectionType;

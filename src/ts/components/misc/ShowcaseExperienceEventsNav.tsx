@@ -8,17 +8,17 @@ import {
 	listExperienceEvents,
 } from "src/ts/helpers/requests/services/universes";
 import { getTimedStorage } from "src/ts/helpers/storage";
-import Button from "../core/Button";
-import { CONTINUE_SORT_TOPIC_ID } from "../home/layoutCustomization/utils";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
-import usePromise from "../hooks/usePromise";
-import ShowcaseExperienceEvent from "./ShowcaseExperienceEvent";
-import { crossSort } from "src/ts/utils/objects";
 import {
 	getDeviceMaxMemoryMB,
 	getDeviceMaxResolution,
 	getDeviceNetworkType,
 } from "src/ts/utils/context";
+import { crossSort } from "src/ts/utils/objects";
+import Button from "../core/Button";
+import { CONTINUE_SORT_TOPIC_ID } from "../home/layoutCustomization/utils";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import usePromise from "../hooks/usePromise";
+import ShowcaseExperienceEvent from "./ShowcaseExperienceEvent";
 
 export default function ShowcaseExperienceEventsNav() {
 	const [authenticatedUser] = useAuthenticatedUser();

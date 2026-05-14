@@ -1,9 +1,9 @@
+import { type Inputs, useEffect, useState } from "preact/hooks";
 import {
 	profileInsightsProcessor,
 	type UserProfileInsightsRequest,
 	type UserProfileInsightsResponse,
 } from "../../helpers/processors/profileInsightsProcessor";
-import { type Inputs, useState, useEffect } from "preact/hooks";
 
 export default function useProfileInsights(
 	request?: UserProfileInsightsRequest,

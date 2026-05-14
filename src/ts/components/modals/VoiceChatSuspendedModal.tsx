@@ -1,10 +1,10 @@
 import { useState } from "preact/hooks";
-import SimpleModal from "../core/modal/SimpleModal.tsx";
-import { getRobloxCommunityStandardsLink, getRobloxSettingsLink } from "../../utils/links.ts";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact.tsx";
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { getAbsoluteTime } from "src/ts/helpers/i18n/intlFormats.ts";
 import type { GetUserVoiceSettingsResponse } from "src/ts/helpers/requests/services/voice.ts";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact.tsx";
+import { getRobloxCommunityStandardsLink, getRobloxSettingsLink } from "../../utils/links.ts";
+import SimpleModal from "../core/modal/SimpleModal.tsx";
 
 export type VoiceChatSuspendedModalProps = {
 	data: GetUserVoiceSettingsResponse;

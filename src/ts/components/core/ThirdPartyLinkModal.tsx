@@ -1,9 +1,9 @@
-import { useMemo } from "preact/hooks";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import SimpleModal from "./modal/SimpleModal";
-import { formatUrl } from "src/ts/utils/url";
 import type { JSX } from "preact";
+import { useMemo } from "preact/hooks";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { formatUrl } from "src/ts/utils/url";
+import SimpleModal from "./modal/SimpleModal";
 
 export type ThirdPartyLinkModal = {
 	show: boolean;

@@ -1,10 +1,10 @@
+import MdOutlineInfoIcon from "@material-symbols/svg-400/outlined/info.svg";
 import classNames from "classnames";
 import { useState } from "preact/hooks";
-import MarketplaceCard, { type MarketplaceCardProps } from "./Card";
-import ShimmerCard from "./ShimmerCard";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import Tooltip from "../core/Tooltip";
-import MdOutlineInfoIcon from "@material-symbols/svg-400/outlined/info.svg";
+import MarketplaceCard, { type MarketplaceCardProps } from "./Card";
+import ShimmerCard from "./ShimmerCard";
 
 export type ItemsListContainerProps = {
 	className?: string;

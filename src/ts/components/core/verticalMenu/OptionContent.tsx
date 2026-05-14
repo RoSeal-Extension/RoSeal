@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import Icon from "../Icon.tsx";
 import type { ComponentChild, ComponentChildren } from "preact";
+import Icon from "../Icon.tsx";
 
 export type OptionContentProps = {
 	title: ComponentChild;

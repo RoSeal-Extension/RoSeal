@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "preact/hooks";
 import classNames from "classnames";
-import { OverlayTrigger, type OverlayTriggerProps, Popover as BSPopover } from "react-bootstrap";
 import type { ComponentChildren, ContainerNode, VNode } from "preact";
+import { useEffect, useRef, useState } from "preact/hooks";
 import type { JSX } from "preact/jsx-runtime";
+import { Popover as BSPopover, OverlayTrigger, type OverlayTriggerProps } from "react-bootstrap";
 import { watch } from "src/ts/helpers/elements";
 
 export type PopoverProps = OmitExtend<

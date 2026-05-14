@@ -1,8 +1,8 @@
+import ExperienceRestrictedScreen from "src/ts/components/experience/RestrictedScreen";
 import { watchOnce } from "src/ts/helpers/elements";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { PLACE_CHECK_REGEX } from "src/ts/utils/regex";
 import { renderIn } from "src/ts/utils/render";
-import ExperienceRestrictedScreen from "src/ts/components/experience/RestrictedScreen";
 
 export default {
 	id: "experience.check",

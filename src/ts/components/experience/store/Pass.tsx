@@ -1,10 +1,10 @@
-import { getPassDetailsLink } from "src/ts/utils/links";
-import Thumbnail from "../../core/Thumbnail";
 import classNames from "classnames";
-import RobuxView from "../../core/RobuxView";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import PassPurchaseButton from "./PassPurchaseButton";
 import type { RobloxSharedExperiencePass } from "src/ts/helpers/requests/services/roseal";
+import { getPassDetailsLink } from "src/ts/utils/links";
+import RobuxView from "../../core/RobuxView";
+import Thumbnail from "../../core/Thumbnail";
+import PassPurchaseButton from "./PassPurchaseButton";
 
 export type PassProps = {
 	name: string;

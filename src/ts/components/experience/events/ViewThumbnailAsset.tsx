@@ -1,9 +1,9 @@
-import { getCreatorStoreAssetLink } from "src/ts/utils/links";
-import usePromise from "../../hooks/usePromise";
-import { getExperienceEventById } from "src/ts/helpers/requests/services/universes";
-import Tooltip from "../../core/Tooltip";
-import Icon from "../../core/Icon";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getExperienceEventById } from "src/ts/helpers/requests/services/universes";
+import { getCreatorStoreAssetLink } from "src/ts/utils/links";
+import Icon from "../../core/Icon";
+import Tooltip from "../../core/Tooltip";
+import usePromise from "../../hooks/usePromise";
 
 export type EventViewThumbnailAssetProps = {
 	eventId: string;

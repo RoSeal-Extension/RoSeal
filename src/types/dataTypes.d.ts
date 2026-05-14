@@ -1,4 +1,4 @@
-import type messageesType from "#i18n/types";
+import type { AvatarEditorFiltersValue } from "src/ts/components/avatar/constants";
 import type { CustomHomePlaylist } from "src/ts/components/home/layoutCustomization/constants";
 import type { Layout } from "src/ts/components/home/layoutCustomization/utils";
 import type { StoredAccountPartial } from "src/ts/constants/accountsManager";
@@ -20,6 +20,7 @@ import type {
 	AvatarRestrictions,
 	OutfitRequest,
 } from "src/ts/helpers/requests/services/avatar";
+import type { SortOrder } from "src/ts/helpers/requests/services/badges";
 import type {
 	ListedUserInventoryAssetDetailed,
 	ListUserInventoryCategoriesResponse,
@@ -36,23 +37,22 @@ import type {
 } from "src/ts/helpers/requests/services/roseal";
 import type { FriendInviteData } from "src/ts/helpers/requests/services/sharelinks";
 import type { OmniSort } from "src/ts/helpers/requests/services/universes";
+import type { ListUserOnlineFriendsResponse } from "src/ts/helpers/requests/services/users";
 import type {
 	CrossFetchArgs,
 	CrossFetchResponse,
 } from "src/ts/helpers/requests/utils/bypassCORSFetch";
+import type { ReactAvatarEditorPageAvatar } from "src/ts/pages/inject/www/my/avatar";
 import type { AvatarItemFeedback } from "src/ts/pages/main/www/items/[id]/[name]";
 import type { InjectScript } from "src/ts/utils/dom";
+import type { CurrentServerJoinMetadata } from "src/ts/utils/gameLauncher";
+import type messageesType from "#i18n/types";
 import type {
 	Challenge2SV,
 	Render2SVChallengeResponse,
 	RenderGenericChallengeArgs,
 	RenderGenericChallengeResponse,
 } from "../ts/helpers/challenges/challengesInject";
-import type { ListUserOnlineFriendsResponse } from "src/ts/helpers/requests/services/users";
-import type { SortOrder } from "src/ts/helpers/requests/services/badges";
-import type { CurrentServerJoinMetadata } from "src/ts/utils/gameLauncher";
-import type { ReactAvatarEditorPageAvatar } from "src/ts/pages/inject/www/my/avatar";
-import type { AvatarEditorFiltersValue } from "src/ts/components/avatar/constants";
 
 export type PopupData = {
 	permissions: chrome.permissions.Permissions;

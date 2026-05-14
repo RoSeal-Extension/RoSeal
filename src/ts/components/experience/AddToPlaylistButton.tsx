@@ -1,8 +1,8 @@
 import MdOutlineCheckBox from "@material-symbols/svg-400/outlined/check_box.svg";
 import MdOutlineCheckBoxOutlineBlank from "@material-symbols/svg-400/outlined/check_box_outline_blank.svg";
-import MdOutlineLibraryAddFilled from "@material-symbols/svg-400/outlined/library_add-fill.svg";
 import MdOutlineLibraryAdd from "@material-symbols/svg-400/outlined/library_add.svg";
 import MdOutlineLibraryAddCheckFilled from "@material-symbols/svg-400/outlined/library_add_check-fill.svg";
+import MdOutlineLibraryAddFilled from "@material-symbols/svg-400/outlined/library_add-fill.svg";
 import classNames from "classnames";
 import { useMemo, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";

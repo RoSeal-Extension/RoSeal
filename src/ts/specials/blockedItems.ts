@@ -1,7 +1,7 @@
+import { allowedItemsData, blockedItemsData } from "../constants/misc";
+import { invokeMessage } from "../helpers/communication/dom";
 import type { GetOmniRecommendationsResponse } from "../helpers/requests/services/universes";
 import { isExperienceBlocked } from "../utils/blockedItems";
-import { blockedItemsData, allowedItemsData as allowedItemsData } from "../constants/misc";
-import { invokeMessage } from "../helpers/communication/dom";
 
 export async function handleOmniRecommendationsResponse(res: Response) {
 	const blockedData = blockedItemsData.value;

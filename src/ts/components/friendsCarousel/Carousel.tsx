@@ -1,6 +1,6 @@
+import type { Signal } from "@preact/signals";
+import classNames from "classnames";
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
-import usePromise from "../hooks/usePromise";
-import useFeatureValue from "../hooks/useFeatureValue";
 import {
 	CONNECTIONS_TYPES_STORAGE_KEY,
 	type ConnectionsTypesStorageValue,
@@ -9,7 +9,11 @@ import {
 	DEFAULT_NONE_CONNECTION_TYPE,
 	FRIEND_TILE_WIDTH,
 } from "src/ts/constants/friends";
-import useOnlineFriends from "../hooks/useOnlineFriends";
+import { blockedItemsData } from "src/ts/constants/misc";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { getChatMetadata } from "src/ts/helpers/requests/services/chat";
+import { multigetDevelopUniversesByIds } from "src/ts/helpers/requests/services/universes";
 import {
 	getUserFriendsStatus,
 	listMyNewFriendRequestsCount,
@@ -17,26 +21,22 @@ import {
 	listUserFriendsCount,
 	type SkinnyUserFriend,
 } from "src/ts/helpers/requests/services/users";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
-import { getChatMetadata } from "src/ts/helpers/requests/services/chat";
-import { useWindowSize } from "usehooks-ts";
-import { getUserFriendsLink } from "src/ts/utils/links";
-import FriendsListShimmerCard from "./ShimmerCard";
-import FriendsListCard from "./Card";
-import useProfilesData from "../hooks/useProfilesData";
-import { sortOnlineFriends } from "src/ts/utils/friends";
-import useStorage from "../hooks/useStorage";
-import { calculateFriendsCarouselNewOffsetWidth } from "src/ts/utils/friendsCarousel";
-import { blockedItemsData } from "src/ts/constants/misc";
-import { multigetDevelopUniversesByIds } from "src/ts/helpers/requests/services/universes";
 import { isExperienceBlocked } from "src/ts/utils/blockedItems";
-import Dropdown from "../core/Dropdown";
-import { getConnectionTypeDisplayName } from "../userFriends/utils/types";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import classNames from "classnames";
+import { sortOnlineFriends } from "src/ts/utils/friends";
+import { calculateFriendsCarouselNewOffsetWidth } from "src/ts/utils/friendsCarousel";
+import { getUserFriendsLink } from "src/ts/utils/links";
 import { crossSort } from "src/ts/utils/objects";
+import { useWindowSize } from "usehooks-ts";
+import Dropdown from "../core/Dropdown";
+import useFeatureValue from "../hooks/useFeatureValue";
+import useOnlineFriends from "../hooks/useOnlineFriends";
+import useProfilesData from "../hooks/useProfilesData";
+import usePromise from "../hooks/usePromise";
+import useStorage from "../hooks/useStorage";
+import { getConnectionTypeDisplayName } from "../userFriends/utils/types";
+import FriendsListCard from "./Card";
 import ConnectCard from "./ConnectCard";
-import type { Signal } from "@preact/signals";
+import FriendsListShimmerCard from "./ShimmerCard";
 
 // only supported for current user for now
 

@@ -1,13 +1,13 @@
-import type { ListedTestPilotProgram } from "src/ts/helpers/requests/services/account";
-import usePromise from "../hooks/usePromise";
-import { isProgramSupportedOnDevice } from "./utils/testPilot";
-import classNames from "classnames";
-import Icon from "../core/Icon";
-import { unitListFormat } from "src/ts/helpers/i18n/intlFormats";
 import MdOutlineDns from "@material-symbols/svg-400/outlined/dns-fill.svg";
 import MdOutlineSportsEsports from "@material-symbols/svg-400/outlined/sports_esports-fill.svg";
-import Tooltip from "../core/Tooltip";
+import classNames from "classnames";
 import { getMessage, hasMessage } from "src/ts/helpers/i18n/getMessage";
+import { unitListFormat } from "src/ts/helpers/i18n/intlFormats";
+import type { ListedTestPilotProgram } from "src/ts/helpers/requests/services/account";
+import Icon from "../core/Icon";
+import Tooltip from "../core/Tooltip";
+import usePromise from "../hooks/usePromise";
+import { isProgramSupportedOnDevice } from "./utils/testPilot";
 
 export type TestPilotProgramProps = {
 	program?: ListedTestPilotProgram;

@@ -1,5 +1,5 @@
 import { UNRETRYABLE_STATES } from "../helpers/processors/thumbnailProcessor";
-import { renderAvatar, type RenderAvatarRequest } from "../helpers/requests/services/thumbnails";
+import { type RenderAvatarRequest, renderAvatar } from "../helpers/requests/services/thumbnails";
 import { sleep } from "./misc";
 
 export async function tryRenderAvatar(avatarRenderData: RenderAvatarRequest) {

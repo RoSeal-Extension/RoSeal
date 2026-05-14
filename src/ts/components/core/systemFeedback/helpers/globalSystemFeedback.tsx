@@ -1,5 +1,5 @@
-import { createSystemFeedback } from "../utils/createSystemFeedback.tsx";
 import { renderAsContainer } from "src/ts/utils/render.ts";
+import { createSystemFeedback } from "../utils/createSystemFeedback.tsx";
 
 let service: ReturnType<typeof createSystemFeedback>[1] | undefined;
 export function createGlobalSystemFeedback(): void {

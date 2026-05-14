@@ -1,8 +1,8 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { clamp } from "src/ts/utils/misc.ts";
 import { getOrSetCaches } from "../../cache.ts";
 import { httpClient } from "../main.ts";
 import type { SortOrder } from "./badges.ts";
-import { clamp } from "src/ts/utils/misc.ts";
 
 export type MultigetPlacesByIdsRequest = {
 	placeIds: number[];

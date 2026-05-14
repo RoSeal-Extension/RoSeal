@@ -1,6 +1,6 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "assert" };
-import type { ThumbnailState } from "./thumbnails";
 import { httpClient } from "../main";
+import type { ThumbnailState } from "./thumbnails";
 
 export type IntlImage = {
 	imageId: string | null;

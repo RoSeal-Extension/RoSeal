@@ -4,22 +4,22 @@ import { getOrSetCache, removeCache } from "../helpers/cache";
 import { getMessage } from "../helpers/i18n/getMessage";
 import { presenceProcessor } from "../helpers/processors/presenceProcessor";
 import {
+	type FollowUserIntoExperienceRequest,
+	type GetMatchmadeServerDataReqeust,
+	type GetServerDataResponse,
 	getMatchmadeServerData,
 	getUserServerData,
 	JoinServerStatusCode,
 	JoinServerStatusMessage,
 	parseJoinServerStatusMessage,
-	type FollowUserIntoExperienceRequest,
-	type GetMatchmadeServerDataReqeust,
-	type GetServerDataResponse,
 	type ServerJoinStatusData,
 } from "../helpers/requests/services/join";
 import {
 	getOpenCloudUniverse,
 	getOpenCloudUniversePlace,
 } from "../helpers/requests/services/universes";
-import { sleep } from "./misc";
 import { tryOpenCloudAuthRequest } from "./cloudAuth";
+import { sleep } from "./misc";
 
 /*
 NewGame_NoAvailableSlots = 1

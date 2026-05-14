@@ -13,7 +13,7 @@ export const zPrivateServersFile = z.object({
 					.regex(/^\d{32}$/)
 					.length(LINKCODE_LENGTH)
 					.or(z.string().regex(/^[a-f0-9]{32}$/))
-					.or(z.string().regex(/^[a-z0-9\-]{32}$/i)),
+					.or(z.string().regex(/^[a-z0-9-]{32}$/i)),
 				linkCodeVariant: z.union([z.literal(1), z.literal(2)]).optional(),
 			}),
 		)

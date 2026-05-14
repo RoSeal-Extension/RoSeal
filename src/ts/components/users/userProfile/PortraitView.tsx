@@ -1,8 +1,8 @@
 import classNames from "classnames";
+import { createPortal } from "preact/compat";
 import { useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import Thumbnail from "../../core/Thumbnail";
-import { createPortal } from "preact/compat";
 
 export type UserPortraitViewProps = {
 	userId: number;

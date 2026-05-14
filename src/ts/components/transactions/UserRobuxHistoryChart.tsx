@@ -1,12 +1,12 @@
+import { useMemo } from "preact/hooks";
+import { Line } from "react-chartjs-2";
 import { ROBUX_HISTORY_STORAGE_KEY, type RobuxHistoryStorageValue } from "src/ts/constants/misc";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getAbsoluteTime } from "src/ts/helpers/i18n/intlFormats";
+import { locales } from "src/ts/helpers/i18n/locales";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useStorage from "../hooks/useStorage";
 import { useTheme } from "../hooks/useTheme";
-import { Line } from "react-chartjs-2";
-import { useMemo } from "preact/hooks";
-import { locales } from "src/ts/helpers/i18n/locales";
-import { getAbsoluteTime } from "src/ts/helpers/i18n/intlFormats";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export default function UserRobuxHistoryChart() {
 	const [authenticatedUser] = useAuthenticatedUser();

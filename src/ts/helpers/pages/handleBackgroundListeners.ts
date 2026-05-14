@@ -4,11 +4,28 @@ import { multigetFeaturesValues } from "../features/helpers.ts";
 import { flagCallMatch, getFlag } from "../flags/flags.ts";
 
 export function handleBackgroundListeners(messageListeners: AnyBackgroundMessageListener[]) {
-	const featureIds = new Set<AnyFeature["id"]>();
+	const actionFeatureMap = new Map<string, Set<AnyFeature["id"]>>();
 	for (const listener of messageListeners) {
-		for (const featureId of listener.featureIds ?? []) {
-			featureIds.add(featureId);
+		if (listener.featureIds) {
+			let set = actionFeatureMap.get(listener.action);
+			if (!set) {
+				set = new Set();
+				actionFeatureMap.set(listener.action, set);
+			}
+			for (const featureId of listener.featureIds) {
+				set.add(featureId);
+			}
 		}
+	}
+
+	const actionListenerMap = new Map<string, AnyBackgroundMessageListener[]>();
+	for (const listener of messageListeners) {
+		let list = actionListenerMap.get(listener.action);
+		if (!list) {
+			list = [];
+			actionListenerMap.set(listener.action, list);
+		}
+		list.push(listener);
 	}
 
 	browser.runtime.onMessage.addListener((message: BackgroundMessageData, sender, respond) => {
@@ -27,12 +44,21 @@ export function handleBackgroundListeners(messageListeners: AnyBackgroundMessage
 		}
 
 		const returnValue = (async () => {
-			const features = await multigetFeaturesValues([...featureIds]);
-			for (const listener of messageListeners) {
+			const listeners = actionListenerMap.get(message.action);
+			if (!listeners) {
+				return {
+					success: false,
+					reason: "CallbackNotFound",
+				};
+			}
+
+			const featureIds = actionFeatureMap.get(message.action);
+			const features = featureIds ? await multigetFeaturesValues([...featureIds]) : undefined;
+
+			for (const listener of listeners) {
 				if (
-					listener.action === message.action &&
-					(!listener.featureIds ||
-						listener.featureIds.some((featureId) => features[featureId] === true))
+					!listener.featureIds ||
+					listener.featureIds.some((featureId) => features?.[featureId] === true)
 				) {
 					if (listener.flags) {
 						let shouldContinue = false;

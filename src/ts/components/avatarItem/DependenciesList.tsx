@@ -1,17 +1,17 @@
+import classNames from "classnames";
 import { useState } from "preact/hooks";
-import Icon from "../core/Icon.tsx";
-import Loading from "../core/Loading.tsx";
-import usePromise from "../hooks/usePromise.ts";
+import { getAssetTypeData } from "src/ts/utils/itemTypes.ts";
 import { getMessage } from "../../helpers/i18n/getMessage.ts";
 import {
 	getAssetById,
 	multigetDevelopAssetsByIds,
 } from "../../helpers/requests/services/assets.ts";
 import { getAssetDependencies } from "../../utils/assets.ts";
-import AssetDependency from "./Dependency.tsx";
+import Icon from "../core/Icon.tsx";
+import Loading from "../core/Loading.tsx";
 import TextInput from "../core/TextInput.tsx";
-import { getAssetTypeData } from "src/ts/utils/itemTypes.ts";
-import classNames from "classnames";
+import usePromise from "../hooks/usePromise.ts";
+import AssetDependency from "./Dependency.tsx";
 
 export type AssetDependenciesListProps = {
 	assetId: number;

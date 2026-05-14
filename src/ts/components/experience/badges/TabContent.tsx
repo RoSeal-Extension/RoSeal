@@ -18,6 +18,7 @@ import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
 import { crossSort } from "src/ts/utils/objects";
 import Button from "../../core/Button";
 import CheckboxField from "../../core/CheckboxField";
+import FiltersContainer from "../../core/filters/FiltersContainer";
 import Icon from "../../core/Icon";
 import AgentMentionContainer from "../../core/items/AgentMentionContainer";
 import Loading from "../../core/Loading";
@@ -28,7 +29,6 @@ import useFeatureValue from "../../hooks/useFeatureValue";
 import usePages from "../../hooks/usePages";
 import BadgesGrid from "./Grid";
 import BadgesList from "./List";
-import FiltersContainer from "../../core/filters/FiltersContainer";
 
 export type Filters = {
 	showActive: boolean;

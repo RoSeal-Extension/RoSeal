@@ -1,6 +1,6 @@
 import type { ComponentChildren } from "preact";
-import IconButton from "./IconButton.tsx";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats.ts";
+import IconButton from "./IconButton.tsx";
 
 export type PaginationType = "basic" | "extended";
 

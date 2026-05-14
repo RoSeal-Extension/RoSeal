@@ -15,13 +15,13 @@ import { hijackCreateElement, hijackState } from "src/ts/helpers/hijack/react";
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import {
-	type AvatarColors3s,
-	getOutfitById,
-	type AvatarAssetDefinitionWithTypes,
 	type AvatarBodyColorsLegacy as _AvatarBodyColorsLegacy,
+	type AvatarAssetDefinitionWithTypes,
+	type AvatarColors3s,
 	type AvatarRestrictions,
 	type AvatarScales,
 	type AvatarType,
+	getOutfitById,
 	type ListedUserAvatarItem,
 } from "src/ts/helpers/requests/services/avatar";
 import {

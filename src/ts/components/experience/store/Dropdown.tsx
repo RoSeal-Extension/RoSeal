@@ -1,11 +1,11 @@
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { watchAttributes, watchOnce } from "src/ts/helpers/elements";
+import { getFlag } from "src/ts/helpers/flags/flags";
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { renderIn } from "src/ts/utils/render";
 import Dropdown from "../../core/Dropdown";
 import DeveloperProducts from "./DeveloperProducts";
-import { getFlag } from "src/ts/helpers/flags/flags";
 
 export type StoreDropdownProps = {
 	universeId: number;

@@ -1,6 +1,5 @@
 import classNames from "classnames";
-import type { ComponentChild } from "preact";
-import type { HTMLAttributes } from "preact";
+import type { ComponentChild, HTMLAttributes } from "preact";
 import Icon from "./Icon.tsx";
 
 export type SelectionItem<T extends string | number | boolean | undefined> = {

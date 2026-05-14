@@ -4,17 +4,17 @@ import classNames from "classnames";
 import { Fragment } from "preact";
 import { useCallback, useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import type { RequestedUser } from "src/ts/helpers/requests/services/users";
 import { hexToRgb, rgbToHex } from "src/ts/utils/colors";
 import { clamp } from "src/ts/utils/misc";
 import { compareArrays } from "src/ts/utils/objects";
 import Button from "../../core/Button";
 import Icon from "../../core/Icon";
 import TextInput from "../../core/TextInput";
-import Tooltip from "../Tooltip";
-import type { ApplyFilterValueFn, ColorFilterWithCheckbox, FilterData } from "./FiltersContainer";
-import UserLookup from "../UserLookup";
 import AgentMentionContainer from "../items/AgentMentionContainer";
-import type { RequestedUser } from "src/ts/helpers/requests/services/users";
+import Tooltip from "../Tooltip";
+import UserLookup from "../UserLookup";
+import type { ApplyFilterValueFn, ColorFilterWithCheckbox, FilterData } from "./FiltersContainer";
 
 export type FilterProps<T extends FilterData> = {
 	className?: string;

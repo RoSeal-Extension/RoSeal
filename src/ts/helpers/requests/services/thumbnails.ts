@@ -1,3 +1,4 @@
+import type { HTTPRequestCredentials } from "@roseal/http-client";
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { chunk } from "src/ts/utils/objects.ts";
 import { httpClient } from "../main.ts";
@@ -7,7 +8,6 @@ import type {
 	AvatarScales,
 	AvatarType,
 } from "./avatar.ts";
-import type { HTTPRequestCredentials } from "@roseal/http-client";
 
 export type ThumbnailType =
 	| "Avatar"

@@ -1,8 +1,8 @@
-import MdOutlineInfo from "@material-symbols/svg-600/outlined/info-fill.svg";
-import MdOutlineError from "@material-symbols/svg-600/outlined/error-fill.svg";
-import MdOutlineCheck from "@material-symbols/svg-600/outlined/check-fill.svg";
-import MdOutlineWarning from "@material-symbols/svg-600/outlined/warning-fill.svg";
 import MdOutlineClose from "@material-symbols/svg-400/outlined/close-fill.svg";
+import MdOutlineCheck from "@material-symbols/svg-600/outlined/check-fill.svg";
+import MdOutlineError from "@material-symbols/svg-600/outlined/error-fill.svg";
+import MdOutlineInfo from "@material-symbols/svg-600/outlined/info-fill.svg";
+import MdOutlineWarning from "@material-symbols/svg-600/outlined/warning-fill.svg";
 
 import {
 	type CloseButtonProps,

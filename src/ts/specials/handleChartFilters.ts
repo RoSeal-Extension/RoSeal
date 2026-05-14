@@ -1,16 +1,16 @@
-import { defaultChartFiltersState, type ChartFiltersState } from "../constants/chartFilters.ts";
+import { type ChartFiltersState, defaultChartFiltersState } from "../constants/chartFilters.ts";
+import { addMessageListener } from "../helpers/communication/dom.ts";
+import { hijackState } from "../helpers/hijack/react.ts";
+import type { SearchedExperience } from "../helpers/requests/services/misc.ts";
 import {
-	type ListExperienceSortsResponse,
 	type ExperienceSort,
+	type ListExperienceSortsResponse,
+	type ListedExperience,
 	multigetUniversesAgeRecommendations,
 	multigetUniversesByIds,
 	type UniverseDetail,
-	type ListedExperience,
 } from "../helpers/requests/services/universes.ts";
-import { addMessageListener } from "../helpers/communication/dom.ts";
-import { hijackState } from "../helpers/hijack/react.ts";
 import { compareArrays } from "../utils/objects.ts";
-import type { SearchedExperience } from "../helpers/requests/services/misc.ts";
 
 export type ExperienceList = (
 	| ListExperienceSortsResponse
@@ -222,6 +222,7 @@ export function handleChartFilters() {
 					("games" in value && Array.isArray(value.games)) ||
 					(Array.isArray(value) &&
 						typeof value[0] === "object" &&
+						value[0] !== null &&
 						"contentType" in value[0] &&
 						"contentId" in value[0])),
 			onStateRemoved: (id) => {

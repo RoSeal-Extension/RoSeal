@@ -9,9 +9,9 @@ import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getUniversePlayableDevices } from "src/ts/utils/joinData";
 import ExperienceField from "../core/items/ExperienceField";
 import Tooltip from "../core/Tooltip";
-import usePromise from "../hooks/usePromise";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useFlag from "../hooks/useFlag";
+import usePromise from "../hooks/usePromise";
 
 export type ExperiencePlayableDevicesProps = {
 	universeId: number;

@@ -45,6 +45,7 @@ export type InvokeData<
 const messageListeners = new Set<MessageListener>();
 // Queue for messages that haven't been handled yet.
 const messageQueue = new Set<[EventData, MessageTarget?]>();
+const MAX_MESSAGE_QUEUE_SIZE = 100;
 
 // Queue for invokes that haven't been handled yet.
 const messageInvokeQueue: Record<string, [InvokeData, MessageTarget?][]> = {};
@@ -52,6 +53,9 @@ const messageInvokeQueue: Record<string, [InvokeData, MessageTarget?][]> = {};
 const messageInvokeHandlers: Record<string, InvokeCallback> = {};
 // Unresolved invokes.
 const messageInvokeUnresolvedQueue: Record<string, (args: unknown) => void> = {};
+const messageInvokeTimeouts: Record<string, ReturnType<typeof setTimeout>> = {};
+
+const MESSAGE_INVOKE_TIMEOUT_MS = 30_000;
 
 export type MessageTarget = {
 	window: MessageEventSource;
@@ -136,6 +140,10 @@ if (import.meta.env.ENV !== "background") {
 			}
 
 			if (!hasListener) {
+				if (messageQueue.size >= MAX_MESSAGE_QUEUE_SIZE) {
+					const oldest = messageQueue.values().next().value;
+					if (oldest) messageQueue.delete(oldest);
+				}
 				messageQueue.add([data, source ? { window: source, url: origin } : undefined]);
 			}
 		}
@@ -170,6 +178,11 @@ if (import.meta.env.ENV !== "background")
 		if (args.id in messageInvokeUnresolvedQueue) {
 			messageInvokeUnresolvedQueue[args.id](args.args);
 
+			const timeout = messageInvokeTimeouts[args.id];
+			if (timeout) {
+				clearTimeout(timeout);
+				delete messageInvokeTimeouts[args.id];
+			}
 			delete messageInvokeUnresolvedQueue[args.id];
 		}
 	});
@@ -204,6 +217,12 @@ export function invokeMessage<
 
 	messageInvokeUnresolvedQueue[id] = (args) =>
 		resolvePromise(args as CommunicationResponseMessage<V["data"], V["reason"]>);
+
+	messageInvokeTimeouts[id] = setTimeout(() => {
+		delete messageInvokeUnresolvedQueue[id];
+		delete messageInvokeTimeouts[id];
+	}, MESSAGE_INVOKE_TIMEOUT_MS);
+
 	return promise;
 }
 

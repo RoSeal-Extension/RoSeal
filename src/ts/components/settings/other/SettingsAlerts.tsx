@@ -1,11 +1,11 @@
-import { FEATURE_STORAGE_KEY } from "src/ts/helpers/features/constants";
-import usePromise from "../../hooks/usePromise";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import MdOutlineError from "@material-symbols/svg-400/outlined/error-fill.svg";
-import useHasPermissions from "../../hooks/useHasPermissions";
-import { getRoSealUrl } from "src/ts/utils/baseUrls";
 import { useEffect, useState } from "preact/hooks";
+import { FEATURE_STORAGE_KEY } from "src/ts/helpers/features/constants";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getRoSealUrl } from "src/ts/utils/baseUrls";
 import { initialLaunchDataFetch } from "src/ts/utils/interastral";
+import useHasPermissions from "../../hooks/useHasPermissions";
+import usePromise from "../../hooks/usePromise";
 
 export default function SettingsAlerts() {
 	const [storageAccessible] = usePromise(

@@ -2,7 +2,7 @@ import { signal } from "@preact/signals";
 import { getItemRestrictionsClassName } from "src/ts/components/marketplace/utils/items";
 import type { ArchivedItemsItem } from "src/ts/constants/misc";
 import { addMessageListener, sendMessage } from "src/ts/helpers/communication/dom";
-import { watchOnce, watch } from "src/ts/helpers/elements";
+import { watch, watchOnce } from "src/ts/helpers/elements";
 import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
 import { hijackRequest, hijackResponse } from "src/ts/helpers/hijack/fetch";
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";

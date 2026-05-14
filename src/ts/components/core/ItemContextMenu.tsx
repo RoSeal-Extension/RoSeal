@@ -1,8 +1,8 @@
-import { useRef } from "preact/hooks";
-import Popover from "./Popover.tsx";
 import classNames from "classnames";
-import { isValidElement, toChildArray, type ComponentChildren } from "preact";
+import { type ComponentChildren, isValidElement, toChildArray } from "preact";
+import { useRef } from "preact/hooks";
 import IconButton from "./IconButton.tsx";
+import Popover from "./Popover.tsx";
 
 export type ItemContextMenuProps = {
 	id?: string;

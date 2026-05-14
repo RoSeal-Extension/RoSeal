@@ -1,6 +1,6 @@
+import type { HTTPRequestCredentials } from "@roseal/http-client";
 import { tryAPIKeyRequest } from "./apiKey";
 import { tryOAuthRequest } from "./oauth";
-import type { HTTPRequestCredentials } from "@roseal/http-client";
 
 export function tryOpenCloudAuthRequest<T>(
 	userId: number,

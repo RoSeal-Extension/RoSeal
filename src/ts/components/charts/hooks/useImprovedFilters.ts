@@ -1,18 +1,18 @@
+import { useMemo } from "preact/hooks";
 import {
-	type ChartFiltersState,
 	ageRestrictionsToCheck,
 	ages,
+	type ChartFiltersState,
 	contentRestrictionToAge,
 	defaultChartFiltersState,
 } from "src/ts/constants/chartFilters";
+import { ROBLOX_RELEASE_YEAR } from "src/ts/constants/misc";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString, unitListFormat } from "src/ts/helpers/i18n/intlFormats";
 import { getUserSettings, getVerifiedAge } from "src/ts/helpers/requests/services/account";
 import { compareArrays } from "src/ts/utils/objects";
 import type { FilterData, FilterDropdown } from "../../core/filters/FiltersContainer";
 import usePromise from "../../hooks/usePromise";
-import { useMemo } from "preact/hooks";
-import { ROBLOX_RELEASE_YEAR } from "src/ts/constants/misc";
 
 function getNumberInputSuffix(min: number, max: number) {
 	if (!min && !max) {

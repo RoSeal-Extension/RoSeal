@@ -328,8 +328,8 @@ export {
 	fromCodePoint,
 	parse,
 	replace,
-	test,
-	toCodePoint,
 	type TwemojiInstance,
 	type TwemojiOptions,
+	test,
+	toCodePoint,
 };

@@ -1,4 +1,4 @@
-import { MultiBackend, Tree, getBackendOptions } from "@minoru/react-dnd-treeview";
+import { getBackendOptions, MultiBackend, Tree } from "@minoru/react-dnd-treeview";
 import type { Signal } from "@preact/signals";
 import classNames from "classnames";
 import { useEffect, useMemo, useState } from "preact/hooks";

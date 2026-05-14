@@ -1,6 +1,6 @@
+import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import ExperienceTab from "../Tab.tsx";
 import BadgesTabContent from "./TabContent.tsx";
-import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 
 export type ExperienceBadgesTabProps = {
 	list: HTMLDivElement;

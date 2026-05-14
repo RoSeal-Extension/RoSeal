@@ -1,10 +1,10 @@
-import { invokeMessage } from "src/ts/helpers/communication/dom";
-import TextInput from "../core/TextInput";
-import Icon from "../core/Icon";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import usePromise from "../hooks/usePromise";
-import { useState } from "preact/hooks";
 import type { Signal } from "@preact/signals";
+import { useState } from "preact/hooks";
+import { invokeMessage } from "src/ts/helpers/communication/dom";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import Icon from "../core/Icon";
+import TextInput from "../core/TextInput";
+import usePromise from "../hooks/usePromise";
 
 export type GroupStoreSearchProps = {
 	groupId: Signal<number>;

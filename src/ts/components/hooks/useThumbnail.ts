@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "preact/hooks";
 import {
 	type ThumbnailItem,
-	thumbnailProcessor,
 	type ThumbnailRequest,
+	thumbnailProcessor,
 } from "../../helpers/processors/thumbnailProcessor";
 import useFeatureValue from "./useFeatureValue";
 

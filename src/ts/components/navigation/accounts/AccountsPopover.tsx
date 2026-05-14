@@ -1,6 +1,5 @@
-import type messagesType from "#i18n/types";
 import MdOutlineSwitchAccount from "@material-symbols/svg-400/outlined/switch_account-fill.svg";
-import { MultiBackend, Tree, getBackendOptions } from "@minoru/react-dnd-treeview";
+import { getBackendOptions, MultiBackend, Tree } from "@minoru/react-dnd-treeview";
 import classNames from "classnames";
 import { differenceInYears } from "date-fns";
 import type { JSX } from "preact";
@@ -20,6 +19,7 @@ import {
 	getCurrentAuthenticatedUser,
 } from "src/ts/helpers/requests/services/account";
 import { getUserProfileLink } from "src/ts/utils/links";
+import type messagesType from "#i18n/types";
 import Button from "../../core/Button";
 import Divider from "../../core/Divider";
 import Loading from "../../core/Loading";
@@ -27,10 +27,10 @@ import Popover from "../../core/Popover";
 import Thumbnail from "../../core/Thumbnail";
 import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 import useFeatureValue from "../../hooks/useFeatureValue";
+import useProfilesData from "../../hooks/useProfilesData";
 import usePromise from "../../hooks/usePromise";
 import VerifiedBadge from "../../icons/VerifiedBadge";
 import AccountItem, { type AccountItemNodeData } from "./AccountItem";
-import useProfilesData from "../../hooks/useProfilesData";
 
 export type AccountsPopoverProps = {
 	button: JSX.Element;

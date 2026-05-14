@@ -1,11 +1,11 @@
 import { useMemo, useState } from "preact/hooks";
 import {
 	ALLOWED_ITEMS_STORAGE_KEY,
+	type AllowedItemsStorage,
 	BLOCKED_ITEMS_STORAGE_KEY,
+	type BlockedItemsStorage,
 	DEFAULT_ALLOWED_ITEMS_STORAGE,
 	DEFAULT_BLOCKED_ITEMS_STORAGE,
-	type AllowedItemsStorage,
-	type BlockedItemsStorage,
 } from "src/ts/constants/misc";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";

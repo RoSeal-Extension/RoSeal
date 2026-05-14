@@ -1,7 +1,7 @@
-import type { JSX } from "preact";
 import classNames from "classnames";
-import { matchUrlRegex, formatUrl } from "../../utils/url.ts";
+import type { JSX } from "preact";
 import processString, { type ProcessStringOption } from "src/ts/utils/processString.ts";
+import { formatUrl, matchUrlRegex } from "../../utils/url.ts";
 
 export type LinkifyProps = {
 	content?: string | JSX.Element[] | null;

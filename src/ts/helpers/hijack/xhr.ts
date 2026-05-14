@@ -1,5 +1,5 @@
 import { _hijackRequests, _hijackResponses } from "./fetch.ts";
-import { hijackFunction, hijackedSymbol } from "./utils.ts";
+import { hijackedSymbol, hijackFunction } from "./utils.ts";
 
 export type HijackedXHR = XMLHttpRequest & {
 	[hijackedSymbol]?: {

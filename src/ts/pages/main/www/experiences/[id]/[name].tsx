@@ -8,27 +8,27 @@ import AddToPlaylistButton from "src/ts/components/experience/AddToPlaylistButto
 import AltText from "src/ts/components/experience/AltText";
 import ExperienceAvatarRestriction from "src/ts/components/experience/AvatarRestriction";
 import ExperienceAvatarType from "src/ts/components/experience/AvatarType";
-import ExperienceBadgesTab from "src/ts/components/experience/badges/Tab";
 import BannedPlayButton from "src/ts/components/experience/BannedPlayButton";
+import ExperienceBadgesTab from "src/ts/components/experience/badges/Tab";
 import ExperienceCountdown from "src/ts/components/experience/Countdown";
 import ExperienceCreatedDate from "src/ts/components/experience/CreatedDate";
 import ExperienceDevStats from "src/ts/components/experience/DevStats";
-import ExperienceEventsTab from "src/ts/components/experience/events/Tab";
 import ExperienceTopSongsList from "src/ts/components/experience/ExperienceTopSongsList";
+import ExperienceEventsTab from "src/ts/components/experience/events/Tab";
 import FriendsWhoPlayedGame from "src/ts/components/experience/FriendsWhoPlayed";
 import ExperienceLinks from "src/ts/components/experience/links/LinkList";
-import PlacesTab from "src/ts/components/experience/places/Tab";
 import ExperiencePlayableDevices from "src/ts/components/experience/PlayableDevices";
 import ExperiencePlaytime from "src/ts/components/experience/Playtime";
 import ExperiencePrivateNote from "src/ts/components/experience/PrivateNote";
+import PlacesTab from "src/ts/components/experience/places/Tab";
 import ExperienceRestrictedCountries from "src/ts/components/experience/RestrictedCountries";
 import ExperienceSales from "src/ts/components/experience/Sales";
-import JoinPreferredRegionButton from "src/ts/components/experience/servers/JoinPreferredRegionButton";
-import PrivateServerLinkList from "src/ts/components/experience/servers/privateServerLinks/PrivateServerLinkList";
-import ServersTabContent from "src/ts/components/experience/servers/ServersTab";
 import ExperienceShadowBannedNotice from "src/ts/components/experience/ShadowBannedNotice";
 import StartPlaceNotice from "src/ts/components/experience/StartPlaceNotice";
 import ExperienceStatsChart from "src/ts/components/experience/StatsChart";
+import JoinPreferredRegionButton from "src/ts/components/experience/servers/JoinPreferredRegionButton";
+import PrivateServerLinkList from "src/ts/components/experience/servers/privateServerLinks/PrivateServerLinkList";
+import ServersTabContent from "src/ts/components/experience/servers/ServersTab";
 import StoreDropdown from "src/ts/components/experience/store/Dropdown";
 import Passes from "src/ts/components/experience/store/Passes";
 import ExperienceTestPilotSettings from "src/ts/components/experience/TestPilotSettings";
@@ -68,8 +68,8 @@ import { getPlaceVotes } from "src/ts/helpers/requests/services/places";
 import {
 	getUniverseMedia,
 	getUniverseStartInfo,
-	listExperienceEvents,
 	type ListExperienceEventsResponse,
+	listExperienceEvents,
 	listUniverseActiveSubscriptions,
 	multigetDevelopUniversesByIds,
 	multigetOmniRecommendationsMetadata,

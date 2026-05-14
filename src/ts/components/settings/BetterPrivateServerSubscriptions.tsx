@@ -1,21 +1,21 @@
+import classNames from "classnames";
+import { useCallback, useState } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { RESTError } from "src/ts/helpers/requests/main";
+import {
+	listUserPrivateServers,
+	type PrivateServerInventoryItem,
+} from "src/ts/helpers/requests/services/inventory";
 import {
 	updatePrivateServer,
 	updatePrivateServerSubscription,
 } from "src/ts/helpers/requests/services/privateServers";
-import {
-	type PrivateServerInventoryItem,
-	listUserPrivateServers,
-} from "src/ts/helpers/requests/services/inventory";
-import usePages from "../hooks/usePages";
+import Loading from "../core/Loading";
 import Pagination from "../core/Pagination";
-import classNames from "classnames";
-import PrivateServerSubscriptionCard from "./PrivateServerSubscription";
-import { useCallback, useState } from "preact/hooks";
 import PillToggle from "../core/PillToggle";
 import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
-import Loading from "../core/Loading";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { RESTError } from "src/ts/helpers/requests/main";
+import usePages from "../hooks/usePages";
+import PrivateServerSubscriptionCard from "./PrivateServerSubscription";
 
 const pillItems = [
 	{

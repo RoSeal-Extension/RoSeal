@@ -1,6 +1,6 @@
 import { initialLaunchDataFetch } from "src/ts/utils/interastral.ts";
-import { flagsData, type FlagsData } from "./flagsData.ts";
 import { setInvokeListener } from "../communication/dom.ts";
+import { type FlagsData, flagsData } from "./flagsData.ts";
 
 export type FlagUpdateListener = [
 	isKeys: true,

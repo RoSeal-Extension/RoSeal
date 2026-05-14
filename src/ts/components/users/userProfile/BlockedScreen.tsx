@@ -1,6 +1,6 @@
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import useProfileData from "../../hooks/useProfileData";
 import Button from "../../core/Button";
+import useProfileData from "../../hooks/useProfileData";
 
 export type BlockedScreenProps = {
 	userId: number;

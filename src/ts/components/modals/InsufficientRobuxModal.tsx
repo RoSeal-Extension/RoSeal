@@ -1,10 +1,10 @@
 import type { JSX } from "preact";
-import type { RobuxUpsellPackage } from "src/ts/helpers/requests/services/account";
-import SimpleModal from "../core/modal/SimpleModal";
-import { getBuyRobuxLink, getBuyRobuxPackageLink, getRobloxTermsLink } from "src/ts/utils/links";
-import RobuxView from "../core/RobuxView";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import type { RobuxUpsellPackage } from "src/ts/helpers/requests/services/account";
+import { getBuyRobuxLink, getBuyRobuxPackageLink, getRobloxTermsLink } from "src/ts/utils/links";
+import SimpleModal from "../core/modal/SimpleModal";
+import RobuxView from "../core/RobuxView";
 
 export type InsufficentRobuxModalProps = {
 	robuxPackage?: RobuxUpsellPackage;

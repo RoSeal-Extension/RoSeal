@@ -6,11 +6,11 @@ import Thumbnail from "src/ts/components/core/Thumbnail";
 import usePages from "src/ts/components/hooks/usePages";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { RESTError } from "src/ts/helpers/requests/main";
-import { updatePrivateServer } from "src/ts/helpers/requests/services/privateServers";
 import {
-	type PrivateServerInventoryItem,
 	listUserPrivateServers,
+	type PrivateServerInventoryItem,
 } from "src/ts/helpers/requests/services/inventory";
+import { updatePrivateServer } from "src/ts/helpers/requests/services/privateServers";
 import { getConfigurePrivateServerLink, getExperienceLink } from "src/ts/utils/links";
 
 export type FreePrivateServersListProps = {

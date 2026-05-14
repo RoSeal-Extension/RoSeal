@@ -1,5 +1,5 @@
 import { type Signal, signal } from "@preact/signals";
-import { type VNode, createElement } from "preact";
+import { createElement, type VNode } from "preact";
 import ItemContextMenu from "../components/core/ItemContextMenu";
 import { renderAppend, renderBefore, renderIn, renderPrepend } from "../utils/render";
 import { watch, watchBeforeLoad, watchOnce } from "./elements";

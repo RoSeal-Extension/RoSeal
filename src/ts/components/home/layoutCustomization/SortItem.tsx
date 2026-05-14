@@ -1,3 +1,5 @@
+import MdOutlineArrowDropDown from "@material-symbols/svg-400/outlined/arrow_drop_down-fill.svg";
+import MdOutlineArrowDropUp from "@material-symbols/svg-400/outlined/arrow_drop_up-fill.svg";
 import type { RenderParams } from "@minoru/react-dnd-treeview";
 import classNames from "classnames";
 import { useRef, useState } from "preact/hooks";
@@ -11,13 +13,11 @@ import Popover from "../../core/Popover";
 import TextInput from "../../core/TextInput";
 import {
 	ALLOWED_CUSTOMIZATION_TREATMENTS,
-	MAX_PLAYLIST_NAME_LENGTH,
 	type CustomHomePlaylist,
+	MAX_PLAYLIST_NAME_LENGTH,
 	type SortWithOverrides,
 } from "./constants";
 import { ACCURATE_TOPIC_HANDLING, type HomeSortingLayoutItemSort } from "./utils";
-import MdOutlineArrowDropDown from "@material-symbols/svg-400/outlined/arrow_drop_down-fill.svg";
-import MdOutlineArrowDropUp from "@material-symbols/svg-400/outlined/arrow_drop_up-fill.svg";
 
 export type SortItemProps = {
 	render: RenderParams;

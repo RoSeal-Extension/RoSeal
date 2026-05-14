@@ -1,7 +1,7 @@
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import SimpleModal from "../../core/modal/SimpleModal";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { declineAllMyFriendRequests } from "src/ts/helpers/requests/services/users";
+import SimpleModal from "../../core/modal/SimpleModal";
 import { success } from "../../core/systemFeedback/helpers/globalSystemFeedback";
 
 export type IgnoreAllFriendRequestsModalProps = {

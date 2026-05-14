@@ -1,6 +1,6 @@
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { chunk } from "src/ts/utils/objects.ts";
 import { httpClient } from "../main.ts";
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 
 export type ListPrivateMessagesRequest = {
 	pageSize?: number;

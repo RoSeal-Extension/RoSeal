@@ -1,6 +1,6 @@
 import { signal } from "@preact/signals";
-import SimpleModal from "../SimpleModal.tsx";
 import type { SimpleModalProps } from "../SimpleModal.tsx";
+import SimpleModal from "../SimpleModal.tsx";
 
 export function createModal(onShow?: () => void, onHide?: () => void) {
 	const state = signal(false);

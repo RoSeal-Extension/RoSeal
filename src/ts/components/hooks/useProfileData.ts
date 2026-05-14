@@ -1,9 +1,9 @@
+import { type Inputs, useEffect, useState } from "preact/hooks";
 import {
 	profileProcessor,
 	type UserProfileRequest,
 	type UserProfileResponse,
 } from "../../helpers/processors/profileProcessor.ts";
-import { type Inputs, useState, useEffect } from "preact/hooks";
 
 export type { UserProfileResponse };
 

@@ -1,8 +1,8 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "json" };
 import { getOrSetCache } from "../../cache";
 import { httpClient } from "../main";
-import type { MarketplaceItemType } from "./marketplace";
 import type { SortOrder } from "./badges";
+import type { MarketplaceItemType } from "./marketplace";
 
 export type TradeStatusFilter = "Inbound" | "Outbound" | "Inactive" | "Completed";
 

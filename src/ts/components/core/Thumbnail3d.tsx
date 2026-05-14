@@ -1,15 +1,15 @@
+import classNames from "classnames";
 import { useEffect, useRef } from "preact/hooks";
-import usePromise from "../hooks/usePromise.ts";
+import { invokeMessage } from "src/ts/helpers/communication/dom.ts";
+import { httpClient } from "src/ts/helpers/requests/main.ts";
+import { tryRender3dAssetThumbnail, tryRender3dUserThumbnail } from "src/ts/utils/assets.ts";
+import { tryRenderAvatar } from "src/ts/utils/avatar.ts";
 import type {
 	Get3dThumbnailResponse,
 	RenderAvatarDefinition,
 	RenderAvatarResponse,
 } from "../../helpers/requests/services/thumbnails.ts";
-import { invokeMessage } from "src/ts/helpers/communication/dom.ts";
-import classNames from "classnames";
-import { tryRender3dAssetThumbnail, tryRender3dUserThumbnail } from "src/ts/utils/assets.ts";
-import { tryRenderAvatar } from "src/ts/utils/avatar.ts";
-import { httpClient } from "src/ts/helpers/requests/main.ts";
+import usePromise from "../hooks/usePromise.ts";
 
 export type Thumbnail3dProps = {
 	containerClassName?: string;

@@ -1,14 +1,14 @@
+import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
+import { hijackResponse } from "src/ts/helpers/hijack/fetch";
+import type { Page } from "src/ts/helpers/pages/handleMainPages";
+import { getAssetById } from "src/ts/helpers/requests/services/assets";
+import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import {
 	badgeAssetTypeId,
 	getAssetTypeData,
 	passAssetTypeId,
 	placeAssetTypeId,
 } from "src/ts/utils/itemTypes";
-import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
-import { hijackResponse } from "src/ts/helpers/hijack/fetch";
-import type { Page } from "src/ts/helpers/pages/handleMainPages";
-import { getAssetById } from "src/ts/helpers/requests/services/assets";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { getAvatarAssetLink, getExperienceLink } from "src/ts/utils/links";
 
 export default {

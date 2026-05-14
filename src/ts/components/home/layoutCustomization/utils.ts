@@ -8,6 +8,7 @@ import type {
 	OmniSort,
 } from "src/ts/helpers/requests/services/universes";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
+import { isExperienceBlocked } from "src/ts/utils/blockedItems";
 import { lazyLoadSignal } from "src/ts/utils/lazyLoad";
 import { crossSort, shuffleArray } from "src/ts/utils/objects";
 import type {
@@ -16,7 +17,6 @@ import type {
 	SortLayoutOverride,
 	SortWithOverrides,
 } from "./constants";
-import { isExperienceBlocked } from "src/ts/utils/blockedItems";
 
 export const CONTINUE_SORT_TOPIC_ID = 100000003;
 export const FAVORITED_SORT_TOPIC_ID = 100000001;

@@ -2,7 +2,7 @@ import { render } from "preact";
 import type { PopupData } from "src/types/dataTypes";
 import FeaturePermissions from "../components/popup/Permissions";
 import { sendMessage, setInvokeListener } from "../helpers/communication/dom";
-import { features, type AnyFeature, type Feature } from "../helpers/features/featuresData";
+import { type AnyFeature, type Feature, features } from "../helpers/features/featuresData";
 import { getMessage } from "../helpers/i18n/getMessage";
 import currentUrl from "../utils/currentUrl";
 import { injectScripts, onDOMReady } from "../utils/dom";

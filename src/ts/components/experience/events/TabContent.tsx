@@ -4,14 +4,14 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	type ExperienceEvent as ExperienceEventType,
-	listExperienceEvents,
 	type ListExperienceEventsResponse,
+	listExperienceEvents,
 } from "src/ts/helpers/requests/services/universes";
 import { useResizeObserver } from "usehooks-ts";
-import PillToggle from "../../core/PillToggle";
-import ExperienceEvent from "./Event";
-import usePages from "../../hooks/usePages";
 import Pagination from "../../core/Pagination";
+import PillToggle from "../../core/PillToggle";
+import usePages from "../../hooks/usePages";
+import ExperienceEvent from "./Event";
 
 export type EventsTabContentProps = {
 	universeId: number;

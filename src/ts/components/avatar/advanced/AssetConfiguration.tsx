@@ -6,17 +6,17 @@ import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import {
 	type AvatarRestrictions,
-	type UserAvatar,
 	setWearingAssets,
+	type UserAvatar,
 } from "src/ts/helpers/requests/services/avatar";
 import { getAssetTypeData, insertAssetMetaIntoAssetList } from "src/ts/utils/itemTypes";
 import { getItemTypeDisplayLabel } from "src/ts/utils/itemTypesText";
 import { getAvatarAssetLink } from "src/ts/utils/links";
 import PillToggle from "../../core/PillToggle";
 import Slider from "../../core/Slider";
+import { warning } from "../../core/systemFeedback/helpers/globalSystemFeedback";
 import Thumbnail from "../../core/Thumbnail";
 import Tooltip from "../../core/Tooltip";
-import { warning } from "../../core/systemFeedback/helpers/globalSystemFeedback";
 import type { AdvancedWornAsset } from "../AdvancedCustomizationButton";
 import { XYZCoordSet } from "./XYZCoordSet";
 

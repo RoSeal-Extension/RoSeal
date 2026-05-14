@@ -67,6 +67,7 @@ declare module "#i18n" {
 
 declare module "*.svg" {
 	import type { FunctionComponent, JSX } from "preact";
+
 	const content: FunctionComponent<JSX.SVGAttributes<SVGElement>>;
 	export default content;
 }

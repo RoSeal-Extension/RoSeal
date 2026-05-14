@@ -1,19 +1,19 @@
-import useFeatureValue from "../../hooks/useFeatureValue";
 import classNames from "classnames";
-import { getBadgeLink } from "src/ts/utils/links";
-import Thumbnail from "../../core/Thumbnail";
+import { useRef } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	asLocaleString,
 	getAbsoluteTime,
 	getShortRelativeTime,
 } from "src/ts/helpers/i18n/intlFormats";
+import { getBadgeLink } from "src/ts/utils/links";
 import Icon from "../../core/Icon";
-import MentionLinkify from "../../core/MentionLinkify";
 import Linkify from "../../core/Linkify";
+import MentionLinkify from "../../core/MentionLinkify";
+import Thumbnail from "../../core/Thumbnail";
 import Tooltip from "../../core/Tooltip";
+import useFeatureValue from "../../hooks/useFeatureValue";
 import type { ListBadgeProps } from "./ListBadge";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { useRef } from "preact/hooks";
 
 export default function GridBadge({
 	badge,

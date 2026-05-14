@@ -1,16 +1,16 @@
+import classNames from "classnames";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { abbreviateNumber, asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import {
 	addUserAssetFavorite,
 	getAssetFavoritesCount,
 	getUserAssetFavorite,
 	removeUserAssetFavorite,
 } from "src/ts/helpers/requests/services/favorites";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
-import Tooltip from "../core/Tooltip";
-import usePromise from "../hooks/usePromise";
-import { abbreviateNumber, asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import Icon from "../core/Icon";
-import classNames from "classnames";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import Tooltip from "../core/Tooltip";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import usePromise from "../hooks/usePromise";
 
 export type FavoriteItemButtonProps = {
 	assetId: number;

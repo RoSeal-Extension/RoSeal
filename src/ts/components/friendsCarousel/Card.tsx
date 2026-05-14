@@ -1,8 +1,10 @@
 import MdOutlineBlock from "@material-symbols/svg-600/outlined/block-fill.svg";
 import classNames from "classnames";
 import { useCallback, useMemo, useRef, useState } from "preact/hooks";
+import { type ConnectionType, DEFAULT_ALL_CONNECTION_TYPE } from "src/ts/constants/friends";
 import { presenceTypes } from "src/ts/constants/presence";
 import { sendMessage } from "src/ts/helpers/communication/dom";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { sendFollowPlayerIntoGame } from "src/ts/utils/gameLauncher";
 import { type CanJoinUserDetermination, determineCanJoinUser } from "src/ts/utils/joinData";
 import { getExperienceLink, getUserProfileLink } from "src/ts/utils/links";
@@ -16,8 +18,6 @@ import useFeatureValue from "../hooks/useFeatureValue";
 import usePresence from "../hooks/usePresence";
 import useProfileData from "../hooks/useProfileData";
 import VerifiedBadge from "../icons/VerifiedBadge";
-import { DEFAULT_ALL_CONNECTION_TYPE, type ConnectionType } from "src/ts/constants/friends";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getConnectionTypeDisplayName, getConnectionTypeIcon } from "../userFriends/utils/types";
 
 export type FriendsListCardProps = {

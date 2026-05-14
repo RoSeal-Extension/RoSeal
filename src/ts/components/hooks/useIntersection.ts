@@ -1,5 +1,5 @@
-import { useEffect, useState } from "preact/hooks";
 import type { RefObject } from "preact";
+import { useEffect, useState } from "preact/hooks";
 
 export function useIntersection(
 	element: RefObject<HTMLElement>,

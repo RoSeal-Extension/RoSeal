@@ -1,11 +1,11 @@
-import { getAvatarAssetLink } from "src/ts/utils/links";
-import Thumbnail from "../../core/Thumbnail";
-import type { ListedUserCollectibleAsset } from "src/ts/helpers/requests/services/inventory";
-import Icon from "../../core/Icon";
+import { useMemo } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import type { ListedUserCollectibleAsset } from "src/ts/helpers/requests/services/inventory";
+import { getAvatarAssetLink } from "src/ts/utils/links";
+import Icon from "../../core/Icon";
 import RobuxView from "../../core/RobuxView";
-import { useMemo } from "preact/hooks";
+import Thumbnail from "../../core/Thumbnail";
 import { getItemRestrictionsClassName } from "../../marketplace/utils/items";
 
 export type UserRAPItemProps = {

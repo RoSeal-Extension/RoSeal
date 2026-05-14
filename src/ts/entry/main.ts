@@ -1,11 +1,11 @@
 import { pages } from "#pages/main";
+import { messageListeners } from "#pages/main-listeners";
 import { connectToDevServer } from "../helpers/devServerConnection.ts";
+import { handleBackgroundListeners } from "../helpers/pages/handleBackgroundListeners.ts";
 import { handleMainPages } from "../helpers/pages/handleMainPages.ts";
 import { info, warn } from "../utils/console.ts";
-import currentUrl from "../utils/currentUrl.ts";
-import { messageListeners } from "#pages/main-listeners";
-import { handleBackgroundListeners } from "../helpers/pages/handleBackgroundListeners.ts";
 import { isIframe } from "../utils/context.ts";
+import currentUrl from "../utils/currentUrl.ts";
 
 if (import.meta.env.IS_DEV_WS_ACCESSIBLE) {
 	connectToDevServer(["CSS", "JS", "IMG"], (type) => {

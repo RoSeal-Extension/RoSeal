@@ -1,9 +1,9 @@
-import { clamp } from "src/ts/utils/misc";
+import MdOutlineChevronLeft from "@material-symbols/svg-600/outlined/chevron_left-fill.svg";
+import MdOutlineChevronRight from "@material-symbols/svg-600/outlined/chevron_right-fill.svg";
+import classNames from "classnames";
 import type { ComponentChildren, WheelEventHandler } from "preact";
 import { useCallback, useRef, useState } from "preact/hooks";
-import MdOutlineChevronRight from "@material-symbols/svg-600/outlined/chevron_right-fill.svg";
-import MdOutlineChevronLeft from "@material-symbols/svg-600/outlined/chevron_left-fill.svg";
-import classNames from "classnames";
+import { clamp } from "src/ts/utils/misc";
 
 export type ItemCarouselProps = {
 	children: ComponentChildren;

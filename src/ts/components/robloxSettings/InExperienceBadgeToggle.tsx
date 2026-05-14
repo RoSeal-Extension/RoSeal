@@ -1,3 +1,4 @@
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	getInExperienceProfileSettings,
 	updateInExperienceProfileSettings,
@@ -5,7 +6,6 @@ import {
 import Toggle from "../core/Toggle";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePromise from "../hooks/usePromise";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export default function InExperienceBadgeToggle() {
 	const [authenticatedUser] = useAuthenticatedUser();

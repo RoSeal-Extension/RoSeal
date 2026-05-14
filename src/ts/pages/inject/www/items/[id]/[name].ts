@@ -24,13 +24,13 @@ import {
 	type Collectible,
 	getAvatarItem,
 	getCollectibleResaleData,
+	type MultigetCollectibleItemsByIdsRequest,
 	multigetBundlesByIds,
 	multigetCollectibleItemsByIds,
-	type MultigetCollectibleItemsByIdsRequest,
-	purchaseCollectibleItem,
 	type PurchaseCollectibleItemResponse,
-	purchaseItem,
 	type PurchaseItemResponse,
+	purchaseCollectibleItem,
+	purchaseItem,
 	type ResaleDataPoint,
 } from "src/ts/helpers/requests/services/marketplace";
 import {

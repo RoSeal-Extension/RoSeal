@@ -49,6 +49,7 @@ export type InjectScript = { tagName: "SCRIPT" | "LINK" } & Record<string, strin
 
 export function injectScripts(scripts: InjectScript[]) {
 	const promises = [];
+	const fragment = document.createDocumentFragment();
 
 	for (const script of scripts) {
 		const newScript = document.createElement(script.tagName.toLowerCase());
@@ -60,10 +61,12 @@ export function injectScripts(scripts: InjectScript[]) {
 		}
 
 		promises.push(onElementLoad(newScript));
-		onDOMReady(() => {
-			(document.head ?? document.documentElement).append(newScript);
-		});
+		fragment.appendChild(newScript);
 	}
+
+	onDOMReady(() => {
+		(document.head ?? document.documentElement).appendChild(fragment);
+	});
 
 	return Promise.all(promises).then(() => {});
 }

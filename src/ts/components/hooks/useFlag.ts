@@ -1,5 +1,5 @@
+import { type Inputs, useEffect, useState } from "preact/hooks";
 import { getFlag, onFlagUpdate } from "../../helpers/flags/flags.ts";
-import { useEffect, useState, type Inputs } from "preact/hooks";
 import type { FlagsData } from "../../helpers/flags/flagsData";
 
 export default function useFlag<T extends keyof FlagsData, U extends keyof FlagsData[T]>(

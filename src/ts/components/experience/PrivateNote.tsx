@@ -1,15 +1,15 @@
 import classNames from "classnames";
 import { useEffect, useState } from "preact/hooks";
-import IconButton from "../core/IconButton.tsx";
-import Button from "../core/Button.tsx";
-import MentionLinkify from "../core/MentionLinkify.tsx";
-import Linkify from "../core/Linkify.tsx";
-import ToggleTarget from "../core/ToggleTarget.tsx";
-import useFeatureValue from "../hooks/useFeatureValue.ts";
-import useStorage from "../hooks/useStorage.ts";
 import { MAX_PRIVATE_NOTE_LENGTH, PRIVATE_NOTE_STORAGE_KEY } from "src/ts/constants/experiences.ts";
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats.ts";
+import Button from "../core/Button.tsx";
+import IconButton from "../core/IconButton.tsx";
+import Linkify from "../core/Linkify.tsx";
+import MentionLinkify from "../core/MentionLinkify.tsx";
+import ToggleTarget from "../core/ToggleTarget.tsx";
+import useFeatureValue from "../hooks/useFeatureValue.ts";
+import useStorage from "../hooks/useStorage.ts";
 
 export type ExperiencePrivateNoteProps = {
 	universeId: number;

@@ -1,12 +1,12 @@
-import type { UserFriendWhoPlayed } from "src/ts/helpers/requests/services/users";
-import useProfileData from "../hooks/useProfileData";
-import Thumbnail from "../core/Thumbnail";
-import { getUserProfileLink } from "src/ts/utils/links";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { useMemo } from "preact/hooks";
-import { getFormattedDuration } from "../utils/getFormattedDuration";
-import Tooltip from "../core/Tooltip";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getAbsoluteTime } from "src/ts/helpers/i18n/intlFormats";
+import type { UserFriendWhoPlayed } from "src/ts/helpers/requests/services/users";
+import { getUserProfileLink } from "src/ts/utils/links";
+import Thumbnail from "../core/Thumbnail";
+import Tooltip from "../core/Tooltip";
+import useProfileData from "../hooks/useProfileData";
+import { getFormattedDuration } from "../utils/getFormattedDuration";
 
 export type FriendWhoPlayedItemProps = {
 	friend: UserFriendWhoPlayed;

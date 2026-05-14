@@ -1,7 +1,7 @@
-import type { BadgeDetails } from "src/ts/helpers/requests/services/badges";
 import type { RefObject, VNode } from "preact";
-import Popover from "../../core/Popover";
 import { useRef } from "preact/hooks";
+import type { BadgeDetails } from "src/ts/helpers/requests/services/badges";
+import Popover from "../../core/Popover";
 
 export type BadgePopoverProps = {
 	badge: BadgeDetails;

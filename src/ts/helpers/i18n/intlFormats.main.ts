@@ -1,5 +1,5 @@
-import { lazyLoad } from "src/ts/utils/lazyLoad.ts";
 import { DurationFormat } from "@formatjs/intl-durationformat";
+import { lazyLoad } from "src/ts/utils/lazyLoad.ts";
 import { locales } from "./locales";
 
 export const getDurationFormat = lazyLoad(() =>

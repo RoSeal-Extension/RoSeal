@@ -1,7 +1,7 @@
+import classNames from "classnames";
+import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats.ts";
 import Icon from "./Icon.tsx";
-import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
-import classNames from "classnames";
 
 export type RobuxViewProps = {
 	priceInRobux?: number | null;

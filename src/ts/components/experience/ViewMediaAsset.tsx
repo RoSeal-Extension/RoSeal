@@ -1,9 +1,9 @@
-import Tooltip from "../core/Tooltip.tsx";
-import Icon from "../core/Icon.tsx";
-import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { useEffect, useState } from "preact/hooks";
 import { watchAttributes } from "src/ts/helpers/elements.ts";
+import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { getCreatorStoreAssetLink } from "src/ts/utils/links.ts";
+import Icon from "../core/Icon.tsx";
+import Tooltip from "../core/Tooltip.tsx";
 
 export type ViewMediaAssetProps = {
 	carouselContainer: HTMLElement;

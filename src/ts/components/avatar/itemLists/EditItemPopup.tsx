@@ -1,16 +1,16 @@
+import classNames from "classnames";
+import type { RefObject } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import {
-	MAX_ITEM_LIST_NAME_LENGTH,
 	type AvatarItemList,
 	type AvatarItemListGroup,
+	MAX_ITEM_LIST_NAME_LENGTH,
 } from "src/ts/constants/avatar";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import Button from "../../core/Button";
 import IconButton from "../../core/IconButton";
 import Popover from "../../core/Popover";
 import TextInput from "../../core/TextInput";
-import Button from "../../core/Button";
-import type { RefObject } from "preact";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import classNames from "classnames";
 
 export type EditItemPopupProps = {
 	name: string;

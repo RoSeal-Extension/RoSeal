@@ -1,7 +1,7 @@
-import { getAvatarItem } from "src/ts/helpers/requests/services/marketplace";
-import usePromise from "../hooks/usePromise";
-import ItemField from "../core/items/ItemField";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getAvatarItem } from "src/ts/helpers/requests/services/marketplace";
+import ItemField from "../core/items/ItemField";
+import usePromise from "../hooks/usePromise";
 
 export type BundleRecolorableFieldProps = {
 	bundleId: number;

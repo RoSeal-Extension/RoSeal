@@ -1,5 +1,10 @@
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getAssetById } from "src/ts/helpers/requests/services/assets";
-import usePromise from "../hooks/usePromise";
+import { getPlaceUniverseId } from "src/ts/helpers/requests/services/places";
+import {
+	multigetUniversesByIds,
+	multigetUniversesPlayabilityStatuses,
+} from "src/ts/helpers/requests/services/universes";
 import { getAssetTypeData, placeAssetTypeId } from "src/ts/utils/itemTypes";
 import {
 	getAvatarAssetLink,
@@ -8,15 +13,10 @@ import {
 	getHomePageUrl,
 	getRobloxSupportUrl,
 } from "src/ts/utils/links";
-import { getPlaceUniverseId } from "src/ts/helpers/requests/services/places";
-import {
-	multigetUniversesByIds,
-	multigetUniversesPlayabilityStatuses,
-} from "src/ts/helpers/requests/services/universes";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import Button from "../core/Button";
-import Loading from "../core/Loading";
 import Page404 from "../core/errors/404";
+import Loading from "../core/Loading";
+import usePromise from "../hooks/usePromise";
 
 export type ExperienceRestrictedScreenProps = {
 	placeId: number;

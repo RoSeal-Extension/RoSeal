@@ -1,8 +1,8 @@
 import { useMemo } from "preact/hooks";
-import type { GetUniverseStartInfoResponse } from "src/ts/helpers/requests/services/universes";
-import ExperienceField from "../core/items/ExperienceField";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { PlaceAvatarSupportType } from "src/ts/helpers/requests/services/avatar";
+import type { GetUniverseStartInfoResponse } from "src/ts/helpers/requests/services/universes";
+import ExperienceField from "../core/items/ExperienceField";
 
 export type ExperienceAvatarTypeProps = {
 	universeStartInfo: GetUniverseStartInfoResponse;

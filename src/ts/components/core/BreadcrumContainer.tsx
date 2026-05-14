@@ -1,4 +1,4 @@
-import { toChildArray, type ComponentChildren } from "preact";
+import { type ComponentChildren, toChildArray } from "preact";
 import Icon from "./Icon.tsx";
 
 export type BreadcrumContainerProps = {

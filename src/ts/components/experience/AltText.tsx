@@ -1,7 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
-import Tooltip from "../core/Tooltip.tsx";
 import { watchAttributes } from "src/ts/helpers/elements.ts";
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
+import Tooltip from "../core/Tooltip.tsx";
 
 export type MediaAltTextProps = {
 	carouselContainer: HTMLElement;

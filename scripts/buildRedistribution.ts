@@ -1,6 +1,6 @@
+import { $ } from "bun";
 import { ensureDir, move, remove } from "fs-extra";
 import { parse as parseJSONC } from "jsonc-parser";
-import { build } from "./build.ts";
 import { type Manifest, SUPPORTED_TARGETS } from "./build/constants.ts";
 import {
 	getBuildTimeParams,
@@ -8,7 +8,7 @@ import {
 	getTargetBaseFromTarget,
 	updateLog,
 } from "./build/utils.ts";
-import { $ } from "bun";
+import { build } from "./build.ts";
 
 await ensureDir("builds-dist/");
 

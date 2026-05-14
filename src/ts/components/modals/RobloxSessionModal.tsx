@@ -3,13 +3,12 @@ import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getLayersValues } from "src/ts/helpers/requests/services/testService";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
-import { getDeviceMeta } from "src/ts/utils/context";
-import { getPlaceLauncherData } from "src/ts/utils/context";
-import Icon from "../core/Icon";
-import Tooltip from "../core/Tooltip";
-import SimpleModal from "../core/modal/SimpleModal";
-import usePromise from "../hooks/usePromise";
+import { getDeviceMeta, getPlaceLauncherData } from "src/ts/utils/context";
 import { getUserAccountIdBTID } from "src/ts/utils/cookies";
+import Icon from "../core/Icon";
+import SimpleModal from "../core/modal/SimpleModal";
+import Tooltip from "../core/Tooltip";
+import usePromise from "../hooks/usePromise";
 
 export default function RobloxSessionModal() {
 	const [showModal, setShowModal] = useState(false);

@@ -1,6 +1,6 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls";
-import { httpClient } from "../main";
 import { snakeizeObject } from "src/ts/utils/objects";
+import { httpClient } from "../main";
 
 export type ExtraChatDataQuery = {
 	includeCards?: boolean;

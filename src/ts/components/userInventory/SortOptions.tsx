@@ -1,31 +1,39 @@
 import { useSignal } from "@preact/signals";
 import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
+import { ARCHIVED_ITEMS_STORAGE_KEY, type ArchivedItemsStorageValue } from "src/ts/constants/misc";
 import { addMessageListener, invokeMessage, sendMessage } from "src/ts/helpers/communication/dom";
 import { watch } from "src/ts/helpers/elements";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import {
-	type SortOrder,
 	deleteBadgeFromInventory,
 	listUserBadges,
+	type SortOrder,
 } from "src/ts/helpers/requests/services/badges";
 import {
+	removeUserAssetFavorite,
+	removeUserBundleFavorite,
+} from "src/ts/helpers/requests/services/favorites";
+import {
 	deleteAssetFromInventory,
+	deletePassFromInventory,
+	type ListUserPlacesTab,
+	type ListUserPrivateServersTab,
 	listUserInventoryAssetsDetailed,
 	listUserInventoryBundlesSubtype,
-	type ListUserPlacesTab,
 	listUserInventoryPlaces,
 	listUserPasses,
-	deletePassFromInventory,
 	listUserPrivateServers,
-	type ListUserPrivateServersTab,
 } from "src/ts/helpers/requests/services/inventory";
 import {
-	multigetBundlesByIds,
 	type AvatarBundleType,
+	multigetBundlesByIds,
 } from "src/ts/helpers/requests/services/marketplace";
+import { storage } from "src/ts/helpers/storage";
 import type { InventoryCategoryData } from "src/ts/specials/handleInventorySorting";
+import { toggleArchiveItem } from "src/ts/utils/archivedItems";
+import { getCorrectBundledItems } from "src/ts/utils/bundledItems";
 import { getAssetTypeData, getBundleTypeData } from "src/ts/utils/itemTypes";
 import {
 	AVATAR_ITEM_REGEX,
@@ -39,17 +47,9 @@ import { getPathFromMaybeUrl } from "src/ts/utils/url";
 import Button from "../core/Button";
 import Dropdown from "../core/Dropdown";
 import Loading from "../core/Loading";
-import ItemDeletionCheckbox from "./ItemDeletionCheckbox";
 import { loading, success, warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
-import {
-	removeUserAssetFavorite,
-	removeUserBundleFavorite,
-} from "src/ts/helpers/requests/services/favorites";
-import { storage } from "src/ts/helpers/storage";
-import { ARCHIVED_ITEMS_STORAGE_KEY, type ArchivedItemsStorageValue } from "src/ts/constants/misc";
 import useFeatureValue from "../hooks/useFeatureValue";
-import { toggleArchiveItem } from "src/ts/utils/archivedItems";
-import { getCorrectBundledItems } from "src/ts/utils/bundledItems";
+import ItemDeletionCheckbox from "./ItemDeletionCheckbox";
 
 export type UserInventorySortOptionsProps = {
 	userId: number;

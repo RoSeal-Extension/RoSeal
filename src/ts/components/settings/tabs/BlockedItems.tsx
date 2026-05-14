@@ -1,18 +1,19 @@
+import type { ComponentChildren, JSX } from "preact";
+import { useState } from "preact/hooks";
 import {
 	BLOCKED_ITEMS_STORAGE_KEY,
 	type BlockedItemsStorage,
 	DEFAULT_BLOCKED_ITEMS_STORAGE,
 } from "src/ts/constants/misc";
-import useStorage from "../../hooks/useStorage";
-import usePromise from "../../hooks/usePromise";
-import { multigetGroupsByIds } from "src/ts/helpers/requests/services/groups";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { asLocaleLowerCase, asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import {
 	profileProcessor,
 	type UserProfileRequest,
 } from "src/ts/helpers/processors/profileProcessor";
-import { multigetDevelopUniversesByIds } from "src/ts/helpers/requests/services/universes";
+import { multigetGroupsByIds } from "src/ts/helpers/requests/services/groups";
 import { multigetAvatarItems } from "src/ts/helpers/requests/services/marketplace";
-import Loading from "../../core/Loading";
+import { multigetDevelopUniversesByIds } from "src/ts/helpers/requests/services/universes";
 import {
 	getAvatarAssetLink,
 	getAvatarBundleLink,
@@ -22,11 +23,10 @@ import {
 	getUserProfileLink,
 } from "src/ts/utils/links";
 import Button from "../../core/Button";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import Loading from "../../core/Loading";
 import TextInput from "../../core/TextInput";
-import { useState } from "preact/hooks";
-import type { ComponentChildren, JSX } from "preact";
-import { asLocaleLowerCase, asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import usePromise from "../../hooks/usePromise";
+import useStorage from "../../hooks/useStorage";
 
 export type BlockedListProps<T> = {
 	items?: T[] | null;

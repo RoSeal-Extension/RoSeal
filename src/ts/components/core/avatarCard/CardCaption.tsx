@@ -1,13 +1,13 @@
 import classNames from "classnames";
 import type { ComponentChild } from "preact";
+import { useRef } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import type { FriendCardTypesProps } from "../../userFriends/FriendCardType";
 import FriendCardTypes from "../../userFriends/FriendCardType";
 import AvatarCardCaptionFirstLine from "./CardCaptionFirstLine";
 import AvatarCardCaptionFooter from "./CardCaptionFooter";
 import AvatarCardCaptionSecondLine from "./CardCaptionSecondLine";
 import AvatarCardCaptionTitle from "./CardCaptionTitle";
-import { useRef } from "preact/hooks";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export type AvatarCardCaptionProps = OmitExtend<
 	Partial<FriendCardTypesProps>,

@@ -38,9 +38,9 @@ export class BatchRequestProcessor<
 	K,
 > {
 	protected cache = new Map<RequestKey, RequestCacheItem<V>>();
-	protected queue: RequestQueueItem<T, V>[] = [];
-	protected changedListeners = new Set<[RequestKey, (value: V) => void]>();
-	protected preparingNextRequestListeners = new Set<[RequestKey, () => void]>();
+	protected queueMap = new Map<RequestKey, RequestQueueItem<T, V>>();
+	protected changedListeners = new Map<RequestKey, Set<(value: V) => void>>();
+	protected preparingNextRequestListeners = new Map<RequestKey, Set<() => void>>();
 
 	protected started = false;
 	protected processing = false;
@@ -52,11 +52,12 @@ export class BatchRequestProcessor<
 
 		this.processing = true;
 
+		const queueItems = Array.from(this.queueMap.values());
 		let startIndex = 0;
 
 		const promises: Promise<void>[] = [];
 		for (let i = 0; i < this.props.maxRequestsPerBatch; i++) {
-			const queueData = this.queue.slice(startIndex);
+			const queueData = queueItems.slice(startIndex);
 			if (queueData.length === 0) {
 				break;
 			}
@@ -73,10 +74,7 @@ export class BatchRequestProcessor<
 						for (const key in res) {
 							const item = res[key];
 
-							const queueItemIndex = this.queue.findIndex(
-								(value) => value.key === key,
-							);
-							const queueItem = this.queue[queueItemIndex];
+							const queueItem = this.queueMap.get(key);
 							if (!queueItem) {
 								continue;
 							}
@@ -93,10 +91,11 @@ export class BatchRequestProcessor<
 									data: item.value,
 									refreshId: queueItem.refreshId,
 								});
-								this.queue.splice(queueItemIndex, 1);
+								this.queueMap.delete(key);
 
-								for (const [requestId, callback] of this.changedListeners) {
-									if (requestId === key) {
+								const listeners = this.changedListeners.get(key);
+								if (listeners) {
+									for (const callback of listeners) {
 										callback(item.value);
 									}
 								}
@@ -107,10 +106,7 @@ export class BatchRequestProcessor<
 					})
 					.catch(() => {
 						for (const key in data) {
-							const queueItemIndex = this.queue.findIndex(
-								(value) => value.key === key,
-							);
-							const queueItem = this.queue[queueItemIndex];
+							const queueItem = this.queueMap.get(key);
 							if (!queueItem) {
 								continue;
 							}
@@ -125,7 +121,7 @@ export class BatchRequestProcessor<
 									}
 								}
 
-								this.queue.splice(queueItemIndex, 1);
+								this.queueMap.delete(key);
 							} else {
 								queueItem.attempt++;
 							}
@@ -137,7 +133,7 @@ export class BatchRequestProcessor<
 		Promise.all(promises).finally(() => {
 			this.processing = false;
 
-			if (this.queue.length > 0) {
+			if (this.queueMap.size > 0) {
 				queueMicrotask(() => this._startRequest());
 			} else this.started = false;
 		});
@@ -146,7 +142,7 @@ export class BatchRequestProcessor<
 	public isCached(item: T): boolean {
 		const key = this.props.getRequestKey(item);
 
-		return key in this.cache;
+		return this.cache.has(key);
 	}
 
 	public updateItem(request: T, data: V): void {
@@ -156,10 +152,9 @@ export class BatchRequestProcessor<
 			refreshId: request.refreshId,
 		});
 
-		const queueItemIndex = this.queue.findIndex((value) => value.key === key);
-		const queueItem = this.queue[queueItemIndex];
+		const queueItem = this.queueMap.get(key);
 		if (queueItem) {
-			this.queue.splice(queueItemIndex, 1);
+			this.queueMap.delete(key);
 			for (const [resolve] of queueItem.waiting) {
 				resolve(data);
 			}
@@ -200,22 +195,24 @@ export class BatchRequestProcessor<
 				});
 			}
 
-			const queueItem = this.queue.find((value) => value.key === key);
+			const queueItem = this.queueMap.get(key);
 			if (queueItem) {
 				queueItem.waiting.push([resolve, reject]);
 			} else {
-				for (const [requestId, callback] of this.preparingNextRequestListeners) {
-					if (requestId === key) {
+				const listeners = this.preparingNextRequestListeners.get(key);
+				if (listeners) {
+					for (const callback of listeners) {
 						callback();
 					}
 				}
 
-				this.queue.push({
+				const newQueueItem: RequestQueueItem<T, V> = {
 					key,
 					attempt: 1,
 					waiting: [[resolve, reject]],
 					value: request,
-				});
+				};
+				this.queueMap.set(key, newQueueItem);
 			}
 
 			if (!this.started) {
@@ -229,22 +226,30 @@ export class BatchRequestProcessor<
 	public onPreparingNextRequest(request: T, callback: () => void) {
 		const key = this.props.getRequestKey(request);
 
-		const entry = [key, callback] as [RequestKey, () => void];
-		this.preparingNextRequestListeners.add(entry);
+		let listeners = this.preparingNextRequestListeners.get(key);
+		if (!listeners) {
+			listeners = new Set();
+			this.preparingNextRequestListeners.set(key, listeners);
+		}
+		listeners.add(callback);
 
 		return () => {
-			this.preparingNextRequestListeners.delete(entry);
+			listeners?.delete(callback);
 		};
 	}
 
 	public onChanged(request: T, callback: (value: V) => void) {
 		const key = this.props.getRequestKey(request);
 
-		const entry = [key, callback] as [RequestKey, (value: V) => void];
-		this.changedListeners.add(entry);
+		let listeners = this.changedListeners.get(key);
+		if (!listeners) {
+			listeners = new Set();
+			this.changedListeners.set(key, listeners);
+		}
+		listeners.add(callback);
 
 		return () => {
-			this.changedListeners.delete(entry);
+			listeners?.delete(callback);
 		};
 	}
 

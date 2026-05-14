@@ -1,10 +1,10 @@
-import RobuxView from "../../core/RobuxView.tsx";
 import classNames from "classnames";
-import Thumbnail from "../../core/Thumbnail.tsx";
-import { getDeveloperProductDetailsLink } from "src/ts/utils/links.ts";
-import type { PendingDeveloperProductTransaction } from "src/ts/helpers/requests/services/developerProducts.ts";
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats.ts";
+import type { PendingDeveloperProductTransaction } from "src/ts/helpers/requests/services/developerProducts.ts";
+import { getDeveloperProductDetailsLink } from "src/ts/utils/links.ts";
+import RobuxView from "../../core/RobuxView.tsx";
+import Thumbnail from "../../core/Thumbnail.tsx";
 
 export type DeveloperProductPropsDetails = {
 	productId: number | null;

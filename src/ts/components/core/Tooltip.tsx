@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "preact/hooks";
 import classNames from "classnames";
+import type { ComponentChild, JSX, VNode } from "preact";
+import { useEffect, useRef, useState } from "preact/hooks";
 import {
-	OverlayTrigger,
 	Tooltip as BSTooltip,
 	type TooltipProps as BSTooltipProps,
+	OverlayTrigger,
 	type OverlayTriggerProps,
 } from "react-bootstrap";
-import type { ComponentChild, JSX, VNode } from "preact";
 import { watch } from "src/ts/helpers/elements";
 
 export type TooltipProps = OmitExtend<

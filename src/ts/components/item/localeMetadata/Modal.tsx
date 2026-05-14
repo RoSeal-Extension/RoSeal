@@ -1,14 +1,14 @@
-import type { LiterallyAnyItemType } from "src/ts/helpers/requests/services/marketplace.ts";
+import { useState } from "preact/hooks";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact.tsx";
+import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import type {
 	IntlImage,
 	IntlNameDescription,
 	IntlThumbnailSet,
 } from "src/ts/helpers/requests/services/intl.ts";
+import type { LiterallyAnyItemType } from "src/ts/helpers/requests/services/marketplace.ts";
 import SimpleModal from "../../core/modal/SimpleModal.tsx";
-import { useState } from "preact/hooks";
 import { LocalizedMetadataItem } from "./Item.tsx";
-import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact.tsx";
 
 export type LocalizedMetadataModalProps = {
 	itemType: LiterallyAnyItemType;

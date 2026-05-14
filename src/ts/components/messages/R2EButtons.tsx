@@ -1,15 +1,15 @@
-import { useState } from "preact/hooks";
-import Button from "../core/Button.tsx";
 import type { Signal } from "@preact/signals";
+import { useState } from "preact/hooks";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact.tsx";
+import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import {
 	listPrivateMessages,
 	markPrivateMessagesRead,
 	type PrivateMessage,
 } from "src/ts/helpers/requests/services/privateMessages.ts";
-import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
-import SimpleModal from "../core/modal/SimpleModal.tsx";
 import { getCreatorDocsLink } from "src/ts/utils/links.ts";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact.tsx";
+import Button from "../core/Button.tsx";
+import SimpleModal from "../core/modal/SimpleModal.tsx";
 
 async function listAllPrivateMessages(pageSize = 20): Promise<PrivateMessage[]> {
 	let pageNumber = 0;

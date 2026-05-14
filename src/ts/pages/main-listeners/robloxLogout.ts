@@ -1,6 +1,6 @@
-import type { ContentBackgroundMessageListener } from "src/types/dataTypes.d.ts";
-import { logout } from "src/ts/helpers/requests/services/account";
 import type { RESTError } from "src/ts/helpers/requests/main";
+import { logout } from "src/ts/helpers/requests/services/account";
+import type { ContentBackgroundMessageListener } from "src/types/dataTypes.d.ts";
 
 export default {
 	action: "logoutRobloxAccount",

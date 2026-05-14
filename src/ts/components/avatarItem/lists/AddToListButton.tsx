@@ -1,15 +1,15 @@
-import MdOutlineLibraryAddFilled from "@material-symbols/svg-400/outlined/library_add-fill.svg";
 import MdOutlineLibraryAdd from "@material-symbols/svg-400/outlined/library_add.svg";
 import MdOutlineLibraryAddCheckFilled from "@material-symbols/svg-400/outlined/library_add_check-fill.svg";
+import MdOutlineLibraryAddFilled from "@material-symbols/svg-400/outlined/library_add-fill.svg";
 import classNames from "classnames";
 import { useMemo, useState } from "preact/hooks";
 import {
 	AVATAR_ITEM_LISTS_STORAGE_KEY,
-	type AvatarItemListItemType,
-	MAX_ITEM_LIST_NAME_LENGTH,
 	type AvatarItemList,
 	type AvatarItemListGroup,
+	type AvatarItemListItemType,
 	type AvatarItemListsStorageValue,
+	MAX_ITEM_LIST_NAME_LENGTH,
 } from "src/ts/constants/avatar";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { userOwnsItem } from "src/ts/helpers/requests/services/inventory";

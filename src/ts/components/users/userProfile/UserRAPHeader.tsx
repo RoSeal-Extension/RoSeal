@@ -1,14 +1,14 @@
-import usePromise from "../../hooks/usePromise";
-import { abbreviateNumber, asLocaleString } from "src/ts/helpers/i18n/intlFormats";
-import SocialHeader from "./SocialHeader";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { useState } from "preact/hooks";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { abbreviateNumber, asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import type { ListedUserCollectibleAsset } from "src/ts/helpers/requests/services/inventory";
 import SimpleModal from "../../core/modal/SimpleModal";
 import useProfileData from "../../hooks/useProfileData";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
-import UserRAPItem from "./UserRAPItem";
+import usePromise from "../../hooks/usePromise";
+import SocialHeader from "./SocialHeader";
 import SocialHeaderV2 from "./SocialHeaderV2";
-import type { ListedUserCollectibleAsset } from "src/ts/helpers/requests/services/inventory";
+import UserRAPItem from "./UserRAPItem";
 
 export type UserRAPHeaderProps = {
 	userId: number;

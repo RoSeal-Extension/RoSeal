@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import type { ComponentChild, ComponentChildren } from "preact";
-import Loading from "./Loading";
 import { useRef, useState } from "preact/hooks";
-import TextInput from "./TextInput";
 import { useOnClickOutside } from "usehooks-ts";
 import Icon from "./Icon";
+import Loading from "./Loading";
+import TextInput from "./TextInput";
 
 export type ItemLookupProps<
 	T extends {

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import currentUrl from "src/ts/utils/currentUrl";
 import { deepLinksParser } from "src/ts/utils/deepLinks";
 import Icon from "../core/Icon";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import type { NavigationFavoritesProps } from "./Favorites";
 import LeftNavItem from "./LeftNavItem";
 

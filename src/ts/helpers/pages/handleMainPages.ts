@@ -6,7 +6,7 @@ import type { AnyFeature } from "../features/featuresData";
 import { multigetFeaturesValues } from "../features/helpers";
 import { multiOnSet } from "../hijack/utils";
 import { getHomePageDocument } from "../requests/services/misc";
-import { handleScriptGroups, insertCSS, type InjectScriptGroup } from "./utils/inject";
+import { handleScriptGroups, type InjectScriptGroup, insertCSS } from "./utils/inject";
 
 export type CSSSwitch = {
 	css: string[];
@@ -93,7 +93,7 @@ async function filterPage(
 		const featuresValid =
 			!page.featureIds ||
 			multigetFeaturesValues(page.featureIds).then((value) =>
-				Object.values(value).includes(true),
+				Object.values(value).some((v) => v === true),
 			);
 		if (page.isCustomPage) setWatchForErrorPage(featuresValid);
 
@@ -203,7 +203,7 @@ export async function handleMainPages(
 							insertedCSS.add(insertCSS(css));
 						} else {
 							multigetFeaturesValues(css.featureIds).then((value) => {
-								if (Object.values(value).includes(true)) {
+								if (Object.values(value).some((v) => v === true)) {
 									for (const target of css.css) {
 										insertedCSS.add(insertCSS(target));
 									}

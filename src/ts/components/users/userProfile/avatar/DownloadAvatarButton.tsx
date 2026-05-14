@@ -1,8 +1,8 @@
-import usePromise from "../../../hooks/usePromise";
-import useProfileData from "../../../hooks/useProfileData";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { invokeMessage } from "src/ts/helpers/communication/dom";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getUser3dThumbnailDownloadData } from "src/ts/utils/avatar.inject";
+import useProfileData from "../../../hooks/useProfileData";
+import usePromise from "../../../hooks/usePromise";
 
 export type Download3DAvatarButtonProps = {
 	userId: number;

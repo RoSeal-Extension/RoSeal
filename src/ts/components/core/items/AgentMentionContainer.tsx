@@ -1,8 +1,8 @@
-import type { Agent } from "src/ts/helpers/requests/services/assets";
-import Thumbnail from "../Thumbnail";
 import classNames from "classnames";
+import type { Agent } from "src/ts/helpers/requests/services/assets";
 import { getGroupProfileLink, getUserProfileLink } from "src/ts/utils/links";
 import VerifiedBadge from "../../icons/VerifiedBadge";
+import Thumbnail from "../Thumbnail";
 
 export type AgentMentionContainerProps = {
 	targetId: number;

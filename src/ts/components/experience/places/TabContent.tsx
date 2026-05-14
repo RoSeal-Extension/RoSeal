@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { type UniversePlace, listUniversePlaces } from "src/ts/helpers/requests/services/universes";
+import { listUniversePlaces, type UniversePlace } from "src/ts/helpers/requests/services/universes";
 import Loading from "../../core/Loading";
 import Pagination from "../../core/Pagination";
-import usePages from "../../hooks/usePages";
 import useOnlineFriends from "../../hooks/useOnlineFriends";
+import usePages from "../../hooks/usePages";
 import PlacesTabItem from "./PlaceItem";
 
 export type PlacesTabProps = {

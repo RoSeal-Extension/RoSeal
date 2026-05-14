@@ -1,11 +1,11 @@
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import SimpleModal from "../core/modal/SimpleModal";
 import { useState } from "preact/hooks";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
-import { getRoSealChangelogLink, getRoSealSettingsLink } from "src/ts/utils/links";
-import usePromise from "../hooks/usePromise";
 import { getLangNamespace } from "src/ts/helpers/domInvokes";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getRoSealChangelogLink, getRoSealSettingsLink } from "src/ts/utils/links";
 import Icon from "../core/Icon";
+import SimpleModal from "../core/modal/SimpleModal";
+import usePromise from "../hooks/usePromise";
 
 export type OnboardingModalProps = {
 	type: "install" | "update";

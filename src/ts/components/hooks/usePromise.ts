@@ -1,6 +1,6 @@
-import { useLayoutEffect, useState, type Inputs } from "preact/hooks";
-import useDidMountEffect from "./useDidMountEffect.ts";
 import { useSignal } from "@preact/signals";
+import { type Inputs, useLayoutEffect, useState } from "preact/hooks";
+import useDidMountEffect from "./useDidMountEffect.ts";
 
 const defaultState = [undefined, false, undefined] as [undefined, false, undefined];
 export default function usePromise<

@@ -1,13 +1,13 @@
-import { getUSDCurrencyConversions } from "src/ts/helpers/requests/services/misc";
-import usePromise from "../hooks/usePromise";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import {
 	getDeveloperExchangeMetadata,
 	getUserDevExableRobuxAmount,
 } from "src/ts/helpers/requests/services/account";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { getUSDCurrencyConversions } from "src/ts/helpers/requests/services/misc";
 import { getDevExLink } from "src/ts/utils/links";
 import Divider from "../core/Divider";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import usePromise from "../hooks/usePromise";
 
 export type DevExableRobuxAmountProps = {
 	currency: string;
@@ -32,7 +32,12 @@ export default function DevExableRobuxAmount({ currency }: DevExableRobuxAmountP
 	return (
 		<>
 			<li className="rbx-menu-item-container">
-				<a href={getDevExLink()} className="rbx-menu-item devex-button" target="_blank">
+				<a
+					href={getDevExLink()}
+					className="rbx-menu-item devex-button"
+					target="_blank"
+					rel="noopener"
+				>
 					<div className="devexable-currency">
 						{getMessage("navigation.robux.devExable.text", {
 							bold: (contents: string) => <b>{contents}</b>,

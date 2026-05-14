@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useState } from "preact/hooks";
-import type { ReactAvatarEditorPageAvatar } from "src/ts/pages/inject/www/my/avatar";
-import usePromise from "../hooks/usePromise";
-import { previewUserLookCreation } from "src/ts/helpers/requests/services/marketplace";
-import { addMessageListener } from "src/ts/helpers/communication/dom";
 import { RESTError } from "@roseal/http-client";
+import classNames from "classnames";
+import { useCallback, useEffect, useState } from "preact/hooks";
+import { addMessageListener } from "src/ts/helpers/communication/dom";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { previewUserLookCreation } from "src/ts/helpers/requests/services/marketplace";
+import type { ReactAvatarEditorPageAvatar } from "src/ts/pages/inject/www/my/avatar";
 import Button from "../core/Button";
 import Tooltip from "../core/Tooltip";
-import classNames from "classnames";
+import usePromise from "../hooks/usePromise";
 import PostAvatarModal from "./modals/PostAvatarModal";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export default function PostAvatarButton() {
 	const [showModal, setShowModal] = useState(false);

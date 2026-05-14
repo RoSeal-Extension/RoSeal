@@ -1,18 +1,18 @@
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getAssetById } from "src/ts/helpers/requests/services/assets";
 import {
+	type GenericMarketplaceCreator,
 	getAvatarItem,
 	listAssetToCategoryMapping,
 	listAssetToSubcategoryMapping,
-	type GenericMarketplaceCreator,
 	type MarketplaceItemType,
 } from "src/ts/helpers/requests/services/marketplace";
-import usePromise from "../hooks/usePromise";
-import Tooltip from "../core/Tooltip";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import Icon from "../core/Icon";
-import { getAvatarMarketplaceLink } from "src/ts/utils/links";
-import { getAssetById } from "src/ts/helpers/requests/services/assets";
 import { getAssetTypeData, getBundleTypeData } from "src/ts/utils/itemTypes";
+import { getAvatarMarketplaceLink } from "src/ts/utils/links";
+import Icon from "../core/Icon";
 import LazyLink from "../core/LazyLink";
+import Tooltip from "../core/Tooltip";
+import usePromise from "../hooks/usePromise";
 
 export type SearchByCreatorButtonProps = {
 	itemId: number;

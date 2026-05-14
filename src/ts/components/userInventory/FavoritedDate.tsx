@@ -7,8 +7,8 @@ import {
 	getUserBundleFavorite,
 } from "src/ts/helpers/requests/services/favorites";
 import type { MarketplaceItemType } from "src/ts/helpers/requests/services/marketplace";
-import usePromise from "../hooks/usePromise";
 import Loading from "../core/Loading";
+import usePromise from "../hooks/usePromise";
 
 export type ItemFavoritedDateProps = {
 	itemType: MarketplaceItemType;

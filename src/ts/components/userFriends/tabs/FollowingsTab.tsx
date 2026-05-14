@@ -14,8 +14,8 @@ import Pagination from "../../core/Pagination";
 import useFeatureValue from "../../hooks/useFeatureValue";
 import usePages from "../../hooks/usePages";
 import usePromise from "../../hooks/usePromise";
-import FriendsPageTitle from "../PageTitle";
 import FriendCard from "./../FriendCard";
+import FriendsPageTitle from "../PageTitle";
 import type { FriendsTabProps } from "./FriendsTab";
 
 export default function FollowingsTab({ userId, isMyProfile }: FriendsTabProps) {

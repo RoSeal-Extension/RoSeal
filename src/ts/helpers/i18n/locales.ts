@@ -1,9 +1,9 @@
-import messages from "#i18n";
+import { error } from "src/ts/utils/console.ts";
 import currentUrl from "src/ts/utils/currentUrl.ts";
+import messages from "#i18n";
 import { PREFERRED_LOCALES_STORAGE_KEY } from "../../constants/i18n.ts";
 import { getUrgentStorage, storage } from "../storage.ts";
 import overrideMessages from "./overrideMessages.ts";
-import { error } from "src/ts/utils/console.ts";
 
 if (import.meta.env.IS_DEV && Object.keys(overrideMessages).length) {
 	for (const [key, value] of Object.entries(overrideMessages)) {
@@ -93,4 +93,5 @@ export const initialLocalesFetch =
 		: undefined;
 
 const setLocales = localeData?.[1];
+
 export { setLocales };

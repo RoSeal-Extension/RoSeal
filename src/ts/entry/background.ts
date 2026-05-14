@@ -8,9 +8,11 @@ if (import.meta.env.IS_DEV_WS_ACCESSIBLE) {
 	keepAliveServiceWorker();
 }
 
+import { COOKIE_HEADER_NAME, USER_AGENT_HEADER_NAME } from "node_modules/@roseal/http-client/src";
+import { ROSEAL_TRACKING_HEADER_NAME } from "scripts/build/constants";
+import type { AuthenticatedUserWithCreatedAndBadge } from "src/types/dataTypes";
 import { alarmListeners } from "#pages/background-alarms";
 import { messageListeners } from "#pages/background-listeners";
-import type { AuthenticatedUserWithCreatedAndBadge } from "src/types/dataTypes";
 import {
 	ACCOUNTS_DISCOVERY_FEATURE_ID,
 	ACCOUNTS_FEATURE_ID,
@@ -24,13 +26,13 @@ import {
 	type StoredAccount,
 	UNENCRYPTED_ACCOUNTS_STORAGE_KEY,
 } from "../constants/accountsManager";
+import { ACCOUNT_TRACKING_PREVENTION_FEATURE_ID } from "../constants/accountTrackingPrevention";
 import {
 	ACCOUNTS_RULES_END_ID,
 	ACCOUNTS_RULES_START_ID,
 	LINUX_USER_AGENT_FIX_RULE_ID,
 	STATIC_RULES_START_ID,
 } from "../constants/dnrRules";
-import { ACCOUNT_TRACKING_PREVENTION_FEATURE_ID } from "../constants/accountTrackingPrevention";
 import {
 	FRIENDS_LAST_SEEN_BACKGROUND_CHECKS_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
@@ -44,12 +46,12 @@ import {
 	STARTUP_NOTIFICATIONS_FEATURE_ID,
 	VERSION_STORAGE_KEY,
 } from "../constants/misc";
+import { EXTENSION_INSTALLATION_ID_STORAGE_KEY } from "../constants/sync";
 import {
 	TRADING_NOTIFICATIONS_ALARM_NAME,
 	TRADING_NOTIFICATIONS_BACKGROUND_CHECKS_FEATURE_ID,
 	TRADING_NOTIFICATIONS_NOTIFICATION_PREFIX,
 } from "../constants/trades";
-import { EXTENSION_INSTALLATION_ID_STORAGE_KEY } from "../constants/sync";
 import { invokeMessage } from "../helpers/communication/main";
 import { onFeatureValueUpdate } from "../helpers/features/features";
 import {
@@ -65,6 +67,7 @@ import { handleAlarmListeners } from "../helpers/pages/handleAlarmListeners";
 import { handleBackgroundListeners } from "../helpers/pages/handleBackgroundListeners";
 import { currentPermissions } from "../helpers/permissions";
 import { getCurrentAuthenticatedUser } from "../helpers/requests/services/account";
+import { getUserById } from "../helpers/requests/services/users";
 import {
 	getExtensionSessionStorage,
 	onStorageValueUpdate,
@@ -100,9 +103,6 @@ import {
 	USER_PROFILE_REGEX,
 } from "../utils/regex";
 import { getPath } from "../utils/url";
-import { getUserById } from "../helpers/requests/services/users";
-import { ROSEAL_TRACKING_HEADER_NAME } from "scripts/build/constants";
-import { COOKIE_HEADER_NAME, USER_AGENT_HEADER_NAME } from "node_modules/@roseal/http-client/src";
 
 // Listeners and stuff
 if ("setAccessLevel" in browser.storage.session && import.meta.env.TARGET_BASE !== "firefox")

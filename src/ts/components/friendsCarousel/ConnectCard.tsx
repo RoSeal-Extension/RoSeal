@@ -1,9 +1,9 @@
-import { getUserFriendsLink } from "src/ts/utils/links";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
-import LazyLink from "../core/LazyLink";
 import MdOutlineAddFilled from "@material-symbols/svg-600/outlined/add-fill.svg";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { getUserFriendsLink } from "src/ts/utils/links";
+import LazyLink from "../core/LazyLink";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 
 export type ConnectCardProps = {
 	count?: number | null;

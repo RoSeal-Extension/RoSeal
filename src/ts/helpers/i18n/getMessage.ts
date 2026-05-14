@@ -1,12 +1,12 @@
+import { IntlMessageFormat } from "intl-messageformat";
+import { error } from "src/ts/utils/console.ts";
 import messages from "#i18n";
 import type messagesType from "#i18n/types";
-import { IntlMessageFormat } from "intl-messageformat";
 import { CUSTOM_I18N_OVERRIDE_LOCALSESSIONSTORAGE_KEY } from "../../constants/i18n.ts";
 import { setInvokeListener } from "../communication/dom.ts";
 import { getLocalSessionStorage } from "../storage.ts";
 import { asLocaleString } from "./intlFormats.ts";
 import { locales } from "./locales.ts";
-import { error } from "src/ts/utils/console.ts";
 
 const customI18nOverride = getLocalSessionStorage<Record<string, string>>(
 	CUSTOM_I18N_OVERRIDE_LOCALSESSIONSTORAGE_KEY,

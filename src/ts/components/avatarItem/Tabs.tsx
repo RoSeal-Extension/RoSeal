@@ -1,16 +1,16 @@
-import { getAssetById, multigetDevelopAssetsByIds } from "src/ts/helpers/requests/services/assets";
-import usePromise from "../hooks/usePromise";
-import { getAssetTypeData } from "src/ts/utils/itemTypes";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import { useCallback, useMemo, useState } from "preact/hooks";
 import { ROBLOX_USERS } from "src/ts/constants/robloxUsers";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getAssetById, multigetDevelopAssetsByIds } from "src/ts/helpers/requests/services/assets";
 import { canConfigureCollectibleItem } from "src/ts/helpers/requests/services/permissions";
+import { getAssetTypeData } from "src/ts/utils/itemTypes";
+import TabsContainer from "../core/tab/Container";
 import TabNavs from "../core/tab/Navs";
 import SimpleTabNav from "../core/tab/SimpleNav";
-import { useCallback, useMemo, useState } from "preact/hooks";
-import TabsContainer from "../core/tab/Container";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import usePromise from "../hooks/usePromise";
 import AssetDependenciesList from "./DependenciesList";
 import AssetOwnersList from "./OwnersList";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export type AvatarItemTabsProps = {
 	assetId: number;

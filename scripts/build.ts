@@ -1,12 +1,13 @@
+import { basename, extname, join, parse as parsePath, relative } from "node:path";
+import { parseArgs } from "node:util";
 import svgrPlugin from "esbuild-plugin-svgr";
 import { copy, emptyDir, ensureDir, exists, mkdir, move, readdir, remove, rename } from "fs-extra";
 import { minify as minifyHTML } from "html-minifier-terser";
 import { parse as parseJSONC } from "jsonc-parser";
 import walk from "klaw";
 import kleur from "kleur";
-import { basename, extname, join, parse as parsePath, relative } from "node:path";
-import { parseArgs } from "node:util";
 import * as sass from "sass-embedded";
+import { STATIC_RULES_START_ID } from "src/ts/constants/dnrRules.ts";
 import {
 	DEFAULT_OUTDIR,
 	getDomains,
@@ -16,9 +17,9 @@ import {
 	ROSEAL_OVERRIDE_PLATFORM_TYPE_HEADER_NAME,
 	ROSEAL_TRACKING_HEADER_NAME,
 	SCSS_ENTRYPOINT,
+	TARGETS,
 	type Target,
 	type TargetBase,
-	TARGETS,
 	TS_ENTRYPOINT,
 } from "./build/constants.ts";
 import { buildPagesPlugin } from "./build/plugins/rosealPlugins.ts";
@@ -36,7 +37,6 @@ import {
 	transformManifest,
 	updateLog,
 } from "./build/utils.ts";
-import { STATIC_RULES_START_ID } from "src/ts/constants/dnrRules.ts";
 
 const BASE_COMMENT_BANNER = `
  * RoSeal Extension

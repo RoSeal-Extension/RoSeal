@@ -1,16 +1,16 @@
-import { useMemo, useState } from "preact/hooks";
-import MdOutlineFillFolder from "@material-symbols/svg-400/outlined/folder-fill.svg";
 import MdOutlineFillFolderOpen from "@material-symbols/svg-400/outlined/folder_open-fill.svg";
-import Icon from "../core/Icon.tsx";
+import MdOutlineFillFolder from "@material-symbols/svg-400/outlined/folder-fill.svg";
+import type { ComponentChildren } from "preact";
+import { useMemo, useState } from "preact/hooks";
 import {
+	DEFAULT_FOLDER_COLOR,
 	type ExpandedFolderItem,
 	type ExpandedGroupItem,
-	DEFAULT_FOLDER_COLOR,
 } from "src/ts/constants/groupOrganization.ts";
-import type { ComponentChildren } from "preact";
+import Icon from "../core/Icon.tsx";
 import IconButton from "../core/IconButton.tsx";
-import { getFolderName } from "./utils/groupOrganization.ts";
 import { FolderCustomizationModal } from "./modals/FolderCustomizationModal.tsx";
+import { getFolderName } from "./utils/groupOrganization.ts";
 
 export type ParentProps = { showActive: boolean; children: ComponentChildren };
 

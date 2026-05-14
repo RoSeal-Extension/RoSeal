@@ -1,10 +1,10 @@
 import { useState } from "preact/hooks";
-import Tooltip from "../core/Tooltip";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { createShareLink } from "src/ts/helpers/requests/services/sharelinks";
+import { getRoSealFriendInviteLink } from "src/ts/utils/links";
 import Button from "../core/Button";
 import Loading from "../core/Loading";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { getRoSealFriendInviteLink } from "src/ts/utils/links";
+import Tooltip from "../core/Tooltip";
 
 export type CreateFriendLinkButtonProps = {
 	disabled?: boolean;

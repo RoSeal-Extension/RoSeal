@@ -1,11 +1,11 @@
-import { languageNamesFormat } from "src/ts/helpers/i18n/intlFormats.ts";
-import Button from "../../core/Button";
 import MdOutlineMenuBook from "@material-symbols/svg-400/outlined/menu_book.svg";
 import { useMemo, useState } from "preact/hooks";
-import type { ExperienceLink as ExperienceLinkData } from "src/ts/helpers/requests/services/roseal";
-import { locales } from "src/ts/helpers/i18n/locales.ts";
-import ThirdPartyLinkModal from "../../core/ThirdPartyLinkModal.tsx";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { languageNamesFormat } from "src/ts/helpers/i18n/intlFormats.ts";
+import { locales } from "src/ts/helpers/i18n/locales.ts";
+import type { ExperienceLink as ExperienceLinkData } from "src/ts/helpers/requests/services/roseal";
+import Button from "../../core/Button";
+import ThirdPartyLinkModal from "../../core/ThirdPartyLinkModal.tsx";
 
 export type ExperienceLinkItemProps = {
 	link: ExperienceLinkData;

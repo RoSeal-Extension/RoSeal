@@ -2,15 +2,15 @@ import classNames from "classnames";
 import { useMemo } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getOpenCloudGroup, listGroupMembersV2 } from "src/ts/helpers/requests/services/groups";
+import { tryOpenCloudAuthRequest } from "src/ts/utils/cloudAuth";
 import AgentMentionContainer from "../core/items/AgentMentionContainer";
 import Tooltip from "../core/Tooltip";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useFeatureValue from "../hooks/useFeatureValue";
 import useProfileData from "../hooks/useProfileData";
 import usePromise from "../hooks/usePromise";
 import useTime from "../hooks/useTime";
 import { handleTimeSwitch } from "../utils/handleTimeSwitch";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
-import { tryOpenCloudAuthRequest } from "src/ts/utils/cloudAuth";
 
 export type GroupCreatedDateProps = {
 	groupId: number;

@@ -7,8 +7,8 @@ import { unitListFormat } from "src/ts/helpers/i18n/intlFormats";
 import {
 	type AvatarAssetDefinitionWithTypes,
 	type AvatarRestrictions,
-	type UserAvatar,
 	setWearingAssets,
+	type UserAvatar,
 } from "src/ts/helpers/requests/services/avatar";
 import {
 	type ListedUserInventoryAsset,
@@ -31,9 +31,9 @@ import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 import useFeatureValue from "../../hooks/useFeatureValue";
 import usePromise from "../../hooks/usePromise";
 import type { AdvancedWornAsset } from "../AdvancedCustomizationButton";
-import WornAssetView from "./WornAssetView";
 import AvatarAdvancedLimitView from "./LimitView";
 import SearchedAssetResult from "./SearchedAssetResult";
+import WornAssetView from "./WornAssetView";
 
 export type AssetsListProps = {
 	avatar: UserAvatar | undefined | null;

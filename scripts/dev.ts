@@ -1,6 +1,8 @@
+import { watch } from "node:fs";
 import type { ServerWebSocket } from "bun";
 import kleur from "kleur";
-import { watch } from "node:fs";
+import { DEFAULT_OUTDIR, DEV_SERVER_WS_PORT } from "./build/constants.ts";
+import { getBuildTimeParams, getDevServersAvailable, updateLog } from "./build/utils.ts";
 import {
 	buildJS,
 	compileSCSS,
@@ -12,8 +14,6 @@ import {
 	writeI18n,
 	writeManifest,
 } from "./build.ts";
-import { DEFAULT_OUTDIR, DEV_SERVER_WS_PORT } from "./build/constants.ts";
-import { getBuildTimeParams, getDevServersAvailable, updateLog } from "./build/utils.ts";
 
 const { target, targetBase } = getBuildArgs();
 

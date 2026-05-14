@@ -64,4 +64,4 @@ export const thumbnailProcessor = new BatchRequestProcessor({
 	},
 });
 
-export type { BatchThumbnailRequest, BatchThumbnailItem as ThumbnailItem };
+export type { BatchThumbnailItem as ThumbnailItem, BatchThumbnailRequest };

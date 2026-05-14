@@ -1,11 +1,11 @@
-import useFlag from "../../hooks/useFlag";
-import ThirdPartyLinkModal from "../../core/ThirdPartyLinkModal";
-import { getAbsoluteTime, getRegularTime } from "src/ts/helpers/i18n/intlFormats";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { getRolimonsUAIDLink } from "src/ts/utils/links";
-import Tooltip from "../../core/Tooltip";
-import { useState } from "preact/hooks";
 import MdOutlineOpenInNewFilled from "@material-symbols/svg-400/outlined/open_in_new-fill.svg";
+import { useState } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getAbsoluteTime, getRegularTime } from "src/ts/helpers/i18n/intlFormats";
+import { getRolimonsUAIDLink } from "src/ts/utils/links";
+import ThirdPartyLinkModal from "../../core/ThirdPartyLinkModal";
+import Tooltip from "../../core/Tooltip";
+import useFlag from "../../hooks/useFlag";
 
 export type AvatarItemResellerOwnedProps = {
 	isLimited: boolean;

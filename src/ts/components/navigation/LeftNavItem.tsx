@@ -1,8 +1,8 @@
+import classNames from "classnames";
 import type { ComponentChild, ComponentChildren } from "preact";
-import LazyLink from "../core/LazyLink";
 import { useMemo } from "preact/hooks";
 import currentUrl from "src/ts/utils/currentUrl";
-import classNames from "classnames";
+import LazyLink from "../core/LazyLink";
 
 export type LeftNavItemProps = {
 	iconComponent: ComponentChild;

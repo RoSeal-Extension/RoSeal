@@ -1,10 +1,10 @@
 import { useEffect, useState } from "preact/hooks";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import SimpleModal from "../../core/modal/SimpleModal";
-import TextInput from "../../core/TextInput";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import { FOLDER_NAME_MAX_LENGTH } from "src/ts/constants/groupOrganization";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import SimpleModal from "../../core/modal/SimpleModal";
+import TextInput from "../../core/TextInput";
 
 export type UpdateFolderProps = {
 	name?: string;

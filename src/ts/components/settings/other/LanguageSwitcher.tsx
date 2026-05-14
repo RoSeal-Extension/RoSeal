@@ -1,8 +1,8 @@
-import { supportedLocales } from "#i18n";
 import { useMemo, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { locales, setLocales } from "src/ts/helpers/i18n/locales.ts";
 import { languageNamesFormat, unitListFormat } from "src/ts/helpers/i18n/intlFormats";
+import { locales, setLocales } from "src/ts/helpers/i18n/locales.ts";
+import { supportedLocales } from "#i18n";
 import Dropdown from "../../core/Dropdown";
 
 export default function LanguageSwitcher() {

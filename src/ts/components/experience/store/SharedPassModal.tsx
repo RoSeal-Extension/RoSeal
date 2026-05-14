@@ -1,3 +1,7 @@
+import { useMemo } from "preact/hooks";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getRegularTime } from "src/ts/helpers/i18n/intlFormats";
 import type { RobloxSharedExperiencePass } from "src/ts/helpers/requests/services/roseal";
 import { multigetUniversesByIds } from "src/ts/helpers/requests/services/universes";
 import Loading from "../../core/Loading";
@@ -5,10 +9,6 @@ import SimpleModal from "../../core/modal/SimpleModal";
 import RobuxView from "../../core/RobuxView";
 import usePromise from "../../hooks/usePromise";
 import SlimExperienceCard from "../SlimExperienceCard";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
-import { useMemo } from "preact/hooks";
-import { getRegularTime } from "src/ts/helpers/i18n/intlFormats";
 
 export type SharedPassModalProps = {
 	sharedDetails: RobloxSharedExperiencePass;

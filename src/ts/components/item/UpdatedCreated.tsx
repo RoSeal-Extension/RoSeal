@@ -2,8 +2,11 @@ import classNames from "classnames";
 import type { TimeTarget } from "src/ts/helpers/features/featuresData";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleLowerCase, getShortRelativeTime } from "src/ts/helpers/i18n/intlFormats";
+import { thumbnailProcessor } from "src/ts/helpers/processors/thumbnailProcessor";
+import { httpClient } from "src/ts/helpers/requests/main";
 import { getAssetById, multigetDevelopAssetsByIds } from "src/ts/helpers/requests/services/assets";
 import { getBadgeById } from "src/ts/helpers/requests/services/badges";
+import { getDeveloperProductByProductId } from "src/ts/helpers/requests/services/developerProducts";
 import type {
 	AnyItemType,
 	LiterallyAnyItemType,
@@ -14,20 +17,17 @@ import { getExperienceEventById } from "src/ts/helpers/requests/services/univers
 import { getUserById } from "src/ts/helpers/requests/services/users";
 import { getMostFrequentCreator } from "src/ts/utils/assets";
 import { getAssetTypeData } from "src/ts/utils/itemTypes";
-import Tooltip from "../core/Tooltip";
+import { escapeRegExp } from "src/ts/utils/regex";
+import { getHashUrl, parseResizeThumbnailUrl } from "src/ts/utils/thumbnails";
 import AgentMentionContainer from "../core/items/AgentMentionContainer";
 import ExperienceEventField from "../core/items/ExperienceEventField";
 import ItemField from "../core/items/ItemField";
 import LookField from "../core/items/LookField";
+import Tooltip from "../core/Tooltip";
 import useFeatureValue from "../hooks/useFeatureValue";
 import usePromise from "../hooks/usePromise";
 import useTime from "../hooks/useTime";
 import { handleTimeSwitch } from "../utils/handleTimeSwitch";
-import { escapeRegExp } from "src/ts/utils/regex";
-import { thumbnailProcessor } from "src/ts/helpers/processors/thumbnailProcessor";
-import { httpClient } from "src/ts/helpers/requests/main";
-import { getHashUrl, parseResizeThumbnailUrl } from "src/ts/utils/thumbnails";
-import { getDeveloperProductByProductId } from "src/ts/helpers/requests/services/developerProducts";
 
 export type ItemUpdatedCreatedProps = {
 	itemType: LiterallyAnyItemType;

@@ -12,6 +12,7 @@ import { userOwnsItem } from "src/ts/helpers/requests/services/inventory";
 import { multigetAvatarItems } from "src/ts/helpers/requests/services/marketplace";
 import { listAllUserAnimatedAssets } from "src/ts/utils/assets";
 import { onWindowRefocus } from "src/ts/utils/dom";
+import { getAssetTypeData } from "src/ts/utils/itemTypes";
 import { getAvatarAssetLink } from "src/ts/utils/links";
 import Icon from "../../core/Icon";
 import ItemLookup from "../../core/ItemLookup";
@@ -23,7 +24,6 @@ import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 import usePromise from "../../hooks/usePromise";
 import type { AdvancedAvatarViewType } from "../AdvancedCustomizationButton";
 import ThumbnailConfigItem from "./ThumbnailConfigItem";
-import { getAssetTypeData } from "src/ts/utils/itemTypes";
 
 export type ThumbnailsCustomizationProps = {
 	incrementRefreshId: () => void;

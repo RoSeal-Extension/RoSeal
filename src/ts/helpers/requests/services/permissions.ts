@@ -1,6 +1,6 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
-import { httpClient } from "../main.ts";
 import { getOrSetCache, getOrSetCaches } from "../../cache.ts";
+import { httpClient } from "../main.ts";
 import type { GroupMemberV1, GroupRoleV1 } from "./groups.ts";
 import type { MarketplaceItemType } from "./marketplace.ts";
 

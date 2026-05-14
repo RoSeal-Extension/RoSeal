@@ -1,17 +1,16 @@
-import MdOutlineMic from "@material-symbols/svg-400/outlined/mic-fill.svg";
 import MdOutlineMicOff from "@material-symbols/svg-400/outlined/mic_off-fill.svg";
-
+import MdOutlineMic from "@material-symbols/svg-400/outlined/mic-fill.svg";
+import classNames from "classnames";
+import { useCallback, useState } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getRegularTime } from "src/ts/helpers/i18n/intlFormats";
 import {
 	getUserVoiceSettings,
 	setUserVoiceOptInStatus,
 } from "src/ts/helpers/requests/services/voice";
-import usePromise from "../hooks/usePromise";
-import classNames from "classnames";
-import Tooltip from "../core/Tooltip";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { getRegularTime } from "src/ts/helpers/i18n/intlFormats";
-import { useCallback, useState } from "preact/hooks";
 import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
+import Tooltip from "../core/Tooltip";
+import usePromise from "../hooks/usePromise";
 
 export default function ChangeVoiceOptInButton() {
 	const [loading, setLoading] = useState(false);

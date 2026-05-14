@@ -1,9 +1,9 @@
 import type { Signal } from "@preact/signals";
-import ExperienceTab from "../Tab.tsx";
-import EventsTabContent from "./TabContent.tsx";
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats.ts";
 import type { ListExperienceEventsResponse } from "src/ts/helpers/requests/services/universes.ts";
+import ExperienceTab from "../Tab.tsx";
+import EventsTabContent from "./TabContent.tsx";
 
 export type ExperienceEventsTabProps = {
 	universeId: number;

@@ -1,14 +1,14 @@
 import SimpleModal from "src/ts/components/core/modal/SimpleModal";
+import { warning } from "src/ts/components/core/systemFeedback/helpers/globalSystemFeedback";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getRegularTime } from "src/ts/helpers/i18n/intlFormats";
+import { RESTError } from "src/ts/helpers/requests/main";
 import {
 	updatePrivateServer,
 	updatePrivateServerSubscription,
 } from "src/ts/helpers/requests/services/privateServers";
 import { useServersTabContext } from "../ServersTabProvider";
-import { warning } from "src/ts/components/core/systemFeedback/helpers/globalSystemFeedback";
-import { RESTError } from "src/ts/helpers/requests/main";
 
 export type CancelPrivateServerModalProps = {
 	privateServerId: number;

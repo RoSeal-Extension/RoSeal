@@ -1,11 +1,11 @@
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import Button from "../../core/Button";
 import classNames from "classnames";
-import { sendMessage } from "src/ts/helpers/communication/dom";
-import type { RobloxSharedExperiencePass } from "src/ts/helpers/requests/services/roseal";
-import SharedPassModal from "./SharedPassModal";
 import { useState } from "preact/hooks";
+import { sendMessage } from "src/ts/helpers/communication/dom";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import type { PassProductInfo } from "src/ts/helpers/requests/services/passes";
+import type { RobloxSharedExperiencePass } from "src/ts/helpers/requests/services/roseal";
+import Button from "../../core/Button";
+import SharedPassModal from "./SharedPassModal";
 
 export type PassPurchaseButtonProps = {
 	disabled?: boolean;

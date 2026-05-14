@@ -3,10 +3,10 @@ import classNames from "classnames";
 import { useEffect, useState } from "preact/hooks";
 import { watchAttributes, watchOnce } from "src/ts/helpers/elements";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import TextInput from "../../core/TextInput";
-import Icon from "../../core/Icon";
-import { AVATAR_EDITOR_FILTERS_INITIAL_VALUE, type AvatarEditorFiltersValue } from "../constants";
 import FiltersContainer from "../../core/filters/FiltersContainer";
+import Icon from "../../core/Icon";
+import TextInput from "../../core/TextInput";
+import { AVATAR_EDITOR_FILTERS_INITIAL_VALUE, type AvatarEditorFiltersValue } from "../constants";
 
 export type AvatarEditorSearchProps = {
 	filters: Signal<AvatarEditorFiltersValue>;

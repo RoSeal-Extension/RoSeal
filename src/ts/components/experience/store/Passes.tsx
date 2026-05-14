@@ -13,13 +13,13 @@ import {
 } from "src/ts/helpers/requests/services/roseal";
 import type { RequestedUser } from "src/ts/helpers/requests/services/users";
 import { getManagePassesLink } from "src/ts/utils/links";
+import FiltersContainer from "../../core/filters/FiltersContainer";
 import Loading from "../../core/Loading";
 import Pagination from "../../core/Pagination";
 import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 import usePages from "../../hooks/usePages";
 import usePromise from "../../hooks/usePromise";
 import Pass from "./Pass";
-import FiltersContainer from "../../core/filters/FiltersContainer";
 
 export type PassesProps = {
 	universeId: number;

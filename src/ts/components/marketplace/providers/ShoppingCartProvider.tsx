@@ -4,19 +4,19 @@ import {
 	MARKETPLACE_CART_LOCALSTORAGE_PREFIX,
 	MARKETPLACE_CART_MAX_ITEMS_NUMBER,
 } from "src/ts/constants/marketplace";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
-	listCollectibleResellers,
-	multigetAvatarItems,
-	multigetCollectibleItemsByIds,
 	type AvatarItemDetail,
 	type Collectible,
 	type CollectibleReseller,
+	listCollectibleResellers,
 	type MarketplaceItemType,
+	multigetAvatarItems,
+	multigetCollectibleItemsByIds,
 } from "src/ts/helpers/requests/services/marketplace";
-import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 import { useLocalStorage } from "usehooks-ts";
 import { success } from "../../core/systemFeedback/helpers/globalSystemFeedback";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 
 export type MarketplaceShoppingCartItemDetail<T extends MarketplaceItemType = MarketplaceItemType> =
 	AvatarItemDetail<T> & {

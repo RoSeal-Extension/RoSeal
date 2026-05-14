@@ -1,6 +1,6 @@
+import type { timeTargets, timeTypes } from "src/ts/helpers/features/featuresData";
 import { getFeatureValue } from "../helpers/features/helpers";
 import { _getTimeFunction } from "../helpers/i18n/intlFormats";
-import type { timeTargets, timeTypes } from "src/ts/helpers/features/featuresData";
 
 export function getTimeFunction(
 	target: (typeof timeTargets)[number],

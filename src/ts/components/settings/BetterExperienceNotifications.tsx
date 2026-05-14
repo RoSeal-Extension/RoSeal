@@ -5,13 +5,13 @@ import {
 	listUserUniverseFollowings,
 	removeUserUniverseFollowing,
 } from "src/ts/helpers/requests/services/followings";
+import type { GroupNotificationSettingType } from "src/ts/helpers/requests/services/groups";
 import { multigetUniversesByIds } from "src/ts/helpers/requests/services/universes";
 import { getExperienceLink } from "src/ts/utils/links";
 import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePromise from "../hooks/usePromise";
 import BetterNotificationGroup, { type BetterNotificationItem } from "./BetterNotificationGroup";
-import type { GroupNotificationSettingType } from "src/ts/helpers/requests/services/groups";
 
 export default function BetterExperienceNotifications() {
 	const [authenticatedUser] = useAuthenticatedUser();

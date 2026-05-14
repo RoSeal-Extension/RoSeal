@@ -1,12 +1,12 @@
-import { useMemo } from "preact/hooks";
-import { DEFAULT_NONE_CONNECTION_TYPE, type ConnectionType } from "src/ts/constants/friends";
-import Popover from "../core/Popover";
-import { getConnectionTypeDisplayName, getConnectionTypeIcon } from "./utils/types";
-import type { RefObject } from "preact";
-import Button from "../core/Button";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { DndProvider, getBackendOptions, MultiBackend, Tree } from "@minoru/react-dnd-treeview";
+import type { RefObject } from "preact";
+import { useMemo } from "preact/hooks";
+import { type ConnectionType, DEFAULT_NONE_CONNECTION_TYPE } from "src/ts/constants/friends";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import Button from "../core/Button";
+import Popover from "../core/Popover";
 import { FriendCardTypesItem } from "./FriendCardTypeItem";
+import { getConnectionTypeDisplayName, getConnectionTypeIcon } from "./utils/types";
 
 export type FriendCardTypesProps = {
 	availableConnectionTypes: ConnectionType[];

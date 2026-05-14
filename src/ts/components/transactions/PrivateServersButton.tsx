@@ -1,9 +1,9 @@
 import type { Signal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { sendMessage } from "src/ts/helpers/communication/dom";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { BootstrapDropdown } from "../core/Dropdown";
 import DropdownLabel from "../core/DropdownLabel";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export type PrivateServersVisibilityButtonProps = {
 	showPrivateServers: Signal<boolean>;

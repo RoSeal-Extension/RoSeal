@@ -8,7 +8,7 @@ import {
 import type { GameJoinAttemptOrigin } from "../helpers/requests/services/join";
 import { getDeviceMeta, getPlaceLauncherData } from "./context";
 import { getUserAccountIdBTID, getUserReferralPlayerId } from "./cookies";
-import { authedProtocolParser, type AuthedProtocolType, deepLinksParser } from "./deepLinks";
+import { type AuthedProtocolType, authedProtocolParser, deepLinksParser } from "./deepLinks";
 
 export type CurrentServerJoinMetadata =
 	| ({

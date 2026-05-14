@@ -1,13 +1,13 @@
 import { addMessageListener } from "src/ts/helpers/communication/dom";
+import { watchOnce } from "src/ts/helpers/elements";
+import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { handleInventoryFavoritesCategories } from "src/ts/specials/handleInventoryFavoritesCategories";
-import { USER_FAVORITES_REGEX } from "src/ts/utils/regex";
 import {
 	type AssetsExplorerScope,
 	handleInventorySorting,
 } from "src/ts/specials/handleInventorySorting";
-import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
-import { watchOnce } from "src/ts/helpers/elements";
+import { USER_FAVORITES_REGEX } from "src/ts/utils/regex";
 
 /*
 type AssetsExplorerType = angular.IScope & {

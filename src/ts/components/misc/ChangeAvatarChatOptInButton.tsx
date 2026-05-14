@@ -1,16 +1,15 @@
-import MdOutlineVideocam from "@material-symbols/svg-400/outlined/videocam-fill.svg";
 import MdOutlineVideocamOff from "@material-symbols/svg-400/outlined/videocam_off-fill.svg";
-
+import MdOutlineVideocam from "@material-symbols/svg-400/outlined/videocam-fill.svg";
+import classNames from "classnames";
+import { useCallback, useState } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	getUserVoiceSettings,
 	setUserAvatarChatOptInStatus,
 } from "src/ts/helpers/requests/services/voice";
-import usePromise from "../hooks/usePromise";
-import classNames from "classnames";
-import Tooltip from "../core/Tooltip";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { useCallback, useState } from "preact/hooks";
 import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
+import Tooltip from "../core/Tooltip";
+import usePromise from "../hooks/usePromise";
 
 export default function ChangeAvatarChatOptIn() {
 	const [loading, setLoading] = useState(false);

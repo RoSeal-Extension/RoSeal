@@ -1,7 +1,7 @@
 import SimpleModal from "src/ts/components/core/modal/SimpleModal";
-import FreePrivateServersList from "./FreePrivateServersList";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import FreePrivateServersList from "./FreePrivateServersList";
 
 export type DeactivatePrivateServersModalProps = {
 	show: boolean;

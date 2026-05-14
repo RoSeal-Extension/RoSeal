@@ -38,12 +38,12 @@ import {
 } from "src/ts/constants/friends";
 import {
 	ALLOWED_ITEMS_STORAGE_KEY,
-	allowedItemsData,
 	type AllowedItemsStorage,
+	allowedItemsData,
 	animalTextCount,
 	BLOCKED_ITEMS_STORAGE_KEY,
-	blockedItemsData,
 	type BlockedItemsStorage,
+	blockedItemsData,
 	ONBOARDING_COMPLETED_STORAGE_KEY,
 	PENDING_ROBUX_SESSION_CACHE_STORAGE_KEY,
 	ROBUX_HISTORY_STORAGE_KEY,
@@ -120,6 +120,7 @@ import { getRobloxCDNUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { isAvatarItemBlocked, isExperienceBlocked } from "src/ts/utils/blockedItems";
 import { checkExperiencesBlocked } from "src/ts/utils/blockedItemsMain";
 import { getDeviceMeta, isIframe, onStringTyped } from "src/ts/utils/context";
+import currentUrl from "src/ts/utils/currentUrl";
 import { isFocusedOnInput } from "src/ts/utils/dom";
 import { changeAllTextTo } from "src/ts/utils/fun/changeText";
 import { sealRain } from "src/ts/utils/fun/sealRain";
@@ -162,7 +163,6 @@ import {
 	handleFriendsPresenceNotifications,
 } from "../../background-alarms/fetchOnlineFriends";
 import { fetchTradesAndUpdateData } from "../../background-alarms/fetchTrades";
-import currentUrl from "src/ts/utils/currentUrl";
 
 export type StoredUniverseCache = [
 	universeId: number,

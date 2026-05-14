@@ -1,3 +1,5 @@
+import MarketplaceCard from "src/ts/components/marketplace/Card";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	type HydratedWidgetLook,
 	hydrateMarketplaceWidget,
@@ -6,8 +8,6 @@ import {
 import { getUserAvatarsLink } from "src/ts/utils/links";
 import Icon from "../../../core/Icon";
 import usePromise from "../../../hooks/usePromise";
-import MarketplaceCard from "src/ts/components/marketplace/Card";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export type UserProfilePublishedAvatarsProps = {
 	userId: number;

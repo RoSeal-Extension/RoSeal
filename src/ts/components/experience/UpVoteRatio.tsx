@@ -1,10 +1,10 @@
-import { getPlaceVotes } from "src/ts/helpers/requests/services/places";
-import usePromise from "../hooks/usePromise";
-import { getRolimonsUpvoteRatio } from "src/ts/helpers/requests/services/rolimons";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import Tooltip from "../core/Tooltip";
 import MdOutlineInfoIcon from "@material-symbols/svg-400/outlined/info.svg";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { getPlaceVotes } from "src/ts/helpers/requests/services/places";
+import { getRolimonsUpvoteRatio } from "src/ts/helpers/requests/services/rolimons";
+import Tooltip from "../core/Tooltip";
+import usePromise from "../hooks/usePromise";
 
 export type PlaceUpVoteRatioProps = {
 	placeId: number;

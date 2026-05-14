@@ -1,7 +1,7 @@
-import { getAvatarAssetLink } from "src/ts/utils/links";
-import Thumbnail from "../../core/Thumbnail";
 import type { ListedUserInventoryAsset } from "src/ts/helpers/requests/services/inventory";
 import { getItemTypeDisplayLabel } from "src/ts/utils/itemTypesText";
+import { getAvatarAssetLink } from "src/ts/utils/links";
+import Thumbnail from "../../core/Thumbnail";
 
 export type SearchedAssetResultProps = {
 	item: ListedUserInventoryAsset;

@@ -1,7 +1,7 @@
-import Tooltip from "../core/Tooltip";
-import MdOutlineLightMode from "@material-symbols/svg-400/outlined/light_mode-fill.svg";
 import MdOutlineDarkMode from "@material-symbols/svg-400/outlined/dark_mode-fill.svg";
+import MdOutlineLightMode from "@material-symbols/svg-400/outlined/light_mode-fill.svg";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import Tooltip from "../core/Tooltip";
 import { useTheme } from "../hooks/useTheme";
 
 export default function SwitchThemeButton() {

@@ -1,8 +1,8 @@
 import { useMemo } from "preact/hooks";
 import usePromise from "src/ts/components/hooks/usePromise";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { getFormattedDuration } from "../utils/getFormattedDuration";
 import { getTopWeeklyScreentimeByUniverse } from "src/ts/helpers/requests/services/account";
+import { getFormattedDuration } from "../utils/getFormattedDuration";
 
 export type ExperiencePlaytimeProps = {
 	universeId: number;

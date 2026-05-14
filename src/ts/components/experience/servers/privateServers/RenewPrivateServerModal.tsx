@@ -1,11 +1,11 @@
 import SimpleModal from "src/ts/components/core/modal/SimpleModal";
 import RobuxView from "src/ts/components/core/RobuxView";
+import { warning } from "src/ts/components/core/systemFeedback/helpers/globalSystemFeedback";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { RESTError } from "src/ts/helpers/requests/main";
 import { updatePrivateServerSubscription } from "src/ts/helpers/requests/services/privateServers";
 import { useServersTabContext } from "../ServersTabProvider";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
-import { RESTError } from "src/ts/helpers/requests/main";
-import { warning } from "src/ts/components/core/systemFeedback/helpers/globalSystemFeedback";
 
 export type RenewPrivateServerModalProps = {
 	privateServerId: number;

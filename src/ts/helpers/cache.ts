@@ -12,7 +12,16 @@ export type SubKey<T, U extends Record<string, unknown>> = U & {
 	id: T;
 };
 
+const MAX_CACHE_SIZE = 5000;
+
 export const requestCache: Record<string, unknown> = {};
+
+function evictOldestCacheEntry() {
+	const keys = Object.keys(requestCache);
+	if (keys.length > 0) {
+		delete requestCache[keys[0]];
+	}
+}
 
 export function getCacheKey(key: unknown[], id?: unknown) {
 	return `${key.join(KEY_ITEM_SEPARATOR)}${id !== undefined ? `${KEY_ITEM_SEPARATOR}${id}` : ""}`;
@@ -54,6 +63,11 @@ export function isCached(key: unknown[], id?: unknown): boolean {
 
 export function setCache(key: unknown[], value: unknown, id?: unknown) {
 	const setKey = getCacheKey(key, id);
+
+	if (!(setKey in requestCache) && Object.keys(requestCache).length >= MAX_CACHE_SIZE) {
+		evictOldestCacheEntry();
+	}
+
 	requestCache[setKey] = value;
 
 	if (value instanceof Promise) {

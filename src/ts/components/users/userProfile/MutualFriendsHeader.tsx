@@ -1,9 +1,9 @@
-import { getUserFriendsLink } from "src/ts/utils/links";
-import SocialHeader from "./SocialHeader";
-import usePromise from "../../hooks/usePromise";
-import { getCanViewUserFriends, getMutualFriends } from "src/ts/utils/friends";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { getCanViewUserFriends, getMutualFriends } from "src/ts/utils/friends";
+import { getUserFriendsLink } from "src/ts/utils/links";
+import usePromise from "../../hooks/usePromise";
+import SocialHeader from "./SocialHeader";
 import SocialHeaderV2 from "./SocialHeaderV2";
 
 export type MutualFriendsHeaderProps = {

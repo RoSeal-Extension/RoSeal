@@ -1,3 +1,10 @@
+import {
+	BLUESKY_PROFILE_HANDLE,
+	DISCORD_INVITE_CODE,
+	MASTODON_PROFILE_HANDLE,
+	ROBLOX_GROUP_ID,
+	X_PROFILE_HANDLE,
+} from "src/ts/constants/rosealSettings";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	getBlueskyProfileLink,
@@ -9,15 +16,8 @@ import {
 } from "src/ts/utils/links";
 import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 import DataManagement from "../other/DataManagement";
-import LanguageSwitcher from "../other/LanguageSwitcher";
 import I18nOverrides from "../other/I18nOverrides";
-import {
-	BLUESKY_PROFILE_HANDLE,
-	DISCORD_INVITE_CODE,
-	MASTODON_PROFILE_HANDLE,
-	ROBLOX_GROUP_ID,
-	X_PROFILE_HANDLE,
-} from "src/ts/constants/rosealSettings";
+import LanguageSwitcher from "../other/LanguageSwitcher";
 
 export default function ManagementTab() {
 	const [authenticatedUser] = useAuthenticatedUser();

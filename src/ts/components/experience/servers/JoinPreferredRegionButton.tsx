@@ -1,10 +1,10 @@
 import MdOutlineMapSearchFilled from "@material-symbols/svg-400/outlined/map_search-fill.svg";
 import type { Signal } from "@preact/signals";
 import classNames from "classnames";
+import { useCallback } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import Button from "../../core/Button";
 import Tooltip from "../../core/Tooltip";
-import { useCallback } from "preact/hooks";
 
 export type JoinPreferredRegionButton = {
 	active: Signal<boolean>;

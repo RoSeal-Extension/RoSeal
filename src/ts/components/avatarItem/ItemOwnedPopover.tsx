@@ -1,14 +1,14 @@
+import type { VNode } from "preact";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString, getAbsoluteTime } from "src/ts/helpers/i18n/intlFormats";
 import { listUserItemInstances } from "src/ts/helpers/requests/services/inventory";
 import type { MarketplaceItemType } from "src/ts/helpers/requests/services/marketplace";
+import { listAllUserInventoryItemInstances } from "src/ts/utils/assets";
 import Icon from "../core/Icon";
 import Loading from "../core/Loading";
 import Popover from "../core/Popover";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePromise from "../hooks/usePromise";
-import { listAllUserInventoryItemInstances } from "src/ts/utils/assets";
-import type { VNode } from "preact";
 
 export type AvatarItemOwnedPopoverProps = {
 	itemType: MarketplaceItemType;

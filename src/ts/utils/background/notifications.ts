@@ -1,10 +1,10 @@
+import { invokeMessage } from "src/ts/helpers/communication/background";
 import {
-	thumbnailProcessor,
 	type ThumbnailRequest,
+	thumbnailProcessor,
 } from "src/ts/helpers/processors/thumbnailProcessor";
 import { httpClient } from "src/ts/helpers/requests/main";
 import { arrayBufferToDataURL } from "../base64";
-import { invokeMessage } from "src/ts/helpers/communication/background";
 
 export async function showRoSealNotification(
 	id: string,

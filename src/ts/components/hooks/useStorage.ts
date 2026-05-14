@@ -1,7 +1,6 @@
-import { useState } from "preact/hooks";
-import useStateRef from "./useStateRef";
+import { useEffect, useState } from "preact/hooks";
 import { onStorageValueUpdate } from "../../helpers/storage.ts";
-import { useEffect } from "preact/hooks";
+import useStateRef from "./useStateRef";
 
 export default function useStorage<T>(
 	key: string,

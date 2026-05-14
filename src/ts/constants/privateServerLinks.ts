@@ -8,7 +8,7 @@ export type PrivateServerLinksStorageValue = Record<
 
 export const PRIVATE_SERVER_LINKS_STORAGE_KEY = "privateServerLinks";
 
-export const MATCH_LINKCODE_V0_REGEX = /\?privateserverlinkcode=([a-z0-9\-]{32})/i;
+export const MATCH_LINKCODE_V0_REGEX = /\?privateserverlinkcode=([a-z0-9-]{32})/i;
 export const MATCH_LINKCODE_V1_REGEX = /\d{32}/;
 export const MATCH_LINKCODE_V2_REGEX = /[a-f0-9]{32}/;
 

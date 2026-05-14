@@ -1,23 +1,23 @@
-import { getEditAvatarLink } from "src/ts/utils/links";
-import Button from "../core/Button";
-import useProfileData from "../hooks/useProfileData";
-import usePages from "../hooks/usePages";
+import { RESTError } from "@roseal/http-client";
 import { useEffect, useRef, useState } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	deleteUserLook,
 	type HydratedWidgetLook,
 	hydrateMarketplaceWidget,
 	listUserLooks,
 } from "src/ts/helpers/requests/services/marketplace";
-import { RESTError } from "@roseal/http-client";
-import Loading from "../core/Loading";
-import { useIntersection } from "../hooks/useIntersection";
-import MarketplaceCard from "../marketplace/Card";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import { getEditAvatarLink } from "src/ts/utils/links";
+import Button from "../core/Button";
 import ItemContextMenu from "../core/ItemContextMenu";
+import Loading from "../core/Loading";
 import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useFeatureValue from "../hooks/useFeatureValue";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { useIntersection } from "../hooks/useIntersection";
+import usePages from "../hooks/usePages";
+import useProfileData from "../hooks/useProfileData";
+import MarketplaceCard from "../marketplace/Card";
 
 export type UserPublishedAvatarsProps = {
 	userId: number;

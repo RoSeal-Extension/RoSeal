@@ -1,10 +1,10 @@
 import MdOutlineCloudSync from "@material-symbols/svg-400/outlined/cloud_sync-fill.svg";
-import MdOutlineTimer from "@material-symbols/svg-400/outlined/timer-fill.svg";
 import MdOutlineDns from "@material-symbols/svg-400/outlined/dns-fill.svg";
 import MdOutlineHistory from "@material-symbols/svg-400/outlined/history-fill.svg";
 import MdOutlinePolyline from "@material-symbols/svg-400/outlined/polyline-fill.svg";
 import MdOutlineRobot from "@material-symbols/svg-400/outlined/robot-fill.svg";
 import MdOutlineSchedule from "@material-symbols/svg-400/outlined/schedule-fill.svg";
+import MdOutlineTimer from "@material-symbols/svg-400/outlined/timer-fill.svg";
 import classNames from "classnames";
 import { differenceInDays } from "date-fns";
 import type { JSX } from "preact";
@@ -34,6 +34,7 @@ import {
 	getShortRelativeTime,
 } from "src/ts/helpers/i18n/intlFormats";
 import { RESTError } from "src/ts/helpers/requests/main";
+import type { PrivateServerInventoryItem } from "src/ts/helpers/requests/services/inventory";
 import {
 	getPrivateServerData,
 	JoinServerStatusCode,
@@ -44,7 +45,6 @@ import {
 	updatePrivateServer,
 	updatePrivateServerPermissions,
 } from "src/ts/helpers/requests/services/privateServers";
-import type { PrivateServerInventoryItem } from "src/ts/helpers/requests/services/inventory";
 import { shutdownExperienceServer } from "src/ts/helpers/requests/services/universes";
 import {
 	sendFollowPlayerIntoGame,
@@ -58,14 +58,14 @@ import {
 	getUserProfileLink,
 } from "src/ts/utils/links";
 import AgentMentionContainer from "../../core/items/AgentMentionContainer";
+import Tooltip from "../../core/Tooltip";
+import { getFormattedDuration } from "../../utils/getFormattedDuration";
 import ServerPlayerThumbnail from "./PlayerThumbnail";
 import CancelPrivateServerModal from "./privateServers/CancelPrivateServerModal";
 import RenewPrivateServerModal from "./privateServers/RenewPrivateServerModal";
 import type { ServerWithJoinData } from "./ServerList";
 import { useServersTabContext } from "./ServersTabProvider";
 import { getLocalizedRegionName } from "./utils";
-import { getFormattedDuration } from "../../utils/getFormattedDuration";
-import Tooltip from "../../core/Tooltip";
 
 export type ServerListType = "private" | "public" | "friends";
 

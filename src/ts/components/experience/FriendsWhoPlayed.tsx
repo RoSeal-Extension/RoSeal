@@ -1,12 +1,11 @@
-import { listUserFriendsWhoPlayed } from "src/ts/helpers/requests/services/users";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
-import usePromise from "../hooks/usePromise";
+import { useState } from "preact/hooks";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
-import { useState } from "preact/hooks";
-
+import { listUserFriendsWhoPlayed } from "src/ts/helpers/requests/services/users";
 import SimpleModal from "../core/modal/SimpleModal";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import usePromise from "../hooks/usePromise";
 import FriendWhoPlayedItem from "./FriendWhoPlayedItem";
 
 export type FriendsWhoPlayedGameProps = {

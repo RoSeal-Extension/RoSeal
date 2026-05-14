@@ -1,7 +1,7 @@
-import { useState } from "preact/hooks";
 import classNames from "classnames";
-import { getMessage } from "../../helpers/i18n/getMessage";
 import type { ComponentChildren } from "preact";
+import { useState } from "preact/hooks";
+import { getMessage } from "../../helpers/i18n/getMessage";
 
 export type ToggleTargetProps = {
 	maxScrollHeight?: number;

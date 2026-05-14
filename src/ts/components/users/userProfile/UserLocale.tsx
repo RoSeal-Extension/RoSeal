@@ -1,9 +1,9 @@
 import MdOutlineTranslateFill from "@material-symbols/svg-400/outlined/translate-fill.svg";
-import usePromise from "../../hooks/usePromise";
-import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
-import { getSiteLocaleData } from "src/ts/utils/context";
-import { languageNamesFormat } from "src/ts/helpers/i18n/intlFormats";
 import { useMemo } from "preact/hooks";
+import { languageNamesFormat } from "src/ts/helpers/i18n/intlFormats";
+import { getSiteLocaleData } from "src/ts/utils/context";
+import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
+import usePromise from "../../hooks/usePromise";
 
 export type UserProfileLocaleProps = {
 	userId: number;

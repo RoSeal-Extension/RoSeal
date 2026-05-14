@@ -1,12 +1,12 @@
-import { useState } from "preact/hooks";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import FileUpload from "../../core/FileUpload";
-import Button from "../../core/Button";
 import classNames from "classnames";
-import { setLocalSessionStorage } from "src/ts/helpers/storage";
+import { useState } from "preact/hooks";
 import { CUSTOM_I18N_OVERRIDE_LOCALSESSIONSTORAGE_KEY } from "src/ts/constants/i18n";
-import { getCrowdinProjectLink } from "src/ts/utils/links";
 import { CROWDIN_PROJECT_ID } from "src/ts/constants/rosealSettings";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { setLocalSessionStorage } from "src/ts/helpers/storage";
+import { getCrowdinProjectLink } from "src/ts/utils/links";
+import Button from "../../core/Button";
+import FileUpload from "../../core/FileUpload";
 import Icon from "../../core/Icon";
 
 export default function I18nOverrides() {

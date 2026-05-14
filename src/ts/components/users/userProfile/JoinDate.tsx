@@ -1,13 +1,13 @@
+import classNames from "classnames";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getUserById } from "src/ts/helpers/requests/services/users";
+import UserProfileField from "../../core/items/UserProfileField";
+import UserProfileFieldV2 from "../../core/items/UserProfileFieldV2";
+import Tooltip from "../../core/Tooltip";
+import useFeatureValue from "../../hooks/useFeatureValue";
 import usePromise from "../../hooks/usePromise";
 import useTime from "../../hooks/useTime";
-import Tooltip from "../../core/Tooltip";
 import { handleTimeSwitch } from "../../utils/handleTimeSwitch";
-import UserProfileField from "../../core/items/UserProfileField";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import classNames from "classnames";
-import useFeatureValue from "../../hooks/useFeatureValue";
-import UserProfileFieldV2 from "../../core/items/UserProfileFieldV2";
 
 export type UserJoinDateProps = {
 	userId: number;

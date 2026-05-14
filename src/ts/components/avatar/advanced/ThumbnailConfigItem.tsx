@@ -1,14 +1,14 @@
 import classNames from "classnames";
+import { useState } from "preact/hooks";
 import type { THUMBNAIL_CUSTOMIZATION_LIMITS } from "src/ts/constants/avatar";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import type { ThumbnailCustomization } from "src/ts/helpers/requests/services/avatar";
+import IconButton from "../../core/IconButton";
 import Slider from "../../core/Slider";
+import TextInput from "../../core/TextInput";
 import type { AdvancedAvatarViewType } from "../AdvancedCustomizationButton";
 import type { thumbnailConfigFieldNames } from "./ThumbnailsCustomization";
-import { useState } from "preact/hooks";
-import IconButton from "../../core/IconButton";
-import TextInput from "../../core/TextInput";
 
 export type ThumbnailConfigItemProps<T extends Exclude<AdvancedAvatarViewType, "AvatarBust">> = {
 	viewType: T;

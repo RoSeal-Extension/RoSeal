@@ -1,7 +1,7 @@
-import type { ContentBackgroundMessageListener } from "src/types/dataTypes.d.ts";
+import type { RESTError } from "src/ts/helpers/requests/main";
 import { getCurrentAuthenticatedUser } from "src/ts/helpers/requests/services/account";
 import { getUserById } from "src/ts/helpers/requests/services/users";
-import type { RESTError } from "src/ts/helpers/requests/main";
+import type { ContentBackgroundMessageListener } from "src/types/dataTypes.d.ts";
 
 export default {
 	action: "getAuthenticatedUser",

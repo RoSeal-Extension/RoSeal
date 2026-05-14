@@ -10,6 +10,7 @@ import {
 	type PendingDeveloperProductTransaction,
 } from "src/ts/helpers/requests/services/developerProducts";
 import { crossSort } from "src/ts/utils/objects";
+import FiltersContainer from "../../core/filters/FiltersContainer";
 import Icon from "../../core/Icon";
 import Loading from "../../core/Loading";
 import Pagination from "../../core/Pagination";
@@ -19,7 +20,6 @@ import useFeatureValue from "../../hooks/useFeatureValue";
 import usePages from "../../hooks/usePages";
 import usePromise from "../../hooks/usePromise";
 import DeveloperProduct, { type DeveloperProductPropsDetails } from "./DeveloperProduct";
-import FiltersContainer from "../../core/filters/FiltersContainer";
 
 export type DeveloperProductsProps = {
 	universeId: number;

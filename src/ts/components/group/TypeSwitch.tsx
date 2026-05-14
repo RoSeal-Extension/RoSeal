@@ -1,8 +1,8 @@
 import { useState } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import SimpleTabContainer from "../core/tab/Container.tsx";
 import SimpleTabNavs from "../core/tab/Navs.tsx";
 import SimpleTabNav from "../core/tab/SimpleNav.tsx";
-import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 
 export type GroupsTypeSwitchProps = {
 	container: HTMLElement;

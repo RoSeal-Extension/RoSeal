@@ -12,11 +12,11 @@ import { getUserProfileLink } from "src/ts/utils/links";
 import { delay } from "src/ts/utils/misc";
 import { randomInt } from "src/ts/utils/random";
 import { renderAppend } from "src/ts/utils/render";
+import { getSecondsSinceMidnight } from "src/ts/utils/time";
 import Thumbnail from "../core/Thumbnail";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useFeatureValue from "../hooks/useFeatureValue";
 import VerifiedBadge from "../icons/VerifiedBadge";
-import { getSecondsSinceMidnight } from "src/ts/utils/time";
 
 function getMessagePool(roles: string[]) {
 	const pool = getMessageKeysWithPrefix("homeHeader.messages.default");

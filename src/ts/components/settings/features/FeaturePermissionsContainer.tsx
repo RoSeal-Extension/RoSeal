@@ -8,9 +8,9 @@ import {
 } from "src/ts/helpers/communication/dom";
 import { watchAttributes, watchOnce } from "src/ts/helpers/elements";
 import type { Feature } from "src/ts/helpers/features/featuresData";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { locales } from "src/ts/helpers/i18n/locales.ts";
 import type { InjectScript } from "src/ts/utils/dom";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export type FeaturePermissionsContainerProps = {
 	feature: Feature;

@@ -6,13 +6,13 @@ import {
 	MAX_CONNECTION_TYPE_DESCRIPTION_LENGTH,
 	MAX_CONNECTION_TYPE_NAME_LENGTH,
 } from "src/ts/constants/friends";
-import SimpleModal from "../../core/modal/SimpleModal";
-import TextInput from "../../core/TextInput";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import { getOSType } from "src/ts/utils/context";
 import { SYMBOL_REGEX } from "src/ts/utils/regex";
+import SimpleModal from "../../core/modal/SimpleModal";
+import TextInput from "../../core/TextInput";
 
 export type CreateConnectionTypeModalProps = {
 	show: boolean;

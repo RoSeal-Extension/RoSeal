@@ -1,8 +1,8 @@
 import { effect, signal } from "@preact/signals";
 import { useEffect, useState } from "preact/hooks";
 import AdvancedCustomizationButton from "src/ts/components/avatar/AdvancedCustomizationButton";
-import { AVATAR_EDITOR_FILTERS_INITIAL_VALUE } from "src/ts/components/avatar/constants";
 import AvatarEditorCurrentlyWearing from "src/ts/components/avatar/CurrentlyWearing";
+import { AVATAR_EDITOR_FILTERS_INITIAL_VALUE } from "src/ts/components/avatar/constants";
 import EditItemListsButton from "src/ts/components/avatar/EditItemListsButton";
 import AvatarEditorSearch from "src/ts/components/avatar/filters/AvatarEditorSearch";
 import EditItemListsModal from "src/ts/components/avatar/modals/EditItemListsModal";

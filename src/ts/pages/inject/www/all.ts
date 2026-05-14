@@ -53,9 +53,9 @@ import type {
 } from "src/ts/helpers/requests/services/universes";
 import {
 	type ListUserOnlineFriendsResponse,
-	multigetProfileData,
 	type MultigetProfileDataRequest,
 	type MultigetProfileDataResponse,
+	multigetProfileData,
 	multigetUsersByIds,
 	type ProfileField,
 	type ProfileFieldName,

@@ -1,11 +1,11 @@
+import classNames from "classnames";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getRegularTime } from "src/ts/helpers/i18n/intlFormats";
 import type { PrivateServerInventoryItem } from "src/ts/helpers/requests/services/inventory";
 import { getConfigurePrivateServerLink } from "src/ts/utils/links";
-import Thumbnail from "../core/Thumbnail";
-import RobuxView from "../core/RobuxView";
-import classNames from "classnames";
-import { getRegularTime } from "src/ts/helpers/i18n/intlFormats";
 import Button from "../core/Button";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import RobuxView from "../core/RobuxView";
+import Thumbnail from "../core/Thumbnail";
 
 export type PrivateServerSubscriptionCardProps = PrivateServerInventoryItem & {
 	setActive: (active: boolean) => void;

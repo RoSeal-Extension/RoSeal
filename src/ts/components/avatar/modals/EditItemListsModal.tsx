@@ -1,8 +1,7 @@
+import { DndProvider, getBackendOptions, MultiBackend, Tree } from "@minoru/react-dnd-treeview";
 import type { Signal } from "@preact/signals";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import SimpleModal from "../../core/modal/SimpleModal";
-import useStorage from "../../hooks/useStorage";
+import classNames from "classnames";
+import { useEffect, useMemo, useState } from "preact/hooks";
 import {
 	AVATAR_ITEM_LISTS_STORAGE_KEY,
 	type AvatarAnyExpandedItem,
@@ -11,9 +10,10 @@ import {
 	type AvatarItemListGroup,
 	type AvatarItemListsStorageValue,
 } from "src/ts/constants/avatar";
-import { DndProvider, getBackendOptions, MultiBackend, Tree } from "@minoru/react-dnd-treeview";
-import { useEffect, useMemo, useState } from "preact/hooks";
-import classNames from "classnames";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import SimpleModal from "../../core/modal/SimpleModal";
+import useStorage from "../../hooks/useStorage";
 import DNDItemList from "../itemLists/DNDItemList";
 import DNDItemListGroup from "../itemLists/DNDItemListGroup";
 

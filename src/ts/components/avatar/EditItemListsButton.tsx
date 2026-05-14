@@ -1,8 +1,8 @@
 import { useEffect, useState } from "preact/hooks";
 import { addMessageListener, invokeMessage } from "src/ts/helpers/communication/dom";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import IconButton from "../core/IconButton";
 import type { EditItemListsModalProps } from "./modals/EditItemListsModal";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export default function EditItemListsButton({ show }: EditItemListsModalProps) {
 	const [isItemListsTab, setIsItemListsTab] = useState(false);

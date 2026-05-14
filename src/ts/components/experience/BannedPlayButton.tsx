@@ -1,9 +1,9 @@
 import { useMemo } from "preact/hooks";
-import type { CreatorBan } from "src/ts/helpers/requests/services/join";
-import useCountdown from "../hooks/useCountdown";
-import Icon from "../core/Icon";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import type { CreatorBan } from "src/ts/helpers/requests/services/join";
+import Icon from "../core/Icon";
 import Tooltip from "../core/Tooltip";
+import useCountdown from "../hooks/useCountdown";
 
 export default function BannedPlayButton({
 	durationSeconds,

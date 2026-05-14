@@ -1,16 +1,16 @@
-import type { ReactAvatarEditorPageAvatar } from "src/ts/pages/inject/www/my/avatar";
-import SimpleModal from "../../core/modal/SimpleModal";
+import { RESTError } from "@roseal/http-client";
 import { useCallback, useEffect, useState } from "preact/hooks";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
+	type CreateUserLookResponse,
 	createUserLook,
 	type LookPreview,
-	type CreateUserLookResponse,
 } from "src/ts/helpers/requests/services/marketplace";
-import { RESTError } from "@roseal/http-client";
-import TextInput from "../../core/TextInput";
+import type { ReactAvatarEditorPageAvatar } from "src/ts/pages/inject/www/my/avatar";
 import { getAvatarLookLink } from "src/ts/utils/links";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import SimpleModal from "../../core/modal/SimpleModal";
+import TextInput from "../../core/TextInput";
 
 export type PostAvatarModalProps = {
 	show: boolean;

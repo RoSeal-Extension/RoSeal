@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from "preact/hooks";
-import useStorage from "../../hooks/useStorage";
 import {
 	FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_DEFAULT_VALUE,
 	FRIENDS_PRESENCE_NOTIFICATIONS_DATA_STORAGE_KEY,
 	type FriendsPresenceNotificationsDataStorageValue,
 } from "src/ts/constants/friends";
+import useStorage from "../../hooks/useStorage";
 
 export type TrackConnectionActivityButtonProps = {
 	userId: number;

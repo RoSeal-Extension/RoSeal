@@ -1,9 +1,9 @@
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact.tsx";
-import Button from "../Button.tsx";
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { getRobloxCDNUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getHomePageUrl } from "src/ts/utils/links.ts";
 import { useTheme } from "../../hooks/useTheme.ts";
+import Button from "../Button.tsx";
 
 export default function Page404() {
 	const [theme] = useTheme();

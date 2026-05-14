@@ -3,8 +3,8 @@ import { useMemo, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { abbreviateNumber } from "src/ts/helpers/i18n/intlFormats";
 import {
-	getExperienceEventRSVPCounters,
 	type ExperienceEvent as ExperienceEventProps,
+	getExperienceEventRSVPCounters,
 } from "src/ts/helpers/requests/services/universes";
 import { getEventLink } from "src/ts/utils/links";
 import Thumbnail from "../../core/Thumbnail";

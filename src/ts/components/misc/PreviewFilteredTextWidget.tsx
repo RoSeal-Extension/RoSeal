@@ -3,7 +3,7 @@ import classNames from "classnames";
 import fastDiff from "fast-diff";
 import { useMemo, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { filterText, type FilterTextResponse } from "src/ts/helpers/requests/services/misc";
+import { type FilterTextResponse, filterText } from "src/ts/helpers/requests/services/misc";
 
 type ModerationProp = FilterTextResponse & {
 	originalText: string;

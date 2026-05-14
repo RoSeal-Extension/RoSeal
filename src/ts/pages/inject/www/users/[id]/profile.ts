@@ -6,9 +6,9 @@ import { getUserAvatar } from "src/ts/helpers/requests/services/avatar";
 import { getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
 import {
 	type BatchGetThumbnailsRawResponse,
-	renderAvatar,
 	type RenderAvatarDefinition,
 	type RenderAvatarResponse,
+	renderAvatar,
 } from "src/ts/helpers/requests/services/thumbnails";
 import { getUser3dThumbnailDownloadData } from "src/ts/utils/avatar.inject";
 import { getRobloxUrl } from "src/ts/utils/baseUrls";

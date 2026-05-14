@@ -39,11 +39,11 @@ import Tooltip from "../core/Tooltip";
 import useFeatureValue from "../hooks/useFeatureValue";
 import usePresence from "../hooks/usePresence";
 import useProfileData, { type UserProfileResponse } from "../hooks/useProfileData";
+import usePromise from "../hooks/usePromise";
 import FriendCardContextMenu from "./FriendCardContextMenu";
 import type { FriendCardTypesProps } from "./FriendCardType";
 import type { FriendsTabType, SourceUniverseData } from "./Page";
 import type { UserFriendRequestAdditionalComponents } from "./tabs/FriendRequestsTab";
-import usePromise from "../hooks/usePromise";
 
 export type FriendCardPageData = {
 	cursor?: string;

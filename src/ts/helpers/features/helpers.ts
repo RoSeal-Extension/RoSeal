@@ -213,17 +213,37 @@ export async function multigetFeaturesValues<T extends AnyFeature["id"]>(
 		[U in T]: FeatureValue<(typeof features)[U]>;
 	};
 
-	const promises: Promise<void>[] = [];
-	for (const featureId of featureIds) {
-		promises.push(
-			getFeatureValue(featureId, uncached).then((value) => {
-				// @ts-expect-error: Fine
-				obj[featureId as T] = value;
-			}),
-		);
+	const uncachedIds = featureIds.filter(
+		(featureId) => uncached || !featureValueCache.has(featureId),
+	);
+
+	let syncedValue: Record<string, unknown> = {};
+	if (uncachedIds.length > 0) {
+		try {
+			syncedValue = ((await storage.get([FEATURE_STORAGE_KEY]))?.[FEATURE_STORAGE_KEY] ??
+				{}) as Record<string, unknown>;
+
+			for (const featureId of uncachedIds) {
+				if (featureId in syncedValue) {
+					const feature = features[featureId] as Feature;
+					handleFeatureValueChange(
+						feature,
+						syncedValue[featureId] as FeatureValue<AnyFeature>,
+					);
+				}
+			}
+		} catch {}
 	}
 
-	await Promise.all(promises);
+	for (const featureId of featureIds) {
+		// @ts-expect-error: Fine
+		obj[featureId as T] =
+			featureValueCache.get(featureId) ??
+			(getFeatureDefaultValue(features[featureId] as Feature) as FeatureValue<
+				(typeof features)[T]
+			>);
+	}
+
 	return obj;
 }
 

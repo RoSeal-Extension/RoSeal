@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import type { ComponentChildren, JSX } from "preact";
 import { useCallback, useMemo, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { abbreviateNumber } from "src/ts/helpers/i18n/intlFormats";
@@ -21,7 +22,6 @@ import useFeatureValue from "../hooks/useFeatureValue";
 import VerifiedBadge from "../icons/VerifiedBadge";
 import { useMarketplaceCart } from "./providers/ShoppingCartProvider";
 import { getItemRestrictionsClassName } from "./utils/items";
-import type { ComponentChildren, JSX } from "preact";
 
 export type MarketplaceCardCreator = {
 	id?: number;

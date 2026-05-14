@@ -1,21 +1,21 @@
 import { useState } from "preact/hooks";
-import Button from "../../core/Button";
-import usePromise from "../../hooks/usePromise";
 import {
-	type RobloxExperimentVariable,
-	getRobloxExperiments,
-	type RobloxExperiment,
-} from "src/ts/helpers/requests/services/roseal";
-import useStorage from "../../hooks/useStorage";
-import {
+	EXPERIMENTS_DISCOVERED_STORAGE_KEY,
 	EXPERIMENTS_STORAGE_KEY,
 	type ExperimentsDiscoveredStorageValue,
-	EXPERIMENTS_DISCOVERED_STORAGE_KEY,
 	type ExperimentsStorageValue,
 } from "src/ts/constants/robloxExperiments";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import {
+	getRobloxExperiments,
+	type RobloxExperiment,
+	type RobloxExperimentVariable,
+} from "src/ts/helpers/requests/services/roseal";
+import Button from "../../core/Button";
 import Dropdown from "../../core/Dropdown";
 import useFeatureValue from "../../hooks/useFeatureValue";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import usePromise from "../../hooks/usePromise";
+import useStorage from "../../hooks/useStorage";
 
 export type RobloxExperimentsTabProps = {
 	type: keyof ExperimentsDiscoveredStorageValue;

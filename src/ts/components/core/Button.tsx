@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import type { JSX, ComponentChildren } from "preact";
+import type { ComponentChildren, JSX } from "preact";
 
 export type WidthVariant = "min" | "full" | "fixed" | "default";
 export type WidthSubvariant = "lg";

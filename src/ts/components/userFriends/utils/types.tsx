@@ -1,6 +1,6 @@
-import MdOutlineNewLabelFilled from "@material-symbols/svg-400/outlined/new_label-fill.svg";
 import MdOutlineNewLabel from "@material-symbols/svg-400/outlined/new_label.svg";
-import { DEFAULT_NONE_CONNECTION_TYPE, type ConnectionType } from "src/ts/constants/friends";
+import MdOutlineNewLabelFilled from "@material-symbols/svg-400/outlined/new_label-fill.svg";
+import { type ConnectionType, DEFAULT_NONE_CONNECTION_TYPE } from "src/ts/constants/friends";
 import { getMessage, hasMessage } from "src/ts/helpers/i18n/getMessage";
 import { CONNECTION_TYPE_ICONS } from "../../icons";
 

@@ -1,8 +1,8 @@
-import { getAssetById } from "src/ts/helpers/requests/services/assets";
-import usePromise from "../hooks/usePromise";
-import ExperienceField from "../core/items/ExperienceField";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { getAssetById } from "src/ts/helpers/requests/services/assets";
+import ExperienceField from "../core/items/ExperienceField";
+import usePromise from "../hooks/usePromise";
 
 export type ExperienceSalesProps = {
 	rootPlaceId: number;

@@ -2,6 +2,7 @@ import { sendMessage } from "src/ts/helpers/communication/dom";
 import { getMessagesInject } from "src/ts/helpers/domInvokes";
 import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
 import { hijackResponse } from "src/ts/helpers/hijack/fetch";
+import { hijackState } from "src/ts/helpers/hijack/react";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type {
 	GetSearchNavigationMenusResponse,
@@ -13,7 +14,6 @@ import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
 import { assetTypes } from "src/ts/utils/itemTypes";
 import { AVATAR_MARKETPLACE_REGEX } from "src/ts/utils/regex";
 import type messagesType from "#i18n/types";
-import { hijackState } from "src/ts/helpers/hijack/react";
 
 const ROSEAL_CUSTOM_CATEGORY_ID = 12252022;
 

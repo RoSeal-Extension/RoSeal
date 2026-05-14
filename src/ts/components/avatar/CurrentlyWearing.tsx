@@ -1,11 +1,11 @@
 import { useEffect, useState } from "preact/hooks";
 import { addMessageListener, sendMessage } from "src/ts/helpers/communication/dom";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
-	setWearingAssets,
 	type AvatarAssetDefinitionWithTypes,
+	setWearingAssets,
 } from "src/ts/helpers/requests/services/avatar";
 import { warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import CurrentlyWearingItem from "./CurrentlyWearingItem";
 
 export default function AvatarEditorCurrentlyWearing() {

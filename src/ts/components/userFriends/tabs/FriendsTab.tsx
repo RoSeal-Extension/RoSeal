@@ -21,10 +21,12 @@ import {
 	getUserFriendsStatus,
 	listUserFriends,
 	listUserFriendsCount,
-	searchUserFriends,
 	type SkinnyUserFriend,
+	searchUserFriends,
 	type UserPresence,
 } from "src/ts/helpers/requests/services/users";
+import { getUserFriendshipsCreationDates, sortOnlineFriends } from "src/ts/utils/friends";
+import { crossSort } from "src/ts/utils/objects";
 import { useDebounceValue } from "usehooks-ts";
 import AvatarCardList from "../../core/avatarCard/List";
 import Dropdown from "../../core/Dropdown";
@@ -37,15 +39,13 @@ import useFeatureValue from "../../hooks/useFeatureValue";
 import usePages from "../../hooks/usePages";
 import useProfilesData from "../../hooks/useProfilesData";
 import usePromise from "../../hooks/usePromise";
+import useStorage from "../../hooks/useStorage";
 import CreateFriendLinkButton from "../CreateFriendLinkButton";
 import FriendCard, { type FriendCardPageData } from "../FriendCard";
+import CreateUpdateConnectionTypeModal from "../modals/CreateUpdateTypeModal";
 import type { SourceUniverseData } from "../Page";
 import FriendsPageTitle from "../PageTitle";
-import { getUserFriendshipsCreationDates, sortOnlineFriends } from "src/ts/utils/friends";
-import useStorage from "../../hooks/useStorage";
 import { getConnectionTypeDisplayName } from "../utils/types";
-import CreateUpdateConnectionTypeModal from "../modals/CreateUpdateTypeModal";
-import { crossSort } from "src/ts/utils/objects";
 
 export type FriendsTabProps = {
 	isMyProfile: boolean;

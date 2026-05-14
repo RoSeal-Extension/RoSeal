@@ -1,11 +1,11 @@
 import classNames from "classnames";
+import { useMemo } from "preact/hooks";
 import { presenceTypes } from "src/ts/constants/presence";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import type { UniverseDetail } from "src/ts/helpers/requests/services/universes";
 import type { UserPresence } from "src/ts/helpers/requests/services/users";
-import Icon from "../Icon";
-import { useMemo } from "preact/hooks";
 import useFeatureValue from "../../hooks/useFeatureValue";
+import Icon from "../Icon";
 
 export type PresenceStatusIconProps = {
 	presence: UserPresence;

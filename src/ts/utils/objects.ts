@@ -73,6 +73,7 @@ function isObject(value: unknown): value is object {
 	);
 }
 
+const MAX_CAMEL_CASE_CACHE_SIZE = 1000;
 const cache = new Map<string, string>();
 
 export function snakeizeObject<T>(input: T, options?: { deep: boolean }): T {
@@ -156,12 +157,18 @@ export function camelizeObject(
 			const cacheKey = pascalCase ? `${key}_` : key;
 
 			if (cache.has(cacheKey as string)) {
-				key = cache.get(cacheKey as string)!;
+				const cachedValue = cache.get(cacheKey as string)!;
+				cache.delete(cacheKey as string);
+				cache.set(cacheKey as string, cachedValue);
+				key = cachedValue;
 			} else {
 				const returnValue = camelCaseString(key as string);
 
 				if ((key as string).length < 100) {
-					// Prevent abuse
+					if (cache.size >= MAX_CAMEL_CASE_CACHE_SIZE) {
+						const firstKey = cache.keys().next().value;
+						if (firstKey !== undefined) cache.delete(firstKey);
+					}
 					cache.set(cacheKey as string, returnValue);
 				}
 
@@ -216,5 +223,7 @@ export function crossSort<T>(array: T[], sortFunc: (a: T, b: T) => number) {
 }
 
 export function compareArrays<T>(a: T[], b: T[]) {
-	return a.length === b.length && a.every((v) => b.includes(v));
+	if (a.length !== b.length) return false;
+	const setB = new Set(b);
+	return a.every((v) => setB.has(v));
 }

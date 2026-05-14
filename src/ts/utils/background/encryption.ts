@@ -1,5 +1,5 @@
-import { ENCRYPTION_KEY_ALG, ENCRYPTION_KEY_NAME } from "src/ts/constants/accountsManager";
 import localForage from "localforage";
+import { ENCRYPTION_KEY_ALG, ENCRYPTION_KEY_NAME } from "src/ts/constants/accountsManager";
 
 export function createEncryptionKey() {
 	return crypto.subtle.generateKey(ENCRYPTION_KEY_ALG, false, ["encrypt", "decrypt"]);

@@ -1,22 +1,22 @@
 import { useEffect, useState } from "preact/hooks";
+import SimpleModal from "src/ts/components/core/modal/SimpleModal";
 import RobuxView from "src/ts/components/core/RobuxView";
 import TextInput from "src/ts/components/core/TextInput";
 import Thumbnail from "src/ts/components/core/Thumbnail";
-import SimpleModal from "src/ts/components/core/modal/SimpleModal";
+import Toggle from "src/ts/components/core/Toggle";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import { MAX_SERVER_NAME_LENGTH } from "src/ts/constants/servers";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { RESTError } from "src/ts/helpers/requests/main";
 import {
-	type PlacePrivateServer,
 	createPrivateServer,
+	type PlacePrivateServer,
 	updatePrivateServerSubscription,
 } from "src/ts/helpers/requests/services/privateServers";
 import { getConfigurePrivateServerLink } from "src/ts/utils/links";
 import { useServersTabContext } from "../ServersTabProvider";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
-import { RESTError } from "src/ts/helpers/requests/main";
 import FreePrivateServersList from "./FreePrivateServersList";
-import Toggle from "src/ts/components/core/Toggle";
 
 export type CreatePrivateServerModalProps = {
 	show: boolean;

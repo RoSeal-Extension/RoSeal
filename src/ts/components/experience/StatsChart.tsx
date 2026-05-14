@@ -1,22 +1,22 @@
+import type { Signal } from "@preact/signals";
 import {
 	CategoryScale,
 	Chart as ChartJS,
 	Tooltip as ChartTooltip,
 	Legend,
-	LineElement,
 	LinearScale,
+	LineElement,
 	PointElement,
 	Title,
 } from "chart.js";
+import type { ChartJSOrUndefined } from "node_modules/react-chartjs-2/dist/types";
+import { useMemo, useState } from "preact/hooks";
 import { Line } from "react-chartjs-2";
-import type { Signal } from "@preact/signals";
-import type { LiveStatsHistorySignal } from "src/ts/pages/main/www/experiences/[id]/[name]";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { locales } from "src/ts/helpers/i18n/locales.ts";
-import { useMemo, useState } from "preact/hooks";
-import { useTheme } from "../hooks/useTheme";
-import type { ChartJSOrUndefined } from "node_modules/react-chartjs-2/dist/types";
+import type { LiveStatsHistorySignal } from "src/ts/pages/main/www/experiences/[id]/[name]";
 import PillToggle from "../core/PillToggle";
+import { useTheme } from "../hooks/useTheme";
 
 // CHARTJS REGISTRATION GLOBALLY
 ChartJS.register(

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import Confetti from "react-confetti";
+import { SEAL_EMOJI_CODE } from "src/ts/constants/misc";
 import { randomInt } from "../random";
 import { renderAppendBody } from "../render";
-import { SEAL_EMOJI_CODE } from "src/ts/constants/misc";
 
 export function getSealRainSeals() {
 	return randomInt(2, 12_000);

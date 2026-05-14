@@ -1,13 +1,13 @@
-import { getItemBundles } from "src/ts/helpers/requests/services/marketplace";
-import Thumbnail from "../core/Thumbnail";
-import { getAvatarBundleLink, getAvatarMarketplaceLink } from "src/ts/utils/links";
-import RobuxView from "../core/RobuxView";
 import classNames from "classnames";
-import Button from "../core/Button";
-import usePromise from "../hooks/usePromise";
-import { getAssetById } from "src/ts/helpers/requests/services/assets";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getAssetById } from "src/ts/helpers/requests/services/assets";
+import { getItemBundles } from "src/ts/helpers/requests/services/marketplace";
 import { getBundleTypeData } from "src/ts/utils/itemTypes";
+import { getAvatarBundleLink, getAvatarMarketplaceLink } from "src/ts/utils/links";
+import Button from "../core/Button";
+import RobuxView from "../core/RobuxView";
+import Thumbnail from "../core/Thumbnail";
+import usePromise from "../hooks/usePromise";
 
 export type ItemBundlesProps = {
 	assetId: number;

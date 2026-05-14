@@ -1,7 +1,7 @@
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import type { MarketplaceItemType } from "src/ts/helpers/requests/services/marketplace";
 import ItemField from "../core/items/ItemField";
 import RobuxView from "../core/RobuxView";
-import type { MarketplaceItemType } from "src/ts/helpers/requests/services/marketplace";
 
 export type PriceInfoProps = {
 	price?: number | null;

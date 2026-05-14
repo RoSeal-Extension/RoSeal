@@ -8,11 +8,11 @@ import { multigetUsersByNames, searchUserFriends } from "src/ts/helpers/requests
 import { robloxNavigateTo } from "src/ts/utils/context";
 import { USERNAME_REGEX } from "src/ts/utils/regex";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import useFeatureValue from "../hooks/useFeatureValue";
 import useOnlineFriends from "../hooks/useOnlineFriends";
 import useProfilesData from "../hooks/useProfilesData";
 import usePromise from "../hooks/usePromise";
 import FastUserSearchItem from "./FastUserSearchItem";
-import useFeatureValue from "../hooks/useFeatureValue";
 
 export type FastUserSearchProps = {
 	search: Signal<string>;

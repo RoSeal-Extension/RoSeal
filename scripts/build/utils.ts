@@ -1,3 +1,4 @@
+import { basename, dirname, parse as parsePath } from "node:path";
 import {
 	type MessageFormatElement,
 	parse as parseMessage,
@@ -6,7 +7,7 @@ import type { BuildConfig, BunPlugin } from "bun";
 import { parse as parseJSONC } from "jsonc-parser";
 import walk from "klaw";
 import kleur from "kleur";
-import { basename, dirname, parse as parsePath } from "node:path";
+import { makeUserAgentSuffix } from "scripts/build.ts";
 import {
 	DEV_SERVER_API_PORT,
 	DEV_SERVER_WWW_PORT,
@@ -20,7 +21,6 @@ import {
 	type TargetBase,
 } from "./constants.ts";
 import rosealPlugins from "./plugins/rosealPlugins.ts";
-import { makeUserAgentSuffix } from "scripts/build.ts";
 
 export const CONTENT_SECURITY_POLICY_HEADER_NAME = "content-security-policy";
 

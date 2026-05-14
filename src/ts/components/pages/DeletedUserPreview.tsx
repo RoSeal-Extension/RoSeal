@@ -5,20 +5,20 @@ import { modifyTitle } from "src/ts/helpers/elements";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getCloudUserThumbnail } from "src/ts/helpers/requests/services/thumbnails";
 import { getUserById } from "src/ts/helpers/requests/services/users";
+import { tryOpenCloudAuthRequest } from "src/ts/utils/cloudAuth";
 import { getHomePageUrl, getRolimonsUserProfileLink, getUserProfileLink } from "src/ts/utils/links";
 import { getResizeThumbnailUrl, parseResizeThumbnailUrl } from "src/ts/utils/thumbnails";
 import type { AdvancedAvatarViewType } from "../avatar/AdvancedCustomizationButton";
 import Button from "../core/Button";
 import Page404 from "../core/errors/404";
+import ItemContextMenu from "../core/ItemContextMenu";
 import Loading from "../core/Loading";
 import ThirdPartyLinkModal from "../core/ThirdPartyLinkModal";
 import Thumbnail from "../core/Thumbnail";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import useFeatureValue from "../hooks/useFeatureValue";
 import useFlag from "../hooks/useFlag";
 import usePromise from "../hooks/usePromise";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
-import { tryOpenCloudAuthRequest } from "src/ts/utils/cloudAuth";
-import useFeatureValue from "../hooks/useFeatureValue";
-import ItemContextMenu from "../core/ItemContextMenu";
 import BlockCreatorButton from "../item/BlockCreatorButton";
 
 export type DeletedUserProfilePreviewProps = {

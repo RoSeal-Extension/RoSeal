@@ -1,6 +1,5 @@
 import type { JSX } from "preact";
-import { useState } from "preact/hooks";
-import { useCallback } from "preact/hooks";
+import { useCallback, useState } from "preact/hooks";
 
 export type RippleEffectProps = {
 	children: (

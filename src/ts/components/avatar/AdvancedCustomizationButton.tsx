@@ -1,10 +1,13 @@
+import classNames from "classnames";
 import { useEffect, useState } from "preact/hooks";
+import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import { addMessageListener, sendMessage } from "src/ts/helpers/communication/dom";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import type { Agent } from "src/ts/helpers/requests/services/assets";
 import {
-	getAuthenticatedUserAvatar,
 	type AvatarAssetDefinitionWithTypes,
 	type AvatarRestrictions,
+	getAuthenticatedUserAvatar,
 } from "src/ts/helpers/requests/services/avatar";
 import { onWindowRefocus } from "src/ts/utils/dom";
 import Button from "../core/Button";
@@ -16,12 +19,9 @@ import SimpleTabNav from "../core/tab/SimpleNav";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePromise from "../hooks/usePromise";
 import AssetConfiguration from "./advanced/AssetConfiguration";
-import ThumbnailsCustomization from "./advanced/ThumbnailsCustomization";
 import { AssetsList } from "./advanced/AssetsList";
 import ThumbnailNavigation from "./advanced/Navigation";
-import classNames from "classnames";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
+import ThumbnailsCustomization from "./advanced/ThumbnailsCustomization";
 
 export type AdvancedWornAsset = AvatarAssetDefinitionWithTypes & {
 	creator: {

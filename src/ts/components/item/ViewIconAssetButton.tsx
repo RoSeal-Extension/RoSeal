@@ -1,12 +1,7 @@
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
 import { getAssetById } from "src/ts/helpers/requests/services/assets.ts";
-import type { LiterallyAnyItemType } from "src/ts/helpers/requests/services/marketplace.ts";
-import { getPassProductById } from "src/ts/helpers/requests/services/passes.ts";
-import usePromise from "../hooks/usePromise.ts";
 import { getBadgeById } from "src/ts/helpers/requests/services/badges.ts";
 import { getGroupByIdLegacy } from "src/ts/helpers/requests/services/groups.ts";
-import { CONTENT_ID_REGEX } from "src/ts/utils/assets.ts";
-import useFeatureValue from "../hooks/useFeatureValue.ts";
 import {
 	listBadgeIntlIcons,
 	listBadgeIntlNameDescription,
@@ -18,10 +13,15 @@ import {
 	listUniverseIntlNameDescription,
 	listUniverseIntlThumbnails,
 } from "src/ts/helpers/requests/services/intl.ts";
-import { renderAppendBody } from "src/ts/utils/render.ts";
-import { LocalizedMetadataModal } from "./localeMetadata/Modal.tsx";
-import { getCreatorStoreAssetLink } from "src/ts/utils/links.ts";
+import type { LiterallyAnyItemType } from "src/ts/helpers/requests/services/marketplace.ts";
 import { getProfileComponentsData } from "src/ts/helpers/requests/services/misc.ts";
+import { getPassProductById } from "src/ts/helpers/requests/services/passes.ts";
+import { CONTENT_ID_REGEX } from "src/ts/utils/assets.ts";
+import { getCreatorStoreAssetLink } from "src/ts/utils/links.ts";
+import { renderAppendBody } from "src/ts/utils/render.ts";
+import useFeatureValue from "../hooks/useFeatureValue.ts";
+import usePromise from "../hooks/usePromise.ts";
+import { LocalizedMetadataModal } from "./localeMetadata/Modal.tsx";
 
 export type ViewIconAssetProps = {
 	itemId: number;

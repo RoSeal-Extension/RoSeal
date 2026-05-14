@@ -1,10 +1,10 @@
-import Thumbnail from "../core/Thumbnail.tsx";
-import VerifiedBadge from "../icons/VerifiedBadge.tsx";
+import { getAssetTypeData } from "src/ts/utils/itemTypes.ts";
+import { getItemTypeDisplayLabel } from "src/ts/utils/itemTypesText.ts";
 import { getMessage } from "../../helpers/i18n/getMessage.ts";
 import type { GeneralAssetDetails } from "../../helpers/requests/services/assets.ts";
 import { getCreatorProfileLink, getCreatorStoreAssetLink } from "../../utils/links.ts";
-import { getItemTypeDisplayLabel } from "src/ts/utils/itemTypesText.ts";
-import { getAssetTypeData } from "src/ts/utils/itemTypes.ts";
+import Thumbnail from "../core/Thumbnail.tsx";
+import VerifiedBadge from "../icons/VerifiedBadge.tsx";
 
 export type AssetDependencyProps = {
 	dependency: GeneralAssetDetails;

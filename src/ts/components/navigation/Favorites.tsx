@@ -1,12 +1,12 @@
 import MdOutlineBookmarkOutlined from "@material-symbols/svg-400/outlined/bookmark.svg";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getUserFavoritesLink } from "src/ts/utils/links";
+import { USER_FAVORITES_REGEX } from "src/ts/utils/regex";
 import Icon from "../core/Icon";
+import LazyLink from "../core/LazyLink";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useFeatureValue from "../hooks/useFeatureValue";
-import LazyLink from "../core/LazyLink";
 import LeftNavItem from "./LeftNavItem";
-import { USER_FAVORITES_REGEX } from "src/ts/utils/regex";
 
 export type NavigationFavoritesProps = {
 	useNewNav?: boolean;

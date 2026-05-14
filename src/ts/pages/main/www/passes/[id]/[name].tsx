@@ -1,5 +1,6 @@
-import ItemProductInfo from "src/ts/components/item/ProductInfo";
 import ItemSales from "src/ts/components/avatarItem/Sales";
+import ItemProductInfo from "src/ts/components/item/ProductInfo";
+import ViewIconAssetButton from "src/ts/components/item/ViewIconAssetButton";
 import { modifyItemContextMenu } from "src/ts/helpers/contextMenus";
 import { watch } from "src/ts/helpers/elements";
 import { featureValueIs } from "src/ts/helpers/features/helpers";
@@ -7,7 +8,6 @@ import { modifyItemStats } from "src/ts/helpers/modifyItemStats";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { handleItemTimes } from "src/ts/specials/times";
 import { renderMentions } from "src/ts/utils/description";
-import ViewIconAssetButton from "src/ts/components/item/ViewIconAssetButton";
 import { PASS_DETAILS_REGEX } from "src/ts/utils/regex";
 
 export default {

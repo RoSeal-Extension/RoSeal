@@ -1,16 +1,16 @@
-import { useState } from "preact/hooks";
-import Thumbnail from "./Thumbnail.tsx";
 import classNames from "classnames";
-import VerifiedBadge from "../icons/VerifiedBadge.tsx";
+import { useState } from "preact/hooks";
+import { profileProcessor } from "src/ts/helpers/processors/profileProcessor.ts";
+import type { RESTError } from "src/ts/helpers/requests/main.ts";
+import { search } from "src/ts/helpers/requests/services/misc.ts";
+import { getUserProfileLink } from "src/ts/utils/links.ts";
 import { useDebounceValue } from "usehooks-ts";
-import usePromise from "../hooks/usePromise.ts";
 import { getMessage } from "../../helpers/i18n/getMessage.ts";
 import { multigetUsersByNames, type RequestedUser } from "../../helpers/requests/services/users.ts";
-import { search } from "src/ts/helpers/requests/services/misc.ts";
-import type { RESTError } from "src/ts/helpers/requests/main.ts";
-import { getUserProfileLink } from "src/ts/utils/links.ts";
+import usePromise from "../hooks/usePromise.ts";
+import VerifiedBadge from "../icons/VerifiedBadge.tsx";
 import ItemLookup from "./ItemLookup.tsx";
-import { profileProcessor } from "src/ts/helpers/processors/profileProcessor.ts";
+import Thumbnail from "./Thumbnail.tsx";
 
 export type UserLookupProps = {
 	className?: string;

@@ -1,9 +1,9 @@
-import MdOutlineHistory from "@material-symbols/svg-400/outlined/history-fill.svg";
-import MdOutlineTimer from "@material-symbols/svg-400/outlined/timer-fill.svg";
-import MdOutlineProgressActivity from "@material-symbols/svg-400/outlined/progress_activity-fill.svg";
-import MdOutlineTVRemote from "@material-symbols/svg-400/outlined/tv_remote-fill.svg";
-import MdOutlineComputer from "@material-symbols/svg-400/outlined/computer-fill.svg";
 import MdOutlineCloud from "@material-symbols/svg-400/outlined/cloud-fill.svg";
+import MdOutlineComputer from "@material-symbols/svg-400/outlined/computer-fill.svg";
+import MdOutlineHistory from "@material-symbols/svg-400/outlined/history-fill.svg";
+import MdOutlineProgressActivity from "@material-symbols/svg-400/outlined/progress_activity-fill.svg";
+import MdOutlineTimer from "@material-symbols/svg-400/outlined/timer-fill.svg";
+import MdOutlineTVRemote from "@material-symbols/svg-400/outlined/tv_remote-fill.svg";
 import { type Signal, useSignal } from "@preact/signals";
 import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
@@ -29,16 +29,16 @@ import {
 import { getFollowUserJoinData, tryGetServerJoinData } from "src/ts/utils/joinData";
 import { getDownloadClientLink, getExperienceLink } from "src/ts/utils/links";
 import { sleep } from "src/ts/utils/misc";
+import { randomArrItem } from "src/ts/utils/random";
 import Button from "../core/Button";
 import CountryFlag from "../core/CountryFlag";
 import AgentMentionContainer from "../core/items/AgentMentionContainer";
 import SimpleModal from "../core/modal/SimpleModal";
 import Thumbnail from "../core/Thumbnail";
+import Tooltip from "../core/Tooltip";
 import { getLocalizedRegionName } from "../experience/servers/utils";
 import useFeatureValue from "../hooks/useFeatureValue";
 import usePromise from "../hooks/usePromise";
-import { randomArrItem } from "src/ts/utils/random";
-import Tooltip from "../core/Tooltip";
 import { getFormattedDuration } from "../utils/getFormattedDuration";
 
 export type JoinServerModalProps = {

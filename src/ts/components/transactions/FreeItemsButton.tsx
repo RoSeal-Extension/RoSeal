@@ -1,8 +1,8 @@
+import type { Signal } from "@preact/signals";
 import { sendMessage } from "src/ts/helpers/communication/dom";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { BootstrapDropdown } from "../core/Dropdown";
 import DropdownLabel from "../core/DropdownLabel";
-import type { Signal } from "@preact/signals";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export type FreeItemsVisibilityButtonProps = {
 	showFreeItems: Signal<boolean>;

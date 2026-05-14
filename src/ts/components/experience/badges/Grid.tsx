@@ -1,7 +1,7 @@
 import { useMemo } from "preact/hooks";
-import type { BadgesListProps } from "./List";
-import GridBadge from "./GridBadge";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import GridBadge from "./GridBadge";
+import type { BadgesListProps } from "./List";
 
 export default function BadgesGrid({
 	items,

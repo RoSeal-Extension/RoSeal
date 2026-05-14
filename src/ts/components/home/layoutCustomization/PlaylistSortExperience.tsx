@@ -1,6 +1,6 @@
+import MdOutlineDelete from "@material-symbols/svg-400/outlined/delete-fill.svg";
 import type { RenderParams } from "@minoru/react-dnd-treeview";
 import classNames from "classnames";
-import MdOutlineDelete from "@material-symbols/svg-400/outlined/delete-fill.svg";
 
 export type PlaylistSortExperienceProps = {
 	text: string;

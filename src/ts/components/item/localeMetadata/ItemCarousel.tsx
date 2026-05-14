@@ -1,13 +1,13 @@
-import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
-import useFeatureValue from "../../hooks/useFeatureValue.ts";
-import type { IntlMediaAsset } from "src/ts/helpers/requests/services/intl.ts";
+import classNames from "classnames";
+import useEmblaCarousel from "embla-carousel-react";
 import { useEffect, useState } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
+import type { IntlMediaAsset } from "src/ts/helpers/requests/services/intl.ts";
+import { getCreatorStoreAssetLink } from "src/ts/utils/links.ts";
+import Icon from "../../core/Icon.tsx";
 import Thumbnail from "../../core/Thumbnail.tsx";
 import Tooltip from "../../core/Tooltip.tsx";
-import Icon from "../../core/Icon.tsx";
-import useEmblaCarousel from "embla-carousel-react";
-import classNames from "classnames";
-import { getCreatorStoreAssetLink } from "src/ts/utils/links.ts";
+import useFeatureValue from "../../hooks/useFeatureValue.ts";
 
 export type LocalizedMetadataCarouselProps = {
 	thumbnails: IntlMediaAsset[];

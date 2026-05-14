@@ -2,15 +2,15 @@ import classNames from "classnames";
 import { I18N_FEATURE_PREFIX } from "src/ts/helpers/features/constants";
 import type { AnyFeature, Feature } from "src/ts/helpers/features/featuresData";
 import { getMessage, hasMessage } from "src/ts/helpers/i18n/getMessage";
-import Dropdown from "../../core/Dropdown";
-import TextInput from "../../core/TextInput";
-import Toggle from "../../core/Toggle";
-import useFeatureValue from "../../hooks/useFeatureValue";
 import {
 	asLocaleString,
 	currencyNamesFormat,
 	regionNamesFormat,
 } from "src/ts/helpers/i18n/intlFormats";
+import Dropdown from "../../core/Dropdown";
+import TextInput from "../../core/TextInput";
+import Toggle from "../../core/Toggle";
+import useFeatureValue from "../../hooks/useFeatureValue";
 
 export type FeatureComponentProps = {
 	feature: Feature;

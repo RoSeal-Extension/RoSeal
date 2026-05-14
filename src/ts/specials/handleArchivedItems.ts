@@ -1,15 +1,15 @@
 import type { Signal } from "@preact/signals";
 import type { ArchivedItemsItem } from "../constants/misc";
 import { hijackResponse } from "../helpers/hijack/fetch";
-import { getRobloxUrl } from "../utils/baseUrls" with { type: "json" };
+import type {
+	ListUserAvatarItemsResponse,
+	ListUserAvatarOutfitsResponse,
+} from "../helpers/requests/services/avatar";
 import type {
 	ListUserInventoryAssetsDetailedResponse,
 	ListUserInventoryBundlesResponse,
 } from "../helpers/requests/services/inventory";
-import type {
-	ListUserAvatarOutfitsResponse,
-	ListUserAvatarItemsResponse,
-} from "../helpers/requests/services/avatar";
+import { getRobloxUrl } from "../utils/baseUrls" with { type: "json" };
 
 export function handleArchivedItems(signal: Signal<ArchivedItemsItem[]>) {
 	const INVENTORY_ASSETS_V2_REGEX = /^\/v2\/users\/\d+\/inventory(\/\d+)?$/;

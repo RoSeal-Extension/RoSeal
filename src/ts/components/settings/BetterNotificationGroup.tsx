@@ -1,20 +1,20 @@
 import classNames from "classnames";
 import { useState } from "preact/hooks";
-import type { ThumbnailType } from "src/ts/helpers/requests/services/thumbnails";
-import Icon from "../core/Icon";
-import Loading from "../core/Loading";
-import Thumbnail from "../core/Thumbnail";
-import type { AgentMentionContainerProps } from "../core/items/AgentMentionContainer";
-import AgentMentionContainer from "../core/items/AgentMentionContainer";
-import { getAbsoluteTime, getShortTime } from "src/ts/helpers/i18n/intlFormats";
-import Toggle from "../core/Toggle";
-import VerifiedBadge from "../icons/VerifiedBadge";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import Tooltip from "../core/Tooltip";
+import { getAbsoluteTime, getShortTime } from "src/ts/helpers/i18n/intlFormats";
 import type {
 	GroupNotificationSettingType,
 	GroupV1NotificationPreference,
 } from "src/ts/helpers/requests/services/groups";
+import type { ThumbnailType } from "src/ts/helpers/requests/services/thumbnails";
+import Icon from "../core/Icon";
+import type { AgentMentionContainerProps } from "../core/items/AgentMentionContainer";
+import AgentMentionContainer from "../core/items/AgentMentionContainer";
+import Loading from "../core/Loading";
+import Thumbnail from "../core/Thumbnail";
+import Toggle from "../core/Toggle";
+import Tooltip from "../core/Tooltip";
+import VerifiedBadge from "../icons/VerifiedBadge";
 
 export type BetterNotificationItem = {
 	id: number;

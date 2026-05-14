@@ -15,11 +15,11 @@ import { type MinimalServerJoinData, tryGetServerJoinData } from "src/ts/utils/j
 import Button from "../../core/Button";
 import CountryFlag from "../../core/CountryFlag";
 import TextInput from "../../core/TextInput";
+import Tooltip from "../../core/Tooltip";
 import usePromise from "../../hooks/usePromise";
+import { getFormattedDuration } from "../../utils/getFormattedDuration";
 import { useServersTabContext } from "./ServersTabProvider";
 import { getLocalizedRegionName } from "./utils";
-import { getFormattedDuration } from "../../utils/getFormattedDuration";
-import Tooltip from "../../core/Tooltip";
 
 export default function JoinServerDebugPanel() {
 	const [deviceMeta] = usePromise(getDeviceMeta, []);

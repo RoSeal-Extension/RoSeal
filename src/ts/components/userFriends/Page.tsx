@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { useEffect, useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { getFeatureAccess } from "src/ts/helpers/requests/services/testService";
 import type { UniverseDetail } from "src/ts/helpers/requests/services/universes";
 import { listMyNewFriendRequestsCount } from "src/ts/helpers/requests/services/users";
 import { getCanViewUserFriends } from "src/ts/utils/friends";
@@ -20,7 +21,6 @@ import FriendRequestsTab from "./tabs/FriendRequestsTab";
 import FriendsTab from "./tabs/FriendsTab";
 import MutualsTab from "./tabs/MutualsTab";
 import TrustedFriendsTab from "./tabs/TrustedFriendsTab";
-import { getFeatureAccess } from "src/ts/helpers/requests/services/testService";
 
 export type UserFriendsPageProps = {
 	isMyProfile: boolean;

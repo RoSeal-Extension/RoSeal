@@ -9,6 +9,7 @@ import { type Agent, multigetDevelopAssetsByIds } from "src/ts/helpers/requests/
 import { getGroupById } from "src/ts/helpers/requests/services/groups";
 import { getAvatarItem } from "src/ts/helpers/requests/services/marketplace";
 import { multigetUniversesByIds } from "src/ts/helpers/requests/services/universes";
+import { blockedItemsKeywordToRegEx } from "src/ts/utils/blockedItems";
 import { getAssetTypeData } from "src/ts/utils/itemTypes";
 import {
 	getGeneralReportAbuseLink,
@@ -16,11 +17,10 @@ import {
 	getRoSealSettingsLink,
 } from "src/ts/utils/links";
 import Button from "../core/Button";
-import Thumbnail from "../core/Thumbnail";
 import AgentMentionContainer from "../core/items/AgentMentionContainer";
+import Thumbnail from "../core/Thumbnail";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePromise from "../hooks/usePromise";
-import { blockedItemsKeywordToRegEx } from "src/ts/utils/blockedItems";
 
 type ItemBlockedScreenCreator = {
 	id: number;

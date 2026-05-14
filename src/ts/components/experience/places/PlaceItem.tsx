@@ -1,8 +1,8 @@
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 import type { UserPresence } from "src/ts/helpers/requests/services/users";
 import { getExperienceLink, getUserProfileLink } from "src/ts/utils/links";
 import Thumbnail from "../../core/Thumbnail";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
 
 export type PlacesTabItemProps = {
 	id: number;

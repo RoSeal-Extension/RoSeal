@@ -5,8 +5,8 @@ import {
 	ROBLOX_BROWSER_ASSET_REQUEST_HEADER_NAME,
 	ROBLOX_PLACE_ID_HEADER_NAME,
 } from "../main.ts";
-import type { AvatarItemSaleLocationTypeId } from "./marketplace.ts";
 import type { SortOrder } from "./badges.ts";
+import type { AvatarItemSaleLocationTypeId } from "./marketplace.ts";
 
 export type GetAssetByIdRequest = {
 	assetId: number;

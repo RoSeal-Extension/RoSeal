@@ -1,5 +1,5 @@
-import type { ComponentChildren, JSX } from "preact";
 import classNames from "classnames";
+import type { ComponentChildren, JSX } from "preact";
 
 export type TabsContainerProps = OmitExtend<
 	JSX.HTMLAttributes<HTMLDivElement>,

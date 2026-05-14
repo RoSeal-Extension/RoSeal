@@ -1,6 +1,6 @@
-import type { ComponentChildren, JSX } from "preact";
 import type { Signal } from "@preact/signals";
 import classNames from "classnames";
+import type { ComponentChildren, JSX } from "preact";
 
 export type TabContentProps = OmitExtend<
 	JSX.HTMLAttributes<HTMLDivElement>,

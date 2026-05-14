@@ -1,14 +1,27 @@
 import type { ComponentType, JSX, VNode } from "preact";
 import { error } from "src/ts/utils/console.ts";
 import currentUrl from "src/ts/utils/currentUrl.ts";
-import { hijackFunction, hijackedSymbol, onSet } from "./utils.ts";
+import { hijackedSymbol, hijackFunction, onSet } from "./utils.ts";
+import { watch } from "../elements.ts";
 
 const globalComponents: [VNode, Element][] = [];
+const globalComponentCleanupFns: (() => void)[] = [];
 export type MatchesComponentFn = [
 	matches: (element: VNode, container: Element) => boolean,
 	fn: (element: VNode, container: Element) => void,
 ];
 const matchesComponentFns = new Set<MatchesComponentFn>();
+
+function setupComponentCleanup(container: Element, index: number) {
+	globalComponentCleanupFns[index] = watch(
+		container,
+		(_, kill) => {
+			kill?.();
+			globalComponents.splice(index, 1);
+		},
+		true,
+	);
+}
 
 export function setupHijackComponent(reactDom: typeof window.ReactDOM) {
 	const newReactDom = {
@@ -26,7 +39,9 @@ export function setupHijackComponent(reactDom: typeof window.ReactDOM) {
 				) &&
 				window.React.isValidElement(element)
 			) {
+				const index = globalComponents.length;
 				globalComponents.push([element as VNode, container as Element]);
+				setupComponentCleanup(container as Element, index);
 				for (const [matches, fn] of matchesComponentFns) {
 					if (matches(element as VNode, container as Element)) {
 						fn(element as VNode, container as Element);

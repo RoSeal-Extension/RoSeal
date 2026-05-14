@@ -1,8 +1,8 @@
 // From: https://github.com/spinthil/react-process-string-ts/blob/main/src/index.ts
 // Modified for allowing options to be passed to the processed string function
 
-import { cloneElement } from "preact";
 import type { JSX } from "preact";
+import { cloneElement } from "preact";
 
 export type ProcessStringOption<T> = {
 	regex: RegExp;

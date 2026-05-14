@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import {
+	type ComponentChildren,
 	cloneElement,
 	isValidElement,
-	toChildArray,
-	type ComponentChildren,
 	type JSX,
+	toChildArray,
 } from "preact";
 
 export type OptionProps = {

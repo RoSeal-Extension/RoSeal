@@ -18,10 +18,10 @@ import { hijackCreateElement, hijackState } from "src/ts/helpers/hijack/react";
 import { hijackFunction, onSet } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import {
-	getOmniRecommendations,
-	multigetOmniRecommendationsMetadata,
 	type GetOmniRecommendationsRequest,
 	type GetOmniRecommendationsResponse,
+	getOmniRecommendations,
+	multigetOmniRecommendationsMetadata,
 	type OmniItem,
 } from "src/ts/helpers/requests/services/universes";
 import { handleOmniRecommendationsResponse } from "src/ts/specials/blockedItems";

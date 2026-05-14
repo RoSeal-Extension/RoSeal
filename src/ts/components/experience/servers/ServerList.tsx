@@ -27,6 +27,10 @@ import {
 } from "src/ts/helpers/processors/thumbnailProcessor";
 import type { SortOrder } from "src/ts/helpers/requests/services/badges";
 import {
+	listUserPrivateServers,
+	type PrivateServerInventoryItem,
+} from "src/ts/helpers/requests/services/inventory";
+import {
 	getPrivateServerData,
 	getServerInstanceData,
 	getUserServerData,
@@ -36,17 +40,15 @@ import {
 	listPlacePrivateServers,
 	type PlacePrivateServer,
 } from "src/ts/helpers/requests/services/privateServers";
-import {
-	type PrivateServerInventoryItem,
-	listUserPrivateServers,
-} from "src/ts/helpers/requests/services/inventory";
+import { sendJoinGameInstance, sendJoinMultiplayerGame } from "src/ts/utils/gameLauncher";
 import { type MinimalServerJoinData, tryGetServerJoinData } from "src/ts/utils/joinData";
 import { getRobloxPrivateServerInfoLink } from "src/ts/utils/links";
 import { parseResizeThumbnailUrl } from "src/ts/utils/thumbnails";
 import CountryFlag from "../../core/CountryFlag";
 import ServerGlobeMap from "./map/ServerMap";
-import CreatePrivateServerModal from "./privateServers/CreatePrivateServerModal";
 import ServersPromptGeolocation from "./PromptGeolocation";
+import CreatePrivateServerModal from "./privateServers/CreatePrivateServerModal";
+import DeactivatePrivateServersModal from "./privateServers/DeactivatePrivateServersModal";
 import Server, { type ServerListType } from "./Server";
 import {
 	type RobloxDataCenterConnectionSpeed,
@@ -54,8 +56,6 @@ import {
 	useServersTabContext,
 } from "./ServersTabProvider";
 import { getLocalizedRegionName } from "./utils";
-import DeactivatePrivateServersModal from "./privateServers/DeactivatePrivateServersModal";
-import { sendJoinGameInstance, sendJoinMultiplayerGame } from "src/ts/utils/gameLauncher";
 
 export type ServerWithJoinData = {
 	joinData?: MinimalServerJoinData;

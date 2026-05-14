@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from "preact/hooks";
 import { useSignal } from "@preact/signals";
+import type { ComponentChild, ComponentChildren } from "preact";
+import { useCallback, useEffect, useState } from "preact/hooks";
+import { renderAfter } from "src/ts/utils/render.ts";
 import SimpleTabContent from "../core/tab/Content.tsx";
 import SimpleTabNav from "../core/tab/SimpleNav.tsx";
-import type { ComponentChildren, ComponentChild } from "preact";
-import { renderAfter } from "src/ts/utils/render.ts";
 
 export type ExperienceTabProps = {
 	id: string;

@@ -1,17 +1,17 @@
+import MdOutlineExperiment from "@material-symbols/svg-400/outlined/experiment-fill.svg";
+import MdOutlineScienceOff from "@material-symbols/svg-400/outlined/science_off-fill.svg";
+import classNames from "classnames";
+import { useMemo } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	getSelectedTestPilotProgram,
 	listTestPilotPrograms,
 	updateSelectedTestPilotProgram,
 } from "src/ts/helpers/requests/services/account";
-import usePromise from "../hooks/usePromise";
-import Popover from "../core/Popover";
 import Button from "../core/Button";
-import MdOutlineScienceOff from "@material-symbols/svg-400/outlined/science_off-fill.svg";
-import MdOutlineExperiment from "@material-symbols/svg-400/outlined/experiment-fill.svg";
-import { useMemo } from "preact/hooks";
-import classNames from "classnames";
+import Popover from "../core/Popover";
+import usePromise from "../hooks/usePromise";
 import TestPilotProgram from "./TestPilotProgram";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
 
 export type ExperienceTestPilotSettingsProps = {
 	container: HTMLDivElement;

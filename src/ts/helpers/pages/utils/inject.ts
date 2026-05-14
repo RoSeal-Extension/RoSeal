@@ -1,8 +1,8 @@
 import type { InjectScript } from "src/ts/utils/dom";
 import { invokeMessage } from "../../communication/dom";
+import { watchOnce } from "../../elements";
 import type { AnyFeature } from "../../features/featuresData";
 import { multigetFeaturesValues } from "../../features/helpers";
-import { watchOnce } from "../../elements";
 
 export type InjectScriptGroup = {
 	document: () => MaybePromise<Document>;

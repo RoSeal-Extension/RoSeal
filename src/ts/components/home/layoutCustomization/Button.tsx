@@ -1,4 +1,4 @@
-import { MultiBackend, Tree, getBackendOptions } from "@minoru/react-dnd-treeview";
+import { getBackendOptions, MultiBackend, Tree } from "@minoru/react-dnd-treeview";
 import type { Signal } from "@preact/signals";
 import classNames from "classnames";
 import { useEffect, useMemo, useState } from "preact/hooks";
@@ -11,13 +11,13 @@ import {
 	type OmniSort,
 } from "src/ts/helpers/requests/services/universes";
 import IconButton from "../../core/IconButton";
-import Toggle from "../../core/Toggle";
 import SimpleModal from "../../core/modal/SimpleModal";
+import Toggle from "../../core/Toggle";
 import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
 import useFeatureValue from "../../hooks/useFeatureValue";
+import usePromise from "../../hooks/usePromise";
 import useStorage from "../../hooks/useStorage";
-import SortItem from "./SortItem";
 import {
 	type CustomHomePlaylist,
 	type CustomHomeSortItem,
@@ -27,9 +27,9 @@ import {
 	type SortWithOverrides,
 	type TreeLayout,
 } from "./constants";
-import { getTreeLayout, type HomeSortingLayoutItemSort, transformState } from "./utils";
-import usePromise from "../../hooks/usePromise";
 import PlaylistSortExperience from "./PlaylistSortExperience";
+import SortItem from "./SortItem";
+import { getTreeLayout, type HomeSortingLayoutItemSort, transformState } from "./utils";
 
 export type CustomizeLayoutButtonProps = {
 	state: Signal<OmniSort[] | undefined>;

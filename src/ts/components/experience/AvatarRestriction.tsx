@@ -1,16 +1,16 @@
 import { useMemo } from "preact/hooks";
 import Icon from "src/ts/components/core/Icon.tsx";
 import Tooltip from "src/ts/components/core/Tooltip.tsx";
-import useFeatureValue from "../hooks/useFeatureValue.ts";
-import type { GetUniverseStartInfoResponse } from "src/ts/helpers/requests/services/universes.ts";
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
-import { clamp } from "src/ts/utils/misc.ts";
+import { asLocaleString } from "src/ts/helpers/i18n/intlFormats.ts";
 import type {
 	AvatarScales,
 	AvatarType,
 	UserAvatar,
 } from "src/ts/helpers/requests/services/avatar.ts";
-import { asLocaleString } from "src/ts/helpers/i18n/intlFormats.ts";
+import type { GetUniverseStartInfoResponse } from "src/ts/helpers/requests/services/universes.ts";
+import { clamp } from "src/ts/utils/misc.ts";
+import useFeatureValue from "../hooks/useFeatureValue.ts";
 
 export type ExperienceAvatarRestrictionProps = {
 	universeStartInfo: GetUniverseStartInfoResponse;

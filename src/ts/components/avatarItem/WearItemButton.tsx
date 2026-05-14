@@ -1,17 +1,16 @@
-import {
-	type AvatarItemRequest,
-	getAvatarItem,
-	multigetAvatarItems,
-	type MarketplaceItemType,
-} from "src/ts/helpers/requests/services/marketplace";
-import usePromise from "../hooks/usePromise";
-import { userOwnsItem } from "src/ts/helpers/requests/services/inventory";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import { useCallback } from "preact/hooks";
+import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	getAuthenticatedUserAvatar,
 	setWearingAssets,
 } from "src/ts/helpers/requests/services/avatar";
-import { useCallback } from "preact/hooks";
+import { userOwnsItem } from "src/ts/helpers/requests/services/inventory";
+import {
+	type AvatarItemRequest,
+	getAvatarItem,
+	type MarketplaceItemType,
+	multigetAvatarItems,
+} from "src/ts/helpers/requests/services/marketplace";
 import {
 	buildMetaForAsset,
 	buildMetaForAssets,
@@ -19,10 +18,11 @@ import {
 	getAssetTypeData,
 	insertAssetMetaIntoAssetList,
 } from "src/ts/utils/itemTypes";
-import useFeatureValue from "../hooks/useFeatureValue";
 import { crossSort } from "src/ts/utils/objects";
 import { success, warning } from "../core/systemFeedback/helpers/globalSystemFeedback";
-import { getMessage } from "src/ts/helpers/i18n/getMessage";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import useFeatureValue from "../hooks/useFeatureValue";
+import usePromise from "../hooks/usePromise";
 
 export type WearItemButtonProps = {
 	itemType: MarketplaceItemType;

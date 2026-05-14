@@ -5,10 +5,10 @@ import type { DOMContainer } from "react-overlays/useWaitForDOMRef";
 import { Marker } from "react-simple-maps";
 import CountryFlag from "src/ts/components/core/CountryFlag";
 import Tooltip from "src/ts/components/core/Tooltip";
-import { getLocalizedRegionName } from "../utils";
-import type { RobloxGroupedDataCenterWithServerCount } from "./ServerMap";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
+import { getLocalizedRegionName } from "../utils";
+import type { RobloxGroupedDataCenterWithServerCount } from "./ServerMap";
 
 export type ServerMapMarkerProps = {
 	dataCenter: RobloxGroupedDataCenterWithServerCount;

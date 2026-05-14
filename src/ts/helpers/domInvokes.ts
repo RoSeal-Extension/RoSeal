@@ -1,5 +1,5 @@
-import type messagesType from "#i18n/types";
 import type { ParsedChallenge } from "parse-roblox-errors";
+import type messagesType from "#i18n/types";
 import type { Challenge2SV } from "./challenges/challengesInject";
 import { invokeMessage } from "./communication/dom";
 

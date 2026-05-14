@@ -1,6 +1,6 @@
-import { randomInt } from "../random.ts";
-import { watchAttributes, watch, watchTextContent, watchOnce } from "../../helpers/elements.ts";
+import { watch, watchAttributes, watchOnce, watchTextContent } from "../../helpers/elements.ts";
 import { asLocaleLowerCase, asLocaleUpperCase } from "../../helpers/i18n/intlFormats.ts";
+import { randomInt } from "../random.ts";
 
 export function changeAllTextTo(texts: string[]) {
 	const handleNode = (node: Node | null) => {

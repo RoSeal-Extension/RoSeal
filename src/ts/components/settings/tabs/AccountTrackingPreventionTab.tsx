@@ -1,24 +1,24 @@
+import classNames from "classnames";
 import { useMemo, useState } from "preact/hooks";
-import { searchConfigurableUniverses } from "src/ts/helpers/requests/services/universes";
-import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
-import useStorage from "../../hooks/useStorage";
 import {
 	ACCOUNT_TRACKING_PREVENTION_STORAGE_KEY,
 	type AccountTrackingPreventionAccount,
 	type AccountTrackingPreventionStorageValue,
 } from "src/ts/constants/accountTrackingPrevention";
-import Toggle from "../../core/Toggle";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
-import { getExperienceLink, getRobloxSettingsLink } from "src/ts/utils/links";
-import usePromise from "../../hooks/usePromise";
-import Loading from "../../core/Loading";
-import { multigetPlacesByIds, type Place } from "src/ts/helpers/requests/services/places";
-import ItemLookup from "../../core/ItemLookup";
-import { useDebounceValue } from "usehooks-ts";
-import Thumbnail from "../../core/Thumbnail";
 import { multigetUniversePermissions } from "src/ts/helpers/requests/services/permissions";
+import { multigetPlacesByIds, type Place } from "src/ts/helpers/requests/services/places";
+import { searchConfigurableUniverses } from "src/ts/helpers/requests/services/universes";
+import { getExperienceLink, getRobloxSettingsLink } from "src/ts/utils/links";
+import { useDebounceValue } from "usehooks-ts";
 import Button from "../../core/Button";
-import classNames from "classnames";
+import ItemLookup from "../../core/ItemLookup";
+import Loading from "../../core/Loading";
+import Thumbnail from "../../core/Thumbnail";
+import Toggle from "../../core/Toggle";
+import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
+import usePromise from "../../hooks/usePromise";
+import useStorage from "../../hooks/useStorage";
 
 export default function AccountTrackingPreventionTab() {
 	const [storageValue, setStorageValue] = useStorage<AccountTrackingPreventionStorageValue>(

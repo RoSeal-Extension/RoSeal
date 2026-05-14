@@ -7,8 +7,8 @@ import Loading from "../../core/Loading";
 import Pagination from "../../core/Pagination";
 import useFeatureValue from "../../hooks/useFeatureValue";
 import usePages from "../../hooks/usePages";
-import FriendsPageTitle from "../PageTitle";
 import FriendCard from "./../FriendCard";
+import FriendsPageTitle from "../PageTitle";
 
 export type MutualsTabProps = {
 	userId: number;

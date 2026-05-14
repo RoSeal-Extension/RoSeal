@@ -22,11 +22,11 @@ import ItemContextMenu from "../../core/ItemContextMenu";
 import { success } from "../../core/systemFeedback/helpers/globalSystemFeedback";
 import useFeatureValue from "../../hooks/useFeatureValue";
 import useFlag from "../../hooks/useFlag";
-import { shouldFeatureDisplay } from "./shouldFeatureDisplay";
-import { FeatureComponent } from "./FeatureComponent";
-import { FeatureTypeLabel } from "./FeatureTypeLabel";
-import { FeaturePermissionsContainer } from "./FeaturePermissionsContainer";
 import FeaturePermissions from "../../popup/Permissions";
+import { FeatureComponent } from "./FeatureComponent";
+import { FeaturePermissionsContainer } from "./FeaturePermissionsContainer";
+import { FeatureTypeLabel } from "./FeatureTypeLabel";
+import { shouldFeatureDisplay } from "./shouldFeatureDisplay";
 
 export type FeatureContainerProps = {
 	feature: Feature;
