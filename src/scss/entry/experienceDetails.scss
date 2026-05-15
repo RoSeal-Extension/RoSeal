@@ -2080,10 +2080,24 @@ end of legacy code
     animation: region-spin 2s infinite;
 }
 
+[data-rosealfe-viewgamefriendsplayed] {
+    #btr-description-wrapper .game-description-container {
+        position: relative;
+    }
+}
+
 #friends-who-played-container {
-    @media (min-width: 987px) {
+    body:not(.btr-gamedetails) & {
+        @media (min-width: 987px) {
+            position: absolute;
+            top: calc(100% - 32px);
+        }
+    }
+
+    .btr-gamedetails & {
         position: absolute;
-        top: calc(100% - 32px);
+        right: 12px;
+        bottom: 100%;
     }
 
     .game-friends-social-count {
@@ -2098,6 +2112,11 @@ end of legacy code
         gap: 4px;
         background-color: var(--RS_SECONDARY-BACKGROUND-COLOR);
         color: var(--RS_SECONDARY-TEXT-COLOR);
+
+        .btr-gamedetails & {
+            background-color: var(--RS_PRIMARY-BACKGROUND-COLOR);
+            color: var(--RS_PRIMARY-TEXT-COLOR);
+        }
 
         .count-text {
             font-size: 12px;

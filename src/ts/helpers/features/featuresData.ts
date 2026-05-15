@@ -1149,6 +1149,7 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
+						hasCSS: true,
 					},
 					{
 						type: "Regular",
