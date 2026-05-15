@@ -41,7 +41,7 @@ export default function ExperienceCreatedDate({
 		? () => handleTimeSwitch(timeType, setTimeType)
 		: undefined;
 	const innerClass = classNames("text-lead font-caption-body", {
-		"time-type-switch": isClickSwitchEnabled && timeType && !tooltipTimeType,
+		"time-type-switch": isClickSwitchEnabled,
 	});
 
 	const updatedField = (
