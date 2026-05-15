@@ -41,6 +41,7 @@ export default {
 
 						const allAssetTypeIds: number[] = [];
 						for (const category of data.categories) {
+							if (category.category === "All") continue;
 							if (category.assetTypeIds.length) {
 								allAssetTypeIds.push(...category.assetTypeIds);
 							}
