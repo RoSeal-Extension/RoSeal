@@ -28,19 +28,31 @@
     }
 
     .modal-content {
+        /* rotector fixes */
+        padding: 12px !important;
+        overflow: unset !important;
+        /* end of rotector fixes */
+
         border-radius: 12px !important;
     }
 
     .roseal-modal {
-        .modal-header:not(.has-title) {
-            border: none;
-            position: absolute;
-            right: 0;
+        .modal-header {
+            /* rotector fixes */
+            display: unset !important;
+            padding: 0 !important;
+            /* end of rotector fixes */
 
-            .close {
-                z-index: 1;
+            &:not(.has-title) {
+                border: none;
                 position: absolute;
-                right: 15px;
+                right: 0;
+
+                .close {
+                    z-index: 1;
+                    position: absolute;
+                    right: 15px;
+                }
             }
         }
 

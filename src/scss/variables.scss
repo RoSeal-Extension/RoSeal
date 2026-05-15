@@ -17,7 +17,7 @@
     --RS_AVATAR_BUTTON-BORDER-COLOR: #b8b8b8;
     --RS_AVATAR-BUTTON-TEXT-COLOR: #191919;
 
-    &:has(.dark-theme),
+    &:has(.rbx-body.dark-theme),
     &.dark-theme,
     &[color-scheme="dark"],
     &:has(meta[name="theme-color"][content="#111216"]) {
@@ -58,7 +58,7 @@
         --RS_PILL-BACKGROUND-COLOR: #272930;
     }
 
-    &:has(.light-theme),
+    &:has(.rbx-body.light-theme),
     &.light-theme,
     &[color-scheme="light"],
     &:has(meta[name="theme-color"][content="#F9F9F9"]) {
