@@ -516,14 +516,6 @@ export type GetToolboxAssetByIdResponse = {
 	creatorStoreProduct: StoreDetailsFiatProduct;
 	asset: ToolboxAssetV2;
 };
-
-export type ListAssetOwnersRequest = {
-	assetId: number;
-	limit?: number;
-	cursor?: string;
-	sortOrder?: SortOrder;
-};
-
 export type ListedAssetOwner = {
 	id: number;
 	type: Agent;
@@ -540,10 +532,37 @@ export type ListedAssetOwnerInstance = {
 	updated: string;
 };
 
+export type ListedCollectibleOwnerInstance = {
+	id: number;
+	collectibleItemInstanceId: string;
+	serialNumber?: number | null;
+	owner?: ListedAssetOwner | null;
+};
+
+export type ListCollectibleOwnersResponse = {
+	previousPageCursor: string | null;
+	nextPageCursor: string | null;
+	data: ListedCollectibleOwnerInstance[];
+};
+
 export type ListAssetOwnersResponse = {
 	previousPageCursor: string | null;
 	nextPageCursor: string | null;
 	data: ListedAssetOwnerInstance[];
+};
+
+export type ListCollectibleOwnersRequest = {
+	collectibleItemId: string;
+	limit?: number;
+	cursor?: string;
+	sortOrder?: SortOrder;
+};
+
+export type ListAssetOwnersRequest = {
+	assetId: number;
+	limit?: number;
+	cursor?: string;
+	sortOrder?: SortOrder;
 };
 
 export function getLessAssetById({ assetId, overrideCache }: GetAssetByIdRequest) {
@@ -778,6 +797,22 @@ export async function multigetLatestAssetsVersions(request: MultigetLatestAssets
 				type: "json",
 				value: request,
 			},
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+		})
+	).body;
+}
+
+export async function listCollectibleOwners({
+	collectibleItemId,
+	...request
+}: ListCollectibleOwnersRequest) {
+	return (
+		await httpClient.httpRequest<ListCollectibleOwnersResponse>({
+			url: `${getRobloxUrl("inventory")}/v2/collectible-items/${collectibleItemId}/owners`,
+			search: request,
 			credentials: {
 				type: "cookies",
 				value: true,

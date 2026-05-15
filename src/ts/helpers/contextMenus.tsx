@@ -59,7 +59,6 @@ export async function modifyItemContextMenu<T extends VNode | (() => VNode)>(
 			: "#item-details-container > .section-content, #item-container > .section-content"
 	}, .profile-header:not(.hidden) .profile-header-content, .group-header .group-menu, .group-profile-header-info .actions-container, .look-name-container, .profile-header-buttons, .user-profile-header-info > .flex.gap-small > div > div:has(#user-profile-header-contextual-menu-button), #developer-product-details-container .product-title-container`;
 	const container = await watchOnce(containerSelector);
-	console.log(container);
 
 	// Inner context menu, for avatar items we get the inner .item-context-menu
 	// profile-header-more is a className in the react profile header

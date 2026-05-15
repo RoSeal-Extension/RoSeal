@@ -2,6 +2,10 @@ import { useCallback, useMemo, useState } from "preact/hooks";
 import { ROBLOX_USERS } from "src/ts/constants/robloxUsers";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { getAssetById, multigetDevelopAssetsByIds } from "src/ts/helpers/requests/services/assets";
+import {
+	getAvatarItem,
+	type MarketplaceItemType,
+} from "src/ts/helpers/requests/services/marketplace";
 import { canConfigureCollectibleItem } from "src/ts/helpers/requests/services/permissions";
 import { getAssetTypeData } from "src/ts/utils/itemTypes";
 import TabsContainer from "../core/tab/Container";
@@ -10,10 +14,11 @@ import SimpleTabNav from "../core/tab/SimpleNav";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePromise from "../hooks/usePromise";
 import AssetDependenciesList from "./DependenciesList";
-import AssetOwnersList from "./OwnersList";
+import AvatarItemOwnersList from "./OwnersList";
 
 export type AvatarItemTabsProps = {
-	assetId: number;
+	itemId: number;
+	itemType: MarketplaceItemType;
 	resalePane: HTMLElement;
 	enableDependencies: boolean;
 	enableOwners: boolean;
@@ -22,7 +27,8 @@ export type AvatarItemTabsProps = {
 type ActiveTab = "dependencies" | "resellers" | "owners";
 
 export default function AvatarItemTabs({
-	assetId,
+	itemId,
+	itemType,
 	resalePane,
 	enableDependencies,
 	enableOwners,
@@ -32,10 +38,10 @@ export default function AvatarItemTabs({
 	const [authenticatedUser] = useAuthenticatedUser();
 
 	const [shouldShowDependencies] = usePromise(() => {
-		if (!enableDependencies) return false;
+		if (!enableDependencies || itemType === "Bundle") return false;
 
 		return getAssetById({
-			assetId,
+			assetId: itemId,
 		})
 			.then((data) => {
 				if (data.creator.creatorType === "User" && data.creator.creatorTargetId === 1)
@@ -50,7 +56,7 @@ export default function AvatarItemTabs({
 			})
 			.catch(() =>
 				multigetDevelopAssetsByIds({
-					assetIds: [assetId],
+					assetIds: [itemId],
 				}).then(
 					(data) =>
 						data[0]?.typeId &&
@@ -58,38 +64,48 @@ export default function AvatarItemTabs({
 							(data[0].creator.typeId === 1 && data[0].creator.targetId === 1)),
 				),
 			);
-	}, [assetId]);
+	}, [itemId, itemType]);
 
 	const [shouldShowOwners] = usePromise(() => {
 		if (!enableOwners) return false;
 
-		return getAssetById({ assetId }).then((data) => {
+		return getAvatarItem({
+			itemId,
+			itemType,
+		}).then((data) => {
+			if (!data?.collectibleItemId) return false;
+
 			if (
-				data.collectiblesItemDetails?.isLimited &&
-				data.creator.creatorType === "User" &&
-				data.creator.creatorTargetId === ROBLOX_USERS.robloxSystem
+				(data.totalQuantity ?? 0) > 0 &&
+				data.creatorType === "User" &&
+				data.creatorTargetId === ROBLOX_USERS.robloxSystem
 			) {
 				return true;
 			}
 
 			return canConfigureCollectibleItem({
 				targetType: "Asset",
-				targetId: assetId,
+				targetId: itemId,
 			}).then((data) => data.isAllowed);
 		});
-	}, [assetId, authenticatedUser?.userId]);
+	}, [itemId, itemType, authenticatedUser?.userId]);
 
 	const [totalSerialNumbers] = usePromise(
 		() =>
-			getAssetById({
-				assetId,
-			}).then((data) => data.collectiblesItemDetails?.totalQuantity),
-		[assetId],
+			getAvatarItem({
+				itemType,
+				itemId,
+			}).then((data) => {
+				if (!data?.collectibleItemId) return;
+
+				return data.totalQuantity;
+			}),
+		[itemId, itemType],
 	);
 
 	const [isLimited] = usePromise(
-		() => getAssetById({ assetId }).then((data) => data.collectiblesItemDetails?.isLimited),
-		[assetId],
+		() => getAvatarItem({ itemType, itemId }).then((data) => (data?.totalQuantity ?? 0) > 0),
+		[itemId, itemType],
 	);
 
 	const setActiveTab = useCallback(
@@ -151,11 +167,12 @@ export default function AvatarItemTabs({
 				</TabsContainer>
 			)}
 			{shouldShowDependencies && (activeTab === "dependencies" || !shouldShowTabs) && (
-				<AssetDependenciesList assetId={assetId} showCollapse={!shouldShowTabs} />
+				<AssetDependenciesList assetId={itemId} showCollapse={!shouldShowTabs} />
 			)}
 			{shouldShowOwners && (activeTab === "owners" || !shouldShowTabs) && (
-				<AssetOwnersList
-					assetId={assetId}
+				<AvatarItemOwnersList
+					itemId={itemId}
+					itemType={itemType}
 					totalSerialNumbers={totalSerialNumbers ?? 0}
 					isLimited={isLimited === true}
 					isUGC={false}

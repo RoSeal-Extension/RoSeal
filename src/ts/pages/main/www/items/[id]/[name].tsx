@@ -49,7 +49,6 @@ import { getMessage, hasMessage } from "src/ts/helpers/i18n/getMessage";
 import { getAbsoluteTime } from "src/ts/helpers/i18n/intlFormats";
 import { modifyItemStats } from "src/ts/helpers/modifyItemStats";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
-import type { OpenCloudInventoryItem } from "src/ts/helpers/requests/services/inventory";
 import {
 	getAvatarItem,
 	type MarketplaceItemType,
@@ -240,7 +239,7 @@ export default {
 
 						const userId = Number.parseInt(userIdStr, 10);
 
-						if (authenticatedUser.hasPremium) {
+						if (authenticatedUser.hasPremium || authenticatedUser.hasPlus) {
 							getCanTradeWithUser({
 								userId,
 							})
@@ -263,8 +262,6 @@ export default {
 								});
 						}
 
-						if (itemType.value !== "Asset") return;
-
 						const isUGCPromise = getAvatarItem({
 							itemType: itemType.value,
 							itemId: itemId.value,
@@ -274,44 +271,45 @@ export default {
 								data.creatorTargetId !== ROBLOX_USERS.robloxSystem
 							);
 						});
-						listAllUserInventoryItemInstances(
-							authenticatedUser.userId,
-							userId,
-							false,
-							itemType.value,
-							itemId.value,
-						).then(async (instances) => {
-							if (!instances) return;
-							let instance: OpenCloudInventoryItem | undefined;
 
-							for (const item of instances) {
-								if (
-									item.assetDetails?.collectibleDetails?.instanceId === instanceId
-								) {
-									instance = item;
-								}
-							}
+						const instance =
+							itemType.value === "Bundle"
+								? undefined
+								: await listAllUserInventoryItemInstances(
+										authenticatedUser.userId,
+										userId,
+										false,
+										itemType.value,
+										itemId.value,
+									).then((instances) => {
+										if (!instances) return;
 
-							renderAfter(
-								<AvatarItemResellerOwned
-									isLimited
-									isUGC={await isUGCPromise}
-									item={
-										instance && {
-											addTime: instance.addTime,
-											userAssetId:
-												instance.assetDetails?.instanceId !== undefined
-													? Number.parseInt(
-															instance.assetDetails.instanceId,
-															10,
-														)
-													: undefined,
+										for (const item of instances) {
+											if (
+												item.assetDetails?.collectibleDetails
+													?.instanceId === instanceId
+											) {
+												return item;
+											}
 										}
-									}
-								/>,
-								serialNumberEl,
-							);
-						});
+									});
+
+						renderAfter(
+							<AvatarItemResellerOwned
+								isLimited
+								isUGC={await isUGCPromise}
+								isBundle={itemType.value === "Bundle"}
+								item={{
+									addTime: instance?.addTime,
+									userAssetId:
+										instance?.assetDetails?.instanceId !== undefined
+											? Number.parseInt(instance.assetDetails.instanceId, 10)
+											: undefined,
+									collectibleItemInstanceId: instanceId,
+								}}
+							/>,
+							serialNumberEl,
+						);
 					});
 				}),
 			),
@@ -619,11 +617,11 @@ export default {
 					if (!data.viewAvatarAssetDependencies && !data.viewAvatarAssetOwners) return;
 
 					return watch<HTMLElement>("asset-resale-pane", (pane) => {
-						if (itemType.value !== "Asset") return;
 						renderBefore(
 							<AvatarItemTabs
+								itemType={itemType.value}
+								itemId={itemId.value}
 								resalePane={pane}
-								assetId={itemId.value}
 								enableDependencies={data.viewAvatarAssetDependencies}
 								enableOwners={data.viewAvatarAssetOwners}
 							/>,

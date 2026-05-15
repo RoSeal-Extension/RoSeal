@@ -2,7 +2,9 @@
 	"$schema": "../../../../src/types/schemas/i18nFile.json",
 	"manifest": {
 		"$context": "RoSeal extension manifest file",
-		"$types": ["manifest"],
+		"$types": [
+			"manifest"
+		],
 		"name": {
 			"$message": "RoSeal - Augmented Roblox Experience",
 			"$context": "The name of the extension as shown in chrome://extensions, or about:addons"
@@ -19,7 +21,10 @@
 		}
 	},
 	"notifications": {
-		"$types": ["background", "main"],
+		"$types": [
+			"background",
+			"main"
+		],
 		"$context": "Notification strings",
 		"startup": {
 			"context": {
@@ -2156,7 +2161,10 @@
 	},
 	"featurePermissions": {
 		"$context": "Feature permissions",
-		"$types": ["popup", "main"],
+		"$types": [
+			"popup",
+			"main"
+		],
 		"forOrigin": {
 			"$message": "Host access for {origin}",
 			"$context": "i.e. host access for https://www.roblox.com, this is not used at the moment, but may be used in the future"
@@ -6269,13 +6277,17 @@
 					"$context": "Owned since date under reseller name",
 					"$message": "Owned since {date}{showRolimonsLink, select, true {{separator}<rolimonsLink>View on Rolimon's</rolimonsLink>} other{}}"
 				},
+				"viewOnRolimons": {
+					"$context": "Button to view on rolimons when roseal can not fetch when the user got the item (bundles)",
+					"$message": "View on Rolimon's"
+				},
 				"offer": {
 					"$context": "Button to offer/trade for the item",
 					"$message": "Trade"
 				},
 				"privateInventory": {
 					"$context": "Inventory is private",
-					"$message": "Private Inventory"
+					"$message": "Private Inventory{showRolimonsLink, select, true {{separator}<rolimonsLink>View on Rolimon's</rolimonsLink>} other{}}"
 				}
 			}
 		},

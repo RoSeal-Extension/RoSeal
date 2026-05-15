@@ -724,8 +724,12 @@ export default {
 		);
 
 		featureValueIs("viewGameFriendsPlayed", true, () =>
-			watchOnce("#game-details-carousel-container").then((container) => {
-				renderAfter(<FriendsWhoPlayedGame universeId={universeId} />, container);
+			watchOnce(
+				"body:not(.btr-gamedetails) #game-details-carousel-container, #btr-description-wrapper .game-description-container",
+			).then((container) => {
+				if (container.classList.contains("game-description-container")) {
+					renderPrepend(<FriendsWhoPlayedGame universeId={universeId} />, container);
+				} else renderAfter(<FriendsWhoPlayedGame universeId={universeId} />, container);
 			}),
 		);
 

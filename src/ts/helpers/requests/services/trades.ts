@@ -154,7 +154,7 @@ export async function getCanTradeWithUser({
 		fn: () =>
 			httpClient
 				.httpRequest<GetCanTradeWithUserResponse>({
-					url: `${getRobloxUrl("trades")}/v1/users/${userId}/can-trade-with`,
+					url: `${getRobloxUrl("trades")}/v2/users/${userId}/can-trade-with`,
 					credentials: {
 						type: "cookies",
 						value: true,

@@ -5,43 +5,59 @@ import { useState } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import {
 	type ListedAssetOwnerInstance,
+	type ListedCollectibleOwnerInstance,
 	listAssetOwners,
+	listCollectibleOwners,
 } from "src/ts/helpers/requests/services/assets";
 import type { SortOrder } from "src/ts/helpers/requests/services/badges";
+import type { MarketplaceItemType } from "src/ts/helpers/requests/services/marketplace";
+import { getAvatarItem } from "src/ts/helpers/requests/services/marketplace";
 import Icon from "../core/Icon";
 import Loading from "../core/Loading";
 import Pagination from "../core/Pagination";
 import Tooltip from "../core/Tooltip";
 import usePages from "../hooks/usePages";
-import AssetOwnerItem from "./OwnerItem";
+import AvatarItemOwnerItem from "./OwnerItem";
 
-export type AssetOwnersListProps = {
-	assetId: number;
+export type AvatarItemOwnersListProps = {
+	itemId: number;
+	itemType: MarketplaceItemType;
 	totalSerialNumbers: number;
 	isLimited: boolean;
 	isUGC: boolean;
 	showCollapse?: boolean;
 };
 
-export default function AssetOwnersList({
-	assetId,
+export default function AvatarItemOwnersList({
+	itemId,
+	itemType,
 	totalSerialNumbers,
 	isUGC,
 	isLimited,
 	showCollapse,
-}: AssetOwnersListProps) {
+}: AvatarItemOwnersListProps) {
 	const [collapsed, setCollapsed] = useState(true);
 	const [sortOrder, setSortOrder] = useState<SortOrder>("Asc");
 
 	const { items, loading, pageNumber, maxPageNumber, hasAnyItems, error, setPageNumber } =
-		usePages<ListedAssetOwnerInstance, string>({
+		usePages<ListedAssetOwnerInstance | ListedCollectibleOwnerInstance, string>({
 			getNextPage: (state) =>
-				listAssetOwners({
-					assetId,
-					cursor: state.nextCursor,
-					limit: 100,
-					sortOrder,
-				}).then((data) => ({
+				(itemType === "Asset"
+					? listAssetOwners({
+							assetId: itemId,
+							cursor: state.nextCursor,
+							limit: 100,
+							sortOrder,
+						})
+					: getAvatarItem({ itemId, itemType }).then((data) =>
+							listCollectibleOwners({
+								collectibleItemId: data?.collectibleItemId ?? "",
+								cursor: state.nextCursor,
+								limit: 100,
+								sortOrder,
+							}),
+						)
+				).then((data) => ({
 					...state,
 					items: data.data,
 					nextCursor: data.nextPageCursor ?? undefined,
@@ -52,7 +68,7 @@ export default function AssetOwnersList({
 				itemsPerPage: 10,
 			},
 			dependencies: {
-				reset: [assetId, sortOrder],
+				reset: [itemId, itemType, sortOrder],
 			},
 		});
 
@@ -114,8 +130,9 @@ export default function AssetOwnersList({
 							)}
 							<ul className="vlist">
 								{items.map((item) => (
-									<AssetOwnerItem
+									<AvatarItemOwnerItem
 										key={item.collectibleItemInstanceId}
+										itemType={itemType}
 										{...item}
 										totalSerialNumbers={totalSerialNumbers}
 										isLimited={isLimited}

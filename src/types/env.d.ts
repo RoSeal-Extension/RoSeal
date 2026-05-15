@@ -12,6 +12,13 @@ declare global {
 		[P in keyof T as P extends K ? never : P]: T[P];
 	};
 	declare type OmitExtend<T, K, U extends keyof K = keyof K> = MappedOmit<T, U> & K;
+	declare type MergeOptional<T, U> =
+		// 1. Required common properties
+		Pick<T & U, Extract<keyof T, keyof U>> &
+			// 2. Optional unique properties from T
+			Partial<Pick<T, Exclude<keyof T, keyof U>>> &
+			// 3. Optional unique properties from U
+			Partial<Pick<U, Exclude<keyof U, keyof T>>>;
 	// biome-ignore lint/suspicious/noExplicitAny: Need to have `any` here
 	declare type Writeable<T extends { [x: string]: any }, K extends string> = {
 		[P in K]: T[P];

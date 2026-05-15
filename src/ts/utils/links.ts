@@ -297,6 +297,10 @@ export function getRolimonsUAIDLink(userAssetId: number) {
 	return `https://${getRolimonsUrl("www")}/uaid/${userAssetId}`;
 }
 
+export function getRolimonsCIIIDLink(collectibleItemInstanceId: string) {
+	return `https://${getRolimonsUrl("www")}/ciiid/${collectibleItemInstanceId}`;
+}
+
 export function getRolimonsUserProfileLink(userId: number) {
 	return `https://${getRolimonsUrl("www")}/player/${userId}`;
 }

@@ -1,7 +1,11 @@
 import { ROBLOX_USERS } from "src/ts/constants/robloxUsers";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
-import type { ListedAssetOwnerInstance } from "src/ts/helpers/requests/services/assets";
+import type {
+	ListedAssetOwnerInstance,
+	ListedCollectibleOwnerInstance,
+} from "src/ts/helpers/requests/services/assets";
+import type { MarketplaceItemType } from "src/ts/helpers/requests/services/marketplace";
 import { getCanTradeWithUser } from "src/ts/helpers/requests/services/trades";
 import { getUserProfileLink, getUserTradeLink } from "src/ts/utils/links";
 import Button from "../core/Button";
@@ -11,26 +15,31 @@ import useProfileData from "../hooks/useProfileData";
 import usePromise from "../hooks/usePromise";
 import AvatarItemResellerOwned from "./resellers/ItemOwned";
 
-export type AssetOwnerItemProps = ListedAssetOwnerInstance & {
+export type AvatarItemOwnerItemProps = MergeOptional<
+	ListedAssetOwnerInstance,
+	ListedCollectibleOwnerInstance
+> & {
+	itemType: MarketplaceItemType;
 	totalSerialNumbers: number;
 	isLimited: boolean;
 	isUGC: boolean;
 };
 
-export default function AssetOwnerItem({
+export default function AvatarItemOwnerItem({
+	itemType,
 	owner,
 	serialNumber,
 	collectibleItemInstanceId,
 	updated,
 	totalSerialNumbers,
 	isLimited,
-	id,
 	isUGC,
-}: AssetOwnerItemProps) {
+	id,
+}: AvatarItemOwnerItemProps) {
 	const [authenticatedUser] = useAuthenticatedUser();
 	const [canTradeWithUser] = usePromise(() => {
 		if (
-			!authenticatedUser?.hasPremium ||
+			!(authenticatedUser?.hasPremium || authenticatedUser?.hasPlus) ||
 			!isLimited ||
 			!owner ||
 			authenticatedUser.userId === owner.id ||
@@ -41,7 +50,7 @@ export default function AssetOwnerItem({
 		return getCanTradeWithUser({
 			userId: owner.id,
 		});
-	}, [authenticatedUser?.hasPremium, owner?.id]);
+	}, [authenticatedUser?.hasPremium, authenticatedUser?.hasPlus, owner?.id]);
 	const ownerProfileData = useProfileData(
 		owner
 			? {
@@ -96,9 +105,11 @@ export default function AssetOwnerItem({
 				<AvatarItemResellerOwned
 					isLimited={isLimited}
 					isUGC={isUGC}
+					isBundle={itemType === "Bundle"}
 					item={{
 						addTime: updated,
 						userAssetId: id,
+						collectibleItemInstanceId,
 					}}
 				/>
 			</div>

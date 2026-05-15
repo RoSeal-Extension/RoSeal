@@ -64,8 +64,6 @@ export default function EventsContentTab({ universeId, pastEvents, count }: Even
 		disabled: pastEvents.value === undefined,
 	});
 
-	console.log(items);
-
 	useEffect(() => {
 		document.documentElement.style.setProperty("--home-feed-width", `${width}px`);
 	}, [width]);
