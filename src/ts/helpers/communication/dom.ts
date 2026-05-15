@@ -45,7 +45,7 @@ export type InvokeData<
 const messageListeners = new Set<MessageListener>();
 // Queue for messages that haven't been handled yet.
 const messageQueue = new Set<[EventData, MessageTarget?]>();
-const MAX_MESSAGE_QUEUE_SIZE = 100;
+const MAX_MESSAGE_QUEUE_SIZE = 1000;
 
 // Queue for invokes that haven't been handled yet.
 const messageInvokeQueue: Record<string, [InvokeData, MessageTarget?][]> = {};
