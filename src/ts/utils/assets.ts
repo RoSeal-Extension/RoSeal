@@ -5,15 +5,17 @@ import { httpClient, RESTError } from "../helpers/requests/main";
 import { type GeneralAssetCreator, getAssetById } from "../helpers/requests/services/assets";
 import type { SortOrder } from "../helpers/requests/services/badges";
 import {
-	type ListedUserCollectibleAsset,
 	type ListedUserInventoryAsset,
 	listOpenCloudUserInventoryItems,
-	listUserCollectibleAssets,
 	listUserInventoryAssets,
 	type OpenCloudInventoryItem,
 } from "../helpers/requests/services/inventory";
 import { getAvatarItem, type MarketplaceItemType } from "../helpers/requests/services/marketplace";
 import { get3dThumbnail, getUser3dThumbnail } from "../helpers/requests/services/thumbnails";
+import {
+	listUserTradableItems,
+	type UserTradableItemInstance,
+} from "../helpers/requests/services/trades";
 import { getCorrectBundledItems } from "./bundledItems";
 import { tryOpenCloudAuthRequest } from "./cloudAuth";
 import { assetTypes } from "./itemTypes";
@@ -206,8 +208,8 @@ export function listAllUserAnimatedAssets(userId: number) {
 
 export async function listAllUserCollectibleItems(userId: number) {
 	const promises: Promise<void>[] = [];
-	const ids = new Set<number>();
-	const items: ListedUserCollectibleAsset[] = [];
+	const ids = new Set<string>();
+	const items: UserTradableItemInstance[] = [];
 
 	for (const sortOrder of ["Asc", "Desc"]) {
 		promises.push(
@@ -217,19 +219,22 @@ export async function listAllUserCollectibleItems(userId: number) {
 
 				while (run) {
 					try {
-						const data = await listUserCollectibleAssets({
+						const data = await listUserTradableItems({
 							userId,
 							limit: 100,
-							cursor,
+							cursor: cursor,
 							sortOrder: sortOrder as SortOrder,
 						});
 
-						for (const item of data.data) {
-							if (ids.has(item.userAssetId)) {
-								run = false;
-							} else {
-								items.push(item);
-								ids.add(item.userAssetId);
+						for (const item of data.items) {
+							for (const instance of item.instances) {
+								if (ids.has(instance.collectibleItemInstanceId)) {
+									run = false;
+									break;
+								}
+
+								items.push(instance);
+								ids.add(instance.collectibleItemInstanceId);
 							}
 						}
 

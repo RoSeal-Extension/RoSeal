@@ -2,7 +2,7 @@ import { useState } from "preact/hooks";
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { abbreviateNumber, asLocaleString } from "src/ts/helpers/i18n/intlFormats";
-import type { ListedUserCollectibleAsset } from "src/ts/helpers/requests/services/inventory";
+import type { UserTradableItemInstance } from "src/ts/helpers/requests/services/trades";
 import SimpleModal from "../../core/modal/SimpleModal";
 import useProfileData from "../../hooks/useProfileData";
 import usePromise from "../../hooks/usePromise";
@@ -13,7 +13,7 @@ import UserRAPItem from "./UserRAPItem";
 export type UserRAPHeaderProps = {
 	userId: number;
 	useV2?: boolean;
-	allCollectiblesPromise: Promise<ListedUserCollectibleAsset[]>;
+	allCollectiblesPromise: Promise<UserTradableItemInstance[]>;
 };
 
 export default function UserRAPHeader({
@@ -76,7 +76,7 @@ export default function UserRAPHeader({
 			>
 				<ul className="hlist item-cards roseal-scrollbar">
 					{alllCollectibles?.map((item) => (
-						<UserRAPItem key={item.userAssetId} item={item} />
+						<UserRAPItem key={item.collectibleItemInstanceId} item={item} />
 					))}
 				</ul>
 			</SimpleModal>

@@ -104,6 +104,45 @@ export type GetCanTradeWithUserResponse = {
 	status: UserCanTradeStatus;
 };
 
+export type ListUserTradableItemsRequest = {
+	userId: number;
+	limit?: number;
+	cursor?: string;
+	sortOrder?: SortOrder;
+};
+
+export type UserTradableItemTarget = {
+	itemType: MarketplaceItemType;
+	targetId: number;
+};
+
+export type UserTradableItemInstance = {
+	collectibleItemInstanceId: string;
+	itemTarget: UserTradableItemTarget;
+	itemName: string;
+	serialNumber: number | null;
+	originalPrice: number | null;
+	recentAveragePrice: number;
+	assetStock: number | null;
+	isOnHold: boolean;
+};
+
+export type UserTradableItem = {
+	collectibleItemId: string;
+	itemTarget: UserTradableItemTarget;
+	itemName: string;
+	originalPrice: number | null;
+	recentAveragePrice: number;
+	assetStock: number | null;
+	instances: UserTradableItemInstance[];
+};
+
+export type ListUserTradableItemsResponse = {
+	userId: number;
+	items: UserTradableItem[];
+	nextPageCursor?: string | null;
+};
+
 export async function listTrades({
 	tradeStatusType,
 	...request
@@ -162,4 +201,17 @@ export async function getCanTradeWithUser({
 				})
 				.then((res) => res.body),
 	});
+}
+
+export async function listUserTradableItems({ userId, ...request }: ListUserTradableItemsRequest) {
+	return (
+		await httpClient.httpRequest<ListUserTradableItemsResponse>({
+			url: `${getRobloxUrl("trades")}/v2/users/${userId}/tradableItems`,
+			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+		})
+	).body;
 }

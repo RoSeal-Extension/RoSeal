@@ -1,15 +1,15 @@
 import { useMemo } from "preact/hooks";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { asLocaleString } from "src/ts/helpers/i18n/intlFormats";
-import type { ListedUserCollectibleAsset } from "src/ts/helpers/requests/services/inventory";
-import { getAvatarAssetLink } from "src/ts/utils/links";
+import type { UserTradableItemInstance } from "src/ts/helpers/requests/services/trades";
+import { getAvatarAssetLink, getAvatarBundleLink } from "src/ts/utils/links";
 import Icon from "../../core/Icon";
 import RobuxView from "../../core/RobuxView";
 import Thumbnail from "../../core/Thumbnail";
 import { getItemRestrictionsClassName } from "../../marketplace/utils/items";
 
 export type UserRAPItemProps = {
-	item: ListedUserCollectibleAsset;
+	item: UserTradableItemInstance;
 };
 
 export default function UserRAPItem({ item }: UserRAPItemProps) {
@@ -24,13 +24,24 @@ export default function UserRAPItem({ item }: UserRAPItemProps) {
 	return (
 		<li className="list-item item-card">
 			<div className="item-card-container">
-				<a href={getAvatarAssetLink(item.assetId, item.name)}>
+				<a
+					href={
+						item.itemTarget.itemType === "Asset"
+							? getAvatarAssetLink(item.itemTarget.targetId, item.itemName)
+							: getAvatarBundleLink(item.itemTarget.targetId, item.itemName)
+					}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
 					<div className="item-card-link">
 						<div className="item-card-thumb-container">
 							<Thumbnail
 								request={{
-									type: "Asset",
-									targetId: item.assetId,
+									type:
+										item.itemTarget.itemType === "Bundle"
+											? "BundleThumbnail"
+											: "Asset",
+									targetId: item.itemTarget.targetId,
 									size: "420x420",
 								}}
 							/>
@@ -52,8 +63,8 @@ export default function UserRAPItem({ item }: UserRAPItemProps) {
 					</div>
 					<div className="item-card-caption">
 						<div className="item-card-name-link">
-							<div className="item-card-name" title={item.name}>
-								{item.name}
+							<div className="item-card-name" title={item.itemName}>
+								{item.itemName}
 							</div>
 							<RobuxView
 								priceInRobux={item.recentAveragePrice}
