@@ -3834,11 +3834,6 @@
 				"$message": "Fix Roblox's internal notification system listening to other tabs with a different authenticated user"
 			}
 		},
-		"fixRobloxPlusOnLinux": {
-			"name": {
-				"$message": "Fix Roblox Plus page not working on Linux computers"
-			}
-		},
 		"clearRobloxCacheAutomatically": {
 			"name": {
 				"$message": "Clear Roblox's local cache automatically when storage fills up",

@@ -222,7 +222,7 @@ export async function listAllUserCollectibleItems(userId: number) {
 						const data = await listUserTradableItems({
 							userId,
 							limit: 100,
-							cursor: cursor,
+							cursor,
 							sortOrder: sortOrder as SortOrder,
 						});
 

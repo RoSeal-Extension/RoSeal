@@ -8,7 +8,7 @@ if (import.meta.env.IS_DEV_WS_ACCESSIBLE) {
 	keepAliveServiceWorker();
 }
 
-import { COOKIE_HEADER_NAME, USER_AGENT_HEADER_NAME } from "node_modules/@roseal/http-client/src";
+import { COOKIE_HEADER_NAME } from "node_modules/@roseal/http-client/src";
 import { ROSEAL_TRACKING_HEADER_NAME } from "scripts/build/constants";
 import type { AuthenticatedUserWithCreatedAndBadge } from "src/types/dataTypes";
 import { alarmListeners } from "#pages/background-alarms";
@@ -30,7 +30,6 @@ import { ACCOUNT_TRACKING_PREVENTION_FEATURE_ID } from "../constants/accountTrac
 import {
 	ACCOUNTS_RULES_END_ID,
 	ACCOUNTS_RULES_START_ID,
-	LINUX_USER_AGENT_FIX_RULE_ID,
 	STATIC_RULES_START_ID,
 } from "../constants/dnrRules";
 import {
@@ -653,41 +652,6 @@ async function updateAccountIdsCookies() {
 			removeRuleIds: allRuleIds,
 		});
 }
-
-featureValueIsLater("fixRobloxPlusOnLinux", true, async () => {
-	if (!navigator.userAgent?.includes("Linux")) return () => {};
-
-	await browser.declarativeNetRequest
-		.updateSessionRules({
-			addRules: [
-				{
-					id: LINUX_USER_AGENT_FIX_RULE_ID,
-					priority: 2,
-					action: {
-						type: "modifyHeaders",
-						requestHeaders: [
-							{
-								header: USER_AGENT_HEADER_NAME,
-								operation: "set",
-								value: `${navigator.userAgent} (like Windows)`,
-							},
-						],
-					},
-					condition: {
-						urlFilter: `||${getRobloxUrl("apis")}/subscriptions/v2/`,
-						resourceTypes: ["xmlhttprequest", "main_frame", "sub_frame"],
-					},
-				},
-			],
-		})
-		.catch(() => {});
-
-	return () => {
-		browser.declarativeNetRequest.updateSessionRules({
-			removeRuleIds: [LINUX_USER_AGENT_FIX_RULE_ID],
-		});
-	};
-});
 
 onStorageValueUpdate([UNENCRYPTED_ACCOUNTS_STORAGE_KEY], () => {
 	featureValueIs(ACCOUNTS_FEATURE_ID, true, updateAccountIdsCookies);

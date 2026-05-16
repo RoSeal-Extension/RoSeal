@@ -3,4 +3,3 @@ export const STATIC_RULES_END_ID = 999;
 
 export const ACCOUNTS_RULES_START_ID = 9000;
 export const ACCOUNTS_RULES_END_ID = 9999;
-export const LINUX_USER_AGENT_FIX_RULE_ID = 1000;
