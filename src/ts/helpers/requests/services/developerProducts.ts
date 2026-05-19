@@ -162,7 +162,7 @@ export async function listPendingDeveloperProductTransactions(
 ) {
 	return (
 		await httpClient.httpRequest<PendingDeveloperProductTransaction[]>({
-			url: getRobloxUrl("apis", "/developer-products/v1/game-transactions"),
+			url: getRobloxUrl("apis", "/game-transactions/v1/receipts"),
 			search: request,
 			credentials: {
 				type: "cookies",
