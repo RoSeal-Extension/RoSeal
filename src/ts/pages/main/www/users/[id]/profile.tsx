@@ -77,6 +77,7 @@ import {
 	renderIn,
 	renderPrepend,
 } from "src/ts/utils/render";
+import { listUserCommunityJoinedDates } from "src/ts/utils/groups";
 
 export default {
 	id: "user.profile",
@@ -720,6 +721,21 @@ export default {
 				if (!data.showCommunityJoinedDate && !data.showUserCommunitiesRoles) return;
 
 				const groupIdToJoinedDate = signal<Record<string, string>>({});
+				if (data.showCommunityJoinedDate) {
+					getAuthenticatedUser().then((data) => {
+						if (!data) return;
+
+						listUserCommunityJoinedDates(
+							profileUserId,
+							data.userId,
+							data.isUnder13,
+						).then((data) => {
+							if (!data) return;
+							groupIdToJoinedDate.value = data;
+						});
+					});
+				}
+
 				const usersRoles = data.showUserCommunitiesRoles
 					? listUserGroupsRoles({
 							userId: profileUserId,
@@ -762,7 +778,6 @@ export default {
 								)}
 								{data.showCommunityJoinedDate && (
 									<UserCommunityJoinedDateGrid
-										userId={profileUserId}
 										groupId={id}
 										state={groupIdToJoinedDate}
 									/>

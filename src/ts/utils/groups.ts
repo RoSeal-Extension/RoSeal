@@ -42,6 +42,50 @@ export function setActiveGroup(
 	});
 }
 
+export function listUserCommunityJoinedDates(
+	userId: number,
+	viewerUserId: number,
+	viewerIsUnder13: boolean,
+	overrideCache?: boolean,
+) {
+	return getOrSetCache({
+		key: ["users", userId, "communities", "joinTimes"],
+		fn: () =>
+			tryOpenCloudAuthRequest(
+				viewerUserId,
+				viewerIsUnder13 === false,
+				async (credentials) => {
+					let pageToken: string | undefined;
+					const allData: Record<string, string> = {};
+
+					while (true) {
+						const data = await listGroupMembersV2({
+							credentials,
+							groupId: "-",
+							filter: `user == 'users/${userId}'`,
+							maxPageSize: 50,
+							pageToken,
+						});
+
+						for (const item of data.groupMemberships) {
+							const groupIdStr = item.path.match(/^groups\/(\d+)/)?.[1];
+							if (!groupIdStr) return;
+
+							allData[groupIdStr] = item.createTime;
+						}
+
+						if (!data.nextPageToken) break;
+
+						pageToken = data.nextPageToken;
+					}
+
+					return allData;
+				},
+			),
+		overrideCache,
+	});
+}
+
 export function getUserCommunityJoinedDate(
 	groupId: number,
 	userId: number,

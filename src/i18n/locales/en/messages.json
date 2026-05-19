@@ -8656,10 +8656,6 @@
 				"joined": {
 					"$message": "Joined {date}",
 					"$context": "Joined date on communities grid"
-				},
-				"check": {
-					"$message": "[check]",
-					"$context": "Text button to check the date of when the user joined the commmunity"
 				}
 			}
 		},
