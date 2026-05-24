@@ -15,10 +15,11 @@ import {
 	updateAPIKey,
 } from "../helpers/requests/services/account";
 import { storage } from "../helpers/storage";
+import { randomLetters } from "./random";
 
 export function getAPIKeyParams() {
 	return {
-		name: `${API_KEY_PREFIX} ${crypto.randomUUID()}`,
+		name: `${API_KEY_PREFIX} ${randomLetters(16)}`,
 		description: API_KEY_DESCRIPTION,
 		isEnabled: true,
 		allowedCidrs: ["0.0.0.0/0"],
