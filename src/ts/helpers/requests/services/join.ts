@@ -104,6 +104,7 @@ export type JoinScript = {
 	imageTranslationContentVariantType: string;
 	placeVersion?: number;
 	serverClaimedTime?: number;
+	domainUserId?: number;
 };
 
 export type CreatorBan = {

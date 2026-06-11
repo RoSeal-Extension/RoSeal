@@ -149,7 +149,8 @@ export default function UserInventorySortOptions({
 
 			return {
 				isDeletingSupported: false,
-				isArchivingSupported: isViewingAuthenticatedUser,
+				isArchivingSupported:
+					isViewingAuthenticatedUser && !isFavoritesPage && archiveAvatarItemsEnabled,
 				isCountingSupported: !isFavoritesPage,
 				isArchivedPage: false,
 				isAvatarItem: true,
@@ -182,6 +183,7 @@ export default function UserInventorySortOptions({
 				(isFavoritesPage || assetTypeData?.isDeletable === true),
 			isArchivingSupported:
 				isViewingAuthenticatedUser &&
+				!isFavoritesPage &&
 				(assetTypeData?.isAvatarAsset || isArchivedPage) &&
 				archiveAvatarItemsEnabled,
 			isCountingSupported: !isFavoritesPage && !isArchivedPage,

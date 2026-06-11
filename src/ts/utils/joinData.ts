@@ -72,6 +72,7 @@ export type MinimalServerJoinData = {
 		sessionInfo: {
 			placeId: number;
 			gameId: string;
+			domainUserId?: number;
 			userLatLong?: [number, number];
 		};
 	};
@@ -158,6 +159,7 @@ export async function tryGetServerJoinData<
 						sessionInfo: {
 							placeId: response.joinScript.placeId,
 							gameId: response.joinScript.gameId,
+							domainUserId: response.joinScript.domainUserId,
 							userLatLong: sessionInfoRaw && [
 								sessionInfoRaw.Latitude,
 								sessionInfoRaw.Longitude,
