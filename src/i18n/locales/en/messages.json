@@ -5054,6 +5054,11 @@
 				"$context": ""
 			}
 		},
+		"viewDomainUserId": {
+			"name": {
+				"$message": "View your scoped user ID for an experience"
+			}
+		},
 		"viewPlaceLatestVersions": {
 			"name": {
 				"$message": "View latest Saved and Published version of a place"
@@ -10722,6 +10727,10 @@
 		"latestPublishedVersion": {
 			"$message": "Latest Published Version",
 			"$context": "latest published version dev stat field"
+		},
+		"domainUserId": {
+			"$message": "Scoped User ID",
+			"$context": "Scoped User ID devstat field"
 		},
 		"media": {
 			"altText": {

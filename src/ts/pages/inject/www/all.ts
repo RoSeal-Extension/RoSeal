@@ -564,7 +564,8 @@ export default {
 						url.hostname === getRobloxCDNUrl("apis")
 					) {
 						if (
-							url.pathname === "/explore-api/v1/get-sort-content" &&
+							(url.pathname === "/explore-api/v1/get-sort-content" ||
+								url.pathname === "/charts-api/v1/get-sort-content") &&
 							hasExperienceConfig
 						) {
 							const data = (await res.clone().json()) as ExperienceSort;
@@ -656,7 +657,11 @@ export default {
 
 							return new Response(JSON.stringify(data), res);
 						}
-						if (url.pathname === "/explore-api/v1/get-sorts" && hasExperienceConfig) {
+						if (
+							(url.pathname === "/explore-api/v1/get-sorts" ||
+								url.pathname === "/charts-api/v1/get-sorts") &&
+							hasExperienceConfig
+						) {
 							const data = (await res.clone().json()) as ListExperienceSortsResponse;
 
 							const checkUniverseIds: number[] = [];

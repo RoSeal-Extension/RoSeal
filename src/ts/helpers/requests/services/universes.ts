@@ -1076,7 +1076,7 @@ export async function getExperienceDetailedGuidelines(
 export async function listExperienceSorts(request: ListExperienceSortsRequest) {
 	return (
 		await httpClient.httpRequest<ListExperienceSortsResponse>({
-			url: getRobloxUrl("apis", "/explore-api/v1/get-sorts"),
+			url: getRobloxUrl("apis", "/charts-api/v1/get-sorts"),
 			search: request,
 			errorHandling: "BEDEV2",
 			credentials: {
@@ -1090,7 +1090,7 @@ export async function listExperienceSorts(request: ListExperienceSortsRequest) {
 export async function listExperiencesSortContent(request: ListExperiencesSortContentRequest) {
 	return (
 		await httpClient.httpRequest<ExperienceSort>({
-			url: getRobloxUrl("apis", "/explore-api/v1/get-sort-content"),
+			url: getRobloxUrl("apis", "/charts-api/v1/get-sort-content"),
 			search: request,
 			credentials: {
 				type: "cookies",

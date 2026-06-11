@@ -239,6 +239,7 @@ export type ListUserPassesRequest = {
 
 export type ListedUserPassCreator = {
 	creatorType: Agent;
+
 	creatorId: number;
 	name: string;
 };

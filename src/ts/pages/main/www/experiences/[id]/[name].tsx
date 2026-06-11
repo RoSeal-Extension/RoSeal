@@ -554,7 +554,11 @@ export default {
 				});
 		});
 
-		multigetFeaturesValues(["viewUniverseId", "viewPlaceLatestVersions"]).then(async (data) => {
+		multigetFeaturesValues([
+			"viewUniverseId",
+			"viewPlaceLatestVersions",
+			"viewExperienceDomainUserId",
+		]).then(async (data) => {
 			if (!data.viewUniverseId && !data.viewPlaceLatestVersions) return;
 
 			const container = await watchOnce(
@@ -567,6 +571,7 @@ export default {
 					placeId={placeId}
 					viewUniverseId={data.viewUniverseId}
 					viewPlaceLatestVersions={data.viewPlaceLatestVersions}
+					viewDomainUserId={data.viewExperienceDomainUserId}
 				/>,
 				container,
 			);
@@ -1116,7 +1121,7 @@ export default {
 					universeIds: [universeId],
 				})
 			)?.[0];
-			if (!universeInfo || universeInfo.creator.type !== "Group") {
+			if (universeInfo?.creator.type !== "Group") {
 				return;
 			}
 			const userRole = (

@@ -3953,6 +3953,14 @@ export const sections = [
 					},
 					{
 						type: "Regular",
+						id: "viewExperienceDomainUserId",
+						component: {
+							type: "Toggle",
+							defaultValue: false,
+						},
+					},
+					{
+						type: "Regular",
 						id: "viewPlaceLatestVersions",
 						component: {
 							type: "Toggle",
