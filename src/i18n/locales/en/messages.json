@@ -6253,7 +6253,7 @@
 			"modal": {
 				"$context": "Modal shown when clicked on the owned text",
 				"title": {
-					"$message": "{sealEmoji} {count} {countNum, plural, =1 {Friend} other {Friends}} Who Own This"
+					"$message": "{sealEmoji} {count} {countNum, plural, =1 {Friend Who Owns This} other {Friends Who Own This}}"
 				},
 				"body": {
 					"item": {
