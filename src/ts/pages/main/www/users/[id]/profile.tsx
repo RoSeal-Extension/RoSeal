@@ -9,7 +9,6 @@ import Download3DAvatarButton from "src/ts/components/users/userProfile/avatar/D
 import BlockedScreen from "src/ts/components/users/userProfile/BlockedScreen";
 import CustomizeProfileButton from "src/ts/components/users/userProfile/CustomizeProfileButton";
 import UserCommunityJoinedDateGrid from "src/ts/components/users/userProfile/communities/JoinedDateGrid";
-import UserCommunityRoleGrid from "src/ts/components/users/userProfile/communities/RoleGrid";
 import FilteredTextPreview from "src/ts/components/users/userProfile/FilteredTextPreview";
 import UserJoinDate from "src/ts/components/users/userProfile/JoinDate";
 import UserLastSeen from "src/ts/components/users/userProfile/LastSeen";
@@ -47,7 +46,6 @@ import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { modifyItemStats } from "src/ts/helpers/modifyItemStats";
 import { onRobloxPresenceUpdateDetails } from "src/ts/helpers/notifications";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
-import { listUserGroupsRoles } from "src/ts/helpers/requests/services/groups";
 import { filterText, getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
 import {
 	checkUsersReciprocalBlocked,
@@ -716,79 +714,53 @@ export default {
 			});
 		});
 
-		multigetFeaturesValues(["showCommunityJoinedDate", "showUserCommunitiesRoles"]).then(
-			(data) => {
-				if (!data.showCommunityJoinedDate && !data.showUserCommunitiesRoles) return;
+		multigetFeaturesValues(["showCommunityJoinedDate"]).then((data) => {
+			if (!data.showCommunityJoinedDate) return;
 
-				const groupIdToJoinedDate = signal<Record<string, string>>({});
-				if (data.showCommunityJoinedDate) {
-					getAuthenticatedUser().then((data) => {
-						if (!data) return;
+			const groupIdToJoinedDate = signal<Record<string, string>>({});
+			if (data.showCommunityJoinedDate) {
+				getAuthenticatedUser().then((data) => {
+					if (!data) return;
 
-						listUserCommunityJoinedDates(
-							profileUserId,
-							data.userId,
-							data.isUnder13,
-						).then((data) => {
+					listUserCommunityJoinedDates(profileUserId, data.userId, data.isUnder13).then(
+						(data) => {
 							if (!data) return;
 							groupIdToJoinedDate.value = data;
-						});
-					});
-				}
+						},
+					);
+				});
+			}
 
-				const usersRoles = data.showUserCommunitiesRoles
-					? listUserGroupsRoles({
-							userId: profileUserId,
-						})
-					: undefined;
+			watch<HTMLAnchorElement>(
+				".btr-profile-groups .game-card .game-card-container a, .profile-communities .base-tile-metadata",
+				(card) => {
+					if (card.parentElement?.querySelector(".group-joined-date")) {
+						return;
+					}
 
-				watch<HTMLAnchorElement>(
-					".btr-profile-groups .game-card .game-card-container a, .profile-communities .base-tile-metadata",
-					(card) => {
-						if (card.parentElement?.querySelector(".group-joined-date")) {
-							return;
-						}
+					const link = card.closest("a")?.href;
+					if (!link) {
+						return;
+					}
 
-						const link = card.closest("a")?.href;
-						if (!link) {
-							return;
-						}
+					const path = new URL(link).pathname;
+					const idStr = GROUP_DETAILS_REGEX.exec(path)?.[2];
+					if (!idStr) {
+						return;
+					}
 
-						const path = new URL(link).pathname;
-						const idStr = GROUP_DETAILS_REGEX.exec(path)?.[2];
-						if (!idStr) {
-							return;
-						}
+					const id = Number.parseInt(idStr, 10);
+					if (!card.parentElement) return;
 
-						const id = Number.parseInt(idStr, 10);
-						if (!card.parentElement) return;
-
-						renderAppend(
-							<>
-								{usersRoles && (
-									<UserCommunityRoleGrid
-										roleName={usersRoles.then((data) => {
-											for (const item of data.data) {
-												if (item.group.id === id) {
-													return item.role.name;
-												}
-											}
-										})}
-									/>
-								)}
-								{data.showCommunityJoinedDate && (
-									<UserCommunityJoinedDateGrid
-										groupId={id}
-										state={groupIdToJoinedDate}
-									/>
-								)}
-							</>,
-							card.parentElement,
-						);
-					},
-				);
-			},
-		);
+					renderAppend(
+						data.showCommunityJoinedDate && (
+							<UserCommunityJoinedDateGrid groupId={id} state={groupIdToJoinedDate} />
+						),
+						card.parentElement,
+					);
+				},
+			);
+		});
 
 		if (profileUserId !== authenticatedUser?.userId) {
 			featureValueIs("userBlockedScreen", true, () => {

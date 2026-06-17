@@ -171,6 +171,7 @@ declare global {
 			};
 			GamePassItemPurchase: {
 				openPurchaseVerificationView: (el: HTMLElement, type: "game-pass") => void;
+				startGamepassPurchaseFlow: (el: HTMLElement) => void;
 			};
 			CrossTabCommunication?: {
 				Kingmaker?: {

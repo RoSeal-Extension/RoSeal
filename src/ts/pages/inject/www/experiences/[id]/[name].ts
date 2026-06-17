@@ -73,10 +73,7 @@ export default {
 				return;
 			}
 
-			window.Roblox.GamePassItemPurchase?.openPurchaseVerificationView(
-				buyButton,
-				"game-pass",
-			);
+			window.Roblox.GamePassItemPurchase?.startGamepassPurchaseFlow(buyButton);
 		});
 
 		hijackComponent(

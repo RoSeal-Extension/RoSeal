@@ -918,6 +918,7 @@ export const sections = [
 					{
 						type: "Regular",
 						id: "experienceStoreFiltering",
+						variant: 1,
 						component: {
 							type: "Toggle",
 							defaultValue: true,
@@ -2236,14 +2237,6 @@ export const sections = [
 					{
 						type: "Regular",
 						id: "pastUsernamesCount",
-						component: {
-							type: "Toggle",
-							defaultValue: true,
-						},
-					},
-					{
-						type: "Regular",
-						id: "showUserCommunitiesRoles",
 						component: {
 							type: "Toggle",
 							defaultValue: true,
