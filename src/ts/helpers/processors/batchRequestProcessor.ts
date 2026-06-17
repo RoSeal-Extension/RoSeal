@@ -159,6 +159,13 @@ export class BatchRequestProcessor<
 				resolve(data);
 			}
 		}
+
+		const listeners = this.changedListeners.get(key);
+		if (listeners) {
+			for (const callback of listeners) {
+				callback(data);
+			}
+		}
 	}
 
 	public getIfCached(request: T): V | undefined {
