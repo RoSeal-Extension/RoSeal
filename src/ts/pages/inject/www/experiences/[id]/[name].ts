@@ -76,6 +76,21 @@ export default {
 			window.Roblox.GamePassItemPurchase?.startGamepassPurchaseFlow(buyButton);
 		});
 
+		featureValueIsInject("viewExperienceTopSongs", true, () => {
+			hijackRequest((req) => {
+				const url = new URL(req.url);
+
+				if (
+					url.hostname === getRobloxUrl("apis") &&
+					url.pathname === "/music-discovery/v1/experience-songs"
+				) {
+					url.searchParams.set("limit", "50");
+
+					return new Request(url.toString(), req);
+				}
+			});
+		});
+
 		hijackComponent(
 			(_, el) => el.id === "game-details-play-button-container",
 			(_component, _container) => {

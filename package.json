@@ -17,8 +17,8 @@
 	},
 	"dependencies": {
 		"@formatjs/intl-durationformat": "0.10.15",
-		"@material-symbols/svg-400": "0.45.1",
-		"@material-symbols/svg-600": "0.45.1",
+		"@material-symbols/svg-400": "0.45.2",
+		"@material-symbols/svg-600": "0.45.2",
 		"@microsoft/signalr": "10.0.0",
 		"@minoru/react-dnd-treeview": "3.5.4",
 		"@phosphor-icons/react": "2.1.10",

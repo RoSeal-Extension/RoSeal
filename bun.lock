@@ -5,8 +5,8 @@
     "": {
       "dependencies": {
         "@formatjs/intl-durationformat": "0.10.15",
-        "@material-symbols/svg-400": "0.45.1",
-        "@material-symbols/svg-600": "0.45.1",
+        "@material-symbols/svg-400": "0.45.2",
+        "@material-symbols/svg-600": "0.45.2",
         "@microsoft/signalr": "10.0.0",
         "@minoru/react-dnd-treeview": "3.5.4",
         "@phosphor-icons/react": "2.1.10",
@@ -252,9 +252,9 @@
 
     "@kurkle/color": ["@kurkle/color@0.3.4", "", {}, "sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w=="],
 
-    "@material-symbols/svg-400": ["@material-symbols/svg-400@0.45.1", "", {}, "sha512-iZHFSXGf9+NUlcRjHeKhD0Qxw444ZyChd/i6tmUpqZ8up4HtCoQiXsJ8IS8p0SNyW5udw8bokPFtbVGwY655Ww=="],
+    "@material-symbols/svg-400": ["@material-symbols/svg-400@0.45.2", "", {}, "sha512-O9VNGQS5vGohyeS3NUCBx2PhEBKwEutpSPUJYu6UoyIjB2g8fB7PQcj/a9ndb4T70Ut3/9b7CGmXo+Jll4KlNg=="],
 
-    "@material-symbols/svg-600": ["@material-symbols/svg-600@0.45.1", "", {}, "sha512-EHAk8NeXVb6b06Y8W4FBjVX/pDNMSGvpOJMTqs+t/pzOeNvCexzOQ/Oz3CFUBUhmjybU65sWQM9g/qdfWrYMPg=="],
+    "@material-symbols/svg-600": ["@material-symbols/svg-600@0.45.2", "", {}, "sha512-bHGJuAOwO7uy98skJ58AlcKmxmH70FMcw33B9UvBsDaZasmSXqeBXqL7u/IbrZlDGTcAIxJNvqJsmA9PtZ+2JA=="],
 
     "@mdn/browser-compat-data": ["@mdn/browser-compat-data@8.0.2", "", {}, "sha512-bT8u6Ll/vuV8qC9tn8cqvxoAtBpKcCwhKMW51qJRK9+G3JUtAx3lc1wjij4GJzGCfqA0keRbJUFetCgwwYaskA=="],
 

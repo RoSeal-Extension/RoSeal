@@ -1625,6 +1625,7 @@ export const sections = [
 					{
 						type: "Regular",
 						id: "viewExperienceTopSongs",
+						variant: 1,
 						component: {
 							type: "Toggle",
 							defaultValue: true,

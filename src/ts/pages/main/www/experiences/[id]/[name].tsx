@@ -13,7 +13,6 @@ import ExperienceBadgesTab from "src/ts/components/experience/badges/Tab";
 import ExperienceCountdown from "src/ts/components/experience/Countdown";
 import ExperienceCreatedDate from "src/ts/components/experience/CreatedDate";
 import ExperienceDevStats from "src/ts/components/experience/DevStats";
-import ExperienceTopSongsList from "src/ts/components/experience/ExperienceTopSongsList";
 import ExperienceEventsTab from "src/ts/components/experience/events/Tab";
 import FriendsWhoPlayedGame from "src/ts/components/experience/FriendsWhoPlayed";
 import ExperienceLinks from "src/ts/components/experience/links/LinkList";
@@ -154,15 +153,6 @@ export default {
 					},
 				);
 			});
-
-		featureValueIs("viewExperienceTopSongs", true, () => {
-			watchOnce(".container-list.games-detail").then((recommendedSection) =>
-				renderAfter(
-					<ExperienceTopSongsList universeId={universeId} universeName={universeName} />,
-					recommendedSection,
-				),
-			);
-		});
 
 		featureValueIs("scaredPlayButton", true, () =>
 			watch('[data-testid="play-button"]', (btn) => {

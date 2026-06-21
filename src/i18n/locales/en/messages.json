@@ -2611,7 +2611,7 @@
 		},
 		"viewExperienceTopSongs": {
 			"name": {
-				"$message": "View top songs played in an experience"
+				"$message": "Show more top songs on experience pages"
 			}
 		},
 		"removeNotificationAdvertisements": {
