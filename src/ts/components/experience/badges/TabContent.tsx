@@ -29,6 +29,7 @@ import useFeatureValue from "../../hooks/useFeatureValue";
 import usePages from "../../hooks/usePages";
 import BadgesGrid from "./Grid";
 import BadgesList from "./List";
+import useFlag from "../../hooks/useFlag";
 
 export type Filters = {
 	showActive: boolean;
@@ -194,6 +195,7 @@ export default function BadgesTabContent({ universeId }: BadgesTabContentProps) 
 		"improvedExperienceBadges.showBadgeProgress",
 		false,
 	);
+		const shouldHandleChallenge = useFlag("badges", "handleChallengeForMultigetAwardedDates");
 
 	const [filters, setFilters] = useState<Filters>({
 		showActive: true,
@@ -408,6 +410,7 @@ export default function BadgesTabContent({ universeId }: BadgesTabContentProps) 
 					userId: user1.userId,
 					badgeIds: allIds,
 					overrideCache: recount,
+					shouldHandleChallenge,
 				})
 					.then(setUser1AwardedDates)
 					.catch(() => setUser1AwardedDates(null));
@@ -428,6 +431,7 @@ export default function BadgesTabContent({ universeId }: BadgesTabContentProps) 
 					userId: user2.userId,
 					badgeIds: allIds,
 					overrideCache: recount,
+					shouldHandleChallenge,
 				})
 					.then(setUser2AwardedDates)
 					.catch(() => setUser2AwardedDates(null));

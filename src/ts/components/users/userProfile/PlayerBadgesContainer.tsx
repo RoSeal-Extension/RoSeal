@@ -6,12 +6,15 @@ import {
 import { getUserInventoryLink } from "src/ts/utils/links";
 import usePromise from "../../hooks/usePromise";
 import { PlayerBadgeContainer } from "./PlayerBadgeContainer";
+import useFlag from "../../hooks/useFlag";
 
 export type PlayerBadgesContainerProps = {
 	userId: number;
 };
 
 export default function PlayerBadgesContainer({ userId }: PlayerBadgesContainerProps) {
+
+	const shouldHandleChallenge = useFlag("badges", "handleChallengeForMultigetAwardedDates");
 	const [badges] = usePromise(
 		() =>
 			listUserBadges({
@@ -27,6 +30,7 @@ export default function PlayerBadgesContainer({ userId }: PlayerBadgesContainerP
 			multigetBadgesAwardedDates({
 				badgeIds: badges.map((badge) => badge.id),
 				userId,
+				shouldHandleChallenge,
 			}),
 		[userId, badges],
 	);

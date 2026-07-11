@@ -10,6 +10,7 @@ import {
 	getFeatureValue,
 	multigetFeaturesValues,
 } from "src/ts/helpers/features/helpers";
+import { getFlag } from "src/ts/helpers/flags/flags";
 import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { multigetBadgesAwardedDates } from "src/ts/helpers/requests/services/badges";
@@ -205,9 +206,12 @@ export default {
 
 					if (!badgeIds.length) return cardToBadgeId.clear();
 
+					const shouldHandleChallenge = await getFlag("badges", "handleChallengeForMultigetAwardedDates");
+
 					const data = await multigetBadgesAwardedDates({
 						userId: targetUserId,
 						badgeIds,
+						shouldHandleChallenge,
 					});
 					for (const [card, badgeId] of cardToBadgeId) {
 						const awardedDate = data.find(

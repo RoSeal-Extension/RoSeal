@@ -14,6 +14,9 @@ export type FlagsData = {
 	supportedDevices: {
 		checkTabletForTV: boolean;
 	};
+	badges: {
+		handleChallengeForMultigetAwardedDates: boolean;
+	}
 };
 
 export const flagsData: FlagsData = {
@@ -32,4 +35,7 @@ export const flagsData: FlagsData = {
 	supportedDevices: {
 		checkTabletForTV: true,
 	},
+	badges: {
+		handleChallengeForMultigetAwardedDates: true,
+	}
 };

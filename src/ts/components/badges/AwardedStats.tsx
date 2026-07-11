@@ -9,6 +9,7 @@ import useFeatureValue from "../hooks/useFeatureValue";
 import usePromise from "../hooks/usePromise";
 import useTime from "../hooks/useTime";
 import { handleTimeSwitch } from "../utils/handleTimeSwitch";
+import useFlag from "../hooks/useFlag";
 
 export type BadgeAwardedStatsProps = {
 	badgeId: number;
@@ -17,12 +18,15 @@ export type BadgeAwardedStatsProps = {
 export default function BadgeAwardedStats({ badgeId }: BadgeAwardedStatsProps) {
 	const [authenticatedUser] = useAuthenticatedUser();
 	const [isClickSwitchEnabled] = useFeatureValue("times.clickSwitch", false);
+	const shouldHandleChallenge = useFlag("badges", "handleChallengeForMultigetAwardedDates");
+
 	const [awardedDate] = usePromise(
 		() =>
 			authenticatedUser &&
 			multigetBadgesAwardedDates({
 				badgeIds: [badgeId],
 				userId: authenticatedUser.userId,
+				shouldHandleChallenge,
 			}).then((data) => {
 				const date = data[0]?.awardedDate;
 				if (date) return new Date(date);

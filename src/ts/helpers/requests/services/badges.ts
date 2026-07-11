@@ -1,6 +1,7 @@
 import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
 import { getOrSetCache, getOrSetCaches } from "../../cache.ts";
 import { httpClient } from "../main.ts";
+import { renderGenericChallenge } from "../../domInvokes.ts";
 
 export type GetBadgeByIdRequest = {
 	badgeId: number;
@@ -61,6 +62,7 @@ export type MultigetBadgesAwardedDatesRequest = {
 	userId: number;
 	badgeIds: number[];
 	overrideCache?: boolean;
+	shouldHandleChallenge?: boolean;
 };
 
 export type MultigetBadgesAwardedDatesResponse = {
@@ -125,6 +127,7 @@ export async function multigetBadgesAwardedDates({
 	userId,
 	badgeIds,
 	overrideCache,
+	shouldHandleChallenge = false
 }: MultigetBadgesAwardedDatesRequest) {
 	return getOrSetCaches({
 		baseKey: ["badges", "awarded-dates", userId],
@@ -142,6 +145,7 @@ export async function multigetBadgesAwardedDates({
 						type: "cookies",
 						value: true,
 					},
+					handleChallenge: shouldHandleChallenge ? renderGenericChallenge : undefined,
 				})
 				.then((data) => {
 					const items: Record<number, BadgeAwardedDate> = {};
