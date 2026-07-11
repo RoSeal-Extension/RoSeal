@@ -29,6 +29,7 @@ import {
 import {
 	type AvatarBundleType,
 	multigetBundlesByIds,
+    removeUserLookFavorite,
 } from "src/ts/helpers/requests/services/marketplace";
 import { storage } from "src/ts/helpers/storage";
 import type { InventoryCategoryData } from "src/ts/specials/handleInventorySorting";
@@ -40,6 +41,7 @@ import {
 	BADGE_DETAILS_REGEX,
 	CREATOR_STORE_ASSET_REGEX,
 	EXPERIENCE_DETAILS_REGEX,
+	LOOK_REGEX,
 	PASS_DETAILS_REGEX,
 } from "src/ts/utils/regex";
 import { renderAppend } from "src/ts/utils/render";
@@ -56,7 +58,7 @@ export type UserInventorySortOptionsProps = {
 	isFavoritesPage: boolean;
 	isViewingAuthenticatedUser: boolean;
 };
-export type InventoryItemTypeToDelete = "Badge" | "Pass" | "Bundle" | "Asset";
+export type InventoryItemTypeToDelete = "Badge" | "Pass" | "Bundle" | "Asset" | "Look";
 
 export type InventoryItemToDelete = {
 	type: InventoryItemTypeToDelete;
@@ -148,7 +150,7 @@ export default function UserInventorySortOptions({
 				};
 
 			return {
-				isDeletingSupported: false,
+				isDeletingSupported: isViewingAuthenticatedUser && isFavoritesPage,
 				isArchivingSupported:
 					isViewingAuthenticatedUser && !isFavoritesPage && archiveAvatarItemsEnabled,
 				isCountingSupported: !isFavoritesPage,
@@ -157,6 +159,19 @@ export default function UserInventorySortOptions({
 				hasGetMore: true,
 				itemType: "Bundle",
 				itemSubType: getBundleTypeData(bundleId)?.bundleType as AvatarBundleType,
+			} as const;
+		}
+
+		if (categoryData?.category?.categoryType === "Avatars") {
+			return {
+				isDeletingSupported: isViewingAuthenticatedUser && isFavoritesPage,
+				isArchivingSupported:
+					false,
+				isCountingSupported: false,
+				isArchivedPage: false,
+				isAvatarItem: true,
+				hasGetMore: true,
+				itemType: "Look",
 			} as const;
 		}
 
@@ -394,7 +409,7 @@ export default function UserInventorySortOptions({
 							.then(() => true)
 							.catch(() => false),
 					);
-				} else {
+				} else if (item.type === "Asset") {
 					promises.push(
 						removeUserAssetFavorite({
 							userId,
@@ -403,6 +418,12 @@ export default function UserInventorySortOptions({
 							.then(() => true)
 							.catch(() => false),
 					);
+				} else if (item.type === "Look") {
+					promises.push(removeUserLookFavorite({
+						id: item.id.toString(),
+					})
+						.then(() => true)
+						.catch(() => false));
 				}
 			} else if (item.type === "Asset") {
 				promises.push(
@@ -734,6 +755,16 @@ export default function UserInventorySortOptions({
 
 					newItemType = "Asset";
 					newItemId = Number.parseInt(placeMatch[1], 10);
+					break;
+				}
+				case "Look": {
+					const lookMatch = LOOK_REGEX.exec(itemPath);
+					if (!lookMatch) {
+						return;
+					}
+
+					newItemType = "Look";
+					newItemId = BigInt(lookMatch[1]) as unknown as number;
 					break;
 				}
 

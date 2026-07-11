@@ -1112,6 +1112,23 @@ export type GetSearchNavigationMenusResponse = {
 	salesTypeFilters: SearchNavigationMenuSalesTypeFilter;
 };
 
+export type ListUserFavoritedLooksResponse = {
+	lookIds: string[];
+	previousPageCursor: string | null;
+	nextPageCursor: string | null;
+};
+
+export type ListUserFavoritedLooksRequest = {
+	cursor?: string;
+	userId: number;
+	lookType: "Avatar";
+	limit: number;
+};
+
+export type RemoveUserLookFavoriteRequest = {
+	id: string;
+};
+
 export async function searchItems(request: SearchItemsRequest): Promise<SearchItemsResponse> {
 	return (
 		await httpClient.httpRequest<SearchItemsResponse>({
@@ -1700,6 +1717,20 @@ export async function listUserLooks({ userId, ...request }: ListUserLooksRequest
 	).body;
 }
 
+export async function listUserFavoritedLooks(request: ListUserFavoritedLooksRequest) {
+	return (
+		await httpClient.httpRequest<ListUserFavoritedLooksResponse>({
+			url: getRobloxUrl("apis", "/look-api/v1/looks/favorites"),
+			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+			errorHandling: "BEDEV2",
+		})
+	).body;
+}
+
 export async function deleteUserLook({ lookId }: DeleteUserLookRequest) {
 	await httpClient.httpRequest<void>({
 		method: "DELETE",
@@ -1707,6 +1738,23 @@ export async function deleteUserLook({ lookId }: DeleteUserLookRequest) {
 		credentials: {
 			type: "cookies",
 			value: true,
+		},
+		expect: { type: "none" },
+		errorHandling: "BEDEV2",
+	});
+}
+
+export async function removeUserLookFavorite(request: RemoveUserLookFavoriteRequest) {
+	await httpClient.httpRequest<void>({
+		method: "POST",
+		url: getRobloxUrl("apis", "/look-api/v1/looks/favorite/delete"),
+		credentials: {
+			type: "cookies",
+			value: true,
+		},
+		body: {
+			type: "json",
+			value: request,
 		},
 		expect: { type: "none" },
 		errorHandling: "BEDEV2",
