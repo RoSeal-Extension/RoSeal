@@ -73,27 +73,6 @@ export type ListUniversePassesResponse = {
 	gamePasses: UniversePassDetails[];
 	nextPageToken?: string | null;
 };
-
-export type PassDetailsSalesData = {
-	totalSales: number;
-	salesPast7Days: number;
-};
-
-export type PassDetails = {
-	gamePassId: number;
-	name: string;
-	description: string;
-	isForSale: boolean;
-	price: number | null;
-	iconAssetId: number | null;
-	placeId: number;
-	marketPlaceFeesPercentage: number;
-	gamePassSalesData: PassDetailsSalesData;
-	createdTimestamp: string;
-	updatedTimestamp: string;
-	priceInformation: PriceInformation;
-};
-
 export type BatchPassOwnershipRequestIdentifier = {
 	userId: number;
 	gamePassId: number;
@@ -114,24 +93,6 @@ export async function getPassProductById({ passId }: GetPassByIdRequest) {
 			httpClient
 				.httpRequest<PassProductInfo>({
 					url: `${getRobloxUrl("apis")}/game-passes/v1/game-passes/${passId}/product-info`,
-					credentials: {
-						type: "cookies",
-						value: true,
-					},
-					camelizeResponse: true,
-					errorHandling: "BEDEV2",
-				})
-				.then((res) => res.body),
-	});
-}
-
-export async function getPassById({ passId }: GetPassByIdRequest) {
-	return getOrSetCache({
-		key: ["passes", passId, "details"],
-		fn: () =>
-			httpClient
-				.httpRequest<PassDetails>({
-					url: `${getRobloxUrl("apis")}/game-passes/v1/game-passes/${passId}/details`,
 					credentials: {
 						type: "cookies",
 						value: true,

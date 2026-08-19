@@ -9,8 +9,7 @@ import {
 	queryMarketplaceAnalytics,
 } from "src/ts/helpers/requests/services/marketplace.ts";
 import { queryCreatorAnalytics } from "src/ts/helpers/requests/services/misc.ts";
-import { getPassById } from "src/ts/helpers/requests/services/passes.ts";
-import { getPlaceUniverseId } from "src/ts/helpers/requests/services/places.ts";
+import { getPassProductById } from "src/ts/helpers/requests/services/passes.ts";
 import { queryExperienceTopItems } from "src/ts/helpers/requests/services/universes.ts";
 import ItemField from "../core/items/ItemField.tsx";
 import RobuxView from "../core/RobuxView.tsx";
@@ -173,26 +172,23 @@ export default function ItemSales({ itemId, itemType, isAvatarItem, universeId }
 		if (itemType === "GamePass" || itemType === "DeveloperProduct") {
 			const passData =
 				itemType === "GamePass"
-					? await getPassById({
+					? await getPassProductById({
 							passId: itemId,
 						})
 					: undefined;
 
-			const checkUniverseId =
-				universeId ??
-				(passData &&
-					(await getPlaceUniverseId({
-						placeId: passData?.placeId,
-					})));
-
-			if (!checkUniverseId) {
-				return;
+			const fallbackSales = passData?.sales ?? 0;
+			if (!universeId) {
+				return {
+					salesCount: fallbackSales,
+					showSalesCount: fallbackSales !== 0,
+				};
 			}
 
 			return queryExperienceTopItems({
 				startTime: new Date("2000-01-01").toISOString(),
 				endTime: new Date().toISOString(),
-				universeId: checkUniverseId,
+				universeId,
 				monetizationDetailType: itemType === "GamePass" ? "GamePass" : "DevProduct",
 				pagination: {
 					pageSize: 1000,
@@ -211,15 +207,15 @@ export default function ItemSales({ itemId, itemType, isAvatarItem, universeId }
 
 				if (targetData) {
 					if (passData) {
-						if (targetData.salesCount < passData.gamePassSalesData.totalSales) {
-							targetData.salesCount = passData.gamePassSalesData.totalSales;
+						if (targetData.salesCount < fallbackSales) {
+							targetData.salesCount = fallbackSales;
 							targetData.hasMoreRevenue = true;
 						}
 					}
 					return targetData;
 				}
 
-				const totalSales = passData?.gamePassSalesData.totalSales ?? 0;
+				const totalSales = fallbackSales;
 				return {
 					salesCount: totalSales,
 					showSalesCount: totalSales !== 0,

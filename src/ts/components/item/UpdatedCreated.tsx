@@ -12,7 +12,7 @@ import type {
 	LiterallyAnyItemType,
 } from "src/ts/helpers/requests/services/marketplace";
 import { getAvatarItem, getLookById } from "src/ts/helpers/requests/services/marketplace";
-import { getPassById } from "src/ts/helpers/requests/services/passes";
+import { getPassProductById } from "src/ts/helpers/requests/services/passes";
 import { getExperienceEventById } from "src/ts/helpers/requests/services/universes";
 import { getUserById } from "src/ts/helpers/requests/services/users";
 import { getMostFrequentCreator } from "src/ts/utils/assets";
@@ -174,11 +174,11 @@ export default function ItemUpdatedCreated({
 		}
 
 		if (itemType === "GamePass") {
-			return getPassById({
+			return getPassProductById({
 				passId: itemId,
 			}).then((data) => ({
-				updated: data.updatedTimestamp,
-				created: data.createdTimestamp,
+				updated: data.updated,
+				created: data.created,
 			}));
 		}
 
