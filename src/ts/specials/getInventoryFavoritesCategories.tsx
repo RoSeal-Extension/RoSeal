@@ -228,6 +228,21 @@ export function getInventoryFavoritesCategories(
 				],
 			},
 			{
+				name: "Backgrounds",
+				displayName: getItemTypeDisplayLabel("Asset", "shortCategory", 92),
+				categoryType: "AvatarBackground",
+				items: [
+					{
+						name: "Backgrounds",
+						displayName: getItemTypeDisplayLabel("Asset", "shortCategory", 92),
+						filter: null,
+						id: 92,
+						type: "AssetType",
+						categoryType: "AvatarBackground",
+					},
+				],
+			},
+			{
 				name: "MeshParts",
 				displayName: getItemTypeDisplayLabel("Asset", "shortCategory", 40),
 				categoryType: "MeshPart",

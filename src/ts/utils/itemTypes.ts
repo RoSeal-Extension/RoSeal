@@ -659,6 +659,14 @@ export const assetTypes = [
 		assetTypeId: 92,
 		isAvatarAsset: true,
 	},
+	{
+		assetType: "TextDocumenet",
+		assetTypeId: 93,
+	},
+	{
+		assetType: "Post",
+		assetTypeId: 94,
+	},
 ] satisfies AssetTypeData[];
 
 export const bundleTypes = [
