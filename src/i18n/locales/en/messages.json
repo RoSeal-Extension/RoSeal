@@ -9412,7 +9412,7 @@
 				"$context": "Server card",
 				"likelyBotted": {
 					"$message": "Likely Botted Server",
-					"$context": "Server is likely to have 2 or more buttons"
+					"$context": "Server is likely to have 2 or more bots"
 				},
 				"connection": {
 					"$context": "Connection label",
