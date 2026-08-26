@@ -1284,7 +1284,7 @@ export default {
 		featureValueIsInject("avatarEditorCurrentlyWearing", true, setupReactHijack);
 
 		featureValueIsInject("avatarUnlockedAccessoryLimits", true, () => {
-			const hijackVariable = (service: typeof window.Roblox.AvatarAccoutrementService) => {
+			onSet(window.Roblox, "AvatarAccoutrementService").then((service) => {
 				hijackFunction(
 					service,
 					(target, thisArg, args) => {
@@ -1304,29 +1304,29 @@ export default {
 					},
 					"insertAssetMetaIntoAssetList",
 				);
-			};
-
-			onSet(window.Roblox, "AvatarAccoutrementService").then(hijackVariable);
+			});
 
 			const originalDefineProperty = Object.defineProperty;
 
 			// @ts-expect-error: fine
 			globalThis.Object.defineProperty = (obj, prop, descriptor) => {
-				if (
-					prop === "addAssetToAvatar" &&
-					descriptor &&
-					typeof descriptor.get === "function"
-				) {
-					onSet(obj as typeof window.Roblox.AvatarAccoutrementService, "addAssetToAvatar")
-						.then(() =>
-							onSet(
-								obj as typeof window.Roblox.AvatarAccoutrementService,
-								"insertAssetMetaIntoAssetList",
-							),
-						)
-						.then(() =>
-							hijackVariable(obj as typeof window.Roblox.AvatarAccoutrementService),
-						);
+				if (descriptor && typeof descriptor.get === "function") {
+					const originalGet = descriptor.get;
+					if (prop === "addAssetToAvatar") {
+						descriptor.get = () => {
+							return (
+								...args: Parameters<
+									typeof window.Roblox.AvatarAccoutrementService.addAssetToAvatar
+								>
+							) => {
+								const result = originalGet().apply(this, args);
+								return filterWornAssets([args[0], ...args[1]], true, result).assets;
+							};
+						};
+					} else if (prop === "insertAssetMetaIntoAssetList") {
+						descriptor.get = () => insertAssetMetaIntoAssetList;
+						return originalDefineProperty.apply(this, [obj, prop, descriptor]);
+					}
 				}
 
 				return originalDefineProperty.apply(this, [obj, prop, descriptor]);
