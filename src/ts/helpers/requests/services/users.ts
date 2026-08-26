@@ -4,7 +4,7 @@ import type {
 	UserPresenceType,
 	UserPresenceTypeId,
 } from "src/ts/constants/presence.ts";
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts";
 import { getOrSetCache, getOrSetCaches } from "../../../helpers/cache.ts";
 import { renderGenericChallenge } from "../../domInvokes.ts";
 import { httpClient, ROBLOX_UNIVERSE_ID_HEADER_NAME } from "../main.ts";

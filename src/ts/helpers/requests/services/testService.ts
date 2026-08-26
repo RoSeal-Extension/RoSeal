@@ -1,5 +1,5 @@
 import type { APPLICATION_BINARY_TYPES } from "src/ts/constants/misc.ts";
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts";
 import { CHANNEL_TOKEN_HEADER_NAME, httpClient } from "../main.ts";
 
 export type GetLayersValuesParameters<T extends string> = {

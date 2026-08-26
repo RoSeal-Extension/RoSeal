@@ -1,7 +1,7 @@
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts";
 import { getOrSetCache, getOrSetCaches } from "../../cache.ts";
-import { httpClient } from "../main.ts";
 import { renderGenericChallenge } from "../../domInvokes.ts";
+import { httpClient } from "../main.ts";
 
 export type GetBadgeByIdRequest = {
 	badgeId: number;
@@ -127,7 +127,7 @@ export async function multigetBadgesAwardedDates({
 	userId,
 	badgeIds,
 	overrideCache,
-	shouldHandleChallenge = false
+	shouldHandleChallenge = false,
 }: MultigetBadgesAwardedDatesRequest) {
 	return getOrSetCaches({
 		baseKey: ["badges", "awarded-dates", userId],

@@ -1,4 +1,4 @@
-import { getRobloxUrl } from "../utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "../utils/baseUrls";
 
 export const ROBLOX_COOKIES: CookieMetadata[] = [
 	{

@@ -1,4 +1,4 @@
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts";
 import { getOrSetCaches } from "../../cache.ts";
 import { httpClient } from "../main.ts";
 

@@ -1,4 +1,4 @@
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { httpClient } from "../main";
 import type { FriendRequestOriginType, UserPresence } from "./users";
 

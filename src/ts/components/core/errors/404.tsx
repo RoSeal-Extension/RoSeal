@@ -1,6 +1,6 @@
 import { SEAL_EMOJI_COMPONENT } from "src/ts/constants/preact.tsx";
 import { getMessage } from "src/ts/helpers/i18n/getMessage.ts";
-import { getRobloxCDNUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxCDNUrl } from "src/ts/utils/baseUrls.ts";
 import { getHomePageUrl } from "src/ts/utils/links.ts";
 import { useTheme } from "../../hooks/useTheme.ts";
 import Button from "../Button.tsx";

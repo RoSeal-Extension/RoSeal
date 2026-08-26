@@ -1,5 +1,5 @@
 import type { PlatformType } from "scripts/build/constants.ts";
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts";
 import { httpClient } from "../main.ts";
 
 export type GameJoinAttemptOrigin =

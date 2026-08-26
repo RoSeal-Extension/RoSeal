@@ -2,7 +2,7 @@ import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
 import { hijackResponse } from "src/ts/helpers/hijack/fetch";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type { GetLookByIdResponse } from "src/ts/helpers/requests/services/marketplace";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { getAssetTypeData } from "src/ts/utils/itemTypes";
 import { LOOK_REGEX } from "src/ts/utils/regex";
 

@@ -25,7 +25,7 @@ import {
 	type AssetsExplorerScope,
 	handleInventorySorting,
 } from "src/ts/specials/handleInventorySorting";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { getAvatarAssetLink, getAvatarBundleLink } from "src/ts/utils/links";
 import { USER_INVENTORY_REGEX } from "src/ts/utils/regex";
 

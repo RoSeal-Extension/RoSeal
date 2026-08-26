@@ -24,13 +24,13 @@ import {
 	type Collectible,
 	getAvatarItem,
 	getCollectibleResaleData,
-	type MultigetCollectibleItemsByIdsRequest,
 	multigetBundlesByIds,
 	multigetCollectibleItemsByIds,
-	type PurchaseCollectibleItemResponse,
-	type PurchaseItemResponse,
+	type MultigetCollectibleItemsByIdsRequest,
 	purchaseCollectibleItem,
+	type PurchaseCollectibleItemResponse,
 	purchaseItem,
+	type PurchaseItemResponse,
 	type ResaleDataPoint,
 } from "src/ts/helpers/requests/services/marketplace";
 import {
@@ -42,7 +42,7 @@ import { listUserRobloxCollections } from "src/ts/helpers/requests/services/user
 import type { AvatarItemFeedback } from "src/ts/pages/main/www/items/[id]/[name]";
 import { calculateRecentAveragePriceAfterSale } from "src/ts/utils/assets";
 import { getAuthenticatedUser, getAuthenticatedUserSync } from "src/ts/utils/authenticatedUser";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { getAvatarAssetLink, getAvatarBundleLink } from "src/ts/utils/links";
 import { AVATAR_ITEM_REGEX } from "src/ts/utils/regex";
 import { getRobloxI18nNamespace } from "src/ts/utils/robloxI18n";

@@ -1,4 +1,4 @@
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts";
 import { chunk } from "src/ts/utils/objects.ts";
 import { httpClient } from "../main.ts";
 

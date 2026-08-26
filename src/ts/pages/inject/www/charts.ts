@@ -17,7 +17,7 @@ import type {
 	OmniSort,
 } from "src/ts/helpers/requests/services/universes";
 import { handleChartFilters } from "src/ts/specials/handleChartFilters";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { CHARTS_REGEX } from "src/ts/utils/regex";
 
 const emptyList = new Proxy([], {

@@ -4,7 +4,7 @@ import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { httpClient } from "src/ts/helpers/requests/main";
 import { multigetAvatarItems } from "src/ts/helpers/requests/services/marketplace";
 import { multigetUsersByNames } from "src/ts/helpers/requests/services/users";
-import { getRobloxCDNUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxCDNUrl } from "src/ts/utils/baseUrls";
 import { getAvatarBundleLink, getAvatarMarketplaceLink } from "src/ts/utils/links";
 import Button from "../core/Button";
 import Page404 from "../core/errors/404";

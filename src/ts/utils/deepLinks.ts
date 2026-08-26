@@ -3,7 +3,7 @@ import AuthedProtoolParser from "roblox-deeplink-parser/authedProtocol";
 import type { GameJoinAttemptOrigin } from "../helpers/requests/services/join";
 import { getPlaceUniverseId } from "../helpers/requests/services/places";
 import { multigetUniversesByIds } from "../helpers/requests/services/universes";
-import { getRobloxUrl } from "./baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "./baseUrls";
 import { lazyLoad } from "./lazyLoad";
 
 export const DISALLOWED_DEEP_LINKS_PARAMS = ["browserTrackerId" as const];

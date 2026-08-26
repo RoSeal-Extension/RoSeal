@@ -1,4 +1,4 @@
-import { getRobloxUrl } from "./baseUrls.ts" with { type: "macro" };
+import { getRobloxUrl } from "./baseUrls.ts";
 
 export function canParseURL(url: string) {
 	if ("canParse" in URL) {

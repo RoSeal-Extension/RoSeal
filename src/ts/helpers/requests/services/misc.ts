@@ -1,5 +1,5 @@
 import type { GeographiesProps } from "react-simple-maps";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { getAvatarAssetLink } from "src/ts/utils/links";
 import { chunk } from "src/ts/utils/objects";
 import { httpClient } from "../main";

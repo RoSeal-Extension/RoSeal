@@ -35,7 +35,7 @@ import type {
 } from "src/ts/helpers/requests/services/marketplace";
 import { handleArchivedItems } from "src/ts/specials/handleArchivedItems";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { error } from "src/ts/utils/console";
 import { onWindowRefocus } from "src/ts/utils/dom";
 import {
@@ -1284,29 +1284,53 @@ export default {
 		featureValueIsInject("avatarEditorCurrentlyWearing", true, setupReactHijack);
 
 		featureValueIsInject("avatarUnlockedAccessoryLimits", true, () => {
-			onSet(window, "Roblox")
-				.then((roblox) => onSet(roblox, "AvatarAccoutrementService"))
-				.then((service) => {
-					hijackFunction(
-						service,
-						(target, thisArg, args) => {
-							return filterWornAssets(
-								[args[0], ...args[1]],
-								true,
-								target.apply(thisArg, args),
-							).assets;
-						},
-						"addAssetToAvatar",
-					);
+			const hijackVariable = (service: typeof window.Roblox.AvatarAccoutrementService) => {
+				hijackFunction(
+					service,
+					(target, thisArg, args) => {
+						return filterWornAssets(
+							[args[0], ...args[1]],
+							true,
+							target.apply(thisArg, args),
+						).assets;
+					},
+					"addAssetToAvatar",
+				);
 
-					hijackFunction(
-						service,
-						(_, __, args) => {
-							return insertAssetMetaIntoAssetList(...args);
-						},
-						"insertAssetMetaIntoAssetList",
-					);
-				});
+				hijackFunction(
+					service,
+					(_, __, args) => {
+						return insertAssetMetaIntoAssetList(...args);
+					},
+					"insertAssetMetaIntoAssetList",
+				);
+			};
+
+			onSet(window.Roblox, "AvatarAccoutrementService").then(hijackVariable);
+
+			const originalDefineProperty = Object.defineProperty;
+
+			// @ts-expect-error: fine
+			globalThis.Object.defineProperty = (obj, prop, descriptor) => {
+				if (
+					prop === "addAssetToAvatar" &&
+					descriptor &&
+					typeof descriptor.get === "function"
+				) {
+					onSet(obj as typeof window.Roblox.AvatarAccoutrementService, "addAssetToAvatar")
+						.then(() =>
+							onSet(
+								obj as typeof window.Roblox.AvatarAccoutrementService,
+								"insertAssetMetaIntoAssetList",
+							),
+						)
+						.then(() =>
+							hijackVariable(obj as typeof window.Roblox.AvatarAccoutrementService),
+						);
+				}
+
+				return originalDefineProperty.apply(this, [obj, prop, descriptor]);
+			};
 		});
 	},
 } satisfies Page;

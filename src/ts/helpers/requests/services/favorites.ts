@@ -1,4 +1,4 @@
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts";
 import { httpClient } from "../main.ts";
 import type { SortOrder } from "./badges.ts";
 import type { AvatarBundle, AvatarItem } from "./marketplace.ts";

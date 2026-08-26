@@ -7,7 +7,7 @@ import {
 	ROSEAL_OVERRIDE_PLATFORM_TYPE_HEADER_NAME,
 	ROSEAL_TRACKING_HEADER_NAME,
 } from "../../../../scripts/build/constants.ts";
-import { getRobloxCDNUrl, getRobloxUrl } from "../../utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxCDNUrl, getRobloxUrl } from "../../utils/baseUrls.ts";
 import { bypassCORSFetch } from "./utils/bypassCORSFetch.ts";
 
 export const BYPASS_CORS_ENVS = ["popup", "background"];

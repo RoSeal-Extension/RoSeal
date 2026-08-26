@@ -19,7 +19,7 @@ import {
 } from "src/ts/helpers/requests/services/join";
 import { multigetPlacesByIds } from "src/ts/helpers/requests/services/places";
 import { getRobloxDataCenters } from "src/ts/helpers/requests/services/roseal";
-import { getRobloxCDNUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxCDNUrl } from "src/ts/utils/baseUrls";
 import { getDeviceMeta, getPlaceLauncherData } from "src/ts/utils/context";
 import {
 	buildRobloxDeeplinkProtocolUrl,

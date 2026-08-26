@@ -1,3 +1,4 @@
+import type messagesType from "#i18n/types";
 import { sendMessage } from "src/ts/helpers/communication/dom";
 import { getMessagesInject } from "src/ts/helpers/domInvokes";
 import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
@@ -10,10 +11,9 @@ import type {
 	MultigetAvatarItemsResponse,
 	SearchNavigationMenuCategory,
 } from "src/ts/helpers/requests/services/marketplace";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { assetTypes } from "src/ts/utils/itemTypes";
 import { AVATAR_MARKETPLACE_REGEX } from "src/ts/utils/regex";
-import type messagesType from "#i18n/types";
 
 const ROSEAL_CUSTOM_CATEGORY_ID = 12252022;
 

@@ -1,6 +1,6 @@
 import type { HTTPRequestCredentials } from "@roseal/http-client";
 import type { PlatformType } from "scripts/build/constants";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { getOrSetCache, getOrSetCaches } from "../../cache";
 import { httpClient } from "../main";
 import type { Agent } from "./assets";

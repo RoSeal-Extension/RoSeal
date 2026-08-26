@@ -18,7 +18,7 @@ import {
 	multigetUniversesPlayabilityStatuses,
 } from "src/ts/helpers/requests/services/universes";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { EXPERIENCE_DEEPLINK_REGEX, EXPERIENCE_DETAILS_REGEX } from "src/ts/utils/regex";
 
 type PortaledEventsProps = PropsWithChildren<{

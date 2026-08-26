@@ -6,7 +6,7 @@ import {
 	type UserProfileRequest,
 	type UserProfileResponse,
 } from "src/ts/helpers/processors/profileProcessor.ts";
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts";
 import processString from "src/ts/utils/processString.ts";
 import {
 	GROUP_DETAILS_REGEX,

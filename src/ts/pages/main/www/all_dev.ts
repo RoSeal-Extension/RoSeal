@@ -1,7 +1,7 @@
 import { DefaultHttpClient, HttpTransportType, HubConnectionBuilder } from "@microsoft/signalr";
 import storageSignal from "src/ts/components/hooks/storageSignal";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 
 export default {
 	id: "dev/all",

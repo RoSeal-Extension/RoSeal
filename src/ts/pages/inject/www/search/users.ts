@@ -1,7 +1,7 @@
 import { getFeatureValueInject } from "src/ts/helpers/features/helpersInject";
 import { hijackRequest } from "src/ts/helpers/hijack/fetch";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { SEARCH_USERS_REGEX } from "src/ts/utils/regex";
 
 export default {

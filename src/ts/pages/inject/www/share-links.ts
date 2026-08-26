@@ -3,7 +3,7 @@ import { featureValueIsInject } from "src/ts/helpers/features/helpersInject";
 import { hijackResponse } from "src/ts/helpers/hijack/fetch";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type { ResolveShareLinkResponse } from "src/ts/helpers/requests/services/sharelinks";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { SHARE_LINK_REGEX } from "src/ts/utils/regex";
 
 export default {

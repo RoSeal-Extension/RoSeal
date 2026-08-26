@@ -38,12 +38,12 @@ import {
 } from "src/ts/constants/friends";
 import {
 	ALLOWED_ITEMS_STORAGE_KEY,
-	type AllowedItemsStorage,
 	allowedItemsData,
+	type AllowedItemsStorage,
 	animalTextCount,
 	BLOCKED_ITEMS_STORAGE_KEY,
-	type BlockedItemsStorage,
 	blockedItemsData,
+	type BlockedItemsStorage,
 	ONBOARDING_COMPLETED_STORAGE_KEY,
 	PENDING_ROBUX_SESSION_CACHE_STORAGE_KEY,
 	ROBUX_HISTORY_STORAGE_KEY,
@@ -116,7 +116,7 @@ import {
 	storage,
 } from "src/ts/helpers/storage";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
-import { getRobloxCDNUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxCDNUrl } from "src/ts/utils/baseUrls";
 import { isAvatarItemBlocked, isExperienceBlocked } from "src/ts/utils/blockedItems";
 import { checkExperiencesBlocked } from "src/ts/utils/blockedItemsMain";
 import { getDeviceMeta, isIframe, onStringTyped } from "src/ts/utils/context";

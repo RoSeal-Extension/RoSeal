@@ -15,7 +15,7 @@ import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
 import { getGUACPolicy } from "src/ts/helpers/requests/services/testService";
 import { getAuthenticatedUser } from "src/ts/utils/authenticatedUser";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { GROUP_DETAILS_REGEX } from "src/ts/utils/regex";
 
 export type GroupStoreAngularScope = angular.IScope & {

@@ -1,5 +1,5 @@
 import type { AgentIncludingAll } from "src/ts/constants/marketplace.ts";
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts";
 import { filterObject } from "src/ts/utils/objects.ts";
 import { getOrSetCache, getOrSetCaches } from "../../cache.ts";
 import { renderGenericChallenge } from "../../domInvokes.ts";

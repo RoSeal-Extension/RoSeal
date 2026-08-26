@@ -1,7 +1,7 @@
 import { hijackRequest } from "../helpers/hijack/fetch";
 import { hijackFunction, onSet } from "../helpers/hijack/utils";
 import type { ListUserInventoryCategoriesResponse } from "../helpers/requests/services/inventory";
-import { getRobloxUrl } from "../utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "../utils/baseUrls";
 import { bundleTypes } from "../utils/itemTypes";
 
 const INVENTORY_CATEGORIES_API_REGEX = /^\/v1\/users\/(\d+)\/categories(\/favorites)?$/;

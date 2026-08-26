@@ -1,4 +1,4 @@
-import { getRobloxUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls.ts";
 import { httpClient, RESTError } from "../main.ts";
 import type { Agent } from "./assets.ts";
 import type { AnyItemType } from "./marketplace.ts";

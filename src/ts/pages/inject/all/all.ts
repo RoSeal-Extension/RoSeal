@@ -4,8 +4,7 @@ import { hijackResponse } from "src/ts/helpers/hijack/fetch";
 import { hijackFunction } from "src/ts/helpers/hijack/utils";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import type { GUACPolicy } from "src/ts/helpers/requests/services/testService";
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
-import { getRobloxUrl as getRobloxUrlNonMacro } from "src/ts/utils/baseUrls";
+import { getRobloxUrl, getRobloxUrl as getRobloxUrlNonMacro } from "src/ts/utils/baseUrls";
 
 export default {
 	id: "all",

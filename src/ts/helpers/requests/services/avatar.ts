@@ -1,4 +1,4 @@
-import { getRobloxUrl } from "src/ts/utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "src/ts/utils/baseUrls";
 import { getOrSetCache } from "../../cache";
 import { httpClient, ROBLOX_PLACE_ID_HEADER_NAME } from "../main";
 

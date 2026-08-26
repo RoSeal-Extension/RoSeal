@@ -1,5 +1,5 @@
 import type { ThumbnailFormat } from "../helpers/requests/services/thumbnails";
-import { getRobloxCDNUrl } from "./baseUrls" with { type: "macro" };
+import { getRobloxCDNUrl } from "./baseUrls";
 
 export type ThumbnailModifier = "isCircular" | "noFilter" | "cropToAspectRatio";
 

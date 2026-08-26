@@ -8,11 +8,11 @@ if (import.meta.env.IS_DEV_WS_ACCESSIBLE) {
 	keepAliveServiceWorker();
 }
 
+import { alarmListeners } from "#pages/background-alarms";
+import { messageListeners } from "#pages/background-listeners";
 import { COOKIE_HEADER_NAME } from "node_modules/@roseal/http-client/src";
 import { ROSEAL_TRACKING_HEADER_NAME } from "scripts/build/constants";
 import type { AuthenticatedUserWithCreatedAndBadge } from "src/types/dataTypes";
-import { alarmListeners } from "#pages/background-alarms";
-import { messageListeners } from "#pages/background-listeners";
 import {
 	ACCOUNTS_DISCOVERY_FEATURE_ID,
 	ACCOUNTS_FEATURE_ID,
@@ -84,7 +84,7 @@ import {
 	updateRobloxAccounts,
 } from "../utils/background/cookies";
 import { keepAliveServiceWorker } from "../utils/background/misc";
-import { getRobloxUrl } from "../utils/baseUrls" with { type: "macro" };
+import { getRobloxUrl } from "../utils/baseUrls";
 import { deepLinksParser } from "../utils/deepLinks";
 import {
 	getHomePageUrl,

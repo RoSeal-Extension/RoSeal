@@ -1,5 +1,4 @@
-import { getRoSealAPIUrl } from "src/ts/utils/baseUrls.ts" with { type: "macro" };
-import { getRobloxUrl, getRolimonsUrl } from "src/ts/utils/baseUrls.ts";
+import { getRobloxUrl, getRolimonsUrl, getRoSealAPIUrl } from "src/ts/utils/baseUrls.ts";
 import * as background from "../../communication/background.ts";
 import * as dom from "../../communication/dom.ts";
 
