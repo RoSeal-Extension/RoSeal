@@ -1306,31 +1306,33 @@ export default {
 				);
 			});
 
-			const originalDefineProperty = Object.defineProperty;
+			hijackFunction(
+				globalThis.Object,
+				(target, thisArg, [obj, prop, descriptor]) => {
+					if (descriptor && typeof descriptor.get === "function") {
+						const originalGet = descriptor.get;
 
-			// @ts-expect-error: fine
-			globalThis.Object.defineProperty = (obj, prop, descriptor) => {
-				if (descriptor && typeof descriptor.get === "function") {
-					const originalGet = descriptor.get;
-					if (prop === "addAssetToAvatar") {
-						descriptor.get = () => {
-							return (
-								...args: Parameters<
-									typeof window.Roblox.AvatarAccoutrementService.addAssetToAvatar
-								>
-							) => {
-								const result = originalGet().apply(this, args);
-								return filterWornAssets([args[0], ...args[1]], true, result).assets;
-							};
-						};
-					} else if (prop === "insertAssetMetaIntoAssetList") {
-						descriptor.get = () => insertAssetMetaIntoAssetList;
-						return originalDefineProperty.apply(this, [obj, prop, descriptor]);
+						if (prop === "addAssetToAvatar") {
+							descriptor.get =
+								() =>
+								(
+									...args: Parameters<
+										typeof window.Roblox.AvatarAccoutrementService.addAssetToAvatar
+									>
+								) => {
+									const result = originalGet().apply(this, args);
+									return filterWornAssets([args[0], ...args[1]], true, result)
+										.assets;
+								};
+						} else if (prop === "insertAssetMetaIntoAssetList") {
+							descriptor.get = () => insertAssetMetaIntoAssetList;
+						}
 					}
-				}
 
-				return originalDefineProperty.apply(this, [obj, prop, descriptor]);
-			};
+					return target.apply(thisArg, [obj, prop, descriptor]);
+				},
+				"defineProperty",
+			);
 		});
 	},
 } satisfies Page;

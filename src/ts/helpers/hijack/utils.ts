@@ -52,7 +52,7 @@ export function hijackFunction<
 	if (typeof fnOrObject === "function" && !key) {
 		return new Proxy(fnOrObject, {
 			apply,
-		});
+		}) as Exclude<T[U], undefined>;
 	}
 
 	const _original = fnOrObject[key];
@@ -77,46 +77,75 @@ export function hijackFunction<
 	return _original;
 }
 
+let isHijacking = false;
+
 // We actually define the .set property before/after extensions like BTRoblox
 // so we need to hijack defineProperty so BTRoblox, RoSeal and other extensions respect the old value
 if (String(Object.defineProperty).includes("[native code]")) {
 	hijackFunction(
 		Object,
-		(target, thisArg, [o, p, attributes]) => {
-			const oldDescriptor = Object.getOwnPropertyDescriptor(o, p);
-			const newAttributes: typeof attributes = {};
+		(target, thisArg, args) => {
+			const [o, p, attributes] = args as [object, PropertyKey, PropertyDescriptor];
 
-			const shouldRespectOld = p !== "onClick" && p !== "onClickCapture";
+			// 1. Prevent re-entrancy loops and self-referential defineProperty hijacking
+			if (isHijacking || !attributes || p === "defineProperty") {
+				return target.apply(thisArg, args);
+			}
 
-			for (const [key, fn] of Object.entries(attributes)) {
-				if (typeof fn === "function" && shouldRespectOld) {
-					const oldFn = oldDescriptor?.[key as keyof PropertyDescriptor];
-					if (oldFn && typeof oldFn === "function") {
-						newAttributes[key as keyof typeof attributes] = function (
-							this: unknown,
-							...value: unknown[]
-						) {
+			isHijacking = true;
+
+			try {
+				const oldDescriptor = Object.getOwnPropertyDescriptor(o, p);
+				const newAttributes: PropertyDescriptor = { ...attributes };
+
+				const shouldRespectOld = p !== "onClick" && p !== "onClickCapture";
+
+				if (shouldRespectOld && oldDescriptor) {
+					// Handle Getters: Preserve return value of new getter while safely invoking old getter
+					if (
+						typeof attributes.get === "function" &&
+						typeof oldDescriptor.get === "function"
+					) {
+						const oldGet = oldDescriptor.get;
+						const newGet = attributes.get;
+
+						newAttributes.get = function (this: unknown) {
 							try {
-								oldFn.apply(this, value);
+								oldGet.apply(this);
 							} catch {
 								/* empty */
 							}
+							return newGet.apply(this);
+						};
+					}
 
+					// Handle Setters: Call old setter then new setter
+					if (
+						typeof attributes.set === "function" &&
+						typeof oldDescriptor.set === "function"
+					) {
+						const oldSet = oldDescriptor.set;
+						const newSet = attributes.set;
+
+						newAttributes.set = function (this: unknown, value: unknown) {
 							try {
-								return fn.apply(this, value);
+								oldSet.call(this, value);
+							} catch {
+								/* empty */
+							}
+							try {
+								return newSet.call(this, value);
 							} catch {
 								/* empty */
 							}
 						};
-
-						continue;
 					}
 				}
 
-				newAttributes[key as keyof typeof attributes] = fn;
+				return target.apply(thisArg, [o, p, newAttributes]);
+			} finally {
+				isHijacking = false;
 			}
-
-			return target.apply(thisArg, [o, p, newAttributes]);
 		},
 		"defineProperty",
 	);
