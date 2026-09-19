@@ -25,7 +25,6 @@ import {
 	type BatchThumbnailRequest,
 	thumbnailProcessor,
 } from "src/ts/helpers/processors/thumbnailProcessor";
-import type { SortOrder } from "src/ts/helpers/requests/services/badges";
 import {
 	listUserPrivateServers,
 	type PrivateServerInventoryItem,
@@ -35,7 +34,12 @@ import {
 	getServerInstanceData,
 	getUserServerData,
 } from "src/ts/helpers/requests/services/join";
-import { listPlaceServers, type PlaceServer } from "src/ts/helpers/requests/services/places";
+import {
+	listPlaceServers,
+	listPublicPlaceServers,
+	PublicPlaceServersOrderBy,
+	type PlaceServer,
+} from "src/ts/helpers/requests/services/places";
 import {
 	listPlacePrivateServers,
 	type PlacePrivateServer,
@@ -110,7 +114,9 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 
 	const [showServerGlobeMap, setShowServerGlobeMap] = useState(false);
 
-	const [sortPlayers, setSortPlayers] = useState<SortOrder>("Desc");
+	const [sortOrder, setSortOrder] = useState<PublicPlaceServersOrderBy>(
+		PublicPlaceServersOrderBy.Recommended,
+	);
 	const [excludeFullServers, setExcludeFullServers] = useState(excludeFullServersDefaultEnabled);
 	const [excludeUnjoinableServers, setExcludeUnjoinableServers] = useState(true);
 	const [selectedDataCenter, setSelectedDataCenter] =
@@ -193,7 +199,7 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 				universeId,
 				placeId,
 				type,
-				sortPlayers,
+				sortOrder,
 				excludeFullServers,
 				tryGetServerInfoEnabled,
 			],
@@ -206,14 +212,22 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 						cursor: state.nextCursor,
 						sortOrder: "Desc",
 					})
-				: listPlaceServers({
-						placeId,
-						serverType: type === "friends" ? "Friend" : "Public",
-						limit: 100,
-						cursor: state.nextCursor,
-						sortOrder: sortPlayers,
-						excludeFullGames: excludeFullServers,
-					}));
+				: type === "friends"
+					? listPlaceServers({
+							placeId,
+							serverType: "Friend",
+							limit: 100,
+							cursor: state.nextCursor,
+							sortOrder: "Desc",
+							excludeFullGames: excludeFullServers,
+						})
+					: listPublicPlaceServers({
+							placeId,
+							limit: 100,
+							cursor: state.nextCursor,
+							orderBy: sortOrder,
+							excludeFullGames: excludeFullServers,
+						}));
 			if ("gameJoinRestricted" in data) {
 				setIsExperienceUnderLoad(data.gameJoinRestricted === true);
 			}
@@ -695,22 +709,38 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 						)}
 						<div className="select-group">
 							<label className="select-label text-label" for="sort-select">
-								{getMessage("experience.servers.public.filters.numberOfPlayers")}
+								{getMessage("experience.servers.public.filters.sortBy")}
 							</label>
 							<Dropdown
 								disabled={shouldBeDisabled}
-								selectedItemValue={sortPlayers}
+								selectedItemValue={sortOrder}
 								selectionItems={[
 									{
-										value: "Desc",
-										label: "Descending",
+										value: PublicPlaceServersOrderBy.Recommended,
+										label: getMessage(
+											"experience.servers.public.filters.sortBy.values.Recommended",
+										),
 									},
 									{
-										value: "Asc",
-										label: "Ascending",
+										value: PublicPlaceServersOrderBy.BestLatency,
+										label: getMessage(
+											"experience.servers.public.filters.sortBy.values.BestLatency",
+										),
+									},
+									{
+										value: PublicPlaceServersOrderBy.OccupancyDesc,
+										label: getMessage(
+											"experience.servers.public.filters.sortBy.values.OccupancyDesc",
+										),
+									},
+									{
+										value: PublicPlaceServersOrderBy.OccupancyAsc,
+										label: getMessage(
+											"experience.servers.public.filters.sortBy.values.OccupancyAsc",
+										),
 									},
 								]}
-								onSelect={(value) => setSortPlayers(value)}
+								onSelect={(value) => setSortOrder(value)}
 								id="sort-select"
 							/>
 						</div>

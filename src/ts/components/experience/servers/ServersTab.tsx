@@ -18,7 +18,7 @@ import {
 	getUserEnrollmentChannel,
 } from "src/ts/helpers/requests/services/testService";
 import { getTimedStorage } from "src/ts/helpers/storage";
-import { getPlaceLauncherData } from "src/ts/utils/context";
+import { getPlaceLauncherData, getSiteLocaleData } from "src/ts/utils/context";
 import { crossSort } from "src/ts/utils/objects";
 import useAuthenticatedUser from "../../hooks/useAuthenticatedUser";
 import useFeatureValue from "../../hooks/useFeatureValue";
@@ -61,6 +61,8 @@ export type ServersTabContentProps = Omit<
 	| "showServerDebugInfo"
 	| "showServerPerformanceEnabled"
 	| "showServerUpdateDelayEnabled"
+	| "simpleUserLocale"
+	| "showServerLanguageMatchesEnabled"
 	| "showCopyGenerateLinkEnabled"
 	| "showConnectionsInServerEnabled"
 	| "showServerLocationEnabled"
@@ -110,6 +112,10 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 	]);
 	const [showServerUpdateDelayEnabled] = useFeatureValue(
 		"improvedExperienceServersTab.showServerUpdateDelay",
+		false,
+	);
+	const [showServerLanguageMatchesEnabled] = useFeatureValue(
+		"improvedExperienceServersTab.showServerLanguageMatches",
 		false,
 	);
 	const [showServerPerformanceEnabled] = useFeatureValue(
@@ -163,6 +169,10 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 	const [showServerUptimeEnabled] = useFeatureValue(
 		"improvedExperienceServersTab.tryGetServerInfo.showServerUptime",
 		false,
+	);
+	const [simpleUserLocale] = usePromise(
+		() => getSiteLocaleData().then((data) => data?.languageCode?.split("_")[0]),
+		[],
 	);
 
 	const [promptLocationPermission, setPromptLocationPermission] = useState(false);
@@ -348,6 +358,7 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 				showServerDistance: showServerDistance === true,
 				showServerLikelyBotted: showServerLikelyBotted === true,
 				showServerUpdateDelayEnabled: showServerUpdateDelayEnabled === true,
+				showServerLanguageMatchesEnabled: showServerLanguageMatchesEnabled === true,
 				showServerPerformanceEnabled: showServerPerformanceEnabled === true,
 				showServerPlaceVersionEnabled: showServerPlaceVersionEnabled === true,
 				showCopyGenerateLinkEnabled: showCopyGenerateLinkEnabled === true,
@@ -359,6 +370,8 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 				privateServerRowsEnabled: privateServerRowsEnabled === true,
 				preferredServerButtonEnabled: preferredServerButtonEnabled === true,
 				showServerUptimeEnabled: showServerUptimeEnabled === true,
+
+				simpleUserLocale: simpleUserLocale || undefined,
 
 				setCalculateServerDistance,
 				setPromptLocationPermission,

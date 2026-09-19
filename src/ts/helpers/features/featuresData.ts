@@ -1458,6 +1458,14 @@ export const sections = [
 								},
 								{
 									type: "Regular",
+									id: "improvedExperienceServersTab.showServerLanguageMatches",
+									component: {
+										type: "Toggle",
+										defaultValue: false,
+									},
+								},
+								{
+									type: "Regular",
 									id: "improvedExperienceServersTab.showServerPerformance",
 									component: {
 										type: "Toggle",

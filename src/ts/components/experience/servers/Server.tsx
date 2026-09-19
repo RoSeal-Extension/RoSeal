@@ -1,4 +1,5 @@
 import MdOutlineCloudSync from "@material-symbols/svg-400/outlined/cloud_sync-fill.svg";
+import MdOutlineLanguage from "@material-symbols/svg-400/outlined/language-fill.svg";
 import MdOutlineDns from "@material-symbols/svg-400/outlined/dns-fill.svg";
 import MdOutlineHistory from "@material-symbols/svg-400/outlined/history-fill.svg";
 import MdOutlinePolyline from "@material-symbols/svg-400/outlined/polyline-fill.svg";
@@ -32,6 +33,7 @@ import {
 	distanceFormat,
 	getAbsoluteTime,
 	getShortRelativeTime,
+	languageNamesFormat,
 } from "src/ts/helpers/i18n/intlFormats";
 import { RESTError } from "src/ts/helpers/requests/main";
 import type { PrivateServerInventoryItem } from "src/ts/helpers/requests/services/inventory";
@@ -108,6 +110,7 @@ export default function Server({
 		showServerLikelyBotted,
 		showServerDebugInfo,
 		showServerUpdateDelayEnabled,
+		showServerLanguageMatchesEnabled,
 		showServerPerformanceEnabled,
 		showServerPlaceVersionEnabled,
 		showCopyGenerateLinkEnabled,
@@ -117,6 +120,7 @@ export default function Server({
 		showServerLocationEnabled,
 		showServerConnectionSpeedEnabled,
 		showServerUptimeEnabled,
+		simpleUserLocale,
 		setUserLatLong,
 	} = useServersTabContext();
 
@@ -611,6 +615,22 @@ export default function Server({
 					</span>
 				</div>
 			)}
+			{item.languageMatchCount !== undefined &&
+				showServerLanguageMatchesEnabled &&
+				simpleUserLocale && (
+					<div className="server-ping-info server-info">
+						<span className="info-icon">
+							<MdOutlineLanguage className="roseal-icon" />
+						</span>
+						<span className="info-text">
+							{getMessage("experience.servers.server.stats.languageMatches", {
+								count: asLocaleString(item.languageMatchCount),
+								countNum: item.languageMatchCount,
+								language: languageNamesFormat.of(simpleUserLocale),
+							})}
+						</span>
+					</div>
+				)}
 			{startTime !== undefined && showServerUptimeEnabled && (
 				<div className="server-uptime-info server-info">
 					<span className="info-icon">

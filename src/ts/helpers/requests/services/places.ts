@@ -40,6 +40,12 @@ export type ListPlaceServersRequest = {
 	cursor?: string;
 };
 
+export enum PlaceServerPingSignalLevel {
+	Low = "Low",
+	Medium = "Medium",
+	High = "High",
+}
+
 export type PlaceServer = {
 	id: string;
 	maxPlayers: number;
@@ -53,6 +59,9 @@ export type PlaceServer = {
 	}[];
 	fps: number;
 	ping: number;
+	languageMatchCount?: number;
+	pingSignalLevel?: PlaceServerPingSignalLevel;
+	friendCount?: number;
 };
 
 export type ListPlaceServersResponse = {
@@ -78,6 +87,21 @@ export type GetPlaceUniverseIdRequest = {
 
 export type GetPlaceUniverseInternalResponse = {
 	universeId: number | null;
+};
+
+export enum PublicPlaceServersOrderBy {
+	Recommended = "Recommended",
+	BestLatency = "BestLatency",
+	OccupancyDesc = "OccupancyDesc",
+	OccupancyAsc = "OccupancyAsc",
+}
+
+export type ListPublicPlaceServersRequest = {
+	placeId: number;
+	limit?: number;
+	excludeFullGames?: boolean;
+	cursor?: string;
+	orderBy?: PublicPlaceServersOrderBy;
 };
 
 export async function multigetPlacesByIds({ placeIds }: MultigetPlacesByIdsRequest) {
@@ -122,6 +146,22 @@ export async function listPlaceServers({
 	return (
 		await httpClient.httpRequest<ListPlaceServersResponse>({
 			url: `${getRobloxUrl("games")}/v1/games/${placeId}/servers/${serverType}`,
+			search: request,
+			credentials: {
+				type: "cookies",
+				value: true,
+			},
+		})
+	).body;
+}
+
+export async function listPublicPlaceServers({
+	placeId,
+	...request
+}: ListPublicPlaceServersRequest) {
+	return (
+		await httpClient.httpRequest<ListPlaceServersResponse>({
+			url: `${getRobloxUrl("games")}/v2/games/${placeId}/servers/Public`,
 			search: request,
 			credentials: {
 				type: "cookies",

@@ -45,6 +45,7 @@ export type ServersTabContextData = {
 		| boolean
 		| FeatureValue<(typeof features)["improvedExperienceServersTab.showDebugInfo"]>[1];
 	showServerUpdateDelayEnabled: boolean;
+	showServerLanguageMatchesEnabled: boolean;
 	showServerPerformanceEnabled: boolean;
 	showServerPlaceVersionEnabled: boolean;
 	showCopyGenerateLinkEnabled: boolean;
@@ -73,6 +74,8 @@ export type ServersTabContextData = {
 	latestPlaceVersion?: number;
 
 	activatePreferredServer: Signal<boolean>;
+
+	simpleUserLocale?: string;
 
 	setCalculateServerDistance: (
 		data: FeatureValue<

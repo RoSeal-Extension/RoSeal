@@ -4297,6 +4297,11 @@
 					"$message": "Show server update delay"
 				}
 			},
+			"showServerLanguageMatches": {
+				"name": {
+					"$message": "Show how many users in the server speak your language"
+				}
+			},
 			"showConnectionsInServer": {
 				"name": {
 					"$message": "Show friends in a server"
@@ -9501,6 +9506,9 @@
 						"$message": "Update Delay: {timeInMs} ms",
 						"$context": "Stats last updated time"
 					},
+					"languageMatches": {
+						"$message": "{count} {language} {countNum, plural, =1 {Speaker} other {Speakers}}"
+					},
 					"serverPerformance": {
 						"$message": "Server Performance: {speed}",
 						"$context": "Server Performance, also known as TPS or FPS / 60"
@@ -9625,7 +9633,21 @@
 					"$context": "Filters section",
 					"sortBy": {
 						"$message": "Sort by",
-						"$context": "Sort by filter"
+						"$context": "Sort by filter",
+						"values": {
+							"Recommended": {
+								"$message": "Recommended for You"
+							},
+							"BestLatency": {
+								"$message": "Best Connection (Ping)"
+							},
+							"OccupancyDesc": {
+								"$message": "Most Players"
+							},
+							"OccupancyAsc": {
+								"$message": "Fewest Players"
+							}
+						}
 					},
 					"excludeFullServers": {
 						"$message": "Exclude Full Servers",
