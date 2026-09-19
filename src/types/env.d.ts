@@ -150,6 +150,16 @@ declare global {
 				) => void;
 			};
 			"core-scripts": {
+				format: {
+					number: {
+						truncNumber: (
+							value: number,
+							abbreviationThresold?: number,
+							suffixType?: unknown,
+							digitsAfterDecimalPoint?: number,
+						) => string;
+					};
+				};
 				intl: {
 					translation: {
 						TranslationResource: {

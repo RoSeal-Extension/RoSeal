@@ -242,26 +242,32 @@ export default {
 				},
 			);
 
-			onSet(window, "CoreUtilities").then((utilities) =>
-				onSet(utilities, "abbreviateNumber").then((abbreviate) => {
-					hijackFunction(
-						abbreviate,
-						(target, thisArg, args) => {
-							if (hijackPrecisionNumber === args[0]) {
-								if (abbreviateAfter?.[0]) args[1] = abbreviateAfter[1];
-								if (decimalPoints?.[0]) {
-									args[3] = decimalPoints[1];
+			onSet(window, "Roblox")
+				.then((roblox) => onSet(roblox, "core-scripts"))
+				.then((coreScripts) => onSet(coreScripts, "format"))
+				.then((format) =>
+					onSet(format, "number").then((number) => {
+						format.number = {
+							...number,
+						};
+						hijackFunction(
+							format.number,
+							(target, thisArg, args) => {
+								if (hijackPrecisionNumber === args[0]) {
+									if (abbreviateAfter?.[0]) args[1] = abbreviateAfter[1];
+									if (decimalPoints?.[0]) {
+										args[3] = decimalPoints[1];
+									}
+
+									hijackPrecisionNumber = undefined;
 								}
 
-								hijackPrecisionNumber = undefined;
-							}
-
-							return target.apply(thisArg, args);
-						},
-						"getTruncValue",
-					);
-				}),
-			);
+								return target.apply(thisArg, args);
+							},
+							"truncNumber",
+						);
+					}),
+				);
 		});
 
 		featureValueIsInject("pendingRobuxNav", true, () =>
