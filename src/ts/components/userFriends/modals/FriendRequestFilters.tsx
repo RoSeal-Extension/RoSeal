@@ -109,6 +109,23 @@ export default function FriendRequestFilters({
 								<ul className="filter-options multi-item-options one-row">
 									<li className="multi-item-option has-dropdown">
 										<div className="filter-option-icon-container">
+											<span className="icon-regular-roblox-plus icon roseal-icon plus-zoom" />
+										</div>
+										<div className="filter-option-dropdown-container">
+											<Dropdown
+												selectionItems={premiumVerifiedBadgeOptions}
+												selectedItemValue={previewFilters.isRobloxPlus}
+												onSelect={(isRobloxPlus) => {
+													setPreviewFilters({
+														...previewFilters,
+														isRobloxPlus,
+													});
+												}}
+											/>
+										</div>
+									</li>
+									<li className="multi-item-option has-dropdown">
+										<div className="filter-option-icon-container">
 											<Icon
 												name="premium"
 												size="medium"

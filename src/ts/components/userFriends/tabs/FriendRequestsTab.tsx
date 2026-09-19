@@ -42,6 +42,7 @@ export type UserFriendRequestAdditionalComponents = {
 	followersCount: number;
 	followingsCount: number;
 	isPremium: boolean;
+	isRobloxPlus: boolean;
 	isVerified: boolean;
 	isRobloxAdmin: boolean;
 	joinedDate?: number;
@@ -62,6 +63,7 @@ export type FriendRequestsFilters = {
 	minFollowingsCount?: number;
 	maxFollowingsCount?: number;
 	isPremium?: boolean;
+	isRobloxPlus?: boolean;
 	isVerified?: boolean;
 	isRobloxAdmin?: boolean;
 	minJoinedDate?: number;
@@ -249,6 +251,7 @@ export default function FriendRequestsTab({
 									components.UserProfileHeader?.counts?.followingsCount ?? 0,
 								isVerified: components.UserProfileHeader?.isVerified ?? false,
 								isPremium: components.UserProfileHeader?.isPremium ?? false,
+								isRobloxPlus: components.UserProfileHeader?.isRobloxPlus ?? false,
 								isRobloxAdmin: components.UserProfileHeader?.isRobloxAdmin ?? false,
 								joinedDate,
 							},
@@ -347,6 +350,10 @@ export default function FriendRequestsTab({
 							(!shouldRequestProfilePlatform ||
 								(item.components !== undefined &&
 									checkValue(item.components.isPremium, filters.isPremium) &&
+									checkValue(
+										item.components.isRobloxPlus,
+										filters.isRobloxPlus,
+									) &&
 									checkValue(item.components.isVerified, filters.isVerified) &&
 									checkValue(
 										item.components.isRobloxAdmin,

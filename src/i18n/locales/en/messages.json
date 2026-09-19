@@ -605,12 +605,12 @@
 					}
 				},
 				"premiumVerified": {
-					"$context": "Premium & Verified badges section",
+					"$context": "Premium Plus & Verified badges section",
 					"title": {
-						"$message": "Premium, Verified & Roblox Administrators"
+						"$message": "Premium, Plus, Verified & Roblox Administrators"
 					},
 					"options": {
-						"$context": "Premium/verified badge options",
+						"$context": "Premium/plus/verified badge options",
 						"true": {
 							"$message": "True"
 						},
@@ -9623,9 +9623,9 @@
 				},
 				"filters": {
 					"$context": "Filters section",
-					"numberOfPlayers": {
-						"$message": "Number of Players",
-						"$context": "Number of players filter"
+					"sortBy": {
+						"$message": "Sort by",
+						"$context": "Sort by filter"
 					},
 					"excludeFullServers": {
 						"$message": "Exclude Full Servers",
