@@ -2023,14 +2023,6 @@ export const sections = [
 				id: "profile",
 				features: [
 					{
-						type: "Experimental",
-						id: "profileCustomization",
-						component: {
-							type: "Toggle",
-							defaultValue: false,
-						},
-					},
-					{
 						type: "Regular",
 						id: "viewUserProfileLocale",
 						component: {

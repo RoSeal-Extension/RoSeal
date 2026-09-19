@@ -2853,14 +2853,6 @@
 				}
 			}
 		},
-		"profileCustomization": {
-			"name": {
-				"$message": "Profile background customization"
-			},
-			"description": {
-				"$message": "When enabled, allows you to customize the background of your profile to be one of 7 basic colors. This feature also works in Roblox's app."
-			}
-		},
 		"viewUserProfileLocale": {
 			"name": {
 				"$message": "View locale on user profile page"

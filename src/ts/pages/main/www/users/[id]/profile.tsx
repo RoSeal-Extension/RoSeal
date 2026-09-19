@@ -7,13 +7,12 @@ import CopyShareLinkButton from "src/ts/components/misc/CopyShareLinkButton";
 import UserProfileCurrentlyWearing from "src/ts/components/users/userProfile/avatar/CurrentlyWearing";
 import Download3DAvatarButton from "src/ts/components/users/userProfile/avatar/DownloadAvatarButton";
 import BlockedScreen from "src/ts/components/users/userProfile/BlockedScreen";
-import CustomizeProfileButton from "src/ts/components/users/userProfile/CustomizeProfileButton";
 import UserCommunityJoinedDateGrid from "src/ts/components/users/userProfile/communities/JoinedDateGrid";
 import FilteredTextPreview from "src/ts/components/users/userProfile/FilteredTextPreview";
 import UserJoinDate from "src/ts/components/users/userProfile/JoinDate";
 import UserLastSeen from "src/ts/components/users/userProfile/LastSeen";
-import MutualFriendsHeader from "src/ts/components/users/userProfile/MutualFriendsHeader";
 import ConfirmUnfriendModal from "src/ts/components/users/userProfile/modals/ConfirmUnfriendModal";
+import MutualFriendsHeader from "src/ts/components/users/userProfile/MutualFriendsHeader";
 import PlayerBadgesContainer from "src/ts/components/users/userProfile/PlayerBadgesContainer";
 import UserPortraitView from "src/ts/components/users/userProfile/PortraitView";
 import UserProfilePublishedAvatars from "src/ts/components/users/userProfile/publishedAvatars/Carousel";
@@ -27,12 +26,7 @@ import {
 	FRIENDS_LAST_SEEN_FEATURE_ID,
 	FRIENDS_PRESENCE_NOTIFICATIONS_FEATURE_ID,
 } from "src/ts/constants/friends";
-import {
-	PROFILE_BACKGROUND_ASSETS,
-	type ProfileBackgroundAsset,
-	ROBLOX_AUDIO_ASSETS,
-	ROBLOX_IMAGE_ASSETS,
-} from "src/ts/constants/robloxAssets";
+import { ROBLOX_AUDIO_ASSETS, ROBLOX_IMAGE_ASSETS } from "src/ts/constants/robloxAssets";
 import { ROBLOX_USERS } from "src/ts/constants/robloxUsers";
 import { modifyItemContextMenu } from "src/ts/helpers/contextMenus";
 import { getLangNamespace } from "src/ts/helpers/domInvokes";
@@ -46,7 +40,7 @@ import { getMessage } from "src/ts/helpers/i18n/getMessage";
 import { modifyItemStats } from "src/ts/helpers/modifyItemStats";
 import { onRobloxPresenceUpdateDetails } from "src/ts/helpers/notifications";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
-import { filterText, getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
+import { filterText } from "src/ts/helpers/requests/services/misc";
 import {
 	checkUsersReciprocalBlocked,
 	getOpenCloudUser,
@@ -62,6 +56,7 @@ import { getDeviceMeta } from "src/ts/utils/context";
 import { renderMentions } from "src/ts/utils/description";
 import { isFocusedOnInput, onDOMReady } from "src/ts/utils/dom";
 import { sealRain } from "src/ts/utils/fun/sealRain";
+import { listUserCommunityJoinedDates } from "src/ts/utils/groups";
 import { clearFollowUserJoinData, determineCanJoinUser } from "src/ts/utils/joinData";
 import { crossSort } from "src/ts/utils/objects";
 import { randomInt } from "src/ts/utils/random";
@@ -73,9 +68,7 @@ import {
 	renderAsContainer,
 	renderBefore,
 	renderIn,
-	renderPrepend,
 } from "src/ts/utils/render";
-import { listUserCommunityJoinedDates } from "src/ts/utils/groups";
 
 export default {
 	id: "user.profile",
@@ -648,67 +641,6 @@ export default {
 						text.textContent = getMessage("user.pastUsernamesCount", {
 							count,
 						});
-					}
-				}
-			});
-		});
-
-		featureValueIs("profileCustomization", true, () => {
-			const selectedBackground = signal<ProfileBackgroundAsset>();
-			if (profileUserId === authenticatedUser.userId) {
-				watchOnce(".profile-header-buttons").then((btns) => {
-					renderPrepend(
-						<CustomizeProfileButton
-							selectedBackground={selectedBackground}
-							container={btns}
-						/>,
-						btns,
-					);
-				});
-
-				watch(
-					".buttons-show-on-desktop .button-container, .buttons-show-on-mobile .button-container",
-					(btns) => {
-						renderPrepend(
-							<CustomizeProfileButton
-								selectedBackground={selectedBackground}
-								container={btns}
-							/>,
-							btns,
-						);
-					},
-				);
-			}
-
-			selectedBackground.subscribe((value) => {
-				watchOnce("#container-main").then((main) => {
-					if (value) {
-						main.style.setProperty("--profile-background-color", value.hex);
-						main.classList.add("has-background-color");
-					} else {
-						main.style.removeProperty("--profile-background-color");
-						main.classList.remove("has-background-color");
-					}
-				});
-			});
-
-			getProfileComponentsData({
-				profileType: "User",
-				profileId: profileUserId.toString(),
-				components: [
-					{
-						component: "ProfileBackground",
-					},
-				],
-			}).then((data) => {
-				const assetId = data.components.ProfileBackground?.assetId;
-
-				if (data.components.ProfileBackground?.assetId) {
-					for (const asset of PROFILE_BACKGROUND_ASSETS) {
-						if (asset.modelAssetId === assetId) {
-							selectedBackground.value = asset;
-							return;
-						}
 					}
 				}
 			});
