@@ -1971,7 +1971,8 @@ end of legacy code
     }
 
     .custom-join-btn {
-        height: 60px;
+        height: auto;
+        min-height: 68px;
         padding: 0;
         min-width: 70px;
 
