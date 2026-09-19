@@ -3055,6 +3055,12 @@ export const sections = [
 											{
 												value: 3,
 											},
+											{
+												value: 4,
+											},
+											{
+												value: 5,
+											},
 										],
 										defaultValue: 1,
 										toggleDefaultValue: false,
@@ -3066,6 +3072,12 @@ export const sections = [
 									component: {
 										type: "DropdownWithToggle",
 										values: [
+											{
+												value: 1_000,
+											},
+											{
+												value: 10_000,
+											},
 											{
 												value: 100_000,
 											},
