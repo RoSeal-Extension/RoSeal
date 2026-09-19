@@ -1461,7 +1461,7 @@ export const sections = [
 									id: "improvedExperienceServersTab.showServerLanguageMatches",
 									component: {
 										type: "Toggle",
-										defaultValue: false,
+										defaultValue: true,
 									},
 								},
 								{
