@@ -321,7 +321,7 @@ export default function ServerList({ type, id, innerId }: ServerListProps) {
 			return {
 				...state,
 				items: await Promise.all(servers),
-				nextCursor: (data.data.length === 0 && data.nextPageCursor) || undefined,
+				nextCursor: (data.data.length !== 0 && data.nextPageCursor) || undefined,
 				hasNextPage: data.data.length !== 0 && !!data.nextPageCursor,
 			};
 		},
