@@ -587,9 +587,12 @@ export default function Server({
 						<MdOutlineCloudSync className="roseal-icon" />
 					</span>
 					<span className="info-text">
-						{getMessage("experience.servers.server.stats.updateDelay", {
-							timeInMs: asLocaleString(item.ping),
-						})}
+						{getMessage(
+							`experience.servers.server.stats.${item.type === "public" ? "estimatedPing" : "updateDelay"}`,
+							{
+								timeInMs: asLocaleString(item.ping),
+							},
+						)}
 					</span>
 				</div>
 			)}

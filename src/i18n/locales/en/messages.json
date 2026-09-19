@@ -4294,7 +4294,7 @@
 			},
 			"showServerUpdateDelay": {
 				"name": {
-					"$message": "Show server update delay"
+					"$message": "Show server estimated ping"
 				}
 			},
 			"showServerLanguageMatches": {
@@ -9504,7 +9504,11 @@
 					"$context": "Stats panel",
 					"updateDelay": {
 						"$message": "Update Delay: {timeInMs} ms",
-						"$context": "Stats last updated time"
+						"$context": "How long it usually takes to update the data or something"
+					},
+					"estimatedPing": {
+						"$message": "Estimated Ping: {timeInMs} ms",
+						"$context": "Ping estimated by Roblox"
 					},
 					"languageMatches": {
 						"$message": "{count} {language} {countNum, plural, =1 {Speaker} other {Speakers}}"
