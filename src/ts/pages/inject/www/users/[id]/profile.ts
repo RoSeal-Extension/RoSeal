@@ -3,7 +3,10 @@ import { featureValueIsInject, getFeatureValueInject } from "src/ts/helpers/feat
 import { hijackRequest, hijackResponse } from "src/ts/helpers/hijack/fetch";
 import type { Page } from "src/ts/helpers/pages/handleMainPages";
 import { getUserAvatar } from "src/ts/helpers/requests/services/avatar";
-import { getProfileComponentsData } from "src/ts/helpers/requests/services/misc";
+import {
+	getProfileComponentsData,
+	type ProfileComponent,
+} from "src/ts/helpers/requests/services/misc";
 import {
 	type BatchGetThumbnailsRawResponse,
 	type RenderAvatarDefinition,
@@ -12,6 +15,7 @@ import {
 } from "src/ts/helpers/requests/services/thumbnails";
 import { getUser3dThumbnailDownloadData } from "src/ts/utils/avatar.inject";
 import { getRobloxUrl } from "src/ts/utils/baseUrls";
+import currentUrl from "src/ts/utils/currentUrl";
 import { sleep } from "src/ts/utils/misc";
 import { USER_PROFILE_REGEX } from "src/ts/utils/regex";
 
@@ -22,97 +26,85 @@ export default {
 		const profileUserId = Number.parseInt(regexMatches![0]![1], 10);
 
 		featureValueIsInject("prefetchRobloxPageData", true, () => {
+			const profileComponents: ProfileComponent[] = [
+				{ component: "UserProfileHeader" },
+				{ component: "ProfileBackground" },
+				{
+					component: "Actions",
+					supportedActions: [
+						"EditProfile",
+						"QrCode",
+						"Chat",
+						"JoinExperience",
+						"Block",
+						"Unblock",
+						"AddFriend",
+						"Unfriend",
+						"AcceptFriendRequest",
+						"PendingFriendRequest",
+						"IgnoreFriendRequest",
+						"CannotAddFriend",
+						"AcceptOffNetworkFriendRequest",
+						"AddFriendFromContacts",
+						"AddFriendFromContactsSent",
+						"Follow",
+						"Unfollow",
+						"EditAlias",
+						"Report",
+						"JoinCommunity",
+						"CancelJoinCommunityRequest",
+						"ViewCommunity",
+						"ViewFullProfile",
+						"CopyLink",
+						"LeaveCommunity",
+						"MakePrimaryCommunity",
+						"RemovePrimaryCommunity",
+						"ShareProfile",
+						"ConfigureCommunity",
+						"ClaimCommunityOwnership",
+						"ChangeCommunityOwner",
+						"ViewInventory",
+						"ViewFavorites",
+						"TradeItems",
+						"ImpersonateUser",
+						"EditAvatar",
+						"AddTrustedConnection",
+						"AddTrustedConnectionViaLink",
+						"AddIncomingTrustedConnection",
+						"PendingTrustedConnection",
+						"RemoveTrustedConnection",
+						"PendingIncomingTrustedConnection",
+						"CurrencyTransfer",
+					],
+					isActionsV2Supported: false,
+				},
+				{ component: "About" },
+				{ component: "CurrentlyPlaying" },
+				{ component: "CurrentlyWearing" },
+				{ component: "Friends" },
+				{ component: "Collections" },
+				{ component: "Communities" },
+				{ component: "FavoriteExperiences" },
+				{ component: "RobloxBadges" },
+				{ component: "PlayerBadges" },
+				{ component: "Experiences" },
+				{ component: "Store" },
+				{ component: "ProfileBackground" },
+			];
+
+			const trustedFriendLinkCode =
+				currentUrl.value.url.searchParams.get("trustedFriendLinkCode");
+
+			if (trustedFriendLinkCode) {
+				profileComponents.push({
+					component: "TrustedFriendModal",
+					context: trustedFriendLinkCode,
+				});
+			}
 			const profileComponentsPrefetch = getProfileComponentsData({
 				profileId: profileUserId.toString(),
 				profileType: "User",
-				components: [
-					{
-						component: "UserProfileHeader",
-					},
-					{
-						component: "Actions",
-						supportedActions: [
-							"AcceptFriendRequest",
-							"AcceptOffNetworkFriendRequest",
-							"AddFriend",
-							"AddFriendFromContacts",
-							"AddFriendFromContactsSent",
-							"AddIncomingTrustedConnection",
-							"AddTrustedConnection",
-							"AddTrustedConnectionViaLink",
-							"Block",
-							"CancelJoinCommunityRequest",
-							"CannotAddFriend",
-							"ChangeCommunityOwner",
-							"Chat",
-							"ClaimCommunityOwnership",
-							"ConfigureCommunity",
-							"CopyLink",
-							"CurrencyTransfer",
-							"EditAlias",
-							"EditAppearance",
-							"EditAvatar",
-							"EditEmotes",
-							"EditProfile",
-							"Follow",
-							"IgnoreFriendRequest",
-							"ImpersonateUser",
-							"JoinCommunity",
-							"JoinExperience",
-							"LeaveCommunity",
-							"LogInToAddConnection",
-							"MakePrimaryCommunity",
-							"PendingFriendRequest",
-							"PendingIncomingTrustedConnection",
-							"PendingTrustedConnection",
-							"QrCode",
-							"RemovePrimaryCommunity",
-							"RemoveTrustedConnection",
-							"Report",
-							"ShareProfile",
-							"SignUpToAddConnection",
-							"SwitchAvatar",
-							"TradeItems",
-							"Unblock",
-							"Unfollow",
-							"Unfriend",
-							"ViewCommunity",
-							"ViewFavorites",
-							"ViewFullProfile",
-							"ViewInventory",
-						] as const,
-					},
-					{
-						component: "About",
-					},
-					{
-						component: "CurrentlyWearing",
-					},
-					{
-						component: "Friends",
-					},
-					{
-						component: "Collections",
-					},
-					{
-						component: "Communities",
-					},
-					{
-						component: "FavoriteExperiences",
-					},
-					{
-						component: "RobloxBadges",
-					},
-					{
-						component: "PlayerBadges",
-					},
-					{
-						component: "Experiences",
-					},
-					{
-						component: "Store",
-					},
-				],
+				components: profileComponents,
 				includeComponentOrdering: true,
 			});
 

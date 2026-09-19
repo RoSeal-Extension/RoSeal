@@ -159,12 +159,16 @@ export type ProfileComponentType =
 	| "Members"
 	| "Videos"
 	| "CommunityTabs"
-	| "CommunityLocked";
+	| "CommunityLocked"
+	| "CurrentlyPlaying"
+	| "TrustedFriendModal";
 export type ProfileComponentsProfileType = "User" | "Contact" | "Community";
 
 export type ProfileComponent = {
 	component: ProfileComponentType;
 	supportedActions?: ProfileComponentAction[];
+	isActionsV2Supported?: boolean;
+	context?: string;
 };
 
 export type GetProfileComponentsDataRequest = {
