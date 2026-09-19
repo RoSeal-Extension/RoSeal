@@ -250,38 +250,6 @@
     }
 }
 
-.customize-profile-container {
-    padding: 1em;
-    max-width: fit-content;
-
-    .color-options {
-        display: flex;
-        gap: 5px;
-
-        .color-option-container {
-            &.is-selected {
-                .color-option {
-                    outline: 2px lightblue solid;
-                    outline-offset: 2px;
-                }
-            }
-
-            .color-option {
-                width: 32px;
-                height: 32px;
-                background-color: var(--color);
-                border-radius: 50%;
-
-                .roseal-icon {
-                    width: 32px;
-                    height: 32px;
-                    color: var(--RS_ICON-COLOR);
-                }
-            }
-        }
-    }
-}
-
 @media (max-width: 991px) {
     .slide-item-stats .group-joined-date {
         font-size: 20px;
