@@ -1,6 +1,6 @@
 import { signal } from "@preact/signals";
 import type { ChartJSOrUndefined } from "node_modules/react-chartjs-2/dist/types";
-import { Fragment } from "preact";
+import { type ContainerNode, Fragment, render } from "preact";
 import { useEffect, useMemo, useState } from "preact/hooks";
 import AddToProfileButton from "src/ts/components/avatarItem/AddToProfileButton";
 import Tooltip from "src/ts/components/core/Tooltip";
@@ -207,19 +207,25 @@ export default {
 			}),
 		);
 
-		featureValueIs("experienceTestPilotSettings", true, () =>
+		featureValueIs("experienceTestPilotSettings", true, () => {
+			let latest: ContainerNode | undefined;
+
 			watch(
 				"#game-details-play-button-container .btn-common-play-game-lg",
 				(playButtonContainer) => {
-					renderBefore(
+					if (latest) {
+						render(null, latest);
+					}
+
+					latest = renderBefore(
 						<ExperienceTestPilotSettings
 							container={playButtonContainer.parentElement as HTMLDivElement}
 						/>,
 						playButtonContainer,
 					);
 				},
-			),
-		);
+			);
+		});
 
 		featureValueIs("improvedExperienceServersTab", true, () => {
 			const activatePreferredServer = signal(false);
