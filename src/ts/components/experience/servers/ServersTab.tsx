@@ -180,7 +180,7 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 	const [onlineFriends] = useOnlineFriends();
 	const [authenticatedUser] = useAuthenticatedUser();
 	const [dataCentersWithoutDistance] = usePromise(getRobloxDataCenters, []);
-	const userPrivateServerPrice = authenticatedUser?.hasPlus ? 0 : data.privateServerPrice;
+	const userPrivateServerPrice = data.privateServerPrice;
 
 	const [channelData] = usePromise(
 		() =>

@@ -198,11 +198,7 @@ export default function Server({
 		isSubscriptionExpired && ownerDetails?.subscription.hasPriceChanged;
 	const isInactive = item.type === "private" && !item.accessCode;
 
-	const isFreeServer =
-		(authenticatedUser?.hasPlus &&
-			item.type === "private" &&
-			item.owner.id === authenticatedUser?.userId) ||
-		privateServerPrice === 0;
+	const isFreeServer = privateServerPrice === 0;
 
 	const canClickServerDebugInfo = showServerDebugInfo !== "idOnly" && !shouldUseStack;
 
