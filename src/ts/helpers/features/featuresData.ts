@@ -1300,7 +1300,7 @@ export const sections = [
 							type: "Toggle",
 							defaultValue: true,
 						},
-						variant: 1,
+						variant: 2,
 						subfeatures: {
 							items: [
 								{
