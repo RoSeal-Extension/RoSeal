@@ -87,6 +87,7 @@ export type ServersTabContextData = {
 		prev: (data: Record<string, Set<string>>) => Record<string, Set<string>>,
 	) => void;
 	setUserLatLong: (latLong: [number, number]) => void;
+	reloadPrivateServerPrice: () => void;
 };
 
 export const ServersTabContext = createContext<ServersTabContextData>(

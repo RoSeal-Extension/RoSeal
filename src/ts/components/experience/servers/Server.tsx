@@ -122,6 +122,7 @@ export default function Server({
 		showServerUptimeEnabled,
 		simpleUserLocale,
 		setUserLatLong,
+		reloadPrivateServerPrice,
 	} = useServersTabContext();
 
 	const canManageServer = item.type === "private" && authenticatedUser?.userId === item.owner?.id;
@@ -943,7 +944,10 @@ export default function Server({
 					privateServerId={item.vipServerId}
 					show={showRenewPrivateServerModal}
 					setShow={setShowRenewPrivateServerModal}
-					onRenew={refreshServerList}
+					onRenew={() => {
+						refreshServerList();
+						reloadPrivateServerPrice();
+					}}
 				/>
 			)}
 			{item.type === "private" && ownerDetails && (
@@ -952,7 +956,10 @@ export default function Server({
 					show={showCancelPrivateServerModal}
 					expirationDate={ownerDetails.subscription.expirationDate}
 					setOpen={setShowCancelPrivateServerModal}
-					onCancel={refreshServerList}
+					onCancel={() => {
+						refreshServerList();
+						reloadPrivateServerPrice();
+					}}
 				/>
 			)}
 			{isLikelyBotted && (

@@ -29,8 +29,14 @@ export default function CreatePrivateServerModal({
 	setShow,
 	onCreate,
 }: CreatePrivateServerModalProps) {
-	const { universeId, universeName, userPrivateServerPrice, sellerName, privateServerPrice } =
-		useServersTabContext();
+	const {
+		universeId,
+		universeName,
+		userPrivateServerPrice,
+		sellerName,
+		privateServerPrice,
+		reloadPrivateServerPrice,
+	} = useServersTabContext();
 	const [serverName, setServerName] = useState("");
 	const [unsubscribeAutomatically, setUnsubscribeAutomatically] = useState(false);
 	const [createdServer, setCreatedServer] = useState<PlacePrivateServer>();
@@ -70,6 +76,7 @@ export default function CreatePrivateServerModal({
 					disabled: loading,
 					onClick: () => {
 						setShow(false);
+						reloadPrivateServerPrice();
 						if (createdServer) onCreate();
 					},
 				},
@@ -83,6 +90,7 @@ export default function CreatePrivateServerModal({
 							location.href = getConfigurePrivateServerLink(
 								createdServer.vipServerId,
 							);
+							reloadPrivateServerPrice();
 							setShow(false);
 						} else {
 							setLoading(true);

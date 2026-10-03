@@ -34,6 +34,7 @@ import {
 	type ServersTabContextData,
 } from "./ServersTabProvider";
 import { getDistanceLatLong } from "./utils";
+import { getUniversePrivateServersSettings } from "src/ts/helpers/requests/services/privateServers";
 
 export type ServersTabContentProps = Omit<
 	ServersTabContextData,
@@ -75,9 +76,11 @@ export type ServersTabContentProps = Omit<
 	| "preferredServerButtonEnabled"
 	| "userPrivateServerPrice"
 	| "showServerUptimeEnabled"
+	| "reloadPrivateServerPrice"
 >;
 
 export default function ServersTabContent(data: ServersTabContentProps) {
+	const [privateServerPrice, setPrivateServerPrice] = useState(data.privateServerPrice);
 	const [privateServerLinksEnabled] = useFeatureValue("privateServerLinksSection", false);
 	const [excludeFullServersDefaultEnabled] = useFeatureValue(
 		"improvedExperienceServersTab.excludeFullServersDefault",
@@ -180,7 +183,7 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 	const [onlineFriends] = useOnlineFriends();
 	const [authenticatedUser] = useAuthenticatedUser();
 	const [dataCentersWithoutDistance] = usePromise(getRobloxDataCenters, []);
-	const userPrivateServerPrice = data.privateServerPrice;
+	const userPrivateServerPrice = privateServerPrice;
 
 	const [channelData] = usePromise(
 		() =>
@@ -372,6 +375,15 @@ export default function ServersTabContent(data: ServersTabContentProps) {
 				showServerUptimeEnabled: showServerUptimeEnabled === true,
 
 				simpleUserLocale: simpleUserLocale || undefined,
+
+				reloadPrivateServerPrice: () => {
+					setPrivateServerPrice(null);
+					getUniversePrivateServersSettings({ universeId: data.universeId }).then(
+						(data) => {
+							setPrivateServerPrice(data.privateServerData.price);
+						},
+					);
+				},
 
 				setCalculateServerDistance,
 				setPromptLocationPermission,
