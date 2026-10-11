@@ -84,7 +84,7 @@ export async function modifyItemContextMenu<T extends VNode | (() => VNode)>(
 				hasReactContextMenu && isAvatarItemPage
 					? " #game-instance-dropdown-menu .dropdown-menu,"
 					: " #item-context-menu .popover .dropdown-menu,"
-			} .profile-header-more .dropdown-menu, .group-header .group-menu .popover .dropdown-menu${isLook ? ", #game-instance-dropdown-menu .dropdown-menu" : ""}, .MuiPopover-root ul, .foundation-web-portal-zindex[style*="--radix-popper"] .foundation-web-menu > .padding-small, body:has(#developer-product-details-container) .MuiPopover-root ul `,
+			} .profile-header-more .dropdown-menu, .group-header .group-menu .popover .dropdown-menu${isLook ? ", #game-instance-dropdown-menu .dropdown-menu" : ""}, .MuiPopover-root ul, .foundation-web-portal-zindex[style*="--radix-popper"] .foundation-web-menu > .padding-small:not(:has(a[href*="/ConfirmCode"])):not(:has(a[href*="/transactions"])), body:has(#developer-product-details-container) .MuiPopover-root ul `,
 			(dropdownMenu) => {
 				dropdownMenu.classList.add("flex-dropdown-menu");
 				if (containerContextMenus?.[1]) {
