@@ -2,6 +2,7 @@ import MdOutlineGroup from "@material-symbols/svg-400/outlined/group-fill.svg";
 import MdOutlineGroups from "@material-symbols/svg-400/outlined/groups-fill.svg";
 import MdOutlinePersonAdd from "@material-symbols/svg-400/outlined/person_add-fill.svg";
 import MdOutlinePublic from "@material-symbols/svg-400/outlined/public-fill.svg";
+import MdOutlineShield from "@material-symbols/svg-400/outlined/shield-fill.svg";
 import MdOutlineVisibilityOff from "@material-symbols/svg-400/outlined/visibility_off-fill.svg";
 import MdOutlineVisibility from "@material-symbols/svg-400/outlined/visibility-fill.svg";
 import type { Signal } from "@preact/signals";
@@ -42,6 +43,10 @@ const PRIVACY_LEVELS = [
 	{
 		icon: MdOutlinePersonAdd,
 		type: "Friends",
+	},
+	{
+		icon: MdOutlineShield,
+		type: "TrustedFriends",
 	},
 	{
 		icon: MdOutlineVisibilityOff,

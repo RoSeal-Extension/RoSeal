@@ -251,11 +251,18 @@ export type AppChatPrivacy = "NoOne" | "Friends";
 export type ChatPrivacy = "NoOne" | "AllUsers";
 export type DefaultPrivacy =
 	| "NoOne"
+	| "TrustedFriends"
 	| "Friends"
 	| "FriendsAndFollowing"
 	| "FriendsFollowingAndFollowers"
 	| "AllUsers";
-export type JoinPrivacy = "All" | "Friends" | "NoOne" | "Following" | "Followers";
+export type JoinPrivacy =
+	| "All"
+	| "Friends"
+	| "TrustedFriends"
+	| "NoOne"
+	| "Following"
+	| "Followers";
 export type PartyPrivacy = "NoOne" | "Friends" | "Unknown";
 export type PrivateServerAddPrivacy =
 	| "NoOne"

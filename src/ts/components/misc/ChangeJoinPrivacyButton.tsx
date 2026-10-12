@@ -3,6 +3,7 @@ import MdOutlineGroups from "@material-symbols/svg-400/outlined/groups-fill.svg"
 import MdOutlinePersonAdd from "@material-symbols/svg-400/outlined/person_add-fill.svg";
 import MdOutlinePlayArrow from "@material-symbols/svg-400/outlined/play_arrow-fill.svg";
 import MdOutlinePublic from "@material-symbols/svg-400/outlined/public-fill.svg";
+import MdOutlineShield from "@material-symbols/svg-400/outlined/shield-fill.svg";
 import MdOutlineVisibilityOff from "@material-symbols/svg-400/outlined/visibility_off-fill.svg";
 import type { Signal } from "@preact/signals";
 import classNames from "classnames";
@@ -55,6 +56,17 @@ const PRIVACY_LEVELS = [
 		],
 	},
 	{
+		icon: MdOutlineShield,
+		type: "TrustedFriends",
+		statusFilters: [
+			"AllUsers",
+			"FriendsFollowingAndFollowers",
+			"FriendsAndFollowing",
+			"Friends",
+			"TrustedFriends",
+		],
+	},
+	{
 		icon: MdOutlineVisibilityOff,
 		type: "NoOne",
 		statusFilters: [
@@ -62,6 +74,7 @@ const PRIVACY_LEVELS = [
 			"FriendsFollowingAndFollowers",
 			"FriendsAndFollowing",
 			"Friends",
+			"TrustedFriends",
 			"NoOne",
 		],
 	},
