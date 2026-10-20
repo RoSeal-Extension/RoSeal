@@ -119,7 +119,8 @@ if (import.meta.env.ENV !== "background") {
 			typeof data === "object" &&
 			"type" in data &&
 			data.type === "rosealCommunication" &&
-			"details" in data
+			"details" in data &&
+			source === window
 		) {
 			if (data.details.origin === import.meta.env.ENV) return;
 

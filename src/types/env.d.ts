@@ -81,6 +81,20 @@ declare global {
 		content: {
 			fetch: typeof window.fetch;
 		};
+		RobloxItemPurchase?: {
+			startGamepassPurchaseFlow: (args: {
+				thumbnail?: React.ReactNode;
+				imageUrl: string;
+				productId: number;
+				assetName: string;
+				sellerName: string;
+				expectedSellerId: number;
+				expectedPrice: number;
+				iconAssetId: number;
+				discountInformation?: TGamePassDiscountInformation | null;
+				onPurchaseSuccess?: () => void;
+			}) => void;
+		};
 		Roblox: {
 			ProtocolHandlerClientInterface: {
 				playerChannel: string;
@@ -178,6 +192,7 @@ declare global {
 				createCache: () => unknown;
 				CacheProvider: (props: { cache: unknown }) => JSX.Element;
 				UIThemeProvider: (props: { theme: unknown }) => JSX.Element;
+				meow: true;
 			};
 			GamePassItemPurchase: {
 				openPurchaseVerificationView: (el: HTMLElement, type: "game-pass") => void;

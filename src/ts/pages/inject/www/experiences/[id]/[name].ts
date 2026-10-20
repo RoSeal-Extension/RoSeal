@@ -73,7 +73,20 @@ export default {
 				return;
 			}
 
-			window.Roblox.GamePassItemPurchase?.startGamepassPurchaseFlow(buyButton);
+			const attributes = buyButton.dataset;
+
+			const discountInfoJson = attributes.discountInformation;
+			const discountInformation = discountInfoJson ? JSON.parse(discountInfoJson) : null;
+			window?.RobloxItemPurchase?.startGamepassPurchaseFlow?.({
+				productId: Number.parseInt(attributes.productId!, 10),
+				assetName: attributes.itemName || "",
+				sellerName: attributes.sellerName || "",
+				expectedSellerId: Number.parseInt(attributes.expectedSellerId!, 10),
+				expectedPrice: Number.parseInt(attributes.expectedPrice!, 10),
+				imageUrl: "",
+				iconAssetId: Number.parseInt(attributes.itemId!, 10),
+				discountInformation,
+			});
 		});
 
 		featureValueIsInject("viewExperienceTopSongs", true, () => {

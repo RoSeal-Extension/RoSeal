@@ -9,7 +9,7 @@ import {
 } from "../constants/apiKey";
 import { RESTError } from "../helpers/requests/main";
 import {
-	APIKeyUserProperties,
+	type APIKeyUserProperties,
 	createAPIKey,
 	getApiKey,
 	regenerateAPIKey,
@@ -51,7 +51,9 @@ export async function tryAPIKeyRequest<T>(
 			try {
 				await updateAPIKey({
 					cloudAuthId: userData.cloudAuthId,
-					cloudAuthUserConfiguredProperties: getAPIKeyParams(new Date(userData.expiresAt * 1000).toUTCString()),
+					cloudAuthUserConfiguredProperties: getAPIKeyParams(
+						new Date(userData.expiresAt * 1000).toUTCString(),
+					),
 				});
 
 				const regeneratedKey = (
@@ -77,7 +79,9 @@ export async function tryAPIKeyRequest<T>(
 
 		if (shouldCreateNewKey) {
 			const newApiKey = await createAPIKey({
-				cloudAuthUserConfiguredProperties: getAPIKeyParams(new Date(expireTimeSeconds * 1000).toUTCString()),
+				cloudAuthUserConfiguredProperties: getAPIKeyParams(
+					new Date(expireTimeSeconds * 1000).toUTCString(),
+				),
 			});
 			data[userId] = {
 				cloudAuthId: newApiKey.cloudAuthInfo.id,
