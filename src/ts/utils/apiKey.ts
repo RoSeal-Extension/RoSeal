@@ -9,6 +9,7 @@ import {
 } from "../constants/apiKey";
 import { RESTError } from "../helpers/requests/main";
 import {
+	APIKeyUserProperties,
 	createAPIKey,
 	getApiKey,
 	regenerateAPIKey,
@@ -17,13 +18,14 @@ import {
 import { storage } from "../helpers/storage";
 import { randomLetters } from "./random";
 
-export function getAPIKeyParams() {
+export function getAPIKeyParams(expirationTime: string): APIKeyUserProperties {
 	return {
 		name: `${API_KEY_PREFIX} ${randomLetters(16)}`,
 		description: API_KEY_DESCRIPTION,
 		isEnabled: true,
 		allowedCidrs: ["0.0.0.0/0"],
 		scopes: API_KEY_SCOPE_OBJS,
+		expirationTime,
 	};
 }
 
@@ -40,6 +42,8 @@ export async function tryAPIKeyRequest<T>(
 	let userData: APIKeysStorageValue[number] | undefined = data[userId];
 	const expired = userData !== undefined && userData?.expiresAt <= time;
 
+	const expireTimeSeconds = time + 60 * 60 * 24 * 3;
+
 	if (!userData || forceRefresh || userData.scope !== API_KEY_SCOPE_STR || expired) {
 		let shouldCreateNewKey = userData === undefined || forceCreate;
 
@@ -47,7 +51,7 @@ export async function tryAPIKeyRequest<T>(
 			try {
 				await updateAPIKey({
 					cloudAuthId: userData.cloudAuthId,
-					cloudAuthUserConfiguredProperties: getAPIKeyParams(),
+					cloudAuthUserConfiguredProperties: getAPIKeyParams(new Date(userData.expiresAt * 1000).toUTCString()),
 				});
 
 				const regeneratedKey = (
@@ -60,7 +64,7 @@ export async function tryAPIKeyRequest<T>(
 					cloudAuthId: userData.cloudAuthId,
 					scope: API_KEY_SCOPE_STR,
 					key: regeneratedKey,
-					expiresAt: time + 60_000 * 60 * 24 * 3,
+					expiresAt: expireTimeSeconds,
 				};
 				userData = data[userId];
 				storage.set({
@@ -73,13 +77,13 @@ export async function tryAPIKeyRequest<T>(
 
 		if (shouldCreateNewKey) {
 			const newApiKey = await createAPIKey({
-				cloudAuthUserConfiguredProperties: getAPIKeyParams(),
+				cloudAuthUserConfiguredProperties: getAPIKeyParams(new Date(expireTimeSeconds * 1000).toUTCString()),
 			});
 			data[userId] = {
 				cloudAuthId: newApiKey.cloudAuthInfo.id,
 				scope: API_KEY_SCOPE_STR,
 				key: newApiKey.apikeySecret,
-				expiresAt: time + 60_000 * 60 * 24 * 3,
+				expiresAt: expireTimeSeconds,
 			};
 			userData = data[userId];
 			storage.set({
