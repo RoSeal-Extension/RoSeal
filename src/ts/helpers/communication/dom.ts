@@ -120,7 +120,13 @@ if (import.meta.env.ENV !== "background") {
 			"type" in data &&
 			data.type === "rosealCommunication" &&
 			"details" in data &&
-			source === window
+			(source === window ||
+				data.details.action === "featurePermissions.showError" ||
+				data.details.action === "scrollHeightChanged" ||
+				data.details.action === "featureValueUpdate" ||
+				data.details.action === "documentReady" ||
+				((data.details.action === "invoke" || data.details.action === "invokeResponse") &&
+					data.details.args.action === "injectStyles"))
 		) {
 			if (data.details.origin === import.meta.env.ENV) return;
 
@@ -147,6 +153,8 @@ if (import.meta.env.ENV !== "background") {
 				}
 				messageQueue.add([data, source ? { window: source, url: origin } : undefined]);
 			}
+		} else {
+			console.log(data);
 		}
 	});
 }
