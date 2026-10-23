@@ -1,17 +1,25 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.4.0/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.6.2/schema.json",
 	"files": {
-		"includes": ["**"],
+		"includes": [
+			"**"
+		],
 		"ignoreUnknown": false
 	},
 	"linter": {
 		"enabled": true,
-		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"],
+		"includes": [
+			"**",
+			"!**/dist/**",
+			"!**/builds-dist/**",
+			"!**/*.gen.*",
+			"!**/secret/**"
+		],
 		"rules": {
 			"suspicious": {
 				"noConfusingVoidType": "off"
 			},
-			"recommended": true,
+			"preset": "recommended",
 			"style": {
 				"noNonNullAssertion": "off",
 				"noParameterAssign": "error",
@@ -44,7 +52,13 @@
 		"enabled": true,
 		"indentWidth": 4,
 		"lineWidth": 100,
-		"includes": ["**", "!**/dist/**", "!**/builds-dist/**", "!**/*.gen.*", "!**/secret/**"]
+		"includes": [
+			"**",
+			"!**/dist/**",
+			"!**/builds-dist/**",
+			"!**/*.gen.*",
+			"!**/secret/**"
+		]
 	},
 	"vcs": {
 		"clientKind": "git",
