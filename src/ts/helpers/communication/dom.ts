@@ -153,8 +153,6 @@ if (import.meta.env.ENV !== "background") {
 				}
 				messageQueue.add([data, source ? { window: source, url: origin } : undefined]);
 			}
-		} else {
-			console.log(data);
 		}
 	});
 }
