@@ -46,7 +46,7 @@
 		"json-bigint-native": "1.2.0",
 		"localforage": "1.10.0",
 		"parse-roblox-errors": "1.2.4",
-		"preact": "11.0.1",
+		"preact": "11.0.2",
 		"pretty-bytes": "7.2.0",
 		"react": "npm:@preact/compat@17.1.2",
 		"react-bootstrap": "1.6.8",
@@ -66,7 +66,7 @@
 		"zod": "4.6.7"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.6.2",
+		"@biomejs/biome": "2.6.3",
 		"@formatjs/icu-messageformat-parser": "3.5.22",
 		"@total-typescript/ts-reset": "0.6.1",
 		"@types/angular": "1.8.9",
