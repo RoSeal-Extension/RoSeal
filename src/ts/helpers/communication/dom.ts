@@ -137,8 +137,6 @@ if (import.meta.env.ENV !== "background") {
 					listener.callback(
 						data.details.args,
 						source
-
-						
 							? {
 									window: source,
 									url: origin,
