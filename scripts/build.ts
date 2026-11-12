@@ -250,7 +250,7 @@ export function writeDNRRules({
 									value: cspPolicy.replace(
 										"img-src 'self'",
 										`img-src 'self' ${TWEMOJI_EMOJI_BASE_URL} ${FLUENTUI_EMOJI_BASE_URL}`,
-									),
+									).replace('script-src', `script-src ${ROBLOX_DOMAIN.replace(/{service}/, "www-assets")}`),
 								},
 							],
 						},
